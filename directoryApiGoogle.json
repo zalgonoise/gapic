@@ -1,0 +1,202 @@
+[
+    {
+        "set": "ASPs",
+        "apis": [
+            {
+                "name": "aspDelete",
+                "prefix": "ASP_DELETE_",
+                "url": "https://www.googleapis.com/admin/directory/v1/users/${USERKEY}/asps/${CODEID}?key=${CLIENTID}",
+                "method": "DELETE",
+                "headers": [
+                    "Authorization: Bearer ${ACCESSTOKEN}",
+                    "Accept: application/json"
+                ],
+                "reqParams": [
+                    "CLIENTID",
+                    "ACCESSTOKEN",
+                    "CODEID",
+                    "USERKEY"
+                ]
+            },
+            {
+                "name": "aspGet",
+                "prefix": "ASP_GET_",
+                "url": "https://www.googleapis.com/admin/directory/v1/users/${USERKEY}/asps/${CODEID}?key=${CLIENTID}",
+                "method": "GET",
+                "headers": [
+                    "Authorization: Bearer ${ACCESSTOKEN}",
+                    "Accept: application/json"
+                ],
+                "reqParams": [
+                    "CLIENTID",
+                    "ACCESSTOKEN",
+                    "CODEID",
+                    "USERKEY"
+                ]
+            },
+            {
+                "name": "aspList",
+                "prefix": "ASP_LIST_",
+                "url": "https://www.googleapis.com/admin/directory/v1/users/${USERKEY}/asps?key=${CLIENTID}",
+                "method": "GET",
+                "headers": [
+                    "Authorization: Bearer ${ACCESSTOKEN}",
+                    "Accept: application/json"
+                ],
+                "reqParams": [
+                    "CLIENTID",
+                    "ACCESSTOKEN",
+                    "USERKEY"
+                ]
+            }
+        ]
+    },
+    {
+        "set": "Users",
+        "apis": [
+            {
+                "name": "usersDelete",
+                "prefix": "USERS_DELETE_",
+                "url": "https://www.googleapis.com/admin/directory/v1/users/${USERKEY}?key=${CLIENTID}",
+                "method": "DELETE",
+                "headers": [
+                    "Authorization: Bearer ${ACCESSTOKEN}",
+                    "Accept: application/json"
+                ],
+                "reqParams": [
+                    "CLIENTID",
+                    "ACCESSTOKEN",
+                    "USERKEY"
+                ]
+            },
+            {
+                "name": "usersGet",
+                "prefix": "USERS_GET_",
+                "url": "https://www.googleapis.com/admin/directory/v1/users/${USERKEY}?key=${CLIENTID}",
+                "method": "GET",
+                "headers": [
+                    "Authorization: Bearer ${ACCESSTOKEN}",
+                    "Accept: application/json"
+                ],
+                "reqParams": [
+                    "CLIENTID",
+                    "ACCESSTOKEN",
+                    "USERKEY"
+                ],
+                "optParams": [
+                        {
+                            "name": "projection",
+                            "opts": [
+                                "basic",
+                                "projectionUndefined",
+                                "custom",
+                                "full"
+                            ]
+                        },
+                        {
+                            "name": "viewType",
+                            "opts": [
+                                "admin_view",
+                                "view_type_undefined",
+                                "domain_public"
+                            ]
+                        }
+                    ]
+                
+            },
+            {
+                "name": "usersList",
+                "prefix": "USERS_LIST_",
+                "url": "https://www.googleapis.com/admin/directory/v1/users?key=${CLIENTID}",
+                "method": "GET",
+                "headers": [
+                    "Authorization: Bearer ${ACCESSTOKEN}",
+                    "Accept: application/json"
+                ],
+                "reqParams": [
+                    "CLIENTID",
+                    "ACCESSTOKEN"
+                ],
+                "optParams": [
+                    {
+                        "name": "projection",
+                        "opts": [
+                            "basic",
+                            "projectionUndefined",
+                            "custom",
+                            "full"
+                        ]
+                    },
+                    {
+                        "name": "viewType",
+                        "opts": [
+                            "admin_view",
+                            "view_type_undefined",
+                            "domain_public"
+                        ]
+                    },
+                    {
+                        "name": "orderBy",
+                        "opts": [
+                            "orderByUndefined",
+                            "email",
+                            "familyName",
+                            "givenName"
+                        ]
+                    },
+                    {
+                        "name": "showDeleted",
+                        "opts": [
+                            "true",
+                            "false"
+                        ]
+                    },
+                    {
+                        "name": "sortOrder",
+                        "opts": [
+                            "DESCENDING",
+                            "ASCENDING",
+                            "SORT_ORDER_UNDEFINED"
+                        ]
+                    }
+                ],
+                "customParams": [
+                    {
+                        "type" : "Identifier",
+                        "options": [
+                            {
+                                "name": "domain",
+                                "desc": "list by domain",
+                                "var": "DOMAIN"
+                            },
+                            {
+                                "name": "customer",
+                                "desc": "list by customer ID",
+                                "var": "CUSTOMER"
+                            }
+                        
+                        ]
+                    }
+                ],
+                "inputParams": [
+                    {
+                        "name": "customFieldType",
+                        "type": "string"
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "pageToken",
+                        "type": "string"
+                    },
+                    {
+                        "name": "query",
+                        "type": "string"
+                    }
+                ]
+            }
+        ]
+    }
+]
