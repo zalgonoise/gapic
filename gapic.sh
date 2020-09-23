@@ -494,8 +494,44 @@ fi
 
 
 
-apisInFile=`echo ${inputJson} | jq -c '.[].apis[]' | wc -l`
-apiSets=(`echo ${inputJson} | jq -c '.[].set'|tr '"' ' '`)
+#apisInFile=`echo ${inputJson} | jq -c '.[].apis[]' | wc -l`
+#apiSets=(`echo ${inputJson} | jq -c '.[].set'|tr '"' ' '`)
+
+### Retrieve all available APIs
+
+apiSets=(`echo ${inputJson} | jq -c '.resources | keys[]' | tr '"' ' '`)
+
+for (( a = 1 ; a <= ${#apiSets[@]} ; a++ ))
+do 
+
+    ### Iterate through each API and retrieve its method, and capitalize the variable
+    
+    localMethods=(`echo ${inputJson} | jq -c ".resources.${apiSets[$a]}.methods | keys[]" | grep -v "resources" | tr '"' ' '`)
+    localMethods=(${(C)localMethods})
+
+    for (( b = 1 ; b <= ${#localMethods[@]} ; b++ ))
+    do
+
+        ### Iterate through each method, prefix the resource to it (for function names)
+        ### Also initialize those values as variables (nesting them) to define variable prefixes
+        ### such as: usersGet=USERS_GET_
+
+        declare -g "localMethods[$b]=${apiSets[$a]}${localMethods[$b]}"
+        declare -g "${apiSets[$a]}${localMethods[$b]}=${(U)apiSets[$a]}_${(U)localMethods[$b]}_"
+    
+    done
+    
+    ### Nesting the collected methods into each element of the resources array
+    ### so they can be evaluated through it 
+
+    set -A ${apiSets[$a]} ${localMethods}
+
+    ### Method counter for metrics, analytics and debugging
+
+    methodCounter="${(P)#apiSets[$a]}"
+    methodCountTotal=$((${methodCountTotal}+${methodCounter}))
+
+done
 
 
 # Send available API sets to file
@@ -506,6 +542,11 @@ cat << EOF >> ${outputLibWiz}
 gapicSets=( ${apiSets[@]} )
 
 EOF
+
+### TODO
+#
+# remodeling the API library to take in Google's schema
+#
 
 
 
