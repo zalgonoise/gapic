@@ -498,33 +498,45 @@ fi
 #apiSets=(`echo ${inputJson} | jq -c '.[].set'|tr '"' ' '`)
 
 ### Retrieve all available APIs
+##### Current exceptions:
+##### "resources" - complex tree (.resources.resources.resources.methods), creating exceptions later
 
-apiSets=(`echo ${inputJson} | jq -c '.resources | keys[]' | tr '"' ' '`)
+
+apiSets=(`echo ${inputJson} | jq -c '.resources | keys[]' | grep -v "resources" | tr '"' ' '`)
 
 for (( a = 1 ; a <= ${#apiSets[@]} ; a++ ))
 do 
 
     ### Iterate through each API and retrieve its method, and capitalize the variable
     
-    localMethods=(`echo ${inputJson} | jq -c ".resources.${apiSets[$a]}.methods | keys[]" | grep -v "resources" | tr '"' ' '`)
-    localMethods=(${(C)localMethods})
+    localMethods=(`echo ${inputJson} | jq -c ".resources.${apiSets[$a]}.methods | keys[]" | tr '"' ' '`)
+    localMethodsFunctions=(${localMethods})
 
     for (( b = 1 ; b <= ${#localMethods[@]} ; b++ ))
     do
 
         ### Iterate through each method, prefix the resource to it (for function names)
-        ### Also initialize those values as variables (nesting them) to define variable prefixes
-        ### such as: usersGet=USERS_GET_
-
-        declare -g "localMethods[$b]=${apiSets[$a]}${localMethods[$b]}"
-        declare -g "${apiSets[$a]}${localMethods[$b]}=${(U)apiSets[$a]}_${(U)localMethods[$b]}_"
+        ### Also initialize those values as arrays (nesting them) to define query structure naming,
+        ### variable prefixes, and the JSON schema such as: users_get=(get USERS_GET_ {JSON})
+        ### This is used so that unique functions are generated, and the jq query is defined during the loop
+        declare -g "localMethodsFunctions[$b]=${apiSets[$a]}_${localMethodsFunctions[$b]}"
+        local methodJson=`echo ${inputJson} | jq -c ".resources.${apiSets[${a}]}.methods.${localMethods[$b]}"`
+        local methodSet=("${localMethods[$b]}" "${(U)apiSets[$a]}_${(U)localMethods[$b]}_" "${methodJson}")
+        set -A ${localMethodsFunctions[$b]} ${methodSet} 
+        unset methodSet methodJson
     
     done
     
     ### Nesting the collected methods into each element of the resources array
-    ### so they can be evaluated through it 
+    ### so they can be evaluated through it, all from one array
+    ### Example:
+    # $ echo ${apiSets[1]} ~> asps
+    # $ echo ${(P)${apiSets[1]}[1]} ~> asps_delete
+    # $ echo ${(P)${(P)apiSets[1]}[1][1]} ~> delete
+    # $ echo ${(P)${(P)apiSets[1]}[1][2]} ~> ASPS_DELETE_
 
-    set -A ${apiSets[$a]} ${localMethods}
+
+    set -A ${apiSets[$a]} ${localMethodsFunctions}
 
     ### Method counter for metrics, analytics and debugging
 
@@ -543,11 +555,6 @@ gapicSets=( ${apiSets[@]} )
 
 EOF
 
-### TODO
-#
-# remodeling the API library to take in Google's schema
-#
-
 
 
 
@@ -555,33 +562,62 @@ EOF
 
 for (( a = 1 ; a <= ${#apiSets[@]} ; a++ ))
 do
-    curSet=${apiSets[$a]}
-    curMeth=(`echo ${inputJson} | jq -c ".[((${a}-1))].apis[].name"`)
+    # define local sets, similar to ${apiSets}
+     
+#    curSet=${apiSets[$a]}
+#    curMeth=(${(P)${apiSets[$a]}[@]})
+#
+#    for (( b = 1 ; b <= ${(P)#${apiSets[$a]}[@]} ; b++ ))
+#    do
+#        declare -g "${curMeth}"
+#        
+#        curMeth+=(${(P)${apiSets[$a]}[$b]})
+#        curJson=`echo ${inputJson} | jq -c ".resources.${apiSets[${a}]}.methods.${(P)${(P)apiSets[${a}]}[${b}][1]}"`
+#        declare -g "${curMeth[$b]}=${curJson}"
+#
+#    done
+#
+#    set -A ${curSet} ${curMeth[@]}
 
+    cat << EOF >> ${outputLibWiz}
+${apiSets[$a]}=( ${(P)${apiSets[$a]}[@]} )
+EOF
 
-    curSet=${curSet//\"/}
-    curMeth=(${curMeth//\"/})
+#    unset curSet curMeth
 
+done
 
-    set -A ${curSet} ${curMeth[@]}
+#    curSet=${apiSets[$a]}
+#    curMeth=(`echo ${inputJson} | jq -c ".[((${a}-1))].apis[].name"`)
+#
+#
+#    curSet=${curSet//\"/}
+#    curMeth=(${curMeth//\"/})
+#
+#
+#    
 
     # Send available API methods to file
 
-    cat << EOF >> ${outputLibWiz}
-${curSet}=( ${curMeth[@]} )
-EOF
-
-
-    for (( b = 1 ; b <= ${#curMeth[@]} ; b++ ))
-    do
-        curJson=`echo ${inputJson} | jq -c ".[((${a}-1))].apis[((${b}-1))]"`
-        set -A ${curMeth[$b]} ${curJson}
+#        curMeth+=(${(P)${(P)apiSets[$a]}[$b][1]})
+#        #curMeth=(${(P)${(P)apiSets[$a]}[$b][1]})
+#
+#        curJson=`echo ${inputJson} | jq -c ".resources.${apiSets[${a}]}.methods.${(P)${(P)apiSets[${a}]}[${b}][1]}"`
+#        declare -g "${curMeth[$b]}=${curJson}"
         #echo -e "# DEBUG \n\n${curJson}\n\n"
 #       unset curJson
-    done
-#        unset curSet curMeth
-
-done
+#    done
+#    
+#    set -A ${curSet} ${curMeth[@]}
+#
+#    cat << EOF >> ${outputLibWiz}
+#${curSet}=( ${curMeth[@]} )
+#EOF
+#
+#
+##        unset curSet curMeth
+#
+#done
 
 
 # Nested arrays, visible with `echo ${(P)apiSets[2][2]}`,
@@ -593,7 +629,10 @@ done
 # Zsh indexes start with 1, instead of 0 like in bash
 
 
-
+### TODO
+# Adapt code generation to Google's API schema
+# Reference JSON object in ${(P)${(P)apiSets[$a]}[$b][3]}
+#
 
 
 
