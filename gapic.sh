@@ -621,106 +621,112 @@ done
 
 
 # Nested arrays, visible with `echo ${(P)apiSets[2][2]}`,
-# which shows `echo ${Users[2]}`, or `usersGet` for the function name
+# which shows `echo ${Users[2]}`, or `users_get` for the function name
 # and `echo ${(P)${(P)apiSets[2]}[2]}` which is equal to
-# `echo ${(P)Users[2]}`, which is `echo $usersGet`, which is the full
-# configuration for the API method, from the JSON file
+# `echo ${(P)Users[2]}`, which is `echo $users_get`, which is 
+# an array containing [1] the reference method (`get`), the variable prefix 
+# (USERS_GET_) and the full configuration for the API method, from the schema
 #
 # Zsh indexes start with 1, instead of 0 like in bash
 
 
 
+# loop through all resources
 
 for (( c = 1 ; c <= ${#apiSets[@]} ; c++ ))
 do
 
+    # loop through all methods within each resource
+
     for (( d = 1 ; d <= ${(P)#apiSets[$c]} ; d++ ))
     do
+
+        # define variable prefix for this method
+
         curPrefix=${(P)${(P)apiSets[$c]}[$d][2]}
+        
+        # define the URL used, from '.resources.{resource}.methods.{method}.flatPath'
+        # substitute parameters with shell-variable syntax 
+        # .../users/{userKey}/asps --> .../users/${userKey}/asps
+        
         tempUrl=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".flatPath"`
         tempUrl=${tempUrl//\{/\$\{}
 
         curUrl="https://www.googleapis.com/${tempUrl}?key=\${CLIENTID}"
 
+        # define HTTP method used (GET, POST, DELETE, PATCH, PUT)
+
         curMethod=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".httpMethod"`
 
-        curMethod=${curMethod//\"/}
+        # fetch all available query parameters (not the post data)
 
         curParams=(`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".parameters | keys[]"`)
-#        curTempEnumParams=(`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters[].enum"`)
-#        curTempOptParams=(`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".parameters[].required"`)
-#        curTempDefParams=(`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".parameters[].default"`)
+
+        # looping through all parameters 
 
         for (( e = 1 ; e <= ${#curParams[@]} ; e++ ))
         do
-            # check enum
+            # check enum parameters (for options), in case the property exists (isn't null)
             if ! [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.enum"` =~ "null" ]]
             then
+                # define enum parameters into its own array
                 curOptParams+=("${curParams[$e]}")
-                curTempEnum=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.enum"` 
-                curTempType=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.type"`
-                curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
-                set -A "${curParams[$e]}" "${curTempEnum}" "${curTempType}" "${curTempDesc}"
+
+                # define temp variables to store type, description, and the enum list (processed later with `| jq -r '.[]'`)
+                local curTempType=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.type"`
+                local curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
+                local curTempEnum=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.enum"` 
+
+                # push these variables to an array of the same name as the parameter and unset temp vars
+                set -A "${curParams[$e]}" "${curTempType}" "${curTempDesc}" "${curTempEnum}"
                 unset curTempEnum curTempType curTempDesc
             fi
 
-            # check required
+            # check required (mandatory) parameters
+            # exceptions are being added manually (needs manual verification per API resource/method)
             if ! [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.required"` =~ "null" ]] \
             || [[ ${curParams[$e]} =~ "domain" ]] \
             || [[ ${curParams[$e]} =~ "customer" ]]
             then
+                # build an array with required parameters
                 curReqParams+=("${curParams[$e]}")
-                curTempType=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.type"`
-                curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
+                
+                # define temp variables for type and description
+                local curTempType=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.type"`
+                local curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
+
+                # store the variables in an array with the same name as the parameter, unset temp vars
                 set -A "${curParams[$e]}" "${curTempType}" "${curTempDesc}"
                 unset curTempType curTempDesc
             fi
 
+            # collect input parameters (leftovers), which are those that require user input
+            # (there isn't a default or preset option, requires user to populate the field)
             if [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.enum"` =~ "null" ]] \
             && [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.required"` =~ "null" ]] \
             && ! [[ ${curParams[$e]} =~ "domain" ]] \
             && ! [[ ${curParams[$e]} =~ "customer" ]]
             then
+                # define an array with input parameters
                 curInpParams+=("${curParams[$e]}")
+
+                # define temp variables for parameter type and its description
                 curTempType=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.type"`
                 curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
+
+                # define an array named after the parameter, containing the temp vars for type and description, unset temp vars
                 set -A "${curParams[$e]}" "${curTempType}" "${curTempDesc}"
                 unset curTempType curTempDesc
             fi
+        done
 
-#
-#
-#            if [[ ${curTempOptParams[$e]} =~ "null" ]] \
-#            && [[ ${curTempEnumParams[$e]} =~ "null" ]] \
-#            && ! [[ ${curParams[$e]} =~ "domain" ]] \
-#            && ! [[ ${curParams[$e]} =~ "customer" ]]
-#            then 
-#                curInpParams+=("${curParams[$e]}")
-#
-#            elif [[ ${curTempOptParams[$e]} =~ "null" ]] \
-#            && ! [[ ${curTempEnumParams[$e]} =~ "null" ]] \
-#            && ! [[ ${curParams[$e]} =~ "domain" ]] \
-#            && ! [[ ${curParams[$e]} =~ "customer" ]]
-#
-#                curOptParams+=("${curParams[$e]}")
-#                declare -g "${curParams[$e]}" "${curTempEnumParams[$e]}"
-#
-#            elif [[ ${curTempOptParams} =~ "true" ]] \
-#            || [[ ${curParams[$e]} =~ "domain" ]] \
-#            || [[ ${curParams[$e]} =~ "customer" ]]
-#            then
-#                curReqParams+=("${curParams[$e]}")
-#            else
-#                echo "# Error. Invalid input when checking parameters (not true / null)"
-#                exit 1
-#            fi
-#        done
-#
+        # define default cURL-compatible headers
         curHeaderSet=(
             "Authorization: Bearer \${ACCESSTOKEN}"
             "Accept: application/json"
             )
 
+        # based on the API method or the HTTP method, add post request headers (to post JSON data)
         if ! [[ ${(P)${apiSets[$c]}[$d]} =~ "users_signOut" ]] \
         && [[ ${curMethod} =~ "PATCH" ]] \
         || [[ ${curMethod} =~ "PUT" ]] \
