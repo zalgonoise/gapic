@@ -629,11 +629,6 @@ done
 # Zsh indexes start with 1, instead of 0 like in bash
 
 
-### TODO
-# Adapt code generation to Google's API schema
-# Reference JSON object in ${(P)${(P)apiSets[$a]}[$b][3]}
-#
-
 
 
 for (( c = 1 ; c <= ${#apiSets[@]} ; c++ ))
@@ -641,99 +636,183 @@ do
 
     for (( d = 1 ; d <= ${(P)#apiSets[$c]} ; d++ ))
     do
+        curPrefix=${(P)${(P)apiSets[$c]}[$d][2]}
+        tempUrl=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".flatPath"`
+        tempUrl=${tempUrl//\{/\$\{}
 
+        curUrl="https://www.googleapis.com/${tempUrl}?key=\${CLIENTID}"
 
-        curPrefix=`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.prefix'`
-        curUrl=`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.url'`
-        curMethod=`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.method'`
-        curReqParams=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.reqParams[]'|tr '"' ' '`)
+        curMethod=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".httpMethod"`
 
-        curHeaderSet=`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.headers[]'`
-
-        curPrfx=${curPrfx//\"/}
-        curUrl=${curUrl//\"/}
         curMethod=${curMethod//\"/}
 
-        echo $curHeaderSet \
-            | while IFS=$'\n' read -r line
-                do
-                    curHeaders+=("$line")
-                done
-        unset curHeaderSet
+        curParams=(`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".parameters | keys[]"`)
+#        curTempEnumParams=(`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters[].enum"`)
+#        curTempOptParams=(`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".parameters[].required"`)
+#        curTempDefParams=(`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".parameters[].default"`)
 
-        # Define url
-
-        for (( e = 1 ; e <= ${#curReqParams[@]} ; e++))
+        for (( e = 1 ; e <= ${#curParams[@]} ; e++ ))
         do
-
-            if [[ ${curUrl} =~ ${curReqParams[$e]} ]] \
-            && ! [[ ${curReqParams[$e]} =~ "CLIENTID" ]]
+            # check enum
+            if ! [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.enum"` =~ "null" ]]
             then
-                curUrl=${curUrl//${curReqParams[$e]}/${curPrefix}${curReqParams[$e]}}
-            elif [[ ${curHeaders} =~ ${curReqParams[$e]} ]]
-            then
-                for (( f = 1 ; f <= ${#curHeaders[@]} ; f++ ))
-                do
-                    if [[ ${curHeaders[$f]} =~ ${curReqParams[$e]} ]] \
-                    && ! [[ ${curReqParams[$e]} =~ "ACCESSTOKEN" ]]
-                    then
-                        curHeaders[$f]=${curHeaders[$f]//${curReqParams[$e]}/${curPrefix}${curReqParams[$e]}}
-                    fi
-                done
+                curOptParams+=("${curParams[$e]}")
+                curTempEnum=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.enum"` 
+                curTempType=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.type"`
+                curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
+                set -A "${curParams[$e]}" "${curTempEnum}" "${curTempType}" "${curTempDesc}"
+                unset curTempEnum curTempType curTempDesc
             fi
 
-        done
+            # check required
+            if ! [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.required"` =~ "null" ]] \
+            || [[ ${curParams[$e]} =~ "domain" ]] \
+            || [[ ${curParams[$e]} =~ "customer" ]]
+            then
+                curReqParams+=("${curParams[$e]}")
+                curTempType=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.type"`
+                curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
+                set -A "${curParams[$e]}" "${curTempType}" "${curTempDesc}"
+                unset curTempType curTempDesc
+            fi
+
+            if [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.enum"` =~ "null" ]] \
+            && [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.required"` =~ "null" ]] \
+            && ! [[ ${curParams[$e]} =~ "domain" ]] \
+            && ! [[ ${curParams[$e]} =~ "customer" ]]
+            then
+                curInpParams+=("${curParams[$e]}")
+                curTempType=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.type"`
+                curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
+                set -A "${curParams[$e]}" "${curTempType}" "${curTempDesc}"
+                unset curTempType curTempDesc
+            fi
+
+#
+#
+#            if [[ ${curTempOptParams[$e]} =~ "null" ]] \
+#            && [[ ${curTempEnumParams[$e]} =~ "null" ]] \
+#            && ! [[ ${curParams[$e]} =~ "domain" ]] \
+#            && ! [[ ${curParams[$e]} =~ "customer" ]]
+#            then 
+#                curInpParams+=("${curParams[$e]}")
+#
+#            elif [[ ${curTempOptParams[$e]} =~ "null" ]] \
+#            && ! [[ ${curTempEnumParams[$e]} =~ "null" ]] \
+#            && ! [[ ${curParams[$e]} =~ "domain" ]] \
+#            && ! [[ ${curParams[$e]} =~ "customer" ]]
+#
+#                curOptParams+=("${curParams[$e]}")
+#                declare -g "${curParams[$e]}" "${curTempEnumParams[$e]}"
+#
+#            elif [[ ${curTempOptParams} =~ "true" ]] \
+#            || [[ ${curParams[$e]} =~ "domain" ]] \
+#            || [[ ${curParams[$e]} =~ "customer" ]]
+#            then
+#                curReqParams+=("${curParams[$e]}")
+#            else
+#                echo "# Error. Invalid input when checking parameters (not true / null)"
+#                exit 1
+#            fi
+#        done
+#
+        curHeaderSet=(
+            "Authorization: Bearer \${ACCESSTOKEN}"
+            "Accept: application/json"
+            )
+
+        if ! [[ ${(P)${apiSets[$c]}[$d]} =~ "users_signOut" ]] \
+        && [[ ${curMethod} =~ "PATCH" ]] \
+        || [[ ${curMethod} =~ "PUT" ]] \
+        || [[ ${curMethod} =~ "POST" ]]
+        then 
+            curHeaderSet=( 
+                ${curHeaderSet[@]}
+                "Content-Type: application/json"
+            )
+
+        fi
 
 
-
-
-
-
-        # Check for optional parameters
-
-        [[ `echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.optParams[].name' 2>/dev/null` ]] \
-            && {
-                curOptParams=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.optParams[].name'|tr '"' ' '`)
-
-                for (( g = 1 ; g <= ${#curOptParams[@]} ; g++ ))
-                do
-                    curOptParOpt=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c ".optParams[((${g}-1))].opts[]"|tr '"' ' '`)
-                    set -A ${curOptParams[${g}]} ${curOptParOpt[@]}
-                done
-            }
-
-        # Check for custom parameters (mandatory)
-
-        [[ `echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.customParams[].name' 2>/dev/null` ]] \
-            && {
-                curCustParams=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.customParams[].options[].name'|tr '"' ' '`)
-                curCustParamVar=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.customParams[].options[].var'|tr '"' ' '`)
-
-            }
-
-        # Check for input parameters (optional)
-
-        [[ `echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.inputParams[].name' 2>/dev/null` ]] \
-            && {
-                curInpParams=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.inputParams[].name'|tr '"' ' '`)
-                curInpParamType=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.inputParams[].type'|tr '"' ' '`)
-
-            }
-
-
-        curPrefix=${curPrefix//\"/}
-        curUrl=${curUrl//\"/}
-        curMethod=${curMethod//\"/}
+#        # Define url
+#
+#        for (( e = 1 ; e <= ${#curReqParams[@]} ; e++))
+#        do
+#
+#            if [[ ${curUrl} =~ ${curReqParams[$e]} ]] \
+#            && ! [[ ${curReqParams[$e]} =~ "CLIENTID" ]]
+#            then
+#                curUrl=${curUrl//${curReqParams[$e]}/${curPrefix}${curReqParams[$e]}}
+#            elif [[ ${curHeaders} =~ ${curReqParams[$e]} ]]
+#            then
+#                for (( f = 1 ; f <= ${#curHeaders[@]} ; f++ ))
+#                do
+#                    if [[ ${curHeaders[$f]} =~ ${curReqParams[$e]} ]] \
+#                    && ! [[ ${curReqParams[$e]} =~ "ACCESSTOKEN" ]]
+#                    then
+#                        curHeaders[$f]=${curHeaders[$f]//${curReqParams[$e]}/${curPrefix}${curReqParams[$e]}}
+#                    fi
+#                done
+#            fi
+#
+#        done
+#
+#
+#
+#
+#
+#
+#        # Check for optional parameters
+#
+#
+#
+#
+#        [[ `echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.optParams[].name' 2>/dev/null` ]] \
+#            && {
+#                curOptParams=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.optParams[].name'|tr '"' ' '`)
+#
+#                for (( g = 1 ; g <= ${#curOptParams[@]} ; g++ ))
+#                do
+#                    curOptParOpt=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c ".optParams[((${g}-1))].opts[]"|tr '"' ' '`)
+#                    set -A ${curOptParams[${g}]} ${curOptParOpt[@]}
+#                done
+#            }
+#
+#        # Check for custom parameters (mandatory)
+#
+#        [[ `echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.customParams[].name' 2>/dev/null` ]] \
+#            && {
+#                curCustParams=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.customParams[].options[].name'|tr '"' ' '`)
+#                curCustParamVar=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.customParams[].options[].var'|tr '"' ' '`)
+#
+#            }
+#
+#        # Check for input parameters (optional)
+#
+#        [[ `echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.inputParams[].name' 2>/dev/null` ]] \
+#            && {
+#                curInpParams=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.inputParams[].name'|tr '"' ' '`)
+#                curInpParamType=(`echo ${(P)${(P)apiSets[$c]}[$d]} | jq -c '.inputParams[].type'|tr '"' ' '`)
+#
+#            }
+#
+#
+#        curPrefix=${curPrefix//\"/}
+#        curUrl=${curUrl//\"/}
+#        curMethod=${curMethod//\"/}
 
         # Function headers
 
         cat << EOF >> ${outputLibWiz}
-${(P)apiSets[$c][$d]}() {
+${(P)${apiSets[$c]}[$d]}() {
 
 
 EOF
 
-
+### TODO
+# start rebuilding the functions 
+# Reference JSON object in ${(P)${(P)apiSets[$c]}[$d][3]}
+#
 
 
 
