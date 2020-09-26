@@ -23,48 +23,51 @@ verificationCodes=( verificationCodes_generate verificationCodes_invalidate veri
 
 getParams() {
     local tempPar=${1}
+    tempCarrier=PARAM_${tempPar}
+    tempMeta=${tempPar}Meta
 
-    if [[ -z ${(P)${tempPar}[3]} ]]
+    if [[ -z ${(P)${tempMeta}[3]} ]]
     then
-        echo -en "# Please supply a value for the ${tempPar} parameter (${(P)${tempPar}[1]}).\n#\n# Desc: ${(P)${tempPar}[2]}\n~> "
-        read -r PARAM_${tempPar}
-        export PARAM_${tempPar}
+        echo -en "# Please supply a value for the ${tempPar} parameter (${(P)${tempMeta}[1]}).\n#\n# Desc: ${(P)${tempMeta}[2]}\n~> "
+        read -r ${tempCarrier}
+        export ${tempCarrier}
         clear
 
     else
-        tempOpts=(`echo ${(PQ)${tempPar}[3]} | jq -r ".[]"`)
-        echo -en "# Please supply a value for the ${tempPar} parameter (${(P)${tempPar}[1]}).\n#\n# Desc: ${(P)${tempPar}[2]}\n"
+        tempOpts=(`echo ${(P)${tempMeta}[3]} | jq -r ".[]"`)
+        echo -en "# Please supply a value for the ${tempPar} parameter (${(P)${tempMeta}[1]}).\n#\n# Desc: ${(P)${tempMeta}[2]}\n~> "
         select getOption in ${tempOpts}
         do
             if [[ -n ${getOption} ]]
             then
-                declare -g "PARAM_${tempPar}=${getOption}"
+                declare -g "${tempCarrier}=${getOption}"
                 clear
                 break
             fi
         done
         unset getOption 
     fi
+    unset tempParMeta
 
-    declare -g "${tempPar}=${PARAM_${tempPar}}"
+    declare -g "${tempPar}=${(P)${tempCarrier}}"
 
     if [[ -f ${credFileParams} ]]
     then
-        if ! [[ `grep "PARAM_${tempPar}=${tempPar}" ${credFileParams}` ]]
+        if ! [[ `grep "${tempCarrier}=${(P)${tempPar}}" ${credFileParams}` ]]
         then
             cat << EOIF >> ${credFileParams}
-PARAM_${tempPar}=${tempPar}
+${tempCarrier}=${(P)${tempPar}}
 EOIF
         fi
 
     else
         touch ${credFileParams}
         cat << EOIF >> ${credFileParams}
-PARAM_${tempPar}=${tempPar}
+${tempCarrier}=${(P)${tempPar}}
 EOIF
     fi
 
-    unset tempPar
+    unset tempPar tempCarrier
 }
 
 
@@ -72,25 +75,25 @@ EOIF
 
 checkParams() {
     local tempPar=${1}
-    echo -en "# Do you want to reuse last saved domain parameter: ${PARAM_${tempPar}}? [y/n]\n~> "
+    tempCarrier=PARAM_${tempPar}
+    echo -en "# Do you want to reuse last saved domain parameter: ${(P)${tempCarrier}}? [y/n]\n~> "
     read -r reuseParOpt
     clear
     if ! [[ ${reuseParOpt} =~ "n" ]] \
     && ! [[ ${reuseParOpt} =~ "N" ]]
     then
-        declare -g "${tempPar}=${PARAM_${tempPar}}"
-        declare -g "${tempPar}=${PARAM_${tempPar}}"
+        declare -g "${tempPar}=${(P)${tempCarrier}}"
     else
         getParams ${tempPar}
     fi
-    unset tempPar reuseParOpt
+    unset tempPar reuseParOpt tempCarrier
 }
 
 
 asps_delete() {
 
 
-    codeId=( 
+    codeIdMeta=( 
         'integer'
         'The unique ID of the ASP to be deleted.'
     )
@@ -111,7 +114,7 @@ asps_delete() {
     fi
 
     
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
@@ -139,18 +142,33 @@ asps_delete() {
     curl -s \
         --request DELETE \
         ${ASPS_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${ASPS_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${ASPS_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -160,7 +178,7 @@ asps_delete() {
 asps_get() {
 
 
-    codeId=( 
+    codeIdMeta=( 
         'integer'
         'The unique ID of the ASP.'
     )
@@ -181,7 +199,7 @@ asps_get() {
     fi
 
     
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
@@ -209,18 +227,33 @@ asps_get() {
     curl -s \
         --request GET \
         ${ASPS_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${ASPS_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${ASPS_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -230,7 +263,7 @@ asps_get() {
 asps_list() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
@@ -258,18 +291,33 @@ asps_list() {
     curl -s \
         --request GET \
         ${ASPS_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${ASPS_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${ASPS_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -286,7 +334,7 @@ channels_stop() {
     curl -s \
         --request POST \
         ${CHANNELS_STOP_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -294,11 +342,29 @@ channels_stop() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${CHANNELS_STOP_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${CHANNELS_STOP_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -308,7 +374,7 @@ channels_stop() {
 chromeosdevices_action() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -329,7 +395,7 @@ chromeosdevices_action() {
     fi
 
     
-    resourceId=( 
+    resourceIdMeta=( 
         'string'
         'Immutable ID of Chrome OS Device'
     )
@@ -357,7 +423,7 @@ chromeosdevices_action() {
     curl -s \
         --request POST \
         ${CHROMEOSDEVICES_ACTION_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -365,11 +431,29 @@ chromeosdevices_action() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${CHROMEOSDEVICES_ACTION_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${CHROMEOSDEVICES_ACTION_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -379,7 +463,7 @@ chromeosdevices_action() {
 chromeosdevices_get() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -400,7 +484,7 @@ chromeosdevices_get() {
     fi
 
     
-    deviceId=( 
+    deviceIdMeta=( 
         'string'
         'Immutable ID of Chrome OS Device'
     )
@@ -426,7 +510,7 @@ chromeosdevices_get() {
 
     optParams=( projection )
 
-    projection=(
+    projectionMeta=(
         'string'
         'Restrict information returned to a set of selected fields.'
         '["PROJECTION_UNDEFINED","BASIC","FULL"]'
@@ -453,7 +537,10 @@ chromeosdevices_get() {
                         break 2
                     else
                         getParams ${option}
-                        CHROMEOSDEVICES_GET_URL+="&${option}=${PARAM_${option}}"
+                        local tempUrlCarrier=PARAM_${option}
+                        CHROMEOSDEVICES_GET_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
@@ -463,18 +550,33 @@ chromeosdevices_get() {
     curl -s \
         --request GET \
         ${CHROMEOSDEVICES_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${CHROMEOSDEVICES_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${CHROMEOSDEVICES_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -484,7 +586,7 @@ chromeosdevices_get() {
 chromeosdevices_list() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -508,27 +610,21 @@ chromeosdevices_list() {
 
     CHROMEOSDEVICES_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/chromeos?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder )
+    optParams=( orderBy projection sortOrder )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
+    orderByMeta=(
         'string'
         'Column to use for sorting results'
         '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
 
-    projection=(
+    projectionMeta=(
         'string'
         'Restrict information returned to a set of selected fields.'
         '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
 
-    sortOrder=(
+    sortOrderMeta=(
         'string'
         'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
         '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
@@ -555,7 +651,10 @@ chromeosdevices_list() {
                         break 2
                     else
                         getParams ${option}
-                        CHROMEOSDEVICES_LIST_URL+="&${option}=${PARAM_${option}}"
+                        local tempUrlCarrier=PARAM_${option}
+                        CHROMEOSDEVICES_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
@@ -563,22 +662,22 @@ chromeosdevices_list() {
     fi
     inpParams=( maxResults orgUnitPath pageToken query )
 
-    maxResults=(
+    maxResultsMeta=(
         'integer'
         'Maximum number of results to return.'
     )
 
-    orgUnitPath=(
+    orgUnitPathMeta=(
         'string'
         'Full path of the organizational unit or its ID'
     )
 
-    pageToken=(
+    pageTokenMeta=(
         'string'
         'Token to specify next page in the list'
     )
 
-    query=(
+    queryMeta=(
         'string'
         'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
@@ -604,7 +703,10 @@ chromeosdevices_list() {
                         break 2
                     else
                         getParams ${option}
-                        CHROMEOSDEVICES_LIST_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        CHROMEOSDEVICES_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
@@ -614,18 +716,33 @@ chromeosdevices_list() {
     curl -s \
         --request GET \
         ${CHROMEOSDEVICES_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${CHROMEOSDEVICES_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${CHROMEOSDEVICES_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -635,7 +752,7 @@ chromeosdevices_list() {
 chromeosdevices_moveDevicesToOu() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -656,7 +773,7 @@ chromeosdevices_moveDevicesToOu() {
     fi
 
     
-    orgUnitPath=( 
+    orgUnitPathMeta=( 
         'string'
         'Full path of the target organizational unit or its ID'
     )
@@ -680,113 +797,11 @@ chromeosdevices_moveDevicesToOu() {
 
     CHROMEOSDEVICES_MOVEDEVICESTOOU_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/chromeos/moveDevicesToOu?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        CHROMEOSDEVICES_MOVEDEVICESTOOU_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        CHROMEOSDEVICES_MOVEDEVICESTOOU_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -794,11 +809,29 @@ chromeosdevices_moveDevicesToOu() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -808,7 +841,7 @@ chromeosdevices_moveDevicesToOu() {
 chromeosdevices_patch() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -829,7 +862,7 @@ chromeosdevices_patch() {
     fi
 
     
-    deviceId=( 
+    deviceIdMeta=( 
         'string'
         'Immutable ID of Chrome OS Device'
     )
@@ -853,33 +886,9 @@ chromeosdevices_patch() {
 
     CHROMEOSDEVICES_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/chromeos/${deviceId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection )
+    optParams=( projection )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
+    projectionMeta=(
         'string'
         'Restrict information returned to a set of selected fields.'
         '["PROJECTION_UNDEFINED","BASIC","FULL"]'
@@ -906,56 +915,10 @@ chromeosdevices_patch() {
                         break 2
                     else
                         getParams ${option}
-                        CHROMEOSDEVICES_PATCH_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        CHROMEOSDEVICES_PATCH_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        CHROMEOSDEVICES_PATCH_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
@@ -965,7 +928,7 @@ chromeosdevices_patch() {
     curl -s \
         --request PATCH \
         ${CHROMEOSDEVICES_PATCH_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -973,11 +936,29 @@ chromeosdevices_patch() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PATCH \\ \\n    \${CHROMEOSDEVICES_PATCH_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PATCH \\ 
+        ${CHROMEOSDEVICES_PATCH_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -987,7 +968,7 @@ chromeosdevices_patch() {
 chromeosdevices_update() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -1008,7 +989,7 @@ chromeosdevices_update() {
     fi
 
     
-    deviceId=( 
+    deviceIdMeta=( 
         'string'
         'Immutable ID of Chrome OS Device'
     )
@@ -1032,39 +1013,9 @@ chromeosdevices_update() {
 
     CHROMEOSDEVICES_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/chromeos/${deviceId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
+    optParams=( projection )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
+    projectionMeta=(
         'string'
         'Restrict information returned to a set of selected fields.'
         '["PROJECTION_UNDEFINED","BASIC","FULL"]'
@@ -1091,56 +1042,10 @@ chromeosdevices_update() {
                         break 2
                     else
                         getParams ${option}
-                        CHROMEOSDEVICES_UPDATE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        CHROMEOSDEVICES_UPDATE_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        CHROMEOSDEVICES_UPDATE_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
@@ -1150,7 +1055,7 @@ chromeosdevices_update() {
     curl -s \
         --request PUT \
         ${CHROMEOSDEVICES_UPDATE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -1158,11 +1063,29 @@ chromeosdevices_update() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PUT \\ \\n    \${CHROMEOSDEVICES_UPDATE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PUT \\ 
+        ${CHROMEOSDEVICES_UPDATE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -1172,7 +1095,7 @@ chromeosdevices_update() {
 customers_get() {
 
 
-    customerKey=( 
+    customerKeyMeta=( 
         'string'
         'Id of the customer to be retrieved'
     )
@@ -1196,136 +1119,37 @@ customers_get() {
 
     CUSTOMERS_GET_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        CUSTOMERS_GET_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        CUSTOMERS_GET_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${CUSTOMERS_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${CUSTOMERS_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${CUSTOMERS_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -1335,7 +1159,7 @@ customers_get() {
 customers_patch() {
 
 
-    customerKey=( 
+    customerKeyMeta=( 
         'string'
         'Id of the customer to be updated'
     )
@@ -1359,125 +1183,11 @@ customers_patch() {
 
     CUSTOMERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        CUSTOMERS_PATCH_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        CUSTOMERS_PATCH_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PATCH \
         ${CUSTOMERS_PATCH_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -1485,11 +1195,29 @@ customers_patch() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PATCH \\ \\n    \${CUSTOMERS_PATCH_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PATCH \\ 
+        ${CUSTOMERS_PATCH_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -1499,7 +1227,7 @@ customers_patch() {
 customers_update() {
 
 
-    customerKey=( 
+    customerKeyMeta=( 
         'string'
         'Id of the customer to be updated'
     )
@@ -1523,125 +1251,11 @@ customers_update() {
 
     CUSTOMERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        CUSTOMERS_UPDATE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        CUSTOMERS_UPDATE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PUT \
         ${CUSTOMERS_UPDATE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -1649,11 +1263,29 @@ customers_update() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PUT \\ \\n    \${CUSTOMERS_UPDATE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PUT \\ 
+        ${CUSTOMERS_UPDATE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -1663,7 +1295,7 @@ customers_update() {
 domainAliases_delete() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -1684,7 +1316,7 @@ domainAliases_delete() {
     fi
 
     
-    domainAliasName=( 
+    domainAliasNameMeta=( 
         'string'
         'Name of domain alias to be retrieved.'
     )
@@ -1708,136 +1340,37 @@ domainAliases_delete() {
 
     DOMAINALIASES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases/${domainAliasName}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINALIASES_DELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINALIASES_DELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request DELETE \
         ${DOMAINALIASES_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${DOMAINALIASES_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${DOMAINALIASES_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -1847,7 +1380,7 @@ domainAliases_delete() {
 domainAliases_get() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -1868,7 +1401,7 @@ domainAliases_get() {
     fi
 
     
-    domainAliasName=( 
+    domainAliasNameMeta=( 
         'string'
         'Name of domain alias to be retrieved.'
     )
@@ -1892,136 +1425,37 @@ domainAliases_get() {
 
     DOMAINALIASES_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases/${domainAliasName}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINALIASES_GET_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINALIASES_GET_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${DOMAINALIASES_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${DOMAINALIASES_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${DOMAINALIASES_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -2031,7 +1465,7 @@ domainAliases_get() {
 domainAliases_insert() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -2055,125 +1489,11 @@ domainAliases_insert() {
 
     DOMAINALIASES_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINALIASES_INSERT_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINALIASES_INSERT_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${DOMAINALIASES_INSERT_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -2181,11 +1501,29 @@ domainAliases_insert() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${DOMAINALIASES_INSERT_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${DOMAINALIASES_INSERT_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -2195,7 +1533,7 @@ domainAliases_insert() {
 domainAliases_list() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -2219,94 +1557,9 @@ domainAliases_list() {
 
     DOMAINALIASES_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
+    inpParams=( parentDomainName )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINALIASES_LIST_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-    parentDomainName=(
+    parentDomainNameMeta=(
         'string'
         'Name of the parent domain for which domain aliases are to be fetched.'
     )
@@ -2332,7 +1585,10 @@ domainAliases_list() {
                         break 2
                     else
                         getParams ${option}
-                        DOMAINALIASES_LIST_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        DOMAINALIASES_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
@@ -2342,18 +1598,33 @@ domainAliases_list() {
     curl -s \
         --request GET \
         ${DOMAINALIASES_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${DOMAINALIASES_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${DOMAINALIASES_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -2363,7 +1634,7 @@ domainAliases_list() {
 domains_delete() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -2384,7 +1655,7 @@ domains_delete() {
     fi
 
     
-    domainName=( 
+    domainNameMeta=( 
         'string'
         'Name of domain to be deleted'
     )
@@ -2408,141 +1679,37 @@ domains_delete() {
 
     DOMAINS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains/${domainName}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINS_DELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINS_DELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request DELETE \
         ${DOMAINS_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${DOMAINS_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${DOMAINS_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -2552,7 +1719,7 @@ domains_delete() {
 domains_get() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -2573,7 +1740,7 @@ domains_get() {
     fi
 
     
-    domainName=( 
+    domainNameMeta=( 
         'string'
         'Name of domain to be retrieved'
     )
@@ -2597,141 +1764,37 @@ domains_get() {
 
     DOMAINS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains/${domainName}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINS_GET_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINS_GET_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${DOMAINS_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${DOMAINS_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${DOMAINS_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -2741,7 +1804,7 @@ domains_get() {
 domains_insert() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -2765,130 +1828,11 @@ domains_insert() {
 
     DOMAINS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINS_INSERT_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINS_INSERT_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${DOMAINS_INSERT_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -2896,11 +1840,29 @@ domains_insert() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${DOMAINS_INSERT_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${DOMAINS_INSERT_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -2910,7 +1872,7 @@ domains_insert() {
 domains_list() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -2934,141 +1896,37 @@ domains_list() {
 
     DOMAINS_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINS_LIST_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        DOMAINS_LIST_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${DOMAINS_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${DOMAINS_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${DOMAINS_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -3078,7 +1936,7 @@ domains_list() {
 groups_delete() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Email or immutable ID of the group'
     )
@@ -3102,141 +1960,37 @@ groups_delete() {
 
     GROUPS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        GROUPS_DELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        GROUPS_DELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request DELETE \
         ${GROUPS_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${GROUPS_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${GROUPS_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -3246,7 +2000,7 @@ groups_delete() {
 groups_get() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Email or immutable ID of the group'
     )
@@ -3270,141 +2024,37 @@ groups_get() {
 
     GROUPS_GET_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        GROUPS_GET_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        GROUPS_GET_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${GROUPS_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${GROUPS_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${GROUPS_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -3417,130 +2067,11 @@ groups_insert() {
 
     GROUPS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/groups?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        GROUPS_INSERT_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        GROUPS_INSERT_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${GROUPS_INSERT_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -3548,11 +2079,29 @@ groups_insert() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${GROUPS_INSERT_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${GROUPS_INSERT_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -3565,51 +2114,15 @@ groups_list() {
 
     GROUPS_LIST_URL="https://www.googleapis.com/admin/directory/v1/groups?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
+    optParams=( orderBy sortOrder )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
+    orderByMeta=(
         'string'
         'Column to use for sorting results'
         '["orderByUndefined","email"]'
     )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
+    sortOrderMeta=(
         'string'
         'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
         '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
@@ -3636,65 +2149,43 @@ groups_list() {
                         break 2
                     else
                         getParams ${option}
-                        GROUPS_LIST_URL+="&${option}=${PARAM_${option}}"
+                        local tempUrlCarrier=PARAM_${option}
+                        GROUPS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
         done
     fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
+    inpParams=( customer domain maxResults pageToken query userKey )
 
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
+    customerMeta=(
         'string'
         'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
 
-    domain=(
+    domainMeta=(
         'string'
         'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
 
-    maxResults=(
+    maxResultsMeta=(
         'integer'
         'Maximum number of results to return. Max allowed value is 200.'
     )
 
-    pageToken=(
+    pageTokenMeta=(
         'string'
         'Token to specify next page in the list'
     )
 
-    query=(
+    queryMeta=(
         'string'
         'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
 
-    userKey=(
+    userKeyMeta=(
         'string'
         'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
@@ -3720,7 +2211,10 @@ groups_list() {
                         break 2
                     else
                         getParams ${option}
-                        GROUPS_LIST_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        GROUPS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
@@ -3730,18 +2224,33 @@ groups_list() {
     curl -s \
         --request GET \
         ${GROUPS_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${GROUPS_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${GROUPS_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -3751,7 +2260,7 @@ groups_list() {
 groups_patch() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Email or immutable ID of the group. If ID, it should match with id of group object'
     )
@@ -3775,172 +2284,11 @@ groups_patch() {
 
     GROUPS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        GROUPS_PATCH_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        GROUPS_PATCH_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PATCH \
         ${GROUPS_PATCH_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -3948,11 +2296,29 @@ groups_patch() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PATCH \\ \\n    \${GROUPS_PATCH_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PATCH \\ 
+        ${GROUPS_PATCH_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -3962,7 +2328,7 @@ groups_patch() {
 groups_update() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Email or immutable ID of the group. If ID, it should match with id of group object'
     )
@@ -3986,172 +2352,11 @@ groups_update() {
 
     GROUPS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        GROUPS_UPDATE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        GROUPS_UPDATE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PUT \
         ${GROUPS_UPDATE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -4159,11 +2364,29 @@ groups_update() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PUT \\ \\n    \${GROUPS_UPDATE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PUT \\ 
+        ${GROUPS_UPDATE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -4173,7 +2396,7 @@ groups_update() {
 members_delete() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Email or immutable ID of the group'
     )
@@ -4194,7 +2417,7 @@ members_delete() {
     fi
 
     
-    memberKey=( 
+    memberKeyMeta=( 
         'string'
         'Email or immutable ID of the member'
     )
@@ -4218,183 +2441,37 @@ members_delete() {
 
     MEMBERS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_DELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_DELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request DELETE \
         ${MEMBERS_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${MEMBERS_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${MEMBERS_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -4404,7 +2481,7 @@ members_delete() {
 members_get() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Email or immutable ID of the group'
     )
@@ -4425,7 +2502,7 @@ members_get() {
     fi
 
     
-    memberKey=( 
+    memberKeyMeta=( 
         'string'
         'Email or immutable ID of the member'
     )
@@ -4449,183 +2526,37 @@ members_get() {
 
     MEMBERS_GET_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_GET_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_GET_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${MEMBERS_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${MEMBERS_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${MEMBERS_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -4635,7 +2566,7 @@ members_get() {
 members_hasMember() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
@@ -4656,7 +2587,7 @@ members_hasMember() {
     fi
 
     
-    memberKey=( 
+    memberKeyMeta=( 
         'string'
         'Identifies the user member in the API request. The value can be the user'\''s primary email address, alias, or unique ID.'
     )
@@ -4680,183 +2611,37 @@ members_hasMember() {
 
     MEMBERS_HASMEMBER_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/hasMember/${memberKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_HASMEMBER_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_HASMEMBER_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${MEMBERS_HASMEMBER_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${MEMBERS_HASMEMBER_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${MEMBERS_HASMEMBER_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -4866,7 +2651,7 @@ members_hasMember() {
 members_insert() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Email or immutable ID of the group'
     )
@@ -4890,172 +2675,11 @@ members_insert() {
 
     MEMBERS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_INSERT_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_INSERT_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${MEMBERS_INSERT_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -5063,11 +2687,29 @@ members_insert() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${MEMBERS_INSERT_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${MEMBERS_INSERT_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -5077,7 +2719,7 @@ members_insert() {
 members_list() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Email or immutable ID of the group'
     )
@@ -5101,156 +2743,24 @@ members_list() {
 
     MEMBERS_LIST_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
+    inpParams=( includeDerivedMembership maxResults pageToken roles )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_LIST_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
+    includeDerivedMembershipMeta=(
         'boolean'
         'Whether to list indirect memberships. Default: false.'
     )
 
-    maxResults=(
+    maxResultsMeta=(
         'integer'
         'Maximum number of results to return. Max allowed value is 200.'
     )
 
-    pageToken=(
+    pageTokenMeta=(
         'string'
         'Token to specify next page in the list'
     )
 
-    roles=(
+    rolesMeta=(
         'string'
         'Comma separated role values to filter list results on.'
     )
@@ -5276,7 +2786,10 @@ members_list() {
                         break 2
                     else
                         getParams ${option}
-                        MEMBERS_LIST_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        MEMBERS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
@@ -5286,18 +2799,33 @@ members_list() {
     curl -s \
         --request GET \
         ${MEMBERS_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${MEMBERS_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${MEMBERS_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -5307,7 +2835,7 @@ members_list() {
 members_patch() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Email or immutable ID of the group. If ID, it should match with id of group object'
     )
@@ -5328,7 +2856,7 @@ members_patch() {
     fi
 
     
-    memberKey=( 
+    memberKeyMeta=( 
         'string'
         'Email or immutable ID of the user. If ID, it should match with id of member object'
     )
@@ -5352,192 +2880,11 @@ members_patch() {
 
     MEMBERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_PATCH_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_PATCH_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PATCH \
         ${MEMBERS_PATCH_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -5545,11 +2892,29 @@ members_patch() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PATCH \\ \\n    \${MEMBERS_PATCH_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PATCH \\ 
+        ${MEMBERS_PATCH_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -5559,7 +2924,7 @@ members_patch() {
 members_update() {
 
 
-    groupKey=( 
+    groupKeyMeta=( 
         'string'
         'Email or immutable ID of the group. If ID, it should match with id of group object'
     )
@@ -5580,7 +2945,7 @@ members_update() {
     fi
 
     
-    memberKey=( 
+    memberKeyMeta=( 
         'string'
         'Email or immutable ID of the user. If ID, it should match with id of member object'
     )
@@ -5604,192 +2969,11 @@ members_update() {
 
     MEMBERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_UPDATE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MEMBERS_UPDATE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PUT \
         ${MEMBERS_UPDATE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -5797,11 +2981,29 @@ members_update() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PUT \\ \\n    \${MEMBERS_UPDATE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PUT \\ 
+        ${MEMBERS_UPDATE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -5811,7 +3013,7 @@ members_update() {
 mobiledevices_action() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -5832,7 +3034,7 @@ mobiledevices_action() {
     fi
 
     
-    resourceId=( 
+    resourceIdMeta=( 
         'string'
         'Immutable ID of Mobile Device'
     )
@@ -5856,192 +3058,11 @@ mobiledevices_action() {
 
     MOBILEDEVICES_ACTION_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/mobile/${resourceId}/action?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MOBILEDEVICES_ACTION_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MOBILEDEVICES_ACTION_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${MOBILEDEVICES_ACTION_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -6049,11 +3070,29 @@ mobiledevices_action() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${MOBILEDEVICES_ACTION_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${MOBILEDEVICES_ACTION_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -6063,7 +3102,7 @@ mobiledevices_action() {
 mobiledevices_delete() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -6084,7 +3123,7 @@ mobiledevices_delete() {
     fi
 
     
-    resourceId=( 
+    resourceIdMeta=( 
         'string'
         'Immutable ID of Mobile Device'
     )
@@ -6108,203 +3147,37 @@ mobiledevices_delete() {
 
     MOBILEDEVICES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/mobile/${resourceId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MOBILEDEVICES_DELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MOBILEDEVICES_DELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request DELETE \
         ${MOBILEDEVICES_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${MOBILEDEVICES_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${MOBILEDEVICES_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -6314,7 +3187,7 @@ mobiledevices_delete() {
 mobiledevices_get() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -6335,7 +3208,7 @@ mobiledevices_get() {
     fi
 
     
-    resourceId=( 
+    resourceIdMeta=( 
         'string'
         'Immutable ID of Mobile Device'
     )
@@ -6359,57 +3232,9 @@ mobiledevices_get() {
 
     MOBILEDEVICES_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/mobile/${resourceId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection )
+    optParams=( projection )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
+    projectionMeta=(
         'string'
         'Restrict information returned to a set of selected fields.'
         '["PROJECTION_UNDEFINED","BASIC","FULL"]'
@@ -6436,111 +3261,10 @@ mobiledevices_get() {
                         break 2
                     else
                         getParams ${option}
-                        MOBILEDEVICES_GET_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 200.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        MOBILEDEVICES_GET_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        MOBILEDEVICES_GET_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
@@ -6550,18 +3274,33 @@ mobiledevices_get() {
     curl -s \
         --request GET \
         ${MOBILEDEVICES_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${MOBILEDEVICES_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${MOBILEDEVICES_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -6571,7 +3310,7 @@ mobiledevices_get() {
 mobiledevices_list() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -6595,75 +3334,21 @@ mobiledevices_list() {
 
     MOBILEDEVICES_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/mobile?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder )
+    optParams=( orderBy projection sortOrder )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
+    orderByMeta=(
         'string'
         'Column to use for sorting results'
         '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
 
-    projection=(
+    projectionMeta=(
         'string'
         'Restrict information returned to a set of selected fields.'
         '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
 
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
+    sortOrderMeta=(
         'string'
         'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
         '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
@@ -6690,100 +3375,28 @@ mobiledevices_list() {
                         break 2
                     else
                         getParams ${option}
-                        MOBILEDEVICES_LIST_URL+="&${option}=${PARAM_${option}}"
+                        local tempUrlCarrier=PARAM_${option}
+                        MOBILEDEVICES_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
         done
     fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query )
+    inpParams=( maxResults pageToken query )
 
-    maxResults=(
+    maxResultsMeta=(
         'integer'
         'Maximum number of results to return. Max allowed value is 100.'
     )
 
-    orgUnitPath=(
-        'string'
-        'Full path of the target organizational unit or its ID'
-    )
-
-    pageToken=(
+    pageTokenMeta=(
         'string'
         'Token to specify next page in the list'
     )
 
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
+    queryMeta=(
         'string'
         'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
@@ -6809,7 +3422,10 @@ mobiledevices_list() {
                         break 2
                     else
                         getParams ${option}
-                        MOBILEDEVICES_LIST_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        MOBILEDEVICES_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
@@ -6819,18 +3435,33 @@ mobiledevices_list() {
     curl -s \
         --request GET \
         ${MOBILEDEVICES_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${MOBILEDEVICES_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${MOBILEDEVICES_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -6840,7 +3471,7 @@ mobiledevices_list() {
 orgunits_delete() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -6861,7 +3492,7 @@ orgunits_delete() {
     fi
 
     
-    orgUnitPath=( 
+    orgUnitPathMeta=( 
         'string'
         'Full path of the organizational unit or its ID'
     )
@@ -6885,242 +3516,37 @@ orgunits_delete() {
 
     ORGUNITS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ORGUNITS_DELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ORGUNITS_DELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request DELETE \
         ${ORGUNITS_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${ORGUNITS_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${ORGUNITS_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -7130,7 +3556,7 @@ orgunits_delete() {
 orgunits_get() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -7151,7 +3577,7 @@ orgunits_get() {
     fi
 
     
-    orgUnitPath=( 
+    orgUnitPathMeta=( 
         'string'
         'Full path of the organizational unit or its ID'
     )
@@ -7175,242 +3601,37 @@ orgunits_get() {
 
     ORGUNITS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ORGUNITS_GET_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ORGUNITS_GET_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${ORGUNITS_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${ORGUNITS_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${ORGUNITS_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -7420,7 +3641,7 @@ orgunits_get() {
 orgunits_insert() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -7444,231 +3665,11 @@ orgunits_insert() {
 
     ORGUNITS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ORGUNITS_INSERT_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ORGUNITS_INSERT_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${ORGUNITS_INSERT_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -7676,11 +3677,29 @@ orgunits_insert() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${ORGUNITS_INSERT_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${ORGUNITS_INSERT_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -7690,7 +3709,7 @@ orgunits_insert() {
 orgunits_list() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -7714,81 +3733,9 @@ orgunits_list() {
 
     ORGUNITS_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
+    optParams=( type )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
+    typeMeta=(
         'string'
         'Whether to return all sub-organizations or just immediate children'
         '["typeUndefined","all","children"]'
@@ -7815,105 +3762,18 @@ orgunits_list() {
                         break 2
                     else
                         getParams ${option}
-                        ORGUNITS_LIST_URL+="&${option}=${PARAM_${option}}"
+                        local tempUrlCarrier=PARAM_${option}
+                        ORGUNITS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
         done
     fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
+    inpParams=( orgUnitPath )
 
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'the URL-encoded organizational unit'\''s path or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
+    orgUnitPathMeta=(
         'string'
         'the URL-encoded organizational unit'\''s path or its ID'
     )
@@ -7939,7 +3799,10 @@ orgunits_list() {
                         break 2
                     else
                         getParams ${option}
-                        ORGUNITS_LIST_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        ORGUNITS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
@@ -7949,18 +3812,33 @@ orgunits_list() {
     curl -s \
         --request GET \
         ${ORGUNITS_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${ORGUNITS_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${ORGUNITS_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -7970,7 +3848,7 @@ orgunits_list() {
 orgunits_patch() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -7991,7 +3869,7 @@ orgunits_patch() {
     fi
 
     
-    orgUnitPath=( 
+    orgUnitPathMeta=( 
         'string'
         'Full path of the organizational unit or its ID'
     )
@@ -8015,242 +3893,11 @@ orgunits_patch() {
 
     ORGUNITS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ORGUNITS_PATCH_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ORGUNITS_PATCH_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PATCH \
         ${ORGUNITS_PATCH_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -8258,11 +3905,29 @@ orgunits_patch() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PATCH \\ \\n    \${ORGUNITS_PATCH_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PATCH \\ 
+        ${ORGUNITS_PATCH_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -8272,7 +3937,7 @@ orgunits_patch() {
 orgunits_update() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -8293,7 +3958,7 @@ orgunits_update() {
     fi
 
     
-    orgUnitPath=( 
+    orgUnitPathMeta=( 
         'string'
         'Full path of the organizational unit or its ID'
     )
@@ -8317,242 +3982,11 @@ orgunits_update() {
 
     ORGUNITS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ORGUNITS_UPDATE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ORGUNITS_UPDATE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PUT \
         ${ORGUNITS_UPDATE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -8560,11 +3994,29 @@ orgunits_update() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PUT \\ \\n    \${ORGUNITS_UPDATE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PUT \\ 
+        ${ORGUNITS_UPDATE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -8574,7 +4026,7 @@ orgunits_update() {
 privileges_list() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -8598,253 +4050,37 @@ privileges_list() {
 
     PRIVILEGES_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/ALL/privileges?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        PRIVILEGES_LIST_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        PRIVILEGES_LIST_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${PRIVILEGES_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${PRIVILEGES_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${PRIVILEGES_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -8854,7 +4090,7 @@ privileges_list() {
 roleAssignments_delete() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -8875,7 +4111,7 @@ roleAssignments_delete() {
     fi
 
     
-    roleAssignmentId=( 
+    roleAssignmentIdMeta=( 
         'string'
         'Immutable ID of the role assignment.'
     )
@@ -8899,253 +4135,37 @@ roleAssignments_delete() {
 
     ROLEASSIGNMENTS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments/${roleAssignmentId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ROLEASSIGNMENTS_DELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ROLEASSIGNMENTS_DELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request DELETE \
         ${ROLEASSIGNMENTS_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${ROLEASSIGNMENTS_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${ROLEASSIGNMENTS_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -9155,7 +4175,7 @@ roleAssignments_delete() {
 roleAssignments_get() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -9176,7 +4196,7 @@ roleAssignments_get() {
     fi
 
     
-    roleAssignmentId=( 
+    roleAssignmentIdMeta=( 
         'string'
         'Immutable ID of the role assignment.'
     )
@@ -9200,253 +4220,37 @@ roleAssignments_get() {
 
     ROLEASSIGNMENTS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments/${roleAssignmentId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ROLEASSIGNMENTS_GET_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ROLEASSIGNMENTS_GET_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${ROLEASSIGNMENTS_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${ROLEASSIGNMENTS_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${ROLEASSIGNMENTS_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -9456,7 +4260,7 @@ roleAssignments_get() {
 roleAssignments_insert() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -9480,242 +4284,11 @@ roleAssignments_insert() {
 
     ROLEASSIGNMENTS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ROLEASSIGNMENTS_INSERT_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return. Max allowed value is 100.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ROLEASSIGNMENTS_INSERT_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${ROLEASSIGNMENTS_INSERT_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -9723,11 +4296,29 @@ roleAssignments_insert() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${ROLEASSIGNMENTS_INSERT_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${ROLEASSIGNMENTS_INSERT_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -9737,7 +4328,7 @@ roleAssignments_insert() {
 roleAssignments_list() {
 
 
-    customer=( 
+    customerMeta=( 
         'string'
         'Immutable ID of the G Suite account.'
     )
@@ -9761,226 +4352,24 @@ roleAssignments_list() {
 
     ROLEASSIGNMENTS_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
+    inpParams=( maxResults pageToken roleId userKey )
 
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        ROLEASSIGNMENTS_LIST_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
+    maxResultsMeta=(
         'integer'
         'Maximum number of results to return.'
     )
 
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
+    pageTokenMeta=(
         'string'
         'Token to specify the next page in the list.'
     )
 
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
+    roleIdMeta=(
         'string'
         'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
 
-    userKey=(
+    userKeyMeta=(
         'string'
         'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
@@ -10006,7 +4395,10 @@ roleAssignments_list() {
                         break 2
                     else
                         getParams ${option}
-                        ROLEASSIGNMENTS_LIST_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        ROLEASSIGNMENTS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
@@ -10016,18 +4408,33 @@ roleAssignments_list() {
     curl -s \
         --request GET \
         ${ROLEASSIGNMENTS_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${ROLEASSIGNMENTS_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${ROLEASSIGNMENTS_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -10040,273 +4447,37 @@ string() {
 
     URL="https://www.googleapis.com/?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request  \
         ${URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request  \\ \\n    \${URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request  \\ 
+        ${URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -10319,273 +4490,37 @@ Comma separated role values to filter list results on.() {
 
     URL="https://www.googleapis.com/?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request  \
         ${URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request  \\ \\n    \${URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request  \\ 
+        ${URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -10595,7 +4530,7 @@ Comma separated role values to filter list results on.() {
 schemas_delete() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -10616,7 +4551,7 @@ schemas_delete() {
     fi
 
     
-    schemaKey=( 
+    schemaKeyMeta=( 
         'string'
         'Name or immutable ID of the schema'
     )
@@ -10640,273 +4575,37 @@ schemas_delete() {
 
     SCHEMAS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_DELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_DELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request DELETE \
         ${SCHEMAS_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${SCHEMAS_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${SCHEMAS_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -10916,7 +4615,7 @@ schemas_delete() {
 schemas_get() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -10937,7 +4636,7 @@ schemas_get() {
     fi
 
     
-    schemaKey=( 
+    schemaKeyMeta=( 
         'string'
         'Name or immutable ID of the schema'
     )
@@ -10961,273 +4660,37 @@ schemas_get() {
 
     SCHEMAS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_GET_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_GET_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${SCHEMAS_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${SCHEMAS_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${SCHEMAS_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -11237,7 +4700,7 @@ schemas_get() {
 schemas_insert() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -11261,262 +4724,11 @@ schemas_insert() {
 
     SCHEMAS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_INSERT_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_INSERT_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${SCHEMAS_INSERT_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -11524,11 +4736,29 @@ schemas_insert() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${SCHEMAS_INSERT_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${SCHEMAS_INSERT_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -11538,7 +4768,7 @@ schemas_insert() {
 schemas_list() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -11562,273 +4792,37 @@ schemas_list() {
 
     SCHEMAS_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_LIST_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_LIST_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${SCHEMAS_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${SCHEMAS_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${SCHEMAS_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -11838,7 +4832,7 @@ schemas_list() {
 schemas_patch() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -11859,7 +4853,7 @@ schemas_patch() {
     fi
 
     
-    schemaKey=( 
+    schemaKeyMeta=( 
         'string'
         'Name or immutable ID of the schema.'
     )
@@ -11883,262 +4877,11 @@ schemas_patch() {
 
     SCHEMAS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_PATCH_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_PATCH_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PATCH \
         ${SCHEMAS_PATCH_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -12146,11 +4889,29 @@ schemas_patch() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PATCH \\ \\n    \${SCHEMAS_PATCH_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PATCH \\ 
+        ${SCHEMAS_PATCH_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -12160,7 +4921,7 @@ schemas_patch() {
 schemas_update() {
 
 
-    customerId=( 
+    customerIdMeta=( 
         'string'
         'Immutable ID of the G Suite account'
     )
@@ -12181,7 +4942,7 @@ schemas_update() {
     fi
 
     
-    schemaKey=( 
+    schemaKeyMeta=( 
         'string'
         'Name or immutable ID of the schema.'
     )
@@ -12205,262 +4966,11 @@ schemas_update() {
 
     SCHEMAS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_UPDATE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        SCHEMAS_UPDATE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PUT \
         ${SCHEMAS_UPDATE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -12468,11 +4978,29 @@ schemas_update() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PUT \\ \\n    \${SCHEMAS_UPDATE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PUT \\ 
+        ${SCHEMAS_UPDATE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -12482,7 +5010,7 @@ schemas_update() {
 tokens_delete() {
 
 
-    clientId=( 
+    clientIdMeta=( 
         'string'
         'The Client ID of the application the token is issued to.'
     )
@@ -12503,7 +5031,7 @@ tokens_delete() {
     fi
 
     
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
@@ -12527,273 +5055,37 @@ tokens_delete() {
 
     TOKENS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/tokens/${clientId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        TOKENS_DELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        TOKENS_DELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request DELETE \
         ${TOKENS_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${TOKENS_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${TOKENS_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -12803,7 +5095,7 @@ tokens_delete() {
 tokens_get() {
 
 
-    clientId=( 
+    clientIdMeta=( 
         'string'
         'The Client ID of the application the token is issued to.'
     )
@@ -12824,7 +5116,7 @@ tokens_get() {
     fi
 
     
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
@@ -12848,273 +5140,37 @@ tokens_get() {
 
     TOKENS_GET_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/tokens/${clientId}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        TOKENS_GET_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        TOKENS_GET_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${TOKENS_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${TOKENS_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${TOKENS_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -13124,7 +5180,7 @@ tokens_get() {
 tokens_list() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
@@ -13148,273 +5204,37 @@ tokens_list() {
 
     TOKENS_LIST_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/tokens?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        TOKENS_LIST_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        TOKENS_LIST_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${TOKENS_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${TOKENS_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${TOKENS_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -13424,7 +5244,7 @@ tokens_list() {
 twoStepVerification_turnOff() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
@@ -13448,262 +5268,11 @@ twoStepVerification_turnOff() {
 
     TWOSTEPVERIFICATION_TURNOFF_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/twoStepVerification/turnOff?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        TWOSTEPVERIFICATION_TURNOFF_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        TWOSTEPVERIFICATION_TURNOFF_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${TWOSTEPVERIFICATION_TURNOFF_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -13711,11 +5280,29 @@ twoStepVerification_turnOff() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${TWOSTEPVERIFICATION_TURNOFF_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${TWOSTEPVERIFICATION_TURNOFF_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -13725,7 +5312,7 @@ twoStepVerification_turnOff() {
 users_delete() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Email or immutable ID of the user'
     )
@@ -13749,273 +5336,37 @@ users_delete() {
 
     USERS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'Restrict information returned to a set of selected fields.'
-        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_DELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_DELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request DELETE \
         ${USERS_DELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request DELETE \\ \\n    \${USERS_DELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request DELETE \\ 
+        ${USERS_DELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -14025,7 +5376,7 @@ users_delete() {
 users_get() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Email or immutable ID of the user'
     )
@@ -14049,93 +5400,15 @@ users_get() {
 
     USERS_GET_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType )
+    optParams=( projection viewType )
 
-    projection=(
+    projectionMeta=(
         'string'
         'What subset of fields to fetch for this user.'
         '["projectionUndefined","basic","custom","full"]'
     )
 
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    viewType=(
+    viewTypeMeta=(
         'string'
         'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
         '["view_type_undefined","admin_view","domain_public"]'
@@ -14162,130 +5435,18 @@ users_get() {
                         break 2
                     else
                         getParams ${option}
-                        USERS_GET_URL+="&${option}=${PARAM_${option}}"
+                        local tempUrlCarrier=PARAM_${option}
+                        USERS_GET_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
         done
     fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask )
+    inpParams=( customFieldMask )
 
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    customFieldMask=(
+    customFieldMaskMeta=(
         'string'
         'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
@@ -14311,7 +5472,10 @@ users_get() {
                         break 2
                     else
                         getParams ${option}
-                        USERS_GET_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        USERS_GET_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
@@ -14321,18 +5485,33 @@ users_get() {
     curl -s \
         --request GET \
         ${USERS_GET_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${USERS_GET_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${USERS_GET_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -14345,279 +5524,11 @@ users_insert() {
 
     USERS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/users?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_INSERT_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    query=(
-        'string'
-        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify the next page in the list.'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_INSERT_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${USERS_INSERT_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -14625,11 +5536,29 @@ users_insert() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${USERS_INSERT_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${USERS_INSERT_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -14642,117 +5571,27 @@ users_list() {
 
     USERS_LIST_URL="https://www.googleapis.com/admin/directory/v1/users?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
+    optParams=( orderBy projection sortOrder viewType )
 
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
+    orderByMeta=(
         'string'
         'Column to use for sorting results'
         '["orderByUndefined","email","familyName","givenName"]'
     )
 
-    projection=(
+    projectionMeta=(
         'string'
         'What subset of fields to fetch for this user.'
         '["projectionUndefined","basic","custom","full"]'
     )
 
-    sortOrder=(
+    sortOrderMeta=(
         'string'
         'Whether to return results in ascending or descending order.'
         '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
 
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
+    viewTypeMeta=(
         'string'
         'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
         '["view_type_undefined","admin_view","domain_public"]'
@@ -14779,165 +5618,48 @@ users_list() {
                         break 2
                     else
                         getParams ${option}
-                        USERS_LIST_URL+="&${option}=${PARAM_${option}}"
+                        local tempUrlCarrier=PARAM_${option}
+                        USERS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
         done
     fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
+    inpParams=( customFieldMask customer domain maxResults pageToken query showDeleted )
 
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    customFieldMask=(
+    customFieldMaskMeta=(
         'string'
         'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
 
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
+    customerMeta=(
         'string'
         'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
 
-    domain=(
+    domainMeta=(
         'string'
         'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
 
-    maxResults=(
+    maxResultsMeta=(
         'integer'
         'Maximum number of results to return.'
     )
 
-    pageToken=(
+    pageTokenMeta=(
         'string'
         'Token to specify next page in the list'
     )
 
-    query=(
+    queryMeta=(
         'string'
         'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
 
-    showDeleted=(
+    showDeletedMeta=(
         'string'
         'If set to true, retrieves the list of deleted users. (Default: false)'
     )
@@ -14963,7 +5685,10 @@ users_list() {
                         break 2
                     else
                         getParams ${option}
-                        USERS_LIST_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        USERS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
@@ -14973,18 +5698,33 @@ users_list() {
     curl -s \
         --request GET \
         ${USERS_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${USERS_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${USERS_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -14994,7 +5734,7 @@ users_list() {
 users_makeAdmin() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Email or immutable ID of the user as admin'
     )
@@ -15018,338 +5758,11 @@ users_makeAdmin() {
 
     USERS_MAKEADMIN_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/makeAdmin?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_MAKEADMIN_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user as admin'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user as admin'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_MAKEADMIN_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${USERS_MAKEADMIN_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -15357,11 +5770,29 @@ users_makeAdmin() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${USERS_MAKEADMIN_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${USERS_MAKEADMIN_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -15371,7 +5802,7 @@ users_makeAdmin() {
 users_patch() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Email or immutable ID of the user. If ID, it should match with id of user object'
     )
@@ -15395,338 +5826,11 @@ users_patch() {
 
     USERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_PATCH_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user. If ID, it should match with id of user object'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user. If ID, it should match with id of user object'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_PATCH_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PATCH \
         ${USERS_PATCH_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -15734,11 +5838,29 @@ users_patch() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PATCH \\ \\n    \${USERS_PATCH_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PATCH \\ 
+        ${USERS_PATCH_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -15748,7 +5870,7 @@ users_patch() {
 users_signOut() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Identifies the target user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
@@ -15772,338 +5894,11 @@ users_signOut() {
 
     USERS_SIGNOUT_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/signOut?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_SIGNOUT_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the target user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the target user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_SIGNOUT_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${USERS_SIGNOUT_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -16111,11 +5906,29 @@ users_signOut() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${USERS_SIGNOUT_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${USERS_SIGNOUT_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -16125,7 +5938,7 @@ users_signOut() {
 users_undelete() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'The immutable id of the user'
     )
@@ -16149,338 +5962,11 @@ users_undelete() {
 
     USERS_UNDELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/undelete?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_UNDELETE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    userKey=(
-        'string'
-        'The immutable id of the user'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'The immutable id of the user'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_UNDELETE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${USERS_UNDELETE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -16488,11 +5974,29 @@ users_undelete() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${USERS_UNDELETE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${USERS_UNDELETE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -16502,7 +6006,7 @@ users_undelete() {
 users_update() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Email or immutable ID of the user. If ID, it should match with id of user object'
     )
@@ -16526,338 +6030,11 @@ users_update() {
 
     USERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUndefined","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUndefined","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["view_type_undefined","admin_view","domain_public"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_UPDATE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user. If ID, it should match with id of user object'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user. If ID, it should match with id of user object'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        USERS_UPDATE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request PUT \
         ${USERS_UPDATE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -16865,11 +6042,29 @@ users_update() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request PUT \\ \\n    \${USERS_UPDATE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request PUT \\ 
+        ${USERS_UPDATE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -16882,147 +6077,33 @@ users_watch() {
 
     USERS_WATCH_URL="https://www.googleapis.com/admin/directory/v1/users/watch?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType event orderBy projection sortOrder viewType )
+    optParams=( event orderBy projection sortOrder viewType )
 
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-    event=(
+    eventMeta=(
         'string'
         'Event on which subscription is intended'
         '["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
     )
 
-    orderBy=(
+    orderByMeta=(
         'string'
         'Column to use for sorting results'
         '["orderByUnspecified","email","familyName","givenName"]'
     )
 
-    projection=(
+    projectionMeta=(
         'string'
         'What subset of fields to fetch for this user.'
         '["projectionUnspecified","basic","custom","full"]'
     )
 
-    sortOrder=(
+    sortOrderMeta=(
         'string'
         'Whether to return results in ascending or descending order.'
         '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
 
-    viewType=(
+    viewTypeMeta=(
         'string'
         'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
         '["admin_view","domain_public"]'
@@ -17049,200 +6130,48 @@ users_watch() {
                         break 2
                     else
                         getParams ${option}
-                        USERS_WATCH_URL+="&${option}=${PARAM_${option}}"
+                        local tempUrlCarrier=PARAM_${option}
+                        USERS_WATCH_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
         done
     fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted customFieldMask customer domain maxResults pageToken query showDeleted )
+    inpParams=( customFieldMask customer domain maxResults pageToken query showDeleted )
 
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user. If ID, it should match with id of user object'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user. If ID, it should match with id of user object'
-    )
-
-    customFieldMask=(
+    customFieldMaskMeta=(
         'string'
         'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
 
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
+    customerMeta=(
         'string'
         'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
 
-    domain=(
+    domainMeta=(
         'string'
         'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
 
-    maxResults=(
+    maxResultsMeta=(
         'integer'
         'Maximum number of results to return.'
     )
 
-    pageToken=(
+    pageTokenMeta=(
         'string'
         'Token to specify next page in the list'
     )
 
-    query=(
+    queryMeta=(
         'string'
         'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
 
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
+    showDeletedMeta=(
         'string'
         'If set to true, retrieves the list of deleted users. (Default: false)'
     )
@@ -17268,7 +6197,10 @@ users_watch() {
                         break 2
                     else
                         getParams ${option}
-                        USERS_WATCH_URL+="&${option}=${PARAM_${option}}"                        
+                        local tempUrlCarrier=PARAM_${option}
+                        USERS_WATCH_URL+="&${option}=${(P)${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
@@ -17278,7 +6210,7 @@ users_watch() {
     curl -s \
         --request POST \
         ${USERS_WATCH_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -17286,11 +6218,29 @@ users_watch() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${USERS_WATCH_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${USERS_WATCH_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -17300,7 +6250,7 @@ users_watch() {
 verificationCodes_generate() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Email or immutable ID of the user'
     )
@@ -17324,403 +6274,11 @@ verificationCodes_generate() {
 
     VERIFICATIONCODES_GENERATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes/generate?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType event orderBy projection sortOrder viewType )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-    event=(
-        'string'
-        'Event on which subscription is intended'
-        '["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        VERIFICATIONCODES_GENERATE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted customFieldMask customer domain maxResults pageToken query showDeleted )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        VERIFICATIONCODES_GENERATE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${VERIFICATIONCODES_GENERATE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -17728,11 +6286,29 @@ verificationCodes_generate() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${VERIFICATIONCODES_GENERATE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${VERIFICATIONCODES_GENERATE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -17742,7 +6318,7 @@ verificationCodes_generate() {
 verificationCodes_invalidate() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Email or immutable ID of the user'
     )
@@ -17766,403 +6342,11 @@ verificationCodes_invalidate() {
 
     VERIFICATIONCODES_INVALIDATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes/invalidate?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType event orderBy projection sortOrder viewType )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-    event=(
-        'string'
-        'Event on which subscription is intended'
-        '["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        VERIFICATIONCODES_INVALIDATE_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted customFieldMask customer domain maxResults pageToken query showDeleted )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Email or immutable ID of the user'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        VERIFICATIONCODES_INVALIDATE_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request POST \
         ${VERIFICATIONCODES_INVALIDATE_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --header "Content-Type: application/json" \
         --compressed \
@@ -18170,11 +6354,29 @@ verificationCodes_invalidate() {
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request POST \\ \\n    \${VERIFICATIONCODES_INVALIDATE_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --header \"Content-Type: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${VERIFICATIONCODES_INVALIDATE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
@@ -18184,7 +6386,7 @@ verificationCodes_invalidate() {
 verificationCodes_list() {
 
 
-    userKey=( 
+    userKeyMeta=( 
         'string'
         'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
@@ -18208,414 +6410,37 @@ verificationCodes_list() {
 
     VERIFICATIONCODES_LIST_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes?key=${CLIENTID}"
 
-    optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType event orderBy projection sortOrder viewType )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    type=(
-        'string'
-        'Whether to return all sub-organizations or just immediate children'
-        '["typeUndefined","all","children"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-    event=(
-        'string'
-        'Event on which subscription is intended'
-        '["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
-    )
-
-    orderBy=(
-        'string'
-        'Column to use for sorting results'
-        '["orderByUnspecified","email","familyName","givenName"]'
-    )
-
-    projection=(
-        'string'
-        'What subset of fields to fetch for this user.'
-        '["projectionUnspecified","basic","custom","full"]'
-    )
-
-    sortOrder=(
-        'string'
-        'Whether to return results in ascending or descending order.'
-        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
-    )
-
-    viewType=(
-        'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-        '["admin_view","domain_public"]'
-    )
-
-
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
-
-
-    if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
-        do
-
-            select option in ${optParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        VERIFICATIONCODES_LIST_URL+="&${option}=${PARAM_${option}}"
-                    fi
-                fi
-            done
-        done
-    fi
-    inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted customFieldMask customer domain maxResults pageToken query showDeleted )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    parentDomainName=(
-        'string'
-        'Name of the parent domain for which domain aliases are to be fetched.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-    includeDerivedMembership=(
-        'boolean'
-        'Whether to list indirect memberships. Default: false.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roles=(
-        'string'
-        'Comma separated role values to filter list results on.'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    orgUnitPath=(
-        'string'
-        'Full path of the organizational unit or its ID'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    roleId=(
-        'string'
-        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
-    )
-
-    userKey=(
-        'string'
-        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-    customFieldMask=(
-        'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
-    )
-
-    customer=(
-        'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
-    )
-
-    domain=(
-        'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
-    )
-
-    maxResults=(
-        'integer'
-        'Maximum number of results to return.'
-    )
-
-    pageToken=(
-        'string'
-        'Token to specify next page in the list'
-    )
-
-    query=(
-        'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
-    )
-
-    showDeleted=(
-        'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
-    )
-
-
-    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
-
-
-    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
-    then
-        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
-        do
-
-            select option in ${inpParams} none
-            do
-                if [[ -n ${option} ]]
-                then
-                    if [[ ${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        getParams ${option}
-                        VERIFICATIONCODES_LIST_URL+="&${option}=${PARAM_${option}}"                        
-                    fi
-                fi
-            done
-        done
-    fi
 
     curl -s \
         --request GET \
         ${VERIFICATIONCODES_LIST_URL} \
-        --header "Authorization: Bearer \${ACCESSTOKEN}" \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
         | jq -c '.' \
         | read -r outputJson
         export outputJson
 
-        sentRequest="curl -s \\ \\n    --request GET \\ \\n    \${VERIFICATIONCODES_LIST_URL} \\ \\n    --header \"Authorization: Bearer \\\${ACCESSTOKEN}\" \\ \\n    --header \"Accept: application/json\" \\ \\n    --compressed"
+        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${VERIFICATIONCODES_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 

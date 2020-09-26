@@ -179,26 +179,37 @@ checkAccess() {
             -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \
             -d grant_type=authorization_code \
             | jq -c '.' | read -r authPayload
+            
+            if ! [[ `echo ${authPayload} | jq '.refresh_token'` =~ "null" ]] \
+            && ! [[ `echo ${authPayload} | jq '.access_token'` =~ "null" ]]
+            then 
+                REFRESHTOKEN=`echo ${authPayload} | jq '.refresh_token'`
+                ACCESSTOKEN=`echo ${authPayload} | jq '.access_token'`
+                ACCESSTOKEN=${ACCESSTOKEN//\"/}
 
-            REFRESHTOKEN=`echo ${authPayload} | jq '.refresh_token'`
-            ACCESSTOKEN=`echo ${authPayload} | jq '.access_token'`
-            ACCESSTOKEN=${ACCESSTOKEN//\"/}
+                export REFRESHTOKEN ACCESSTOKEN
 
-            export REFRESHTOKEN ACCESSTOKEN
-
-            cat << EOIF > ${credFileRefresh}
+                cat << EOIF > ${credFileRefresh}
 SAVED_REFRESHTOKEN=${REFRESHTOKEN}
 EOIF
 
-            cat << EOIF > ${credFileAccess}
+                cat << EOIF > ${credFileAccess}
 SAVED_ACCESSTOKEN=${ACCESSTOKEN}
 EOIF
 
-        echo -e "# Execution complete!\n\n"
-        echo -e "#########################\n"
-        echo "${authPayload}" | jq '.'
-        echo -e "\n\n"
-        echo -e "#########################\n"
+                echo -e "# Execution complete!\n\n"
+                echo -e "#########################\n"
+                echo "${authPayload}" | jq '.'
+                echo -e "\n\n"
+                echo -e "#########################\n"
+            else
+                echo -e "# Error in the authentication!\n\n"
+                echo -e "#########################\n"
+                echo "${authPayload}" | jq '.'
+                echo -e "\n\n"
+                echo -e "#########################\n"
+                exit 1
+            fi
 
         else
             # get a new Access Token with Refresh Token
@@ -226,28 +237,38 @@ EOIF
                 | jq -c '.' \
                 | read -r authPayload
 
-            REFRESHTOKEN=`echo ${authPayload} | jq '.refresh_token'`
-            ACCESSTOKEN=`echo ${authPayload} | jq '.access_token'`
-            ACCESSTOKEN=${ACCESSTOKEN//\"/}
+            if ! [[ `echo ${authPayload} | jq '.refresh_token'` =~ "null" ]] \
+            && ! [[ `echo ${authPayload} | jq '.access_token'` =~ "null" ]]
+            then 
+                REFRESHTOKEN=`echo ${authPayload} | jq '.refresh_token'`
+                ACCESSTOKEN=`echo ${authPayload} | jq '.access_token'`
+                ACCESSTOKEN=${ACCESSTOKEN//\"/}
 
-            export REFRESHTOKEN ACCESSTOKEN
+                export REFRESHTOKEN ACCESSTOKEN
 
-            cat << EOIF > ${credFileRefresh}
+                cat << EOIF > ${credFileRefresh}
 SAVED_REFRESHTOKEN=${REFRESHTOKEN}
 EOIF
 
-            cat << EOIF > ${credFileAccess}
+                cat << EOIF > ${credFileAccess}
 SAVED_ACCESSTOKEN=${ACCESSTOKEN}
 EOIF
-            echo -e "# Execution complete!\n\n"
-            echo -e "#########################\n"
-            echo "${authPayload}" | jq '.'
-            echo -e "\n\n"
-            echo -e "#########################\n"
+                echo -e "# Execution complete!\n\n"
+                echo -e "#########################\n"
+                echo "${authPayload}" | jq '.'
+                echo -e "\n\n"
+                echo -e "#########################\n"
+            else
+                echo -e "# Error in the authentication!\n\n"
+                echo -e "#########################\n"
+                echo "${authPayload}" | jq '.'
+                echo -e "\n\n"
+                echo -e "#########################\n"
+                exit 1
+            fi
 
         fi
 
     fi
-
 
 }

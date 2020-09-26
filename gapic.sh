@@ -403,26 +403,37 @@ checkAccess() {
             -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \\
             -d grant_type=authorization_code \\
             | jq -c '.' | read -r authPayload
+            
+            if ! [[ \`echo \${authPayload} | jq '.refresh_token'\` =~ "null" ]] \\
+            && ! [[ \`echo \${authPayload} | jq '.access_token'\` =~ "null" ]]
+            then 
+                REFRESHTOKEN=\`echo \${authPayload} | jq '.refresh_token'\`
+                ACCESSTOKEN=\`echo \${authPayload} | jq '.access_token'\`
+                ACCESSTOKEN=\${ACCESSTOKEN//\\"/}
 
-            REFRESHTOKEN=\`echo \${authPayload} | jq '.refresh_token'\`
-            ACCESSTOKEN=\`echo \${authPayload} | jq '.access_token'\`
-            ACCESSTOKEN=\${ACCESSTOKEN//\\"/}
+                export REFRESHTOKEN ACCESSTOKEN
 
-            export REFRESHTOKEN ACCESSTOKEN
-
-            cat << EOIF > \${credFileRefresh}
+                cat << EOIF > \${credFileRefresh}
 SAVED_REFRESHTOKEN=\${REFRESHTOKEN}
 EOIF
 
-            cat << EOIF > \${credFileAccess}
+                cat << EOIF > \${credFileAccess}
 SAVED_ACCESSTOKEN=\${ACCESSTOKEN}
 EOIF
 
-        echo -e "# Execution complete!\n\n"
-        echo -e "#########################\n"
-        echo "\${authPayload}" | jq '.'
-        echo -e "\n\n"
-        echo -e "#########################\n"
+                echo -e "# Execution complete!\n\n"
+                echo -e "#########################\n"
+                echo "\${authPayload}" | jq '.'
+                echo -e "\n\n"
+                echo -e "#########################\n"
+            else
+                echo -e "# Error in the authentication!\n\n"
+                echo -e "#########################\n"
+                echo "\${authPayload}" | jq '.'
+                echo -e "\n\n"
+                echo -e "#########################\n"
+                exit 1
+            fi
 
         else
             # get a new Access Token with Refresh Token
@@ -450,29 +461,39 @@ EOIF
                 | jq -c '.' \\
                 | read -r authPayload
 
-            REFRESHTOKEN=\`echo \${authPayload} | jq '.refresh_token'\`
-            ACCESSTOKEN=\`echo \${authPayload} | jq '.access_token'\`
-            ACCESSTOKEN=\${ACCESSTOKEN//\\"/}
+            if ! [[ \`echo \${authPayload} | jq '.refresh_token'\` =~ "null" ]] \\
+            && ! [[ \`echo \${authPayload} | jq '.access_token'\` =~ "null" ]]
+            then 
+                REFRESHTOKEN=\`echo \${authPayload} | jq '.refresh_token'\`
+                ACCESSTOKEN=\`echo \${authPayload} | jq '.access_token'\`
+                ACCESSTOKEN=\${ACCESSTOKEN//\\"/}
 
-            export REFRESHTOKEN ACCESSTOKEN
+                export REFRESHTOKEN ACCESSTOKEN
 
-            cat << EOIF > \${credFileRefresh}
+                cat << EOIF > \${credFileRefresh}
 SAVED_REFRESHTOKEN=\${REFRESHTOKEN}
 EOIF
 
-            cat << EOIF > \${credFileAccess}
+                cat << EOIF > \${credFileAccess}
 SAVED_ACCESSTOKEN=\${ACCESSTOKEN}
 EOIF
-            echo -e "# Execution complete!\n\n"
-            echo -e "#########################\n"
-            echo "\${authPayload}" | jq '.'
-            echo -e "\n\n"
-            echo -e "#########################\n"
+                echo -e "# Execution complete!\n\n"
+                echo -e "#########################\n"
+                echo "\${authPayload}" | jq '.'
+                echo -e "\n\n"
+                echo -e "#########################\n"
+            else
+                echo -e "# Error in the authentication!\n\n"
+                echo -e "#########################\n"
+                echo "\${authPayload}" | jq '.'
+                echo -e "\n\n"
+                echo -e "#########################\n"
+                exit 1
+            fi
 
         fi
 
     fi
-
 
 }
 EOF
@@ -579,48 +600,51 @@ done
 
 getParams() {
     local tempPar=\${1}
+    tempCarrier=PARAM_\${tempPar}
+    tempMeta=\${tempPar}Meta
 
-    if [[ -z \${(P)\${tempPar}[3]} ]]
+    if [[ -z \${(P)\${tempMeta}[3]} ]]
     then
-        echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempPar}[1]}).\n#\n# Desc: \${(P)\${tempPar}[2]}\n~> "
-        read -r PARAM_\${tempPar}
-        export PARAM_\${tempPar}
+        echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempMeta}[1]}).\n#\n# Desc: \${(P)\${tempMeta}[2]}\n~> "
+        read -r \${tempCarrier}
+        export \${tempCarrier}
         clear
 
     else
-        tempOpts=(\`echo \${(PQ)\${tempPar}[3]} | jq -r ".[]"\`)
-        echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempPar}[1]}).\n#\n# Desc: \${(P)\${tempPar}[2]}\n"
+        tempOpts=(\`echo \${(P)\${tempMeta}[3]} | jq -r ".[]"\`)
+        echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempMeta}[1]}).\n#\n# Desc: \${(P)\${tempMeta}[2]}\n~> "
         select getOption in \${tempOpts}
         do
             if [[ -n \${getOption} ]]
             then
-                declare -g "PARAM_\${tempPar}=\${getOption}"
+                declare -g "\${tempCarrier}=\${getOption}"
                 clear
                 break
             fi
         done
         unset getOption 
     fi
+    unset tempParMeta
 
-    declare -g "\${tempPar}=\${PARAM_\${tempPar}}"
+    declare -g "\${tempPar}=\${(P)\${tempCarrier}}"
 
     if [[ -f \${credFileParams} ]]
     then
-        if ! [[ \`grep "PARAM_\${tempPar}=\${tempPar}" \${credFileParams}\` ]]
+        if ! [[ \`grep "\${tempCarrier}=\${(P)\${tempPar}}" \${credFileParams}\` ]]
         then
             cat << EOIF >> \${credFileParams}
-PARAM_\${tempPar}=\${tempPar}
+\${tempCarrier}=\${(P)\${tempPar}}
 EOIF
         fi
 
     else
         touch \${credFileParams}
         cat << EOIF >> \${credFileParams}
-PARAM_\${tempPar}=\${tempPar}
+\${tempCarrier}=\${(P)\${tempPar}}
 EOIF
     fi
 
-    unset tempPar
+    unset tempPar tempCarrier
 }
 
 
@@ -628,18 +652,18 @@ EOIF
 
 checkParams() {
     local tempPar=\${1}
-    echo -en "# Do you want to reuse last saved domain parameter: \${PARAM_\${tempPar}}? [y/n]\n~> "
+    tempCarrier=PARAM_\${tempPar}
+    echo -en "# Do you want to reuse last saved domain parameter: \${(P)\${tempCarrier}}? [y/n]\n~> "
     read -r reuseParOpt
     clear
     if ! [[ \${reuseParOpt} =~ "n" ]] \\
     && ! [[ \${reuseParOpt} =~ "N" ]]
     then
-        declare -g "\${tempPar}=\${PARAM_\${tempPar}}"
-        declare -g "\${tempPar}=\${PARAM_\${tempPar}}"
+        declare -g "\${tempPar}=\${(P)\${tempCarrier}}"
     else
         getParams \${tempPar}
     fi
-    unset tempPar reuseParOpt
+    unset tempPar reuseParOpt tempCarrier
 }
 
 
@@ -768,30 +792,30 @@ EOF
 # Reference JSON object in ${(P)${(P)apiSets[$c]}[$d][3]}
 # add ClientID as a parameter
 
-    if ! [[ -z ${curReqParams} ]]
-    then
+        if ! [[ -z ${curReqParams} ]]
+        then
 
-        # Push each required parameter into the function
-        # If a saved variable exists, load it and ask to reuse
-        # else, collect and store it
-        for (( h = 1 ; h <= ${#curReqParams[@]} ; h++ ))
-        do
-            
-            cat << EOF >> "${outputLibWiz}"
-    ${curReqParams[$h]}=( 
-EOF
-            for (( i = 1 ; i <= ${(P)#${curReqParams[$h]}[@]} ; i++ ))
+            # Push each required parameter into the function
+            # If a saved variable exists, load it and ask to reuse
+            # else, collect and store it
+            for (( h = 1 ; h <= ${#curReqParams[@]} ; h++ ))
             do
+
                 cat << EOF >> "${outputLibWiz}"
+    ${curReqParams[$h]}Meta=( 
+EOF
+                for (( i = 1 ; i <= ${(P)#${curReqParams[$h]}[@]} ; i++ ))
+                do
+                    cat << EOF >> "${outputLibWiz}"
         ${(Pqq)${curReqParams[$h]}[$i]}
 EOF
-            done
-            cat << EOF >> "${outputLibWiz}"
+                done
+                cat << EOF >> "${outputLibWiz}"
     )
 
 EOF
     
-            cat << EOF >> "${outputLibWiz}"
+                cat << EOF >> "${outputLibWiz}"
 
     if [[ -z "\${${curPrefix}${curReqParams[$h]}}" ]]
     then
@@ -809,11 +833,11 @@ EOF
 
     
 EOF
-        done
-    fi
+            done
+        fi
 
         # Place URL
-    cat << EOF >> ${outputLibWiz}
+        cat << EOF >> ${outputLibWiz}
 
     ${curPrefix}URL="${curUrl}"
 
@@ -823,30 +847,30 @@ EOF
         # Push each optional parameter into the function
         # If a saved variable exists, load it and ask to reuse
         # else, collect and store it
-    if ! [[ -z ${curOptParams} ]]
-    then
-        cat << EOF >> "${outputLibWiz}"
+        if ! [[ -z ${curOptParams} ]]
+        then
+            cat << EOF >> "${outputLibWiz}"
     optParams=( ${curOptParams} )
 
 EOF
-        for (( h = 1 ; h <= ${#curOptParams[@]} ; h++ ))
-        do
-            cat << EOF >> "${outputLibWiz}"
-    ${curOptParams[$h]}=(
-EOF
-            for (( i = 1 ; i <= ${(P)#${curOptParams[$h]}[@]} ; i++ ))
+            for (( h = 1 ; h <= ${#curOptParams[@]} ; h++ ))
             do
                 cat << EOF >> "${outputLibWiz}"
+    ${curOptParams[$h]}Meta=(
+EOF
+                for (( i = 1 ; i <= ${(P)#${curOptParams[$h]}[@]} ; i++ ))
+                do
+                    cat << EOF >> "${outputLibWiz}"
         ${(Pqq)${curOptParams[$h]}[$i]}
 EOF
-            done
-            cat << EOF >> "${outputLibWiz}"
+                done
+                cat << EOF >> "${outputLibWiz}"
     )
 
 EOF
-        done
+            done
 
-        cat << EOF >> "${outputLibWiz}"
+            cat << EOF >> "${outputLibWiz}"
 
     echo -en "# Would you like to define extra parameters? [y/n] \n\${optParams}\n\n~> "
     read -r optParChoice
@@ -868,40 +892,43 @@ EOF
                         break 2
                     else
                         getParams \${option}
-                        ${curPrefix}URL+="&\${option}=\${PARAM_\${option}}"
+                        local tempUrlCarrier=PARAM_\${option}
+                        ${curPrefix}URL+="&\${option}=\${(P)\${tempUrlCarrier}}"
+                        unset tempUrlCarrier
+                        break
                     fi
                 fi
             done
         done
     fi
 EOF
-    fi
+        fi
 
-    if ! [[ -z ${curInpParams} ]]
-    then
+        if ! [[ -z ${curInpParams} ]]
+        then
 
-        cat << EOF >> "${outputLibWiz}"
+            cat << EOF >> "${outputLibWiz}"
     inpParams=( ${curInpParams} )
 
 EOF
-        for (( h = 1 ; h <= ${#curInpParams[@]} ; h++ ))
-        do
-            cat << EOF >> "${outputLibWiz}"
-    ${curInpParams[$h]}=(
-EOF
-            for (( i = 1 ; i <= ${(P)#${curInpParams[$h]}[@]} ; i++ ))
+            for (( h = 1 ; h <= ${#curInpParams[@]} ; h++ ))
             do
                 cat << EOF >> "${outputLibWiz}"
+    ${curInpParams[$h]}Meta=(
+EOF
+                for (( i = 1 ; i <= ${(P)#${curInpParams[$h]}[@]} ; i++ ))
+                do
+                    cat << EOF >> "${outputLibWiz}"
         ${(Pqq)${curInpParams[$h]}[$i]}
 EOF
-            done
-            cat << EOF >> "${outputLibWiz}"
+                done
+                cat << EOF >> "${outputLibWiz}"
     )
 
 EOF
-        done
+            done
 
-        cat << EOF >> "${outputLibWiz}"
+            cat << EOF >> "${outputLibWiz}"
 
     echo -en "# Would you like to define input parameters? [y/n] \n\${inpParams}\n\n~> "
     read -r inpParChoice
@@ -923,71 +950,87 @@ EOF
                         break 2
                     else
                         getParams \${option}
-                        ${curPrefix}URL+="&\${option}=\${PARAM_\${option}}"                        
+                        local tempUrlCarrier=PARAM_\${option}
+                        ${curPrefix}URL+="&\${option}=\${(P)\${tempUrlCarrier}}"
+                        unset tempUrlCarrier                      
+                        break
                     fi
                 fi
             done
         done
     fi
 EOF
-    fi
+        fi
 
 
-# Define curl
+    # Define curl
 
 
-cat << EOF >> ${outputLibWiz}
+        cat << EOF >> ${outputLibWiz}
 
     curl -s \\
         --request ${curMethod} \\
         \${${curPrefix}URL} \\
 EOF
-
-sentRequest="curl -s \ \\n    --request ${curMethod} \ \\n    \${${curPrefix}URL} \ \\n"
-
-for (( k = 1 ; k <= ${#curHeaderSet[@]} ; k++ ))
-do
-    cat << EOF >> ${outputLibWiz}
-        --header ${(qqq)curHeaderSet[$k]} \\
+        for (( k = 1 ; k <= ${#curHeaderSet[@]} ; k++ ))
+        do
+            cat << EOF >> ${outputLibWiz}
+        --header "${curHeaderSet[$k]}" \\
 EOF
-sentRequest+="    --header ${(qqq)curHeaderSet[$k]} \ \\n"
-done
+        done
 
 ### TODO
 # add post request support: --data "{JSON}"
 
+        unset k 
 
-sentRequest+="    --compressed"
-
-unset k curHeaderSet
-
-cat << EOF >> ${outputLibWiz}
+        cat << EOF >> ${outputLibWiz}
         --compressed \\
         | jq -c '.' \\
         | read -r outputJson
         export outputJson
 
-        sentRequest=${(qqq)sentRequest}
+        #sentRequest=${(qq)sentRequest}
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
-        echo "\${sentRequest}" 
+        cat << EOIF
+
+    curl -s \\\ 
+        --request ${curMethod} \\\ 
+        \${${curPrefix}URL} \\\ 
+EOIF
+EOF
+        for (( k = 1 ; k <= ${#curHeaderSet[@]} ; k++ ))
+        do
+            cat << EOF >> ${outputLibWiz}
+        cat << EOIF
+        --header "${curHeaderSet[$k]}" \\\ 
+EOIF
+EOF
+        done
+        unset curHeaderSet
+        cat << EOF >> ${outputLibWiz}
+        cat << EOIF
+        --compressed
+EOIF
+
         echo -e "\n\n"
         echo -e "#########################\n"
 
 EOF
 
-unset sentRequest
+        unset sentRequest
 
 # Closing the function
 
-cat << EOF >> ${outputLibWiz}
+        cat << EOF >> ${outputLibWiz}
 
 }
 
 EOF
 
-        unset curPrefix curUrl curReqParams curMethod
+        unset curPrefix curUrl curReqParams curOptParams curInpParams curMethod
     done
 done
 
