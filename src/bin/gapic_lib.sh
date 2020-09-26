@@ -91,9 +91,10 @@ asps_delete() {
 
 
     codeId=( 
- 'integer'
- 'The unique ID of the ASP to be deleted.'
- )
+        'integer'
+        'The unique ID of the ASP to be deleted.'
+    )
+
 
     if [[ -z "${ASPS_DELETE_codeId}" ]]
     then
@@ -111,9 +112,10 @@ asps_delete() {
 
     
     userKey=( 
- 'string'
- 'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
- )
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+    )
+
 
     if [[ -z "${ASPS_DELETE_userKey}" ]]
     then
@@ -159,9 +161,10 @@ asps_get() {
 
 
     codeId=( 
- 'integer'
- 'The unique ID of the ASP.'
- )
+        'integer'
+        'The unique ID of the ASP.'
+    )
+
 
     if [[ -z "${ASPS_GET_codeId}" ]]
     then
@@ -179,9 +182,10 @@ asps_get() {
 
     
     userKey=( 
- 'string'
- 'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
- )
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+    )
+
 
     if [[ -z "${ASPS_GET_userKey}" ]]
     then
@@ -227,9 +231,10 @@ asps_list() {
 
 
     userKey=( 
- 'string'
- 'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
- )
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+    )
+
 
     if [[ -z "${ASPS_LIST_userKey}" ]]
     then
@@ -304,9 +309,10 @@ chromeosdevices_action() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_ACTION_customerId}" ]]
     then
@@ -324,9 +330,10 @@ chromeosdevices_action() {
 
     
     resourceId=( 
- 'string'
- 'Immutable ID of Chrome OS Device'
- )
+        'string'
+        'Immutable ID of Chrome OS Device'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_ACTION_resourceId}" ]]
     then
@@ -373,9 +380,10 @@ chromeosdevices_get() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_GET_customerId}" ]]
     then
@@ -393,9 +401,10 @@ chromeosdevices_get() {
 
     
     deviceId=( 
- 'string'
- 'Immutable ID of Chrome OS Device'
- )
+        'string'
+        'Immutable ID of Chrome OS Device'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_GET_deviceId}" ]]
     then
@@ -418,10 +427,11 @@ chromeosdevices_get() {
     optParams=( projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -475,9 +485,10 @@ chromeosdevices_list() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_LIST_customerId}" ]]
     then
@@ -500,25 +511,29 @@ chromeosdevices_list() {
     optParams=( projection orderBy projection sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -549,21 +564,25 @@ chromeosdevices_list() {
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -617,9 +636,10 @@ chromeosdevices_moveDevicesToOu() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_MOVEDEVICESTOOU_customerId}" ]]
     then
@@ -637,9 +657,10 @@ chromeosdevices_moveDevicesToOu() {
 
     
     orgUnitPath=( 
- 'string'
- 'Full path of the target organizational unit or its ID'
- )
+        'string'
+        'Full path of the target organizational unit or its ID'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_MOVEDEVICESTOOU_orgUnitPath}" ]]
     then
@@ -662,25 +683,29 @@ chromeosdevices_moveDevicesToOu() {
     optParams=( projection orderBy projection sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -711,21 +736,25 @@ chromeosdevices_moveDevicesToOu() {
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -780,9 +809,10 @@ chromeosdevices_patch() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_PATCH_customerId}" ]]
     then
@@ -800,9 +830,10 @@ chromeosdevices_patch() {
 
     
     deviceId=( 
- 'string'
- 'Immutable ID of Chrome OS Device'
- )
+        'string'
+        'Immutable ID of Chrome OS Device'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_PATCH_deviceId}" ]]
     then
@@ -825,30 +856,35 @@ chromeosdevices_patch() {
     optParams=( projection orderBy projection sortOrder projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -879,21 +915,25 @@ chromeosdevices_patch() {
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -948,9 +988,10 @@ chromeosdevices_update() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_UPDATE_customerId}" ]]
     then
@@ -968,9 +1009,10 @@ chromeosdevices_update() {
 
     
     deviceId=( 
- 'string'
- 'Immutable ID of Chrome OS Device'
- )
+        'string'
+        'Immutable ID of Chrome OS Device'
+    )
+
 
     if [[ -z "${CHROMEOSDEVICES_UPDATE_deviceId}" ]]
     then
@@ -993,35 +1035,41 @@ chromeosdevices_update() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -1052,21 +1100,25 @@ chromeosdevices_update() {
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -1121,9 +1173,10 @@ customers_get() {
 
 
     customerKey=( 
- 'string'
- 'Id of the customer to be retrieved'
- )
+        'string'
+        'Id of the customer to be retrieved'
+    )
+
 
     if [[ -z "${CUSTOMERS_GET_customerKey}" ]]
     then
@@ -1146,35 +1199,41 @@ customers_get() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -1205,21 +1264,25 @@ customers_get() {
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -1273,9 +1336,10 @@ customers_patch() {
 
 
     customerKey=( 
- 'string'
- 'Id of the customer to be updated'
- )
+        'string'
+        'Id of the customer to be updated'
+    )
+
 
     if [[ -z "${CUSTOMERS_PATCH_customerKey}" ]]
     then
@@ -1298,35 +1362,41 @@ customers_patch() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -1357,21 +1427,25 @@ customers_patch() {
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -1426,9 +1500,10 @@ customers_update() {
 
 
     customerKey=( 
- 'string'
- 'Id of the customer to be updated'
- )
+        'string'
+        'Id of the customer to be updated'
+    )
+
 
     if [[ -z "${CUSTOMERS_UPDATE_customerKey}" ]]
     then
@@ -1451,35 +1526,41 @@ customers_update() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -1510,21 +1591,25 @@ customers_update() {
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -1579,9 +1664,10 @@ domainAliases_delete() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${DOMAINALIASES_DELETE_customer}" ]]
     then
@@ -1599,9 +1685,10 @@ domainAliases_delete() {
 
     
     domainAliasName=( 
- 'string'
- 'Name of domain alias to be retrieved.'
- )
+        'string'
+        'Name of domain alias to be retrieved.'
+    )
+
 
     if [[ -z "${DOMAINALIASES_DELETE_domainAliasName}" ]]
     then
@@ -1624,35 +1711,41 @@ domainAliases_delete() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -1683,21 +1776,25 @@ domainAliases_delete() {
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -1751,9 +1848,10 @@ domainAliases_get() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${DOMAINALIASES_GET_customer}" ]]
     then
@@ -1771,9 +1869,10 @@ domainAliases_get() {
 
     
     domainAliasName=( 
- 'string'
- 'Name of domain alias to be retrieved.'
- )
+        'string'
+        'Name of domain alias to be retrieved.'
+    )
+
 
     if [[ -z "${DOMAINALIASES_GET_domainAliasName}" ]]
     then
@@ -1796,35 +1895,41 @@ domainAliases_get() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -1855,21 +1960,25 @@ domainAliases_get() {
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -1923,9 +2032,10 @@ domainAliases_insert() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${DOMAINALIASES_INSERT_customer}" ]]
     then
@@ -1948,35 +2058,41 @@ domainAliases_insert() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -2007,21 +2123,25 @@ domainAliases_insert() {
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -2076,9 +2196,10 @@ domainAliases_list() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${DOMAINALIASES_LIST_customer}" ]]
     then
@@ -2101,35 +2222,41 @@ domainAliases_list() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -2160,25 +2287,30 @@ domainAliases_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -2232,9 +2364,10 @@ domains_delete() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${DOMAINS_DELETE_customer}" ]]
     then
@@ -2252,9 +2385,10 @@ domains_delete() {
 
     
     domainName=( 
- 'string'
- 'Name of domain to be deleted'
- )
+        'string'
+        'Name of domain to be deleted'
+    )
+
 
     if [[ -z "${DOMAINS_DELETE_domainName}" ]]
     then
@@ -2277,35 +2411,41 @@ domains_delete() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -2336,25 +2476,30 @@ domains_delete() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -2408,9 +2553,10 @@ domains_get() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${DOMAINS_GET_customer}" ]]
     then
@@ -2428,9 +2574,10 @@ domains_get() {
 
     
     domainName=( 
- 'string'
- 'Name of domain to be retrieved'
- )
+        'string'
+        'Name of domain to be retrieved'
+    )
+
 
     if [[ -z "${DOMAINS_GET_domainName}" ]]
     then
@@ -2453,35 +2600,41 @@ domains_get() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -2512,25 +2665,30 @@ domains_get() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -2584,9 +2742,10 @@ domains_insert() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${DOMAINS_INSERT_customer}" ]]
     then
@@ -2609,35 +2768,41 @@ domains_insert() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -2668,25 +2833,30 @@ domains_insert() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -2741,9 +2911,10 @@ domains_list() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${DOMAINS_LIST_customer}" ]]
     then
@@ -2766,35 +2937,41 @@ domains_list() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -2825,25 +3002,30 @@ domains_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -2897,9 +3079,10 @@ groups_delete() {
 
 
     groupKey=( 
- 'string'
- 'Email or immutable ID of the group'
- )
+        'string'
+        'Email or immutable ID of the group'
+    )
+
 
     if [[ -z "${GROUPS_DELETE_groupKey}" ]]
     then
@@ -2922,35 +3105,41 @@ groups_delete() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -2981,25 +3170,30 @@ groups_delete() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -3053,9 +3247,10 @@ groups_get() {
 
 
     groupKey=( 
- 'string'
- 'Email or immutable ID of the group'
- )
+        'string'
+        'Email or immutable ID of the group'
+    )
+
 
     if [[ -z "${GROUPS_GET_groupKey}" ]]
     then
@@ -3078,35 +3273,41 @@ groups_get() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -3137,25 +3338,30 @@ groups_get() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -3214,35 +3420,41 @@ groups_insert() {
     optParams=( projection orderBy projection sortOrder projection projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -3273,25 +3485,30 @@ groups_insert() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
+        'string'
+        'Search string in the format given at http://support.google.com/chromeos/a/bin/answer.py?answer=1698333'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -3351,45 +3568,53 @@ groups_list() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -3420,49 +3645,60 @@ groups_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -3516,9 +3752,10 @@ groups_patch() {
 
 
     groupKey=( 
- 'string'
- 'Email or immutable ID of the group. If ID, it should match with id of group object'
- )
+        'string'
+        'Email or immutable ID of the group. If ID, it should match with id of group object'
+    )
+
 
     if [[ -z "${GROUPS_PATCH_groupKey}" ]]
     then
@@ -3541,45 +3778,53 @@ groups_patch() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -3610,49 +3855,60 @@ groups_patch() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -3707,9 +3963,10 @@ groups_update() {
 
 
     groupKey=( 
- 'string'
- 'Email or immutable ID of the group. If ID, it should match with id of group object'
- )
+        'string'
+        'Email or immutable ID of the group. If ID, it should match with id of group object'
+    )
+
 
     if [[ -z "${GROUPS_UPDATE_groupKey}" ]]
     then
@@ -3732,45 +3989,53 @@ groups_update() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -3801,49 +4066,60 @@ groups_update() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -3898,9 +4174,10 @@ members_delete() {
 
 
     groupKey=( 
- 'string'
- 'Email or immutable ID of the group'
- )
+        'string'
+        'Email or immutable ID of the group'
+    )
+
 
     if [[ -z "${MEMBERS_DELETE_groupKey}" ]]
     then
@@ -3918,9 +4195,10 @@ members_delete() {
 
     
     memberKey=( 
- 'string'
- 'Email or immutable ID of the member'
- )
+        'string'
+        'Email or immutable ID of the member'
+    )
+
 
     if [[ -z "${MEMBERS_DELETE_memberKey}" ]]
     then
@@ -3943,45 +4221,53 @@ members_delete() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -4012,49 +4298,60 @@ members_delete() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -4108,9 +4405,10 @@ members_get() {
 
 
     groupKey=( 
- 'string'
- 'Email or immutable ID of the group'
- )
+        'string'
+        'Email or immutable ID of the group'
+    )
+
 
     if [[ -z "${MEMBERS_GET_groupKey}" ]]
     then
@@ -4128,9 +4426,10 @@ members_get() {
 
     
     memberKey=( 
- 'string'
- 'Email or immutable ID of the member'
- )
+        'string'
+        'Email or immutable ID of the member'
+    )
+
 
     if [[ -z "${MEMBERS_GET_memberKey}" ]]
     then
@@ -4153,45 +4452,53 @@ members_get() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -4222,49 +4529,60 @@ members_get() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -4318,9 +4636,10 @@ members_hasMember() {
 
 
     groupKey=( 
- 'string'
- 'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
- )
+        'string'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
+    )
+
 
     if [[ -z "${MEMBERS_HASMEMBER_groupKey}" ]]
     then
@@ -4338,9 +4657,10 @@ members_hasMember() {
 
     
     memberKey=( 
- 'string'
- 'Identifies the user member in the API request. The value can be the user'\''s primary email address, alias, or unique ID.'
- )
+        'string'
+        'Identifies the user member in the API request. The value can be the user'\''s primary email address, alias, or unique ID.'
+    )
+
 
     if [[ -z "${MEMBERS_HASMEMBER_memberKey}" ]]
     then
@@ -4363,45 +4683,53 @@ members_hasMember() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -4432,49 +4760,60 @@ members_hasMember() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -4528,9 +4867,10 @@ members_insert() {
 
 
     groupKey=( 
- 'string'
- 'Email or immutable ID of the group'
- )
+        'string'
+        'Email or immutable ID of the group'
+    )
+
 
     if [[ -z "${MEMBERS_INSERT_groupKey}" ]]
     then
@@ -4553,45 +4893,53 @@ members_insert() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -4622,49 +4970,60 @@ members_insert() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -4719,9 +5078,10 @@ members_list() {
 
 
     groupKey=( 
- 'string'
- 'Email or immutable ID of the group'
- )
+        'string'
+        'Email or immutable ID of the group'
+    )
+
 
     if [[ -z "${MEMBERS_LIST_groupKey}" ]]
     then
@@ -4744,45 +5104,53 @@ members_list() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -4813,65 +5181,80 @@ members_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -4925,9 +5308,10 @@ members_patch() {
 
 
     groupKey=( 
- 'string'
- 'Email or immutable ID of the group. If ID, it should match with id of group object'
- )
+        'string'
+        'Email or immutable ID of the group. If ID, it should match with id of group object'
+    )
+
 
     if [[ -z "${MEMBERS_PATCH_groupKey}" ]]
     then
@@ -4945,9 +5329,10 @@ members_patch() {
 
     
     memberKey=( 
- 'string'
- 'Email or immutable ID of the user. If ID, it should match with id of member object'
- )
+        'string'
+        'Email or immutable ID of the user. If ID, it should match with id of member object'
+    )
+
 
     if [[ -z "${MEMBERS_PATCH_memberKey}" ]]
     then
@@ -4970,45 +5355,53 @@ members_patch() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -5039,65 +5432,80 @@ members_patch() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -5152,9 +5560,10 @@ members_update() {
 
 
     groupKey=( 
- 'string'
- 'Email or immutable ID of the group. If ID, it should match with id of group object'
- )
+        'string'
+        'Email or immutable ID of the group. If ID, it should match with id of group object'
+    )
+
 
     if [[ -z "${MEMBERS_UPDATE_groupKey}" ]]
     then
@@ -5172,9 +5581,10 @@ members_update() {
 
     
     memberKey=( 
- 'string'
- 'Email or immutable ID of the user. If ID, it should match with id of member object'
- )
+        'string'
+        'Email or immutable ID of the user. If ID, it should match with id of member object'
+    )
+
 
     if [[ -z "${MEMBERS_UPDATE_memberKey}" ]]
     then
@@ -5197,45 +5607,53 @@ members_update() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -5266,65 +5684,80 @@ members_update() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -5379,9 +5812,10 @@ mobiledevices_action() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${MOBILEDEVICES_ACTION_customerId}" ]]
     then
@@ -5399,9 +5833,10 @@ mobiledevices_action() {
 
     
     resourceId=( 
- 'string'
- 'Immutable ID of Mobile Device'
- )
+        'string'
+        'Immutable ID of Mobile Device'
+    )
+
 
     if [[ -z "${MOBILEDEVICES_ACTION_resourceId}" ]]
     then
@@ -5424,45 +5859,53 @@ mobiledevices_action() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -5493,65 +5936,80 @@ mobiledevices_action() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -5606,9 +6064,10 @@ mobiledevices_delete() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${MOBILEDEVICES_DELETE_customerId}" ]]
     then
@@ -5626,9 +6085,10 @@ mobiledevices_delete() {
 
     
     resourceId=( 
- 'string'
- 'Immutable ID of Mobile Device'
- )
+        'string'
+        'Immutable ID of Mobile Device'
+    )
+
 
     if [[ -z "${MOBILEDEVICES_DELETE_resourceId}" ]]
     then
@@ -5651,45 +6111,53 @@ mobiledevices_delete() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -5720,65 +6188,80 @@ mobiledevices_delete() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -5832,9 +6315,10 @@ mobiledevices_get() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${MOBILEDEVICES_GET_customerId}" ]]
     then
@@ -5852,9 +6336,10 @@ mobiledevices_get() {
 
     
     resourceId=( 
- 'string'
- 'Immutable ID of Mobile Device'
- )
+        'string'
+        'Immutable ID of Mobile Device'
+    )
+
 
     if [[ -z "${MOBILEDEVICES_GET_resourceId}" ]]
     then
@@ -5877,50 +6362,59 @@ mobiledevices_get() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -5951,65 +6445,80 @@ mobiledevices_get() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-groups'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 200.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 200.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -6063,9 +6572,10 @@ mobiledevices_list() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${MOBILEDEVICES_LIST_customerId}" ]]
     then
@@ -6088,65 +6598,77 @@ mobiledevices_list() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -6177,77 +6699,95 @@ mobiledevices_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the target organizational unit or its ID'
+        'string'
+        'Full path of the target organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -6301,9 +6841,10 @@ orgunits_delete() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${ORGUNITS_DELETE_customerId}" ]]
     then
@@ -6321,9 +6862,10 @@ orgunits_delete() {
 
     
     orgUnitPath=( 
- 'string'
- 'Full path of the organizational unit or its ID'
- )
+        'string'
+        'Full path of the organizational unit or its ID'
+    )
+
 
     if [[ -z "${ORGUNITS_DELETE_orgUnitPath}" ]]
     then
@@ -6346,65 +6888,77 @@ orgunits_delete() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -6435,77 +6989,95 @@ orgunits_delete() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -6559,9 +7131,10 @@ orgunits_get() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${ORGUNITS_GET_customerId}" ]]
     then
@@ -6579,9 +7152,10 @@ orgunits_get() {
 
     
     orgUnitPath=( 
- 'string'
- 'Full path of the organizational unit or its ID'
- )
+        'string'
+        'Full path of the organizational unit or its ID'
+    )
+
 
     if [[ -z "${ORGUNITS_GET_orgUnitPath}" ]]
     then
@@ -6604,65 +7178,77 @@ orgunits_get() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -6693,77 +7279,95 @@ orgunits_get() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -6817,9 +7421,10 @@ orgunits_insert() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${ORGUNITS_INSERT_customerId}" ]]
     then
@@ -6842,65 +7447,77 @@ orgunits_insert() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -6931,77 +7548,95 @@ orgunits_insert() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -7056,9 +7691,10 @@ orgunits_list() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${ORGUNITS_LIST_customerId}" ]]
     then
@@ -7081,70 +7717,83 @@ orgunits_list() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -7175,81 +7824,100 @@ orgunits_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'the URL-encoded organizational unit'\''s path or its ID'
+        'string'
+        'the URL-encoded organizational unit'\''s path or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'the URL-encoded organizational unit'\''s path or its ID'
+        'string'
+        'the URL-encoded organizational unit'\''s path or its ID'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -7303,9 +7971,10 @@ orgunits_patch() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${ORGUNITS_PATCH_customerId}" ]]
     then
@@ -7323,9 +7992,10 @@ orgunits_patch() {
 
     
     orgUnitPath=( 
- 'string'
- 'Full path of the organizational unit or its ID'
- )
+        'string'
+        'Full path of the organizational unit or its ID'
+    )
+
 
     if [[ -z "${ORGUNITS_PATCH_orgUnitPath}" ]]
     then
@@ -7348,70 +8018,83 @@ orgunits_patch() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -7442,81 +8125,100 @@ orgunits_patch() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -7571,9 +8273,10 @@ orgunits_update() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${ORGUNITS_UPDATE_customerId}" ]]
     then
@@ -7591,9 +8294,10 @@ orgunits_update() {
 
     
     orgUnitPath=( 
- 'string'
- 'Full path of the organizational unit or its ID'
- )
+        'string'
+        'Full path of the organizational unit or its ID'
+    )
+
 
     if [[ -z "${ORGUNITS_UPDATE_orgUnitPath}" ]]
     then
@@ -7616,70 +8320,83 @@ orgunits_update() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -7710,81 +8427,100 @@ orgunits_update() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -7839,9 +8575,10 @@ privileges_list() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${PRIVILEGES_LIST_customer}" ]]
     then
@@ -7864,70 +8601,83 @@ privileges_list() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -7958,81 +8708,100 @@ privileges_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -8086,9 +8855,10 @@ roleAssignments_delete() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${ROLEASSIGNMENTS_DELETE_customer}" ]]
     then
@@ -8106,9 +8876,10 @@ roleAssignments_delete() {
 
     
     roleAssignmentId=( 
- 'string'
- 'Immutable ID of the role assignment.'
- )
+        'string'
+        'Immutable ID of the role assignment.'
+    )
+
 
     if [[ -z "${ROLEASSIGNMENTS_DELETE_roleAssignmentId}" ]]
     then
@@ -8131,70 +8902,83 @@ roleAssignments_delete() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -8225,81 +9009,100 @@ roleAssignments_delete() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -8353,9 +9156,10 @@ roleAssignments_get() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${ROLEASSIGNMENTS_GET_customer}" ]]
     then
@@ -8373,9 +9177,10 @@ roleAssignments_get() {
 
     
     roleAssignmentId=( 
- 'string'
- 'Immutable ID of the role assignment.'
- )
+        'string'
+        'Immutable ID of the role assignment.'
+    )
+
 
     if [[ -z "${ROLEASSIGNMENTS_GET_roleAssignmentId}" ]]
     then
@@ -8398,70 +9203,83 @@ roleAssignments_get() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -8492,81 +9310,100 @@ roleAssignments_get() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -8620,9 +9457,10 @@ roleAssignments_insert() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${ROLEASSIGNMENTS_INSERT_customer}" ]]
     then
@@ -8645,70 +9483,83 @@ roleAssignments_insert() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -8739,81 +9590,100 @@ roleAssignments_insert() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath )
 
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
+        'string'
+        'Email or immutable ID of the user if only those groups are to be listed, the given user is a member of. If it'\''s an ID, it should match with the ID of the user object.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return. Max allowed value is 100.'
+        'integer'
+        'Maximum number of results to return. Max allowed value is 100.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -8868,9 +9738,10 @@ roleAssignments_list() {
 
 
     customer=( 
- 'string'
- 'Immutable ID of the G Suite account.'
- )
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
 
     if [[ -z "${ROLEASSIGNMENTS_LIST_customer}" ]]
     then
@@ -8893,70 +9764,83 @@ roleAssignments_list() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -8987,97 +9871,120 @@ roleAssignments_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -9136,70 +10043,83 @@ string() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -9230,97 +10150,120 @@ string() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -9379,70 +10322,83 @@ Comma separated role values to filter list results on.() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -9473,97 +10429,120 @@ Comma separated role values to filter list results on.() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -9617,9 +10596,10 @@ schemas_delete() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${SCHEMAS_DELETE_customerId}" ]]
     then
@@ -9637,9 +10617,10 @@ schemas_delete() {
 
     
     schemaKey=( 
- 'string'
- 'Name or immutable ID of the schema'
- )
+        'string'
+        'Name or immutable ID of the schema'
+    )
+
 
     if [[ -z "${SCHEMAS_DELETE_schemaKey}" ]]
     then
@@ -9662,70 +10643,83 @@ schemas_delete() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -9756,97 +10750,120 @@ schemas_delete() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -9900,9 +10917,10 @@ schemas_get() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${SCHEMAS_GET_customerId}" ]]
     then
@@ -9920,9 +10938,10 @@ schemas_get() {
 
     
     schemaKey=( 
- 'string'
- 'Name or immutable ID of the schema'
- )
+        'string'
+        'Name or immutable ID of the schema'
+    )
+
 
     if [[ -z "${SCHEMAS_GET_schemaKey}" ]]
     then
@@ -9945,70 +10964,83 @@ schemas_get() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -10039,97 +11071,120 @@ schemas_get() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -10183,9 +11238,10 @@ schemas_insert() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${SCHEMAS_INSERT_customerId}" ]]
     then
@@ -10208,70 +11264,83 @@ schemas_insert() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -10302,97 +11371,120 @@ schemas_insert() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -10447,9 +11539,10 @@ schemas_list() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${SCHEMAS_LIST_customerId}" ]]
     then
@@ -10472,70 +11565,83 @@ schemas_list() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -10566,97 +11672,120 @@ schemas_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -10710,9 +11839,10 @@ schemas_patch() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${SCHEMAS_PATCH_customerId}" ]]
     then
@@ -10730,9 +11860,10 @@ schemas_patch() {
 
     
     schemaKey=( 
- 'string'
- 'Name or immutable ID of the schema.'
- )
+        'string'
+        'Name or immutable ID of the schema.'
+    )
+
 
     if [[ -z "${SCHEMAS_PATCH_schemaKey}" ]]
     then
@@ -10755,70 +11886,83 @@ schemas_patch() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -10849,97 +11993,120 @@ schemas_patch() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -10994,9 +12161,10 @@ schemas_update() {
 
 
     customerId=( 
- 'string'
- 'Immutable ID of the G Suite account'
- )
+        'string'
+        'Immutable ID of the G Suite account'
+    )
+
 
     if [[ -z "${SCHEMAS_UPDATE_customerId}" ]]
     then
@@ -11014,9 +12182,10 @@ schemas_update() {
 
     
     schemaKey=( 
- 'string'
- 'Name or immutable ID of the schema.'
- )
+        'string'
+        'Name or immutable ID of the schema.'
+    )
+
 
     if [[ -z "${SCHEMAS_UPDATE_schemaKey}" ]]
     then
@@ -11039,70 +12208,83 @@ schemas_update() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -11133,97 +12315,120 @@ schemas_update() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
+        'string'
+        'The user'\''s primary email address, alias email address, or unique user ID. If included in the request, returns role assignments only for this user.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -11278,9 +12483,10 @@ tokens_delete() {
 
 
     clientId=( 
- 'string'
- 'The Client ID of the application the token is issued to.'
- )
+        'string'
+        'The Client ID of the application the token is issued to.'
+    )
+
 
     if [[ -z "${TOKENS_DELETE_clientId}" ]]
     then
@@ -11298,9 +12504,10 @@ tokens_delete() {
 
     
     userKey=( 
- 'string'
- 'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
- )
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+    )
+
 
     if [[ -z "${TOKENS_DELETE_userKey}" ]]
     then
@@ -11323,70 +12530,83 @@ tokens_delete() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -11417,97 +12637,120 @@ tokens_delete() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -11561,9 +12804,10 @@ tokens_get() {
 
 
     clientId=( 
- 'string'
- 'The Client ID of the application the token is issued to.'
- )
+        'string'
+        'The Client ID of the application the token is issued to.'
+    )
+
 
     if [[ -z "${TOKENS_GET_clientId}" ]]
     then
@@ -11581,9 +12825,10 @@ tokens_get() {
 
     
     userKey=( 
- 'string'
- 'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
- )
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+    )
+
 
     if [[ -z "${TOKENS_GET_userKey}" ]]
     then
@@ -11606,70 +12851,83 @@ tokens_get() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -11700,97 +12958,120 @@ tokens_get() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -11844,9 +13125,10 @@ tokens_list() {
 
 
     userKey=( 
- 'string'
- 'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
- )
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+    )
+
 
     if [[ -z "${TOKENS_LIST_userKey}" ]]
     then
@@ -11869,70 +13151,83 @@ tokens_list() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -11963,97 +13258,120 @@ tokens_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -12107,9 +13425,10 @@ twoStepVerification_turnOff() {
 
 
     userKey=( 
- 'string'
- 'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
- )
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+    )
+
 
     if [[ -z "${TWOSTEPVERIFICATION_TURNOFF_userKey}" ]]
     then
@@ -12132,70 +13451,83 @@ twoStepVerification_turnOff() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -12226,97 +13558,120 @@ twoStepVerification_turnOff() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -12371,9 +13726,10 @@ users_delete() {
 
 
     userKey=( 
- 'string'
- 'Email or immutable ID of the user'
- )
+        'string'
+        'Email or immutable ID of the user'
+    )
+
 
     if [[ -z "${USERS_DELETE_userKey}" ]]
     then
@@ -12396,70 +13752,83 @@ users_delete() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type )
 
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'Restrict information returned to a set of selected fields.'
-'["PROJECTION_UNDEFINED","BASIC","FULL"]'
+        'string'
+        'Restrict information returned to a set of selected fields.'
+        '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -12490,97 +13859,120 @@ users_delete() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -12634,9 +14026,10 @@ users_get() {
 
 
     userKey=( 
- 'string'
- 'Email or immutable ID of the user'
- )
+        'string'
+        'Email or immutable ID of the user'
+    )
+
 
     if [[ -z "${USERS_GET_userKey}" ]]
     then
@@ -12659,80 +14052,95 @@ users_get() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -12763,101 +14171,125 @@ users_get() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -12916,80 +14348,95 @@ users_insert() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -13020,101 +14467,125 @@ users_insert() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account.'
+        'string'
+        'Immutable ID of the G Suite account.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     query=(
-'string'
-'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
+        'string'
+        'Search string in the format given at http://support.google.com/a/bin/answer.py?answer=1408863#search'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify the next page in the list.'
+        'string'
+        'Token to specify the next page in the list.'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -13174,100 +14645,119 @@ users_list() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -13298,129 +14788,160 @@ users_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -13474,9 +14995,10 @@ users_makeAdmin() {
 
 
     userKey=( 
- 'string'
- 'Email or immutable ID of the user as admin'
- )
+        'string'
+        'Email or immutable ID of the user as admin'
+    )
+
 
     if [[ -z "${USERS_MAKEADMIN_userKey}" ]]
     then
@@ -13499,100 +15021,119 @@ users_makeAdmin() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -13623,129 +15164,160 @@ users_makeAdmin() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user as admin'
+        'string'
+        'Email or immutable ID of the user as admin'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user as admin'
+        'string'
+        'Email or immutable ID of the user as admin'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -13800,9 +15372,10 @@ users_patch() {
 
 
     userKey=( 
- 'string'
- 'Email or immutable ID of the user. If ID, it should match with id of user object'
- )
+        'string'
+        'Email or immutable ID of the user. If ID, it should match with id of user object'
+    )
+
 
     if [[ -z "${USERS_PATCH_userKey}" ]]
     then
@@ -13825,100 +15398,119 @@ users_patch() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -13949,129 +15541,160 @@ users_patch() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user. If ID, it should match with id of user object'
+        'string'
+        'Email or immutable ID of the user. If ID, it should match with id of user object'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user. If ID, it should match with id of user object'
+        'string'
+        'Email or immutable ID of the user. If ID, it should match with id of user object'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -14126,9 +15749,10 @@ users_signOut() {
 
 
     userKey=( 
- 'string'
- 'Identifies the target user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
- )
+        'string'
+        'Identifies the target user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+    )
+
 
     if [[ -z "${USERS_SIGNOUT_userKey}" ]]
     then
@@ -14151,100 +15775,119 @@ users_signOut() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -14275,129 +15918,160 @@ users_signOut() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     userKey=(
-'string'
-'Identifies the target user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the target user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Identifies the target user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the target user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -14452,9 +16126,10 @@ users_undelete() {
 
 
     userKey=( 
- 'string'
- 'The immutable id of the user'
- )
+        'string'
+        'The immutable id of the user'
+    )
+
 
     if [[ -z "${USERS_UNDELETE_userKey}" ]]
     then
@@ -14477,100 +16152,119 @@ users_undelete() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -14601,129 +16295,160 @@ users_undelete() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     userKey=(
-'string'
-'The immutable id of the user'
+        'string'
+        'The immutable id of the user'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'The immutable id of the user'
+        'string'
+        'The immutable id of the user'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -14778,9 +16503,10 @@ users_update() {
 
 
     userKey=( 
- 'string'
- 'Email or immutable ID of the user. If ID, it should match with id of user object'
- )
+        'string'
+        'Email or immutable ID of the user. If ID, it should match with id of user object'
+    )
+
 
     if [[ -z "${USERS_UPDATE_userKey}" ]]
     then
@@ -14803,100 +16529,119 @@ users_update() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUndefined","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUndefined","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUndefined","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUndefined","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["view_type_undefined","admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["view_type_undefined","admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -14927,129 +16672,160 @@ users_update() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user. If ID, it should match with id of user object'
+        'string'
+        'Email or immutable ID of the user. If ID, it should match with id of user object'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user. If ID, it should match with id of user object'
+        'string'
+        'Email or immutable ID of the user. If ID, it should match with id of user object'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -15109,125 +16885,149 @@ users_watch() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType event orderBy projection sortOrder viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
     event=(
-'string'
-'Event on which subscription is intended'
-'["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
+        'string'
+        'Event on which subscription is intended'
+        '["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -15258,157 +17058,195 @@ users_watch() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted customFieldMask customer domain maxResults pageToken query showDeleted )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user. If ID, it should match with id of user object'
+        'string'
+        'Email or immutable ID of the user. If ID, it should match with id of user object'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user. If ID, it should match with id of user object'
+        'string'
+        'Email or immutable ID of the user. If ID, it should match with id of user object'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -15463,9 +17301,10 @@ verificationCodes_generate() {
 
 
     userKey=( 
- 'string'
- 'Email or immutable ID of the user'
- )
+        'string'
+        'Email or immutable ID of the user'
+    )
+
 
     if [[ -z "${VERIFICATIONCODES_GENERATE_userKey}" ]]
     then
@@ -15488,125 +17327,149 @@ verificationCodes_generate() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType event orderBy projection sortOrder viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
     event=(
-'string'
-'Event on which subscription is intended'
-'["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
+        'string'
+        'Event on which subscription is intended'
+        '["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -15637,157 +17500,195 @@ verificationCodes_generate() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted customFieldMask customer domain maxResults pageToken query showDeleted )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -15842,9 +17743,10 @@ verificationCodes_invalidate() {
 
 
     userKey=( 
- 'string'
- 'Email or immutable ID of the user'
- )
+        'string'
+        'Email or immutable ID of the user'
+    )
+
 
     if [[ -z "${VERIFICATIONCODES_INVALIDATE_userKey}" ]]
     then
@@ -15867,125 +17769,149 @@ verificationCodes_invalidate() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType event orderBy projection sortOrder viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
     event=(
-'string'
-'Event on which subscription is intended'
-'["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
+        'string'
+        'Event on which subscription is intended'
+        '["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -16016,157 +17942,195 @@ verificationCodes_invalidate() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted customFieldMask customer domain maxResults pageToken query showDeleted )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Email or immutable ID of the user'
+        'string'
+        'Email or immutable ID of the user'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
@@ -16221,9 +18185,10 @@ verificationCodes_list() {
 
 
     userKey=( 
- 'string'
- 'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
- )
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+    )
+
 
     if [[ -z "${VERIFICATIONCODES_LIST_userKey}" ]]
     then
@@ -16246,125 +18211,149 @@ verificationCodes_list() {
     optParams=( projection orderBy projection sortOrder projection projection orderBy sortOrder projection orderBy projection sortOrder type projection viewType orderBy projection sortOrder viewType event orderBy projection sortOrder viewType )
 
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     type=(
-'string'
-'Whether to return all sub-organizations or just immediate children'
-'["typeUndefined","all","children"]'
+        'string'
+        'Whether to return all sub-organizations or just immediate children'
+        '["typeUndefined","all","children"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
     event=(
-'string'
-'Event on which subscription is intended'
-'["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
+        'string'
+        'Event on which subscription is intended'
+        '["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
     )
+
     orderBy=(
-'string'
-'Column to use for sorting results'
-'["orderByUnspecified","email","familyName","givenName"]'
+        'string'
+        'Column to use for sorting results'
+        '["orderByUnspecified","email","familyName","givenName"]'
     )
+
     projection=(
-'string'
-'What subset of fields to fetch for this user.'
-'["projectionUnspecified","basic","custom","full"]'
+        'string'
+        'What subset of fields to fetch for this user.'
+        '["projectionUnspecified","basic","custom","full"]'
     )
+
     sortOrder=(
-'string'
-'Whether to return results in ascending or descending order.'
-'["sortOrderUnspecified","ASCENDING","DESCENDING"]'
+        'string'
+        'Whether to return results in ascending or descending order.'
+        '["sortOrderUnspecified","ASCENDING","DESCENDING"]'
     )
+
     viewType=(
-'string'
-'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
-'["admin_view","domain_public"]'
+        'string'
+        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        '["admin_view","domain_public"]'
     )
+
 
     echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
     read -r optParChoice
@@ -16395,157 +18384,195 @@ verificationCodes_list() {
     inpParams=( maxResults orgUnitPath pageToken query parentDomainName customer domain maxResults pageToken query userKey includeDerivedMembership maxResults pageToken roles maxResults pageToken query orgUnitPath maxResults pageToken roleId userKey customFieldMask customFieldMask customer domain maxResults pageToken query showDeleted customFieldMask customer domain maxResults pageToken query showDeleted )
 
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     parentDomainName=(
-'string'
-'Name of the parent domain for which domain aliases are to be fetched.'
+        'string'
+        'Name of the parent domain for which domain aliases are to be fetched.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     userKey=(
-'string'
-'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
     includeDerivedMembership=(
-'boolean'
-'Whether to list indirect memberships. Default: false.'
+        'boolean'
+        'Whether to list indirect memberships. Default: false.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roles=(
-'string'
-'Comma separated role values to filter list results on.'
+        'string'
+        'Comma separated role values to filter list results on.'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     orgUnitPath=(
-'string'
-'Full path of the organizational unit or its ID'
+        'string'
+        'Full path of the organizational unit or its ID'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     roleId=(
-'string'
-'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
+        'string'
+        'Immutable ID of a role. If included in the request, returns only role assignments containing this role ID.'
     )
+
     userKey=(
-'string'
-'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
+        'string'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
     customFieldMask=(
-'string'
-'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'string'
+        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
     )
+
     customer=(
-'string'
-'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'string'
+        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
     )
+
     domain=(
-'string'
-'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
+        'string'
+        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead."'
     )
+
     maxResults=(
-'integer'
-'Maximum number of results to return.'
+        'integer'
+        'Maximum number of results to return.'
     )
+
     pageToken=(
-'string'
-'Token to specify next page in the list'
+        'string'
+        'Token to specify next page in the list'
     )
+
     query=(
-'string'
-'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'string'
+        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
     )
+
     showDeleted=(
-'string'
-'If set to true, retrieves the list of deleted users. (Default: false)'
+        'string'
+        'If set to true, retrieves the list of deleted users. (Default: false)'
     )
+
 
     echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
     read -r inpParChoice
