@@ -57,6 +57,15 @@ cat << EOF >> ${outputExecWiz}
     gapicSavedPar="\${gapicDataDir}.api_params"
 
 gapicBootstrap() {
+    if ! [[ -d \${gapicBinDir} ]]
+    then 
+        mkdir -p \${gapicBinDir}
+    fi
+
+    if ! [[ -d \${gapicDataDir} ]]
+    then 
+        mkdir -p \${gapicDataDir}
+    fi
 
     if ! [[ -f \${gapicCredsWiz} ]]
     then
@@ -380,7 +389,7 @@ checkAccess() {
 
             echo -e "# Request sent:\n\n"
             echo -e "#########################\n"
-            echo "\${sentRequest}"
+            echo \${(qqq)sentRequest}
             echo -e "\n\n"
             echo -e "#########################\n"
 
@@ -631,6 +640,80 @@ done
 
 
 
+# define functions to collect variables
+
+    cat << EOF >> "${outputLibWiz}"
+
+getParams() {
+    local tempPar=\${1}
+
+    if [[ -z \${(P)\${tempPar}[3]} ]]
+    then
+        echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempPar}[1]}).\n#\n# Desc: \${(P)\${tempPar}[2]}\n~> "
+        read -r PARAM_\${tempPar}
+        export PARAM_\${tempPar}
+        clear
+
+    else
+        tempOpts=(\`echo \${(PQ)\${tempPar}[3]} | jq -r ".[]"\`)
+        echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempPar}[1]}).\n#\n# Desc: \${(P)\${tempPar}[2]}\n"
+        select getOption in \${tempOpts}
+        do
+            if [[ -n \${getOption} ]]
+            then
+                declare -g "PARAM_\${tempPar}=\${getOption}"
+                clear
+                break
+            fi
+        done
+        unset getOption 
+    fi
+
+    declare -g "\${tempPar}=\${PARAM_\${tempPar}}"
+
+    if [[ -f \${credFileParams} ]]
+    then
+        if ! [[ \`grep "PARAM_\${tempPar}=\${tempPar}" \${credFileParams}\` ]]
+        then
+            cat << EOIF >> \${credFileParams}
+PARAM_\${tempPar}=\${tempPar}
+EOIF
+        fi
+
+    else
+        touch \${credFileParams}
+        cat << EOIF >> \${credFileParams}
+PARAM_\${tempPar}=\${tempPar}
+EOIF
+    fi
+
+    unset tempPar
+}
+
+
+
+
+checkParams() {
+    local tempPar=\${1}
+    echo -en "# Do you want to reuse last saved domain parameter: \${PARAM_\${tempPar}}? [y/n]\n~> "
+    read -r reuseParOpt
+    clear
+    if ! [[ \${reuseParOpt} =~ "n" ]] \\
+    && ! [[ \${reuseParOpt} =~ "N" ]]
+    then
+        declare -g "\${tempPar}=\${PARAM_\${tempPar}}"
+        declare -g "\${tempPar}=\${PARAM_\${tempPar}}"
+    else
+        getParams \${tempPar}
+    fi
+    unset tempPar reuseParOpt
+}
+
+
+EOF
+
+
+
 # loop through all resources
 
 for (( c = 1 ; c <= ${#apiSets[@]} ; c++ ))
@@ -666,6 +749,24 @@ do
 
         for (( e = 1 ; e <= ${#curParams[@]} ; e++ ))
         do
+
+            # check required (mandatory) parameters
+            # exceptions are being added manually (needs manual verification per API resource/method)
+            if ! [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.required"` =~ "null" ]]
+            then
+                # build an array with required parameters
+                curReqParams+=("${curParams[$e]}")
+                
+                # define temp variables for type and description
+                local curTempType=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.type"`
+                local curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
+
+                # store the variables in an array with the same name as the parameter, unset temp vars
+                set -A "${curParams[$e]}" "${curTempType}" "${curTempDesc}"
+                unset curTempType curTempDesc
+            fi
+
+
             # check enum parameters (for options), in case the property exists (isn't null)
             if ! [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.enum"` =~ "null" ]]
             then
@@ -682,30 +783,10 @@ do
                 unset curTempEnum curTempType curTempDesc
             fi
 
-            # check required (mandatory) parameters
-            # exceptions are being added manually (needs manual verification per API resource/method)
-            if ! [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.required"` =~ "null" ]] \
-            || [[ ${curParams[$e]} =~ "domain" ]] \
-            || [[ ${curParams[$e]} =~ "customer" ]]
-            then
-                # build an array with required parameters
-                curReqParams+=("${curParams[$e]}")
-                
-                # define temp variables for type and description
-                local curTempType=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.type"`
-                local curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
-
-                # store the variables in an array with the same name as the parameter, unset temp vars
-                set -A "${curParams[$e]}" "${curTempType}" "${curTempDesc}"
-                unset curTempType curTempDesc
-            fi
-
             # collect input parameters (leftovers), which are those that require user input
             # (there isn't a default or preset option, requires user to populate the field)
             if [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.enum"` =~ "null" ]] \
-            && [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.required"` =~ "null" ]] \
-            && ! [[ ${curParams[$e]} =~ "domain" ]] \
-            && ! [[ ${curParams[$e]} =~ "customer" ]]
+            && [[ `echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.required"` =~ "null" ]]
             then
                 # define an array with input parameters
                 curInpParams+=("${curParams[$e]}")
@@ -818,197 +899,97 @@ EOF
 ### TODO
 # start rebuilding the functions 
 # Reference JSON object in ${(P)${(P)apiSets[$c]}[$d][3]}
-#
+# add ClientID as a parameter
 
+    if ! [[ -z ${curReqParams} ]]
+    then
 
-
-        # Function's required parameters
+        # Push each required parameter into the function
+        # If a saved variable exists, load it and ask to reuse
+        # else, collect and store it
         for (( h = 1 ; h <= ${#curReqParams[@]} ; h++ ))
         do
-            if ! [[ ${curReqParams[$h]} =~ "ACCESSTOKEN" ]] \
-                && ! [[ ${curReqParams[$h]} =~ "CLIENTID" ]]
-            then
+            
+            cat << EOF >> "${outputLibWiz}"
+    ${curReqParams[$h]}=( 
+EOF
+            for (( i = 1 ; i <= ${(P)#${curReqParams[$h]}[@]} ; i++ ))
+            do
                 cat << EOF >> "${outputLibWiz}"
+ ${(Pqq)${curReqParams[$h]}[$i]}
+EOF
+            done
+            cat << EOF >> "${outputLibWiz}"
+ )
+EOF
+    
+            cat << EOF >> "${outputLibWiz}"
 
     if [[ -z "\${${curPrefix}${curReqParams[$h]}}" ]]
     then
-
-        if ! [[ -z "\${SAVED_REQPAR}" ]] \\
-        && [[ \${SAVED_REQPAR} =~ "${curReqParams[$h]}" ]]
+        if ! [[ -z "\${PARAM_${curReqParams[$h]}}" ]]
         then 
-            echo -en "# Do you want to reuse last saved ${curReqParams[$h]}: \${SAVED_REQVAL}? [y/n]\n~> "
-            read -r reuseReqParOpt
-            clear
-
-            if ! [[ \${reuseReqParOpt} =~ "n" ]] \\
-            && ! [[ \${reuseReqParOpt} =~ "N" ]]
-            then
-                ${curPrefix}REQPAR=\${SAVED_REQPAR}
-                ${curPrefix}REQVAL=\${SAVED_REQVAL}
-                declare -g "${curPrefix}${curReqParams[$h]}=\${SAVED_REQVAL}"
-            else
-                echo -en "# Please supply ${curReqParams[$h]}.\n~> "
-                read -r ${curPrefix}${curReqParams[$h]}
-                clear
-                declare -g "SAVED_REQPAR=${curReqParams[$h]}"
-                declare -g "SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}"
-
-
-                if [[ -f \${credFileParams} ]] \\
-                && ! [[ \`grep "SAVED_REQPAR=${curReqParams[$h]}" \${credFileParams}\` ]] \\
-                && ! [[ \`grep "SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}" \${credFileParams}\` ]]
-                then
-                    cat << EOIF >> \${credFileParams}
-SAVED_REQPAR=${curReqParams[$h]}
-SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}
-EOIF
-                fi
-            fi
+            checkParams ${curReqParams[$h]}
+            
         else
-            echo -en "# Please supply ${curReqParams[$h]}.\n~> "
-            read -r ${curPrefix}${curReqParams[$h]}
-            clear
-            declare -g "SAVED_REQPAR=${curReqParams[$h]}"
-            declare -g "SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}"
-
-            if [[ -f \${credFileParams} ]] \\
-            && ! [[ \`grep "SAVED_REQPAR=${curReqParams[$h]}" \${credFileParams}\` ]] \\
-            && ! [[ \`grep "SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}" \${credFileParams}\` ]]
-            then
-                cat << EOIF >> \${credFileParams}
-SAVED_REQPAR=${curReqParams[$h]}
-SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}
-EOIF
-            fi
+            getParams ${curReqParams[$h]}
         fi
-    fi
-EOF
+        declare -g "${curPrefix}${curReqParams[$h]}=\${PARAM_${curReqParams[$h]}}"
+        declare -g "${curReqParams[$h]}=\${PARAM_${curReqParams[$h]}}"
 
-                fi
-            done
+    fi
+
+    
+EOF
+        done
+    fi
 
         # Place URL
-        cat << EOF >> ${outputLibWiz}
+    cat << EOF >> ${outputLibWiz}
 
     ${curPrefix}URL="${curUrl}"
 
 EOF
 
-        # Function's custom parameters (mandatory)
 
-        if ! [[ -z ${curCustParams} ]]
-        then
-
-
-            for (( i = 1 ; i <= ${#curCustParams[@]} ; i++ ))
-            do
-                if [[ ${i} -eq 1 ]]
-                then
-
-                    cat << EOF >> ${outputLibWiz}
-    if [[ -z \${${curPrefix}${curCustParams[$i]:u}} ]] \\
-EOF
-                elif [[ ${i} -eq ${#curCustParams[@]} ]]
-                then
-
-                    cat << EOF >> ${outputLibWiz}
-    && [[ -z \${${curPrefix}${curCustParams[$i]:u}} ]]
-EOF
-                else
-
-                    cat << EOF >> ${outputLibWiz}
-    && [[ -z \${${curPrefix}${curCustParams[$i]:u}} ]] \\
-EOF
-                fi
-            done
-        cat << EOF >> ${outputLibWiz}
+        # Push each optional parameter into the function
+        # If a saved variable exists, load it and ask to reuse
+        # else, collect and store it
+    if ! [[ -z ${curOptParams} ]]
     then
-        echo -e "# Mandatory to define one of the following parameters:"
-        select option in ${curCustParams}
-        do
-            if [[ -n \${option} ]]
-            then
-                customParameterOption=\${option}
-                clear
-                break
-            fi
-        done
-        if [[ \${SAVED_CUSTPAR} =~ \${customParameterOption} ]] \\
-        && ! [[ -z \${SAVED_CUSTVAL} ]]
-        then
-            echo -en "# Would you like to use your saved \${SAVED_CUSTPAR}: \${SAVED_CUSTVAL}? [y/n]\n\n~> "
-            read -r reuseCustParOpt
-            clear
+        cat << EOF >> "${outputLibWiz}"
+    optParams=( ${curOptParams} )
 
-            if ! [[ \${reuseCustParOpt} =~ "n" ]] \\
-            && ! [[ \${reuseCustParOpt} =~ "N" ]]
-            then
-                ${curPrefix}CUSTPAR=\${SAVED_CUSTPAR}
-                ${curPrefix}CUSTVAL=\${SAVED_CUSTVAL}
-                ${curPrefix}URL+="&\${${curPrefix}CUSTPAR}=\${${curPrefix}CUSTVAL}"
-            else
-
-                declare -g "${curPrefix}CUSTPAR=\${customParameterOption}"
-                declare -g "SAVED_CUSTPAR=\${customParameterOption}"
-                
-                echo -en "# Please supply \${customParameterOption:u}.\n\n~> "
-                read -r ${curPrefix}CUSTVAL 
-                clear
-                declare -g "SAVED_CUSTVAL=\${${curPrefix}CUSTVAL}"
-                ${curPrefix}URL+="&\${${curPrefix}CUSTPAR}=\${${curPrefix}CUSTVAL}"
-            fi
-        else
-            declare -g "${curPrefix}CUSTPAR=\${customParameterOption}"
-            declare -g "SAVED_CUSTPAR=\${customParameterOption}"
-            echo -en "# Please supply \${customParameterOption:u}.\n\n~> "
-            read -r ${curPrefix}CUSTVAL
-            clear
-
-            declare -g "SAVED_CUSTVAL=\${${curPrefix}CUSTVAL}"
-            ${curPrefix}URL+="&\${${curPrefix}CUSTPAR}=\${${curPrefix}CUSTVAL}"
-        fi
-
-        if [[ -f \${credFileParams} ]] \\
-        && ! [[ \`grep "SAVED_CUSTPAR=\${${curPrefix}CUSTPAR}" \${credFileParams}\` ]]
-        then
-            cat << EOIF >> \${credFileParams}
-SAVED_CUSTPAR=\${${curPrefix}CUSTPAR}
-EOIF
-        fi
-
-
-        if [[ -f \${credFileParams} ]] \\
-        && ! [[ \`grep "SAVED_CUSTVAL=\${${curPrefix}CUSTVAL}" \${credFileParams}\` ]]
-        then
-            cat << EOIF >> \${credFileParams}
-SAVED_CUSTVAL=\${${curPrefix}CUSTVAL}
-EOIF
-        fi
-        clear
-    fi
 EOF
+        for (( h = 1 ; h <= ${#curOptParams[@]} ; h++ ))
+        do
+            cat << EOF >> "${outputLibWiz}"
+    ${curOptParams[$h]}=(
+EOF
+            for (( i = 1 ; i <= ${(P)#${curOptParams[$h]}[@]} ; i++ ))
+            do
+                cat << EOF >> "${outputLibWiz}"
+${(Pqq)${curOptParams[$h]}[$i]}
+EOF
+            done
+            cat << EOF >> "${outputLibWiz}"
+    )
+EOF
+        done
 
-        fi
+        cat << EOF >> "${outputLibWiz}"
 
-
-
-# Define optional input parameters
-### Define arrays in file
-
-
-    cat << EOF >> ${outputLibWiz}
-
-    echo -en "# Would you like to define extra input parameters? [y/n] \n~> "
-    read -r inputParChoice
+    echo -en "# Would you like to define extra parameters? [y/n] \n\${optParams}\n\n~> "
+    read -r optParChoice
     clear
 
 
-    if [[ \${inputParChoice} =~ "y" ]] || [[ \${inputParChoice} =~ "Y" ]]
+    if [[ \${optParChoice} =~ "y" ]] || [[ \${optParChoice} =~ "Y" ]]
     then
-        for (( i = 1 ; i <= ${#curInpParams[@]} ; i++ ))
+        for (( i = 1 ; i <= \${#optParams[@]} ; i++ ))
         do
 
-            select option in ${curInpParams} none
+            select option in \${optParams} none
             do
                 if [[ -n \${option} ]]
                 then
@@ -1017,52 +998,52 @@ EOF
                         clear
                         break 2
                     else
-                        clear
-                        echo -en "# Define \${option}:\n~> "
-                        read -r inParDef
-                        clear
-
-                        declare -g "${curPrefix}PAR_\${option:u}=\${inParDef}"
-                        declare -g "SAVED_PAR_\${option:u}=\${inParDef}"
-
-                        ${curPrefix}URL+="&\${option}=\${inParDef}"
-
-                        break
+                        getParams \${option}
+                        ${curPrefix}URL+="&\${option}=\${PARAM_\${option}}"
                     fi
                 fi
             done
         done
     fi
-
-    unset inputParChoice option
 EOF
+    fi
 
-if ! [[ -z ${curOptParams} ]]
-then
-    cat << EOF >> ${outputLibWiz}
+    if ! [[ -z ${curInpParams} ]]
+    then
 
-    ${curPrefix}OPTPARAMS=( ${curOptParams[@]} )
+        cat << EOF >> "${outputLibWiz}"
+    inpParams=( ${curInpParams} )
+
 EOF
-
-for (( j = 1 ; j <= ${#curOptParams[@]} ; j++ ))
-do
-    cat << EOF >> ${outputLibWiz}
-    ${curOptParams[j]}=( ${(P)curOptParams[j]} )
+        for (( h = 1 ; h <= ${#curInpParams[@]} ; h++ ))
+        do
+            cat << EOF >> "${outputLibWiz}"
+    ${curInpParams[$h]}=(
 EOF
-done
+            for (( i = 1 ; i <= ${(P)#${curInpParams[$h]}[@]} ; i++ ))
+            do
+                cat << EOF >> "${outputLibWiz}"
+${(Pqq)${curInpParams[$h]}[$i]}
+EOF
+            done
+            cat << EOF >> "${outputLibWiz}"
+    )
+EOF
+        done
 
-    cat << EOF >> ${outputLibWiz}
+        cat << EOF >> "${outputLibWiz}"
 
-    echo -en "# Would you like to define any of these preset parameters? [y/n]\n~> "
-    read -r inputOptChoice
+    echo -en "# Would you like to define input parameters? [y/n] \n\${inpParams}\n\n~> "
+    read -r inpParChoice
     clear
 
-    if [[ \${inputOptChoice} =~ "y" ]] || [[ \${inputOptChoice} =~ "Y" ]]
+
+    if [[ \${inpParChoice} =~ "y" ]] || [[ \${inpParChoice} =~ "Y" ]]
     then
-        for (( i = 1 ; i <= ${#curOptParams[@]} ; i++ ))
+        for (( i = 1 ; i <= \${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${curOptParams} none
+            select option in \${inpParams} none
             do
                 if [[ -n \${option} ]]
                 then
@@ -1071,36 +1052,291 @@ done
                         clear
                         break 2
                     else
-                        select sec_option in \${(P)option} none
-                        do
-                            if [[ -n \${sec_option} ]]
-                            then
-                                if [[ \${sec_option} =~ "none" ]]
-                                then
-                                    clear
-                                    break 2
-                                else
-                                    clear
-                                    declare -g "${curPrefix}PAR_NAME=\${option}"
-                                    declare -g "${curPrefix}PAR_VAL=\${sec_option}"
-                                    declare -g "SAVED_PAR_NAME=\${option}"
-                                    declare -g "SAVED_PAR_VAL=\${sec_option}"
-                                    ${curPrefix}URL+="&\${option}=\${sec_option}"
-                                    break 2
-                                fi
-                            fi
-                        done
+                        getParams \${option}
+                        ${curPrefix}URL+="&\${option}=\${PARAM_\${option}}"                        
                     fi
                 fi
             done
         done
     fi
-
-    unset inputParChoice
-
-
 EOF
-fi
+    fi
+
+
+#        # Function's required parameters
+#        for (( h = 1 ; h <= ${#curReqParams[@]} ; h++ ))
+#        do
+#            if ! [[ ${curReqParams[$h]} =~ "ACCESSTOKEN" ]] \
+#                && ! [[ ${curReqParams[$h]} =~ "CLIENTID" ]]
+#            then
+#                cat << EOF >> "${outputLibWiz}"
+#
+#    if [[ -z "\${${curPrefix}${curReqParams[$h]}}" ]]
+#    then
+#
+#        if ! [[ -z "\${SAVED_REQPAR}" ]] \\
+#        && [[ \${SAVED_REQPAR} =~ "${curReqParams[$h]}" ]]
+#        then 
+#            echo -en "# Do you want to reuse last saved ${curReqParams[$h]}: \${SAVED_REQVAL}? [y/n]\n~> "
+#            read -r reuseReqParOpt
+#            clear
+#
+#            if ! [[ \${reuseReqParOpt} =~ "n" ]] \\
+#            && ! [[ \${reuseReqParOpt} =~ "N" ]]
+#            then
+#                ${curPrefix}REQPAR=\${SAVED_REQPAR}
+#                ${curPrefix}REQVAL=\${SAVED_REQVAL}
+#                declare -g "${curPrefix}${curReqParams[$h]}=\${SAVED_REQVAL}"
+#            else
+#                echo -en "# Please supply ${curReqParams[$h]}.\n~> "
+#                read -r ${curPrefix}${curReqParams[$h]}
+#                clear
+#                declare -g "SAVED_REQPAR=${curReqParams[$h]}"
+#                declare -g "SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}"
+#
+#
+#                if [[ -f \${credFileParams} ]] \\
+#                && ! [[ \`grep "SAVED_REQPAR=${curReqParams[$h]}" \${credFileParams}\` ]] \\
+#                && ! [[ \`grep "SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}" \${credFileParams}\` ]]
+#                then
+#                    cat << EOIF >> \${credFileParams}
+#SAVED_REQPAR=${curReqParams[$h]}
+#SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}
+#EOIF
+#                fi
+#            fi
+#        else
+#            echo -en "# Please supply ${curReqParams[$h]}.\n~> "
+#            read -r ${curPrefix}${curReqParams[$h]}
+#            clear
+#            declare -g "SAVED_REQPAR=${curReqParams[$h]}"
+#            declare -g "SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}"
+#
+#            if [[ -f \${credFileParams} ]] \\
+#            && ! [[ \`grep "SAVED_REQPAR=${curReqParams[$h]}" \${credFileParams}\` ]] \\
+#            && ! [[ \`grep "SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}" \${credFileParams}\` ]]
+#            then
+#                cat << EOIF >> \${credFileParams}
+#SAVED_REQPAR=${curReqParams[$h]}
+#SAVED_REQVAL=\${${curPrefix}${curReqParams[$h]}}
+#EOIF
+#            fi
+#        fi
+#    fi
+#EOF
+#
+#                fi
+#            done
+#
+
+
+#        # Function's custom parameters (mandatory)
+#
+#        if ! [[ -z ${curCustParams} ]]
+#        then
+#
+#
+#            for (( i = 1 ; i <= ${#curCustParams[@]} ; i++ ))
+#            do
+#                if [[ ${i} -eq 1 ]]
+#                then
+#
+#                    cat << EOF >> ${outputLibWiz}
+#    if [[ -z \${${curPrefix}${curCustParams[$i]:u}} ]] \\
+#EOF
+#                elif [[ ${i} -eq ${#curCustParams[@]} ]]
+#                then
+#
+#                    cat << EOF >> ${outputLibWiz}
+#    && [[ -z \${${curPrefix}${curCustParams[$i]:u}} ]]
+#EOF
+#                else
+#
+#                    cat << EOF >> ${outputLibWiz}
+#    && [[ -z \${${curPrefix}${curCustParams[$i]:u}} ]] \\
+#EOF
+#                fi
+#            done
+#        cat << EOF >> ${outputLibWiz}
+#    then
+#        echo -e "# Mandatory to define one of the following parameters:"
+#        select option in ${curCustParams}
+#        do
+#            if [[ -n \${option} ]]
+#            then
+#                customParameterOption=\${option}
+#                clear
+#                break
+#            fi
+#        done
+#        if [[ \${SAVED_CUSTPAR} =~ \${customParameterOption} ]] \\
+#        && ! [[ -z \${SAVED_CUSTVAL} ]]
+#        then
+#            echo -en "# Would you like to use your saved \${SAVED_CUSTPAR}: \${SAVED_CUSTVAL}? [y/n]\n\n~> "
+#            read -r reuseCustParOpt
+#            clear
+#
+#            if ! [[ \${reuseCustParOpt} =~ "n" ]] \\
+#            && ! [[ \${reuseCustParOpt} =~ "N" ]]
+#            then
+#                ${curPrefix}CUSTPAR=\${SAVED_CUSTPAR}
+#                ${curPrefix}CUSTVAL=\${SAVED_CUSTVAL}
+#                ${curPrefix}URL+="&\${${curPrefix}CUSTPAR}=\${${curPrefix}CUSTVAL}"
+#            else
+#
+#                declare -g "${curPrefix}CUSTPAR=\${customParameterOption}"
+#                declare -g "SAVED_CUSTPAR=\${customParameterOption}"
+#                
+#                echo -en "# Please supply \${customParameterOption:u}.\n\n~> "
+#                read -r ${curPrefix}CUSTVAL 
+#                clear
+#                declare -g "SAVED_CUSTVAL=\${${curPrefix}CUSTVAL}"
+#                ${curPrefix}URL+="&\${${curPrefix}CUSTPAR}=\${${curPrefix}CUSTVAL}"
+#            fi
+#        else
+#            declare -g "${curPrefix}CUSTPAR=\${customParameterOption}"
+#            declare -g "SAVED_CUSTPAR=\${customParameterOption}"
+#            echo -en "# Please supply \${customParameterOption:u}.\n\n~> "
+#            read -r ${curPrefix}CUSTVAL
+#            clear
+#
+#            declare -g "SAVED_CUSTVAL=\${${curPrefix}CUSTVAL}"
+#            ${curPrefix}URL+="&\${${curPrefix}CUSTPAR}=\${${curPrefix}CUSTVAL}"
+#        fi
+#
+#        if [[ -f \${credFileParams} ]] \\
+#        && ! [[ \`grep "SAVED_CUSTPAR=\${${curPrefix}CUSTPAR}" \${credFileParams}\` ]]
+#        then
+#            cat << EOIF >> \${credFileParams}
+#SAVED_CUSTPAR=\${${curPrefix}CUSTPAR}
+#EOIF
+#        fi
+#
+#
+#        if [[ -f \${credFileParams} ]] \\
+#        && ! [[ \`grep "SAVED_CUSTVAL=\${${curPrefix}CUSTVAL}" \${credFileParams}\` ]]
+#        then
+#            cat << EOIF >> \${credFileParams}
+#SAVED_CUSTVAL=\${${curPrefix}CUSTVAL}
+#EOIF
+#        fi
+#        clear
+#    fi
+#EOF
+#
+#        fi
+#
+#
+#
+## Define optional input parameters
+#### Define arrays in file
+#
+#
+#    cat << EOF >> ${outputLibWiz}
+#
+#    echo -en "# Would you like to define extra input parameters? [y/n] \n~> "
+#    read -r inputParChoice
+#    clear
+#
+#
+#    if [[ \${inputParChoice} =~ "y" ]] || [[ \${inputParChoice} =~ "Y" ]]
+#    then
+#        for (( i = 1 ; i <= ${#curInpParams[@]} ; i++ ))
+#        do
+#
+#            select option in ${curInpParams} none
+#            do
+#                if [[ -n \${option} ]]
+#                then
+#                    if [[ \${option} =~ "none" ]]
+#                    then
+#                        clear
+#                        break 2
+#                    else
+#                        clear
+#                        echo -en "# Define \${option}:\n~> "
+#                        read -r inParDef
+#                        clear
+#
+#                        declare -g "${curPrefix}PAR_\${option:u}=\${inParDef}"
+#                        declare -g "SAVED_PAR_\${option:u}=\${inParDef}"
+#
+#                        ${curPrefix}URL+="&\${option}=\${inParDef}"
+#
+#                        break
+#                    fi
+#                fi
+#            done
+#        done
+#    fi
+#
+#    unset inputParChoice option
+#EOF
+#
+#if ! [[ -z ${curOptParams} ]]
+#then
+#    cat << EOF >> ${outputLibWiz}
+#
+#    ${curPrefix}OPTPARAMS=( ${curOptParams[@]} )
+#EOF
+#
+#for (( j = 1 ; j <= ${#curOptParams[@]} ; j++ ))
+#do
+#    cat << EOF >> ${outputLibWiz}
+#    ${curOptParams[j]}=( ${(P)curOptParams[j]} )
+#EOF
+#done
+#
+#    cat << EOF >> ${outputLibWiz}
+#
+#    echo -en "# Would you like to define any of these preset parameters? [y/n]\n~> "
+#    read -r inputOptChoice
+#    clear
+#
+#    if [[ \${inputOptChoice} =~ "y" ]] || [[ \${inputOptChoice} =~ "Y" ]]
+#    then
+#        for (( i = 1 ; i <= ${#curOptParams[@]} ; i++ ))
+#        do
+#
+#            select option in ${curOptParams} none
+#            do
+#                if [[ -n \${option} ]]
+#                then
+#                    if [[ \${option} =~ "none" ]]
+#                    then
+#                        clear
+#                        break 2
+#                    else
+#                        select sec_option in \${(P)option} none
+#                        do
+#                            if [[ -n \${sec_option} ]]
+#                            then
+#                                if [[ \${sec_option} =~ "none" ]]
+#                                then
+#                                    clear
+#                                    break 2
+#                                else
+#                                    clear
+#                                    declare -g "${curPrefix}PAR_NAME=\${option}"
+#                                    declare -g "${curPrefix}PAR_VAL=\${sec_option}"
+#                                    declare -g "SAVED_PAR_NAME=\${option}"
+#                                    declare -g "SAVED_PAR_VAL=\${sec_option}"
+#                                    ${curPrefix}URL+="&\${option}=\${sec_option}"
+#                                    break 2
+#                                fi
+#                            fi
+#                        done
+#                    fi
+#                fi
+#            done
+#        done
+#    fi
+#
+#    unset inputParChoice
+#
+#
+#EOF
+#fi
 
 
 # Define curl
@@ -1113,19 +1349,23 @@ cat << EOF >> ${outputLibWiz}
         \${${curPrefix}URL} \\
 EOF
 
-sentRequest="curl -s \n    --request ${curMethod} \n    \${${curPrefix}URL} \n"
+sentRequest="curl -s \ \\n    --request ${curMethod} \ \\n    \${${curPrefix}URL} \ \\n"
 
-for (( k = 1 ; k <= ${#curHeaders[@]} ; k++ ))
+for (( k = 1 ; k <= ${#curHeaderSet[@]} ; k++ ))
 do
     cat << EOF >> ${outputLibWiz}
-        --header ${curHeaders[$k]} \\
+        --header ${(qqq)curHeaderSet[$k]} \\
 EOF
-sentRequest+="    --header ${curHeaders[$k]//\"/\\\"}\n"
-
+sentRequest+="    --header ${(qqq)curHeaderSet[$k]} \ \\n"
 done
+
+### TODO
+# add post request support: --data "{JSON}"
+
+
 sentRequest+="    --compressed"
 
-unset k curHeaders
+unset k curHeaderSet
 
 cat << EOF >> ${outputLibWiz}
         --compressed \\
@@ -1133,7 +1373,7 @@ cat << EOF >> ${outputLibWiz}
         | read -r outputJson
         export outputJson
 
-        sentRequest="${sentRequest}"
+        sentRequest=${(qqq)sentRequest}
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"

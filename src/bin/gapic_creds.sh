@@ -165,7 +165,7 @@ checkAccess() {
 
             echo -e "# Request sent:\n\n"
             echo -e "#########################\n"
-            echo "${sentRequest}"
+            echo ${(qqq)sentRequest}
             echo -e "\n\n"
             echo -e "#########################\n"
 

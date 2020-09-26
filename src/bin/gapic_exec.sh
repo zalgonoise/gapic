@@ -11,6 +11,15 @@
     gapicSavedPar="${gapicDataDir}.api_params"
 
 gapicBootstrap() {
+    if ! [[ -d ${gapicBinDir} ]]
+    then 
+        mkdir -p ${gapicBinDir}
+    fi
+
+    if ! [[ -d ${gapicDataDir} ]]
+    then 
+        mkdir -p ${gapicDataDir}
+    fi
 
     if ! [[ -f ${gapicCredsWiz} ]]
     then
