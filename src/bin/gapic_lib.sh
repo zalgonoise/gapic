@@ -32,8 +32,9 @@ getParams() {
     if [[ -z ${(P)${tempMeta}[3]} ]]
     then
         echo -en "# Please supply a value for the ${tempPar} parameter (${(P)${tempMeta}[1]}).\n#\n# Desc: ${(P)${tempMeta}[2]}\n~> "
-        read -r ${tempVal}
-        export ${tempVal}
+        read -r getOption
+        declare -g "tempVal=${getOption}"
+        unset getOption 
         clear
 
     else
@@ -61,30 +62,29 @@ getParams() {
             declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
         fi
 
-    fi
 
-    if [[ -f ${credFileParams} ]]
-    then
-        if ! [[ `grep "${tempCarrier}" ${credFileParams}` ]]
-        then 
+        if [[ -f ${credFileParams} ]]
+        then
+            if ! [[ `grep "${tempCarrier}" ${credFileParams}` ]]
+            then 
+                cat << EOIF >> ${credFileParams}
+${tempCarrier}=( ${(P)${tempPar}} )
+EOIF
+            else 
+                if ! [[ `egrep "\<${tempCarrier}\>.*\<${(P)${tempPar}}\>" ${credFileParams}` ]]
+                then
+                    cat << EOIF >> ${credFileParams}
+${tempCarrier}+=( ${(P)${tempPar}} )
+EOIF
+                fi
+            fi
+        else
+            touch ${credFileParams}
             cat << EOIF >> ${credFileParams}
 ${tempCarrier}=( ${(P)${tempPar}} )
 EOIF
-        else 
-            if ! [[ `egrep "\<${tempCarrier}\>.*\<${(P)${tempPar}}\>" ${credFileParams}` ]]
-            then
-                cat << EOIF >> ${credFileParams}
-${tempCarrier}+=( ${(P)${tempPar}} )
-EOIF
-            fi
         fi
-    else
-        touch ${credFileParams}
-        cat << EOIF >> ${credFileParams}
-${tempCarrier}=( ${(P)${tempPar}} )
-EOIF
     fi
-
     unset tempPar tempCarrier tempVal
 }
 
