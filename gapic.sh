@@ -461,18 +461,12 @@ EOIF
                 | jq -c '.' \\
                 | read -r authPayload
 
-            if ! [[ \`echo \${authPayload} | jq '.refresh_token'\` =~ "null" ]] \\
-            && ! [[ \`echo \${authPayload} | jq '.access_token'\` =~ "null" ]]
+            if ! [[ \`echo \${authPayload} | jq '.access_token'\` =~ "null" ]]
             then 
-                REFRESHTOKEN=\`echo \${authPayload} | jq '.refresh_token'\`
                 ACCESSTOKEN=\`echo \${authPayload} | jq '.access_token'\`
                 ACCESSTOKEN=\${ACCESSTOKEN//\\"/}
 
-                export REFRESHTOKEN ACCESSTOKEN
-
-                cat << EOIF > \${credFileRefresh}
-SAVED_REFRESHTOKEN=\${REFRESHTOKEN}
-EOIF
+                export ACCESSTOKEN
 
                 cat << EOIF > \${credFileAccess}
 SAVED_ACCESSTOKEN=\${ACCESSTOKEN}
