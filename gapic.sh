@@ -594,14 +594,17 @@ done
 
 getParams() {
     local tempPar=\${1}
-    tempCarrier=PARAM_\${tempPar}
-    tempMeta=\${tempPar}Meta
+    local urlVar=\${2}
+
+    local tempCarrier=PARAM_\${tempPar}
+    local tempMeta=\${tempPar}Meta
+    local tempVal="\${(P)tempPar}"
 
     if [[ -z \${(P)\${tempMeta}[3]} ]]
     then
         echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempMeta}[1]}).\n#\n# Desc: \${(P)\${tempMeta}[2]}\n~> "
-        read -r \${tempCarrier}
-        export \${tempCarrier}
+        read -r \${tempVal}
+        export \${tempVal}
         clear
 
     else
@@ -611,7 +614,7 @@ getParams() {
         do
             if [[ -n \${getOption} ]]
             then
-                declare -g "\${tempCarrier}=\${getOption}"
+                declare -g "tempVal=\${getOption}"
                 clear
                 break
             fi
@@ -620,42 +623,81 @@ getParams() {
     fi
     unset tempParMeta
 
-    declare -g "\${tempPar}=\${(P)\${tempCarrier}}"
+    if ! [[ -z "\${tempVal}" ]]
+    then
+
+        declare -g "\${tempPar}=\${tempVal}"
+        if [[ "\${urlVar}" =~ "true" ]]
+        then
+            declare -g "tempUrlPar=&\${tempPar}=\${(P)\${tempPar}}"
+        fi
+
+    fi
 
     if [[ -f \${credFileParams} ]]
     then
-        if ! [[ \`grep "\${tempCarrier}=\${(P)\${tempPar}}" \${credFileParams}\` ]]
-        then
+        if ! [[ \`grep "\${tempCarrier}" \${credFileParams}\` ]]
+        then 
             cat << EOIF >> \${credFileParams}
-\${tempCarrier}=\${(P)\${tempPar}}
+\${tempCarrier}=( \${(P)\${tempPar}} )
 EOIF
+        else 
+            if ! [[ \`egrep "\\<\${tempCarrier}\\>.*\\<\${(P)\${tempPar}}\\>" \${credFileParams}\` ]]
+            then
+                cat << EOIF >> \${credFileParams}
+\${tempCarrier}+=( \${(P)\${tempPar}} )
+EOIF
+            fi
         fi
-
     else
         touch \${credFileParams}
         cat << EOIF >> \${credFileParams}
-\${tempCarrier}=\${(P)\${tempPar}}
+\${tempCarrier}=( \${(P)\${tempPar}} )
 EOIF
     fi
 
-    unset tempPar tempCarrier
+    unset tempPar tempCarrier tempVal
 }
 
-
+### TODO
+# fix error where you can't select non-saved paropts
 
 
 checkParams() {
     local tempPar=\${1}
+    local urlVar=\${2}
+
     tempCarrier=PARAM_\${tempPar}
-    echo -en "# Do you want to reuse last saved domain parameter: \${(P)\${tempCarrier}}? [y/n]\n~> "
-    read -r reuseParOpt
-    clear
-    if ! [[ \${reuseParOpt} =~ "n" ]] \\
-    && ! [[ \${reuseParOpt} =~ "N" ]]
+    echo -en "# You have saved values for the \${tempPar} parameter. Do you want to use one?\n\n"
+    select checkOption in \${(P)\${tempCarrier}} none
+    do
+        if [[ -n \${checkOption} ]]
+        then
+            if [[ \${checkOption} =~ "none" ]]
+            then
+                clear
+                getParams \${tempPar} \${urlVar}
+                break
+            else
+                clear
+                declare -g "\${tempPar}=\${checkOption}"
+
+                if [[ "\${urlVar}" =~ "true" ]]
+                then
+                    declare -g "tempUrlPar=&\${tempPar}=\${(P)\${tempPar}}"
+                fi
+                
+                unset checkOption
+                break
+            fi
+        
+        fi
+    done
+
+
+    if [[ -z "\${(P)\${tempPar}}" ]]
     then
-        declare -g "\${tempPar}=\${(P)\${tempCarrier}}"
-    else
-        getParams \${tempPar}
+        getParams \${tempPar} \${urlVar}
     fi
     unset tempPar reuseParOpt tempCarrier
 }
@@ -713,8 +755,9 @@ do
                 local curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
 
                 # store the variables in an array with the same name as the parameter, unset temp vars
-                set -A "${curParams[$e]}" "${curTempType}" "${curTempDesc}"
-                unset curTempType curTempDesc
+                local curTempMeta="${curParams[$e]}Meta"
+                set -A "${curTempMeta}" "${curTempType}" "${curTempDesc}"
+                unset curTempType curTempDesc curTempMeta
             fi
 
 
@@ -730,8 +773,9 @@ do
                 local curTempEnum=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.enum"` 
 
                 # push these variables to an array of the same name as the parameter and unset temp vars
-                set -A "${curParams[$e]}" "${curTempType}" "${curTempDesc}" "${curTempEnum}"
-                unset curTempEnum curTempType curTempDesc
+                local curTempMeta="${curParams[$e]}Meta"               
+                set -A "${curTempMeta}" "${curTempType}" "${curTempDesc}" "${curTempEnum}"
+                unset curTempEnum curTempType curTempDesc curTempMeta
             fi
 
             # collect input parameters (leftovers), which are those that require user input
@@ -747,8 +791,9 @@ do
                 curTempDesc=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -rc ".parameters.${curParams[$e]}.description"` 
 
                 # define an array named after the parameter, containing the temp vars for type and description, unset temp vars
-                set -A "${curParams[$e]}" "${curTempType}" "${curTempDesc}"
-                unset curTempType curTempDesc
+                local curTempMeta="${curParams[$e]}Meta"
+                set -A "${curTempMeta}" "${curTempType}" "${curTempDesc}"
+                unset curTempType curTempDesc curTempMeta
             fi
         done
 
@@ -798,10 +843,10 @@ EOF
                 cat << EOF >> "${outputLibWiz}"
     ${curReqParams[$h]}Meta=( 
 EOF
-                for (( i = 1 ; i <= ${(P)#${curReqParams[$h]}[@]} ; i++ ))
+                for (( i = 1 ; i <= ${#${(P)curReqParams[$h]}Meta[@]} ; i++ ))
                 do
                     cat << EOF >> "${outputLibWiz}"
-        ${(Pqq)${curReqParams[$h]}[$i]}
+        ${(qq)${(P)curReqParams[$h]}Meta[$i]}
 EOF
                 done
                 cat << EOF >> "${outputLibWiz}"
@@ -815,13 +860,12 @@ EOF
     then
         if ! [[ -z "\${PARAM_${curReqParams[$h]}}" ]]
         then 
-            checkParams ${curReqParams[$h]}
+            checkParams ${curReqParams[$h]} "false"
             
         else
             getParams ${curReqParams[$h]}
         fi
-        declare -g "${curPrefix}${curReqParams[$h]}=\${PARAM_${curReqParams[$h]}}"
-        declare -g "${curReqParams[$h]}=\${PARAM_${curReqParams[$h]}}"
+        declare -g "${curPrefix}${curReqParams[$h]}=\${${curReqParams[$h]}}"
 
     fi
 
@@ -852,10 +896,10 @@ EOF
                 cat << EOF >> "${outputLibWiz}"
     ${curOptParams[$h]}Meta=(
 EOF
-                for (( i = 1 ; i <= ${(P)#${curOptParams[$h]}[@]} ; i++ ))
+                for (( i = 1 ; i <= ${#${(P)curOptParams[$h]}Meta[@]} ; i++ ))
                 do
                     cat << EOF >> "${outputLibWiz}"
-        ${(Pqq)${curOptParams[$h]}[$i]}
+        ${(qq)${(P)curOptParams[$h]}Meta[$i]}
 EOF
                 done
                 cat << EOF >> "${outputLibWiz}"
@@ -885,10 +929,24 @@ EOF
                         clear
                         break 2
                     else
-                        getParams \${option}
-                        local tempUrlCarrier=PARAM_\${option}
-                        ${curPrefix}URL+="&\${option}=\${(P)\${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_\${option}
+                        if ! [[ -z "\${(P)\${optParam}}" ]]
+                        then 
+                            checkParams \${option} "true"
+                            ${curPrefix}URL+="\${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams \${option} "true"
+                            ${curPrefix}URL+="\${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -910,10 +968,10 @@ EOF
                 cat << EOF >> "${outputLibWiz}"
     ${curInpParams[$h]}Meta=(
 EOF
-                for (( i = 1 ; i <= ${(P)#${curInpParams[$h]}[@]} ; i++ ))
+                for (( i = 1 ; i <= ${#${(P)curInpParams[$h]}Meta[@]} ; i++ ))
                 do
                     cat << EOF >> "${outputLibWiz}"
-        ${(Pqq)${curInpParams[$h]}[$i]}
+        ${(qq)${(P)curInpParams[$h]}Meta[$i]}
 EOF
                 done
                 cat << EOF >> "${outputLibWiz}"
@@ -943,10 +1001,24 @@ EOF
                         clear
                         break 2
                     else
-                        getParams \${option}
-                        local tempUrlCarrier=PARAM_\${option}
-                        ${curPrefix}URL+="&\${option}=\${(P)\${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_\${option}
+                        if ! [[ -z "\${(P)\${optParam}}" ]]
+                        then 
+                            checkParams \${option} "true"
+                            ${curPrefix}URL+="\${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams \${option} "true"
+                            ${curPrefix}URL+="\${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi

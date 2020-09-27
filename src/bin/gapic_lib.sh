@@ -23,14 +23,17 @@ verificationCodes=( verificationCodes_generate verificationCodes_invalidate veri
 
 getParams() {
     local tempPar=${1}
-    tempCarrier=PARAM_${tempPar}
-    tempMeta=${tempPar}Meta
+    local urlVar=${2}
+
+    local tempCarrier=PARAM_${tempPar}
+    local tempMeta=${tempPar}Meta
+    local tempVal="${(P)tempPar}"
 
     if [[ -z ${(P)${tempMeta}[3]} ]]
     then
         echo -en "# Please supply a value for the ${tempPar} parameter (${(P)${tempMeta}[1]}).\n#\n# Desc: ${(P)${tempMeta}[2]}\n~> "
-        read -r ${tempCarrier}
-        export ${tempCarrier}
+        read -r ${tempVal}
+        export ${tempVal}
         clear
 
     else
@@ -40,7 +43,7 @@ getParams() {
         do
             if [[ -n ${getOption} ]]
             then
-                declare -g "${tempCarrier}=${getOption}"
+                declare -g "tempVal=${getOption}"
                 clear
                 break
             fi
@@ -49,42 +52,81 @@ getParams() {
     fi
     unset tempParMeta
 
-    declare -g "${tempPar}=${(P)${tempCarrier}}"
+    if ! [[ -z "${tempVal}" ]]
+    then
+
+        declare -g "${tempPar}=${tempVal}"
+        if [[ "${urlVar}" =~ "true" ]]
+        then
+            declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
+        fi
+
+    fi
 
     if [[ -f ${credFileParams} ]]
     then
-        if ! [[ `grep "${tempCarrier}=${(P)${tempPar}}" ${credFileParams}` ]]
-        then
+        if ! [[ `grep "${tempCarrier}" ${credFileParams}` ]]
+        then 
             cat << EOIF >> ${credFileParams}
-${tempCarrier}=${(P)${tempPar}}
+${tempCarrier}=( ${(P)${tempPar}} )
 EOIF
+        else 
+            if ! [[ `egrep "\<${tempCarrier}\>.*\<${(P)${tempPar}}\>" ${credFileParams}` ]]
+            then
+                cat << EOIF >> ${credFileParams}
+${tempCarrier}+=( ${(P)${tempPar}} )
+EOIF
+            fi
         fi
-
     else
         touch ${credFileParams}
         cat << EOIF >> ${credFileParams}
-${tempCarrier}=${(P)${tempPar}}
+${tempCarrier}=( ${(P)${tempPar}} )
 EOIF
     fi
 
-    unset tempPar tempCarrier
+    unset tempPar tempCarrier tempVal
 }
 
-
+### TODO
+# fix error where you can't select non-saved paropts
 
 
 checkParams() {
     local tempPar=${1}
+    local urlVar=${2}
+
     tempCarrier=PARAM_${tempPar}
-    echo -en "# Do you want to reuse last saved domain parameter: ${(P)${tempCarrier}}? [y/n]\n~> "
-    read -r reuseParOpt
-    clear
-    if ! [[ ${reuseParOpt} =~ "n" ]] \
-    && ! [[ ${reuseParOpt} =~ "N" ]]
+    echo -en "# You have saved values for the ${tempPar} parameter. Do you want to use one?\n\n"
+    select checkOption in ${(P)${tempCarrier}} none
+    do
+        if [[ -n ${checkOption} ]]
+        then
+            if [[ ${checkOption} =~ "none" ]]
+            then
+                clear
+                getParams ${tempPar} ${urlVar}
+                break
+            else
+                clear
+                declare -g "${tempPar}=${checkOption}"
+
+                if [[ "${urlVar}" =~ "true" ]]
+                then
+                    declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
+                fi
+                
+                unset checkOption
+                break
+            fi
+        
+        fi
+    done
+
+
+    if [[ -z "${(P)${tempPar}}" ]]
     then
-        declare -g "${tempPar}=${(P)${tempCarrier}}"
-    else
-        getParams ${tempPar}
+        getParams ${tempPar} ${urlVar}
     fi
     unset tempPar reuseParOpt tempCarrier
 }
@@ -103,13 +145,12 @@ asps_delete() {
     then
         if ! [[ -z "${PARAM_codeId}" ]]
         then 
-            checkParams codeId
+            checkParams codeId "false"
             
         else
             getParams codeId
         fi
-        declare -g "ASPS_DELETE_codeId=${PARAM_codeId}"
-        declare -g "codeId=${PARAM_codeId}"
+        declare -g "ASPS_DELETE_codeId=${codeId}"
 
     fi
 
@@ -124,13 +165,12 @@ asps_delete() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "ASPS_DELETE_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "ASPS_DELETE_userKey=${userKey}"
 
     fi
 
@@ -188,13 +228,12 @@ asps_get() {
     then
         if ! [[ -z "${PARAM_codeId}" ]]
         then 
-            checkParams codeId
+            checkParams codeId "false"
             
         else
             getParams codeId
         fi
-        declare -g "ASPS_GET_codeId=${PARAM_codeId}"
-        declare -g "codeId=${PARAM_codeId}"
+        declare -g "ASPS_GET_codeId=${codeId}"
 
     fi
 
@@ -209,13 +248,12 @@ asps_get() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "ASPS_GET_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "ASPS_GET_userKey=${userKey}"
 
     fi
 
@@ -273,13 +311,12 @@ asps_list() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "ASPS_LIST_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "ASPS_LIST_userKey=${userKey}"
 
     fi
 
@@ -384,13 +421,12 @@ chromeosdevices_action() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "CHROMEOSDEVICES_ACTION_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "CHROMEOSDEVICES_ACTION_customerId=${customerId}"
 
     fi
 
@@ -405,13 +441,12 @@ chromeosdevices_action() {
     then
         if ! [[ -z "${PARAM_resourceId}" ]]
         then 
-            checkParams resourceId
+            checkParams resourceId "false"
             
         else
             getParams resourceId
         fi
-        declare -g "CHROMEOSDEVICES_ACTION_resourceId=${PARAM_resourceId}"
-        declare -g "resourceId=${PARAM_resourceId}"
+        declare -g "CHROMEOSDEVICES_ACTION_resourceId=${resourceId}"
 
     fi
 
@@ -473,13 +508,12 @@ chromeosdevices_get() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "CHROMEOSDEVICES_GET_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "CHROMEOSDEVICES_GET_customerId=${customerId}"
 
     fi
 
@@ -494,13 +528,12 @@ chromeosdevices_get() {
     then
         if ! [[ -z "${PARAM_deviceId}" ]]
         then 
-            checkParams deviceId
+            checkParams deviceId "false"
             
         else
             getParams deviceId
         fi
-        declare -g "CHROMEOSDEVICES_GET_deviceId=${PARAM_deviceId}"
-        declare -g "deviceId=${PARAM_deviceId}"
+        declare -g "CHROMEOSDEVICES_GET_deviceId=${deviceId}"
 
     fi
 
@@ -536,10 +569,24 @@ chromeosdevices_get() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        CHROMEOSDEVICES_GET_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -596,13 +643,12 @@ chromeosdevices_list() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "CHROMEOSDEVICES_LIST_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "CHROMEOSDEVICES_LIST_customerId=${customerId}"
 
     fi
 
@@ -650,10 +696,24 @@ chromeosdevices_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        CHROMEOSDEVICES_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -702,10 +762,24 @@ chromeosdevices_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        CHROMEOSDEVICES_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi
@@ -762,13 +836,12 @@ chromeosdevices_moveDevicesToOu() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "CHROMEOSDEVICES_MOVEDEVICESTOOU_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "CHROMEOSDEVICES_MOVEDEVICESTOOU_customerId=${customerId}"
 
     fi
 
@@ -783,13 +856,12 @@ chromeosdevices_moveDevicesToOu() {
     then
         if ! [[ -z "${PARAM_orgUnitPath}" ]]
         then 
-            checkParams orgUnitPath
+            checkParams orgUnitPath "false"
             
         else
             getParams orgUnitPath
         fi
-        declare -g "CHROMEOSDEVICES_MOVEDEVICESTOOU_orgUnitPath=${PARAM_orgUnitPath}"
-        declare -g "orgUnitPath=${PARAM_orgUnitPath}"
+        declare -g "CHROMEOSDEVICES_MOVEDEVICESTOOU_orgUnitPath=${orgUnitPath}"
 
     fi
 
@@ -851,13 +923,12 @@ chromeosdevices_patch() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "CHROMEOSDEVICES_PATCH_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "CHROMEOSDEVICES_PATCH_customerId=${customerId}"
 
     fi
 
@@ -872,13 +943,12 @@ chromeosdevices_patch() {
     then
         if ! [[ -z "${PARAM_deviceId}" ]]
         then 
-            checkParams deviceId
+            checkParams deviceId "false"
             
         else
             getParams deviceId
         fi
-        declare -g "CHROMEOSDEVICES_PATCH_deviceId=${PARAM_deviceId}"
-        declare -g "deviceId=${PARAM_deviceId}"
+        declare -g "CHROMEOSDEVICES_PATCH_deviceId=${deviceId}"
 
     fi
 
@@ -914,10 +984,24 @@ chromeosdevices_patch() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        CHROMEOSDEVICES_PATCH_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -978,13 +1062,12 @@ chromeosdevices_update() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "CHROMEOSDEVICES_UPDATE_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "CHROMEOSDEVICES_UPDATE_customerId=${customerId}"
 
     fi
 
@@ -999,13 +1082,12 @@ chromeosdevices_update() {
     then
         if ! [[ -z "${PARAM_deviceId}" ]]
         then 
-            checkParams deviceId
+            checkParams deviceId "false"
             
         else
             getParams deviceId
         fi
-        declare -g "CHROMEOSDEVICES_UPDATE_deviceId=${PARAM_deviceId}"
-        declare -g "deviceId=${PARAM_deviceId}"
+        declare -g "CHROMEOSDEVICES_UPDATE_deviceId=${deviceId}"
 
     fi
 
@@ -1041,10 +1123,24 @@ chromeosdevices_update() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        CHROMEOSDEVICES_UPDATE_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -1105,13 +1201,12 @@ customers_get() {
     then
         if ! [[ -z "${PARAM_customerKey}" ]]
         then 
-            checkParams customerKey
+            checkParams customerKey "false"
             
         else
             getParams customerKey
         fi
-        declare -g "CUSTOMERS_GET_customerKey=${PARAM_customerKey}"
-        declare -g "customerKey=${PARAM_customerKey}"
+        declare -g "CUSTOMERS_GET_customerKey=${customerKey}"
 
     fi
 
@@ -1169,13 +1264,12 @@ customers_patch() {
     then
         if ! [[ -z "${PARAM_customerKey}" ]]
         then 
-            checkParams customerKey
+            checkParams customerKey "false"
             
         else
             getParams customerKey
         fi
-        declare -g "CUSTOMERS_PATCH_customerKey=${PARAM_customerKey}"
-        declare -g "customerKey=${PARAM_customerKey}"
+        declare -g "CUSTOMERS_PATCH_customerKey=${customerKey}"
 
     fi
 
@@ -1237,13 +1331,12 @@ customers_update() {
     then
         if ! [[ -z "${PARAM_customerKey}" ]]
         then 
-            checkParams customerKey
+            checkParams customerKey "false"
             
         else
             getParams customerKey
         fi
-        declare -g "CUSTOMERS_UPDATE_customerKey=${PARAM_customerKey}"
-        declare -g "customerKey=${PARAM_customerKey}"
+        declare -g "CUSTOMERS_UPDATE_customerKey=${customerKey}"
 
     fi
 
@@ -1305,13 +1398,12 @@ domainAliases_delete() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "DOMAINALIASES_DELETE_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "DOMAINALIASES_DELETE_customer=${customer}"
 
     fi
 
@@ -1326,13 +1418,12 @@ domainAliases_delete() {
     then
         if ! [[ -z "${PARAM_domainAliasName}" ]]
         then 
-            checkParams domainAliasName
+            checkParams domainAliasName "false"
             
         else
             getParams domainAliasName
         fi
-        declare -g "DOMAINALIASES_DELETE_domainAliasName=${PARAM_domainAliasName}"
-        declare -g "domainAliasName=${PARAM_domainAliasName}"
+        declare -g "DOMAINALIASES_DELETE_domainAliasName=${domainAliasName}"
 
     fi
 
@@ -1390,13 +1481,12 @@ domainAliases_get() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "DOMAINALIASES_GET_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "DOMAINALIASES_GET_customer=${customer}"
 
     fi
 
@@ -1411,13 +1501,12 @@ domainAliases_get() {
     then
         if ! [[ -z "${PARAM_domainAliasName}" ]]
         then 
-            checkParams domainAliasName
+            checkParams domainAliasName "false"
             
         else
             getParams domainAliasName
         fi
-        declare -g "DOMAINALIASES_GET_domainAliasName=${PARAM_domainAliasName}"
-        declare -g "domainAliasName=${PARAM_domainAliasName}"
+        declare -g "DOMAINALIASES_GET_domainAliasName=${domainAliasName}"
 
     fi
 
@@ -1475,13 +1564,12 @@ domainAliases_insert() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "DOMAINALIASES_INSERT_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "DOMAINALIASES_INSERT_customer=${customer}"
 
     fi
 
@@ -1543,13 +1631,12 @@ domainAliases_list() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "DOMAINALIASES_LIST_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "DOMAINALIASES_LIST_customer=${customer}"
 
     fi
 
@@ -1584,10 +1671,24 @@ domainAliases_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        DOMAINALIASES_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            DOMAINALIASES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            DOMAINALIASES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi
@@ -1644,13 +1745,12 @@ domains_delete() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "DOMAINS_DELETE_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "DOMAINS_DELETE_customer=${customer}"
 
     fi
 
@@ -1665,13 +1765,12 @@ domains_delete() {
     then
         if ! [[ -z "${PARAM_domainName}" ]]
         then 
-            checkParams domainName
+            checkParams domainName "false"
             
         else
             getParams domainName
         fi
-        declare -g "DOMAINS_DELETE_domainName=${PARAM_domainName}"
-        declare -g "domainName=${PARAM_domainName}"
+        declare -g "DOMAINS_DELETE_domainName=${domainName}"
 
     fi
 
@@ -1729,13 +1828,12 @@ domains_get() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "DOMAINS_GET_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "DOMAINS_GET_customer=${customer}"
 
     fi
 
@@ -1750,13 +1848,12 @@ domains_get() {
     then
         if ! [[ -z "${PARAM_domainName}" ]]
         then 
-            checkParams domainName
+            checkParams domainName "false"
             
         else
             getParams domainName
         fi
-        declare -g "DOMAINS_GET_domainName=${PARAM_domainName}"
-        declare -g "domainName=${PARAM_domainName}"
+        declare -g "DOMAINS_GET_domainName=${domainName}"
 
     fi
 
@@ -1814,13 +1911,12 @@ domains_insert() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "DOMAINS_INSERT_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "DOMAINS_INSERT_customer=${customer}"
 
     fi
 
@@ -1882,13 +1978,12 @@ domains_list() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "DOMAINS_LIST_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "DOMAINS_LIST_customer=${customer}"
 
     fi
 
@@ -1946,13 +2041,12 @@ groups_delete() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "GROUPS_DELETE_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "GROUPS_DELETE_groupKey=${groupKey}"
 
     fi
 
@@ -2010,13 +2104,12 @@ groups_get() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "GROUPS_GET_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "GROUPS_GET_groupKey=${groupKey}"
 
     fi
 
@@ -2148,10 +2241,24 @@ groups_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        GROUPS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            GROUPS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            GROUPS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -2210,10 +2317,24 @@ groups_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        GROUPS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            GROUPS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            GROUPS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi
@@ -2270,13 +2391,12 @@ groups_patch() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "GROUPS_PATCH_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "GROUPS_PATCH_groupKey=${groupKey}"
 
     fi
 
@@ -2338,13 +2458,12 @@ groups_update() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "GROUPS_UPDATE_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "GROUPS_UPDATE_groupKey=${groupKey}"
 
     fi
 
@@ -2406,13 +2525,12 @@ members_delete() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "MEMBERS_DELETE_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "MEMBERS_DELETE_groupKey=${groupKey}"
 
     fi
 
@@ -2427,13 +2545,12 @@ members_delete() {
     then
         if ! [[ -z "${PARAM_memberKey}" ]]
         then 
-            checkParams memberKey
+            checkParams memberKey "false"
             
         else
             getParams memberKey
         fi
-        declare -g "MEMBERS_DELETE_memberKey=${PARAM_memberKey}"
-        declare -g "memberKey=${PARAM_memberKey}"
+        declare -g "MEMBERS_DELETE_memberKey=${memberKey}"
 
     fi
 
@@ -2491,13 +2608,12 @@ members_get() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "MEMBERS_GET_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "MEMBERS_GET_groupKey=${groupKey}"
 
     fi
 
@@ -2512,13 +2628,12 @@ members_get() {
     then
         if ! [[ -z "${PARAM_memberKey}" ]]
         then 
-            checkParams memberKey
+            checkParams memberKey "false"
             
         else
             getParams memberKey
         fi
-        declare -g "MEMBERS_GET_memberKey=${PARAM_memberKey}"
-        declare -g "memberKey=${PARAM_memberKey}"
+        declare -g "MEMBERS_GET_memberKey=${memberKey}"
 
     fi
 
@@ -2576,13 +2691,12 @@ members_hasMember() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "MEMBERS_HASMEMBER_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "MEMBERS_HASMEMBER_groupKey=${groupKey}"
 
     fi
 
@@ -2597,13 +2711,12 @@ members_hasMember() {
     then
         if ! [[ -z "${PARAM_memberKey}" ]]
         then 
-            checkParams memberKey
+            checkParams memberKey "false"
             
         else
             getParams memberKey
         fi
-        declare -g "MEMBERS_HASMEMBER_memberKey=${PARAM_memberKey}"
-        declare -g "memberKey=${PARAM_memberKey}"
+        declare -g "MEMBERS_HASMEMBER_memberKey=${memberKey}"
 
     fi
 
@@ -2661,13 +2774,12 @@ members_insert() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "MEMBERS_INSERT_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "MEMBERS_INSERT_groupKey=${groupKey}"
 
     fi
 
@@ -2729,13 +2841,12 @@ members_list() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "MEMBERS_LIST_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "MEMBERS_LIST_groupKey=${groupKey}"
 
     fi
 
@@ -2785,10 +2896,24 @@ members_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        MEMBERS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            MEMBERS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            MEMBERS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi
@@ -2845,13 +2970,12 @@ members_patch() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "MEMBERS_PATCH_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "MEMBERS_PATCH_groupKey=${groupKey}"
 
     fi
 
@@ -2866,13 +2990,12 @@ members_patch() {
     then
         if ! [[ -z "${PARAM_memberKey}" ]]
         then 
-            checkParams memberKey
+            checkParams memberKey "false"
             
         else
             getParams memberKey
         fi
-        declare -g "MEMBERS_PATCH_memberKey=${PARAM_memberKey}"
-        declare -g "memberKey=${PARAM_memberKey}"
+        declare -g "MEMBERS_PATCH_memberKey=${memberKey}"
 
     fi
 
@@ -2934,13 +3057,12 @@ members_update() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey
+            checkParams groupKey "false"
             
         else
             getParams groupKey
         fi
-        declare -g "MEMBERS_UPDATE_groupKey=${PARAM_groupKey}"
-        declare -g "groupKey=${PARAM_groupKey}"
+        declare -g "MEMBERS_UPDATE_groupKey=${groupKey}"
 
     fi
 
@@ -2955,13 +3077,12 @@ members_update() {
     then
         if ! [[ -z "${PARAM_memberKey}" ]]
         then 
-            checkParams memberKey
+            checkParams memberKey "false"
             
         else
             getParams memberKey
         fi
-        declare -g "MEMBERS_UPDATE_memberKey=${PARAM_memberKey}"
-        declare -g "memberKey=${PARAM_memberKey}"
+        declare -g "MEMBERS_UPDATE_memberKey=${memberKey}"
 
     fi
 
@@ -3023,13 +3144,12 @@ mobiledevices_action() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "MOBILEDEVICES_ACTION_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "MOBILEDEVICES_ACTION_customerId=${customerId}"
 
     fi
 
@@ -3044,13 +3164,12 @@ mobiledevices_action() {
     then
         if ! [[ -z "${PARAM_resourceId}" ]]
         then 
-            checkParams resourceId
+            checkParams resourceId "false"
             
         else
             getParams resourceId
         fi
-        declare -g "MOBILEDEVICES_ACTION_resourceId=${PARAM_resourceId}"
-        declare -g "resourceId=${PARAM_resourceId}"
+        declare -g "MOBILEDEVICES_ACTION_resourceId=${resourceId}"
 
     fi
 
@@ -3112,13 +3231,12 @@ mobiledevices_delete() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "MOBILEDEVICES_DELETE_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "MOBILEDEVICES_DELETE_customerId=${customerId}"
 
     fi
 
@@ -3133,13 +3251,12 @@ mobiledevices_delete() {
     then
         if ! [[ -z "${PARAM_resourceId}" ]]
         then 
-            checkParams resourceId
+            checkParams resourceId "false"
             
         else
             getParams resourceId
         fi
-        declare -g "MOBILEDEVICES_DELETE_resourceId=${PARAM_resourceId}"
-        declare -g "resourceId=${PARAM_resourceId}"
+        declare -g "MOBILEDEVICES_DELETE_resourceId=${resourceId}"
 
     fi
 
@@ -3197,13 +3314,12 @@ mobiledevices_get() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "MOBILEDEVICES_GET_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "MOBILEDEVICES_GET_customerId=${customerId}"
 
     fi
 
@@ -3218,13 +3334,12 @@ mobiledevices_get() {
     then
         if ! [[ -z "${PARAM_resourceId}" ]]
         then 
-            checkParams resourceId
+            checkParams resourceId "false"
             
         else
             getParams resourceId
         fi
-        declare -g "MOBILEDEVICES_GET_resourceId=${PARAM_resourceId}"
-        declare -g "resourceId=${PARAM_resourceId}"
+        declare -g "MOBILEDEVICES_GET_resourceId=${resourceId}"
 
     fi
 
@@ -3260,10 +3375,24 @@ mobiledevices_get() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        MOBILEDEVICES_GET_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            MOBILEDEVICES_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            MOBILEDEVICES_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -3320,13 +3449,12 @@ mobiledevices_list() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "MOBILEDEVICES_LIST_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "MOBILEDEVICES_LIST_customerId=${customerId}"
 
     fi
 
@@ -3374,10 +3502,24 @@ mobiledevices_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        MOBILEDEVICES_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -3421,10 +3563,24 @@ mobiledevices_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        MOBILEDEVICES_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi
@@ -3481,13 +3637,12 @@ orgunits_delete() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "ORGUNITS_DELETE_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "ORGUNITS_DELETE_customerId=${customerId}"
 
     fi
 
@@ -3502,13 +3657,12 @@ orgunits_delete() {
     then
         if ! [[ -z "${PARAM_orgUnitPath}" ]]
         then 
-            checkParams orgUnitPath
+            checkParams orgUnitPath "false"
             
         else
             getParams orgUnitPath
         fi
-        declare -g "ORGUNITS_DELETE_orgUnitPath=${PARAM_orgUnitPath}"
-        declare -g "orgUnitPath=${PARAM_orgUnitPath}"
+        declare -g "ORGUNITS_DELETE_orgUnitPath=${orgUnitPath}"
 
     fi
 
@@ -3566,13 +3720,12 @@ orgunits_get() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "ORGUNITS_GET_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "ORGUNITS_GET_customerId=${customerId}"
 
     fi
 
@@ -3587,13 +3740,12 @@ orgunits_get() {
     then
         if ! [[ -z "${PARAM_orgUnitPath}" ]]
         then 
-            checkParams orgUnitPath
+            checkParams orgUnitPath "false"
             
         else
             getParams orgUnitPath
         fi
-        declare -g "ORGUNITS_GET_orgUnitPath=${PARAM_orgUnitPath}"
-        declare -g "orgUnitPath=${PARAM_orgUnitPath}"
+        declare -g "ORGUNITS_GET_orgUnitPath=${orgUnitPath}"
 
     fi
 
@@ -3651,13 +3803,12 @@ orgunits_insert() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "ORGUNITS_INSERT_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "ORGUNITS_INSERT_customerId=${customerId}"
 
     fi
 
@@ -3719,13 +3870,12 @@ orgunits_list() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "ORGUNITS_LIST_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "ORGUNITS_LIST_customerId=${customerId}"
 
     fi
 
@@ -3761,10 +3911,24 @@ orgunits_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        ORGUNITS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            ORGUNITS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            ORGUNITS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -3798,10 +3962,24 @@ orgunits_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        ORGUNITS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            ORGUNITS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            ORGUNITS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi
@@ -3858,13 +4036,12 @@ orgunits_patch() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "ORGUNITS_PATCH_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "ORGUNITS_PATCH_customerId=${customerId}"
 
     fi
 
@@ -3879,13 +4056,12 @@ orgunits_patch() {
     then
         if ! [[ -z "${PARAM_orgUnitPath}" ]]
         then 
-            checkParams orgUnitPath
+            checkParams orgUnitPath "false"
             
         else
             getParams orgUnitPath
         fi
-        declare -g "ORGUNITS_PATCH_orgUnitPath=${PARAM_orgUnitPath}"
-        declare -g "orgUnitPath=${PARAM_orgUnitPath}"
+        declare -g "ORGUNITS_PATCH_orgUnitPath=${orgUnitPath}"
 
     fi
 
@@ -3947,13 +4123,12 @@ orgunits_update() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "ORGUNITS_UPDATE_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "ORGUNITS_UPDATE_customerId=${customerId}"
 
     fi
 
@@ -3968,13 +4143,12 @@ orgunits_update() {
     then
         if ! [[ -z "${PARAM_orgUnitPath}" ]]
         then 
-            checkParams orgUnitPath
+            checkParams orgUnitPath "false"
             
         else
             getParams orgUnitPath
         fi
-        declare -g "ORGUNITS_UPDATE_orgUnitPath=${PARAM_orgUnitPath}"
-        declare -g "orgUnitPath=${PARAM_orgUnitPath}"
+        declare -g "ORGUNITS_UPDATE_orgUnitPath=${orgUnitPath}"
 
     fi
 
@@ -4036,13 +4210,12 @@ privileges_list() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "PRIVILEGES_LIST_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "PRIVILEGES_LIST_customer=${customer}"
 
     fi
 
@@ -4100,13 +4273,12 @@ roleAssignments_delete() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "ROLEASSIGNMENTS_DELETE_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "ROLEASSIGNMENTS_DELETE_customer=${customer}"
 
     fi
 
@@ -4121,13 +4293,12 @@ roleAssignments_delete() {
     then
         if ! [[ -z "${PARAM_roleAssignmentId}" ]]
         then 
-            checkParams roleAssignmentId
+            checkParams roleAssignmentId "false"
             
         else
             getParams roleAssignmentId
         fi
-        declare -g "ROLEASSIGNMENTS_DELETE_roleAssignmentId=${PARAM_roleAssignmentId}"
-        declare -g "roleAssignmentId=${PARAM_roleAssignmentId}"
+        declare -g "ROLEASSIGNMENTS_DELETE_roleAssignmentId=${roleAssignmentId}"
 
     fi
 
@@ -4185,13 +4356,12 @@ roleAssignments_get() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "ROLEASSIGNMENTS_GET_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "ROLEASSIGNMENTS_GET_customer=${customer}"
 
     fi
 
@@ -4206,13 +4376,12 @@ roleAssignments_get() {
     then
         if ! [[ -z "${PARAM_roleAssignmentId}" ]]
         then 
-            checkParams roleAssignmentId
+            checkParams roleAssignmentId "false"
             
         else
             getParams roleAssignmentId
         fi
-        declare -g "ROLEASSIGNMENTS_GET_roleAssignmentId=${PARAM_roleAssignmentId}"
-        declare -g "roleAssignmentId=${PARAM_roleAssignmentId}"
+        declare -g "ROLEASSIGNMENTS_GET_roleAssignmentId=${roleAssignmentId}"
 
     fi
 
@@ -4270,13 +4439,12 @@ roleAssignments_insert() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "ROLEASSIGNMENTS_INSERT_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "ROLEASSIGNMENTS_INSERT_customer=${customer}"
 
     fi
 
@@ -4338,13 +4506,12 @@ roleAssignments_list() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer
+            checkParams customer "false"
             
         else
             getParams customer
         fi
-        declare -g "ROLEASSIGNMENTS_LIST_customer=${PARAM_customer}"
-        declare -g "customer=${PARAM_customer}"
+        declare -g "ROLEASSIGNMENTS_LIST_customer=${customer}"
 
     fi
 
@@ -4394,10 +4561,24 @@ roleAssignments_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        ROLEASSIGNMENTS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            ROLEASSIGNMENTS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            ROLEASSIGNMENTS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi
@@ -4441,16 +4622,56 @@ EOIF
 
 }
 
-string() {
+roles_delete() {
 
 
+    customerMeta=( 
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
 
-    URL="https://www.googleapis.com/?key=${CLIENTID}"
+
+    if [[ -z "${ROLES_DELETE_customer}" ]]
+    then
+        if ! [[ -z "${PARAM_customer}" ]]
+        then 
+            checkParams customer "false"
+            
+        else
+            getParams customer
+        fi
+        declare -g "ROLES_DELETE_customer=${customer}"
+
+    fi
+
+    
+    roleIdMeta=( 
+        'string'
+        'Immutable ID of the role.'
+    )
+
+
+    if [[ -z "${ROLES_DELETE_roleId}" ]]
+    then
+        if ! [[ -z "${PARAM_roleId}" ]]
+        then 
+            checkParams roleId "false"
+            
+        else
+            getParams roleId
+        fi
+        declare -g "ROLES_DELETE_roleId=${roleId}"
+
+    fi
+
+    
+
+    ROLES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
 
     curl -s \
-        --request  \
-        ${URL} \
+        --request DELETE \
+        ${ROLES_DELETE_URL} \
         --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
@@ -4465,8 +4686,8 @@ string() {
         cat << EOIF
 
     curl -s \\ 
-        --request  \\ 
-        ${URL} \\ 
+        --request DELETE \\ 
+        ${ROLES_DELETE_URL} \\ 
 EOIF
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
@@ -4484,16 +4705,56 @@ EOIF
 
 }
 
-Comma separated role values to filter list results on.() {
+roles_get() {
 
 
+    customerMeta=( 
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
 
-    URL="https://www.googleapis.com/?key=${CLIENTID}"
+
+    if [[ -z "${ROLES_GET_customer}" ]]
+    then
+        if ! [[ -z "${PARAM_customer}" ]]
+        then 
+            checkParams customer "false"
+            
+        else
+            getParams customer
+        fi
+        declare -g "ROLES_GET_customer=${customer}"
+
+    fi
+
+    
+    roleIdMeta=( 
+        'string'
+        'Immutable ID of the role.'
+    )
+
+
+    if [[ -z "${ROLES_GET_roleId}" ]]
+    then
+        if ! [[ -z "${PARAM_roleId}" ]]
+        then 
+            checkParams roleId "false"
+            
+        else
+            getParams roleId
+        fi
+        declare -g "ROLES_GET_roleId=${roleId}"
+
+    fi
+
+    
+
+    ROLES_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
 
     curl -s \
-        --request  \
-        ${URL} \
+        --request GET \
+        ${ROLES_GET_URL} \
         --header "Authorization: Bearer ${ACCESSTOKEN}" \
         --header "Accept: application/json" \
         --compressed \
@@ -4508,14 +4769,374 @@ Comma separated role values to filter list results on.() {
         cat << EOIF
 
     curl -s \\ 
-        --request  \\ 
-        ${URL} \\ 
+        --request GET \\ 
+        ${ROLES_GET_URL} \\ 
 EOIF
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
+        echo -e "\n\n"
+        echo -e "#########################\n"
+
+
+}
+
+roles_insert() {
+
+
+    customerMeta=( 
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
+
+    if [[ -z "${ROLES_INSERT_customer}" ]]
+    then
+        if ! [[ -z "${PARAM_customer}" ]]
+        then 
+            checkParams customer "false"
+            
+        else
+            getParams customer
+        fi
+        declare -g "ROLES_INSERT_customer=${customer}"
+
+    fi
+
+    
+
+    ROLES_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles?key=${CLIENTID}"
+
+
+    curl -s \
+        --request POST \
+        ${ROLES_INSERT_URL} \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
+        --header "Accept: application/json" \
+        --header "Content-Type: application/json" \
+        --compressed \
+        | jq -c '.' \
+        | read -r outputJson
+        export outputJson
+
+        #sentRequest=''
+
+        echo -e "# Request issued:\n\n"
+        echo -e "#########################\n"
+        cat << EOIF
+
+    curl -s \\ 
+        --request POST \\ 
+        ${ROLES_INSERT_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
+        echo -e "\n\n"
+        echo -e "#########################\n"
+
+
+}
+
+roles_list() {
+
+
+    customerMeta=( 
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
+
+    if [[ -z "${ROLES_LIST_customer}" ]]
+    then
+        if ! [[ -z "${PARAM_customer}" ]]
+        then 
+            checkParams customer "false"
+            
+        else
+            getParams customer
+        fi
+        declare -g "ROLES_LIST_customer=${customer}"
+
+    fi
+
+    
+
+    ROLES_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles?key=${CLIENTID}"
+
+    inpParams=( maxResults pageToken )
+
+    maxResultsMeta=(
+        'integer'
+        'Maximum number of results to return.'
+    )
+
+    pageTokenMeta=(
+        'string'
+        'Token to specify the next page in the list.'
+    )
+
+
+    echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
+    read -r inpParChoice
+    clear
+
+
+    if [[ ${inpParChoice} =~ "y" ]] || [[ ${inpParChoice} =~ "Y" ]]
+    then
+        for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
+        do
+
+            select option in ${inpParams} none
+            do
+                if [[ -n ${option} ]]
+                then
+                    if [[ ${option} =~ "none" ]]
+                    then
+                        clear
+                        break 2
+                    else
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            ROLES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            ROLES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
+                        break
+                    fi
+                fi
+            done
+        done
+    fi
+
+    curl -s \
+        --request GET \
+        ${ROLES_LIST_URL} \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
+        --header "Accept: application/json" \
+        --compressed \
+        | jq -c '.' \
+        | read -r outputJson
+        export outputJson
+
+        #sentRequest=''
+
+        echo -e "# Request issued:\n\n"
+        echo -e "#########################\n"
+        cat << EOIF
+
+    curl -s \\ 
+        --request GET \\ 
+        ${ROLES_LIST_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
+        echo -e "\n\n"
+        echo -e "#########################\n"
+
+
+}
+
+roles_patch() {
+
+
+    customerMeta=( 
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
+
+    if [[ -z "${ROLES_PATCH_customer}" ]]
+    then
+        if ! [[ -z "${PARAM_customer}" ]]
+        then 
+            checkParams customer "false"
+            
+        else
+            getParams customer
+        fi
+        declare -g "ROLES_PATCH_customer=${customer}"
+
+    fi
+
+    
+    roleIdMeta=( 
+        'string'
+        'Immutable ID of the role.'
+    )
+
+
+    if [[ -z "${ROLES_PATCH_roleId}" ]]
+    then
+        if ! [[ -z "${PARAM_roleId}" ]]
+        then 
+            checkParams roleId "false"
+            
+        else
+            getParams roleId
+        fi
+        declare -g "ROLES_PATCH_roleId=${roleId}"
+
+    fi
+
+    
+
+    ROLES_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
+
+
+    curl -s \
+        --request PATCH \
+        ${ROLES_PATCH_URL} \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
+        --header "Accept: application/json" \
+        --header "Content-Type: application/json" \
+        --compressed \
+        | jq -c '.' \
+        | read -r outputJson
+        export outputJson
+
+        #sentRequest=''
+
+        echo -e "# Request issued:\n\n"
+        echo -e "#########################\n"
+        cat << EOIF
+
+    curl -s \\ 
+        --request PATCH \\ 
+        ${ROLES_PATCH_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
+EOIF
+        cat << EOIF
+        --compressed
+EOIF
+
+        echo -e "\n\n"
+        echo -e "#########################\n"
+
+
+}
+
+roles_update() {
+
+
+    customerMeta=( 
+        'string'
+        'Immutable ID of the G Suite account.'
+    )
+
+
+    if [[ -z "${ROLES_UPDATE_customer}" ]]
+    then
+        if ! [[ -z "${PARAM_customer}" ]]
+        then 
+            checkParams customer "false"
+            
+        else
+            getParams customer
+        fi
+        declare -g "ROLES_UPDATE_customer=${customer}"
+
+    fi
+
+    
+    roleIdMeta=( 
+        'string'
+        'Immutable ID of the role.'
+    )
+
+
+    if [[ -z "${ROLES_UPDATE_roleId}" ]]
+    then
+        if ! [[ -z "${PARAM_roleId}" ]]
+        then 
+            checkParams roleId "false"
+            
+        else
+            getParams roleId
+        fi
+        declare -g "ROLES_UPDATE_roleId=${roleId}"
+
+    fi
+
+    
+
+    ROLES_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
+
+
+    curl -s \
+        --request PUT \
+        ${ROLES_UPDATE_URL} \
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \
+        --header "Accept: application/json" \
+        --header "Content-Type: application/json" \
+        --compressed \
+        | jq -c '.' \
+        | read -r outputJson
+        export outputJson
+
+        #sentRequest=''
+
+        echo -e "# Request issued:\n\n"
+        echo -e "#########################\n"
+        cat << EOIF
+
+    curl -s \\ 
+        --request PUT \\ 
+        ${ROLES_UPDATE_URL} \\ 
+EOIF
+        cat << EOIF
+        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
+EOIF
+        cat << EOIF
+        --header "Accept: application/json" \\ 
+EOIF
+        cat << EOIF
+        --header "Content-Type: application/json" \\ 
 EOIF
         cat << EOIF
         --compressed
@@ -4540,13 +5161,12 @@ schemas_delete() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "SCHEMAS_DELETE_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "SCHEMAS_DELETE_customerId=${customerId}"
 
     fi
 
@@ -4561,13 +5181,12 @@ schemas_delete() {
     then
         if ! [[ -z "${PARAM_schemaKey}" ]]
         then 
-            checkParams schemaKey
+            checkParams schemaKey "false"
             
         else
             getParams schemaKey
         fi
-        declare -g "SCHEMAS_DELETE_schemaKey=${PARAM_schemaKey}"
-        declare -g "schemaKey=${PARAM_schemaKey}"
+        declare -g "SCHEMAS_DELETE_schemaKey=${schemaKey}"
 
     fi
 
@@ -4625,13 +5244,12 @@ schemas_get() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "SCHEMAS_GET_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "SCHEMAS_GET_customerId=${customerId}"
 
     fi
 
@@ -4646,13 +5264,12 @@ schemas_get() {
     then
         if ! [[ -z "${PARAM_schemaKey}" ]]
         then 
-            checkParams schemaKey
+            checkParams schemaKey "false"
             
         else
             getParams schemaKey
         fi
-        declare -g "SCHEMAS_GET_schemaKey=${PARAM_schemaKey}"
-        declare -g "schemaKey=${PARAM_schemaKey}"
+        declare -g "SCHEMAS_GET_schemaKey=${schemaKey}"
 
     fi
 
@@ -4710,13 +5327,12 @@ schemas_insert() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "SCHEMAS_INSERT_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "SCHEMAS_INSERT_customerId=${customerId}"
 
     fi
 
@@ -4778,13 +5394,12 @@ schemas_list() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "SCHEMAS_LIST_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "SCHEMAS_LIST_customerId=${customerId}"
 
     fi
 
@@ -4842,13 +5457,12 @@ schemas_patch() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "SCHEMAS_PATCH_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "SCHEMAS_PATCH_customerId=${customerId}"
 
     fi
 
@@ -4863,13 +5477,12 @@ schemas_patch() {
     then
         if ! [[ -z "${PARAM_schemaKey}" ]]
         then 
-            checkParams schemaKey
+            checkParams schemaKey "false"
             
         else
             getParams schemaKey
         fi
-        declare -g "SCHEMAS_PATCH_schemaKey=${PARAM_schemaKey}"
-        declare -g "schemaKey=${PARAM_schemaKey}"
+        declare -g "SCHEMAS_PATCH_schemaKey=${schemaKey}"
 
     fi
 
@@ -4931,13 +5544,12 @@ schemas_update() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId
+            checkParams customerId "false"
             
         else
             getParams customerId
         fi
-        declare -g "SCHEMAS_UPDATE_customerId=${PARAM_customerId}"
-        declare -g "customerId=${PARAM_customerId}"
+        declare -g "SCHEMAS_UPDATE_customerId=${customerId}"
 
     fi
 
@@ -4952,13 +5564,12 @@ schemas_update() {
     then
         if ! [[ -z "${PARAM_schemaKey}" ]]
         then 
-            checkParams schemaKey
+            checkParams schemaKey "false"
             
         else
             getParams schemaKey
         fi
-        declare -g "SCHEMAS_UPDATE_schemaKey=${PARAM_schemaKey}"
-        declare -g "schemaKey=${PARAM_schemaKey}"
+        declare -g "SCHEMAS_UPDATE_schemaKey=${schemaKey}"
 
     fi
 
@@ -5020,13 +5631,12 @@ tokens_delete() {
     then
         if ! [[ -z "${PARAM_clientId}" ]]
         then 
-            checkParams clientId
+            checkParams clientId "false"
             
         else
             getParams clientId
         fi
-        declare -g "TOKENS_DELETE_clientId=${PARAM_clientId}"
-        declare -g "clientId=${PARAM_clientId}"
+        declare -g "TOKENS_DELETE_clientId=${clientId}"
 
     fi
 
@@ -5041,13 +5651,12 @@ tokens_delete() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "TOKENS_DELETE_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "TOKENS_DELETE_userKey=${userKey}"
 
     fi
 
@@ -5105,13 +5714,12 @@ tokens_get() {
     then
         if ! [[ -z "${PARAM_clientId}" ]]
         then 
-            checkParams clientId
+            checkParams clientId "false"
             
         else
             getParams clientId
         fi
-        declare -g "TOKENS_GET_clientId=${PARAM_clientId}"
-        declare -g "clientId=${PARAM_clientId}"
+        declare -g "TOKENS_GET_clientId=${clientId}"
 
     fi
 
@@ -5126,13 +5734,12 @@ tokens_get() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "TOKENS_GET_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "TOKENS_GET_userKey=${userKey}"
 
     fi
 
@@ -5190,13 +5797,12 @@ tokens_list() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "TOKENS_LIST_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "TOKENS_LIST_userKey=${userKey}"
 
     fi
 
@@ -5254,13 +5860,12 @@ twoStepVerification_turnOff() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "TWOSTEPVERIFICATION_TURNOFF_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "TWOSTEPVERIFICATION_TURNOFF_userKey=${userKey}"
 
     fi
 
@@ -5322,13 +5927,12 @@ users_delete() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "USERS_DELETE_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "USERS_DELETE_userKey=${userKey}"
 
     fi
 
@@ -5386,13 +5990,12 @@ users_get() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "USERS_GET_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "USERS_GET_userKey=${userKey}"
 
     fi
 
@@ -5434,10 +6037,24 @@ users_get() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        USERS_GET_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            USERS_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            USERS_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -5471,10 +6088,24 @@ users_get() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        USERS_GET_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            USERS_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            USERS_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi
@@ -5617,10 +6248,24 @@ users_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        USERS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            USERS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            USERS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -5684,10 +6329,24 @@ users_list() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        USERS_LIST_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            USERS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            USERS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi
@@ -5744,13 +6403,12 @@ users_makeAdmin() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "USERS_MAKEADMIN_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "USERS_MAKEADMIN_userKey=${userKey}"
 
     fi
 
@@ -5812,13 +6470,12 @@ users_patch() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "USERS_PATCH_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "USERS_PATCH_userKey=${userKey}"
 
     fi
 
@@ -5880,13 +6537,12 @@ users_signOut() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "USERS_SIGNOUT_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "USERS_SIGNOUT_userKey=${userKey}"
 
     fi
 
@@ -5948,13 +6604,12 @@ users_undelete() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "USERS_UNDELETE_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "USERS_UNDELETE_userKey=${userKey}"
 
     fi
 
@@ -6016,13 +6671,12 @@ users_update() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "USERS_UPDATE_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "USERS_UPDATE_userKey=${userKey}"
 
     fi
 
@@ -6129,10 +6783,24 @@ users_watch() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        USERS_WATCH_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            USERS_WATCH_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            USERS_WATCH_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+                        
                         break
                     fi
                 fi
@@ -6196,10 +6864,24 @@ users_watch() {
                         clear
                         break 2
                     else
-                        getParams ${option}
-                        local tempUrlCarrier=PARAM_${option}
-                        USERS_WATCH_URL+="&${option}=${(P)${tempUrlCarrier}}"
-                        unset tempUrlCarrier                      
+                        clear
+
+                        local optParam=PARAM_${option}
+                        if ! [[ -z "${(P)${optParam}}" ]]
+                        then 
+                            checkParams ${option} "true"
+                            USERS_WATCH_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+
+                        else
+                            getParams ${option} "true"
+                            USERS_WATCH_URL+="${tempUrlPar}"
+                            unset tempUrlPar
+
+                        fi
+                        unset optParam
+
                         break
                     fi
                 fi
@@ -6260,13 +6942,12 @@ verificationCodes_generate() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "VERIFICATIONCODES_GENERATE_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "VERIFICATIONCODES_GENERATE_userKey=${userKey}"
 
     fi
 
@@ -6328,13 +7009,12 @@ verificationCodes_invalidate() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "VERIFICATIONCODES_INVALIDATE_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "VERIFICATIONCODES_INVALIDATE_userKey=${userKey}"
 
     fi
 
@@ -6396,13 +7076,12 @@ verificationCodes_list() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey
+            checkParams userKey "false"
             
         else
             getParams userKey
         fi
-        declare -g "VERIFICATIONCODES_LIST_userKey=${PARAM_userKey}"
-        declare -g "userKey=${PARAM_userKey}"
+        declare -g "VERIFICATIONCODES_LIST_userKey=${userKey}"
 
     fi
 
