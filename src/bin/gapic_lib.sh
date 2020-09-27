@@ -20,118 +20,6 @@ tokens=( tokens_delete tokens_get tokens_list )
 twoStepVerification=( twoStepVerification_turnOff )
 users=( users_delete users_get users_insert users_list users_makeAdmin users_patch users_signOut users_undelete users_update users_watch )
 verificationCodes=( verificationCodes_generate verificationCodes_invalidate verificationCodes_list )
-
-getParams() {
-    local tempPar=${1}
-    local urlVar=${2}
-
-    local tempCarrier=PARAM_${tempPar}
-    local tempMeta=${tempPar}Meta
-    local tempVal="${(P)tempPar}"
-
-    if [[ -z ${(P)${tempMeta}[3]} ]]
-    then
-        echo -en "# Please supply a value for the ${tempPar} parameter (${(P)${tempMeta}[1]}).\n#\n# Desc: ${(P)${tempMeta}[2]}\n~> "
-        read -r getOption
-        declare -g "tempVal=${getOption}"
-        unset getOption 
-        clear
-
-    else
-        tempOpts=(`echo ${(P)${tempMeta}[3]} | jq -r ".[]"`)
-        echo -en "# Please supply a value for the ${tempPar} parameter (${(P)${tempMeta}[1]}).\n#\n# Desc: ${(P)${tempMeta}[2]}\n~> "
-        select getOption in ${tempOpts}
-        do
-            if [[ -n ${getOption} ]]
-            then
-                declare -g "tempVal=${getOption}"
-                clear
-                break
-            fi
-        done
-        unset getOption 
-    fi
-    unset tempParMeta
-
-    if ! [[ -z "${tempVal}" ]]
-    then
-
-        declare -g "${tempPar}=${tempVal}"
-        if [[ "${urlVar}" =~ "true" ]]
-        then
-            declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
-        fi
-
-
-        if [[ -f ${credFileParams} ]]
-        then
-            if ! [[ `grep "${tempCarrier}" ${credFileParams}` ]]
-            then 
-                cat << EOIF >> ${credFileParams}
-${tempCarrier}=( ${(P)${tempPar}} )
-EOIF
-            else 
-                if ! [[ `egrep "\<${tempCarrier}\>.*\<${(P)${tempPar}}\>" ${credFileParams}` ]]
-                then
-                    cat << EOIF >> ${credFileParams}
-${tempCarrier}+=( ${(P)${tempPar}} )
-EOIF
-                fi
-            fi
-        else
-            touch ${credFileParams}
-            cat << EOIF >> ${credFileParams}
-${tempCarrier}=( ${(P)${tempPar}} )
-EOIF
-        fi
-    fi
-    unset tempPar tempCarrier tempVal
-}
-
-### TODO
-# fix error where you can't select non-saved paropts
-
-
-checkParams() {
-    local tempPar=${1}
-    local urlVar=${2}
-
-    tempCarrier=PARAM_${tempPar}
-    echo -en "# You have saved values for the ${tempPar} parameter. Do you want to use one?\n\n"
-    select checkOption in ${(P)${tempCarrier}} none
-    do
-        if [[ -n ${checkOption} ]]
-        then
-            if [[ ${checkOption} =~ "none" ]]
-            then
-                clear
-                getParams ${tempPar} ${urlVar}
-                break
-            else
-                clear
-                declare -g "${tempPar}=${checkOption}"
-
-                if [[ "${urlVar}" =~ "true" ]]
-                then
-                    declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
-                fi
-                
-                unset checkOption
-                break
-            fi
-        
-        fi
-    done
-
-
-    if [[ -z "${(P)${tempPar}}" ]]
-    then
-        getParams ${tempPar} ${urlVar}
-    fi
-    unset tempPar reuseParOpt tempCarrier
-}
-
-
 asps_delete() {
 
 
@@ -560,7 +448,7 @@ chromeosdevices_get() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -687,7 +575,7 @@ chromeosdevices_list() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -753,7 +641,7 @@ chromeosdevices_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
@@ -975,7 +863,7 @@ chromeosdevices_patch() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -1114,7 +1002,7 @@ chromeosdevices_update() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -1662,7 +1550,7 @@ domainAliases_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
@@ -2232,7 +2120,7 @@ groups_list() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -2308,7 +2196,7 @@ groups_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
@@ -2887,7 +2775,7 @@ members_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
@@ -3366,7 +3254,7 @@ mobiledevices_get() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -3493,7 +3381,7 @@ mobiledevices_list() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -3554,7 +3442,7 @@ mobiledevices_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
@@ -3902,7 +3790,7 @@ orgunits_list() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -3953,7 +3841,7 @@ orgunits_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
@@ -4552,7 +4440,7 @@ roleAssignments_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
@@ -4904,7 +4792,7 @@ roles_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
@@ -6028,7 +5916,7 @@ users_get() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -6079,7 +5967,7 @@ users_get() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
@@ -6239,7 +6127,7 @@ users_list() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -6320,7 +6208,7 @@ users_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
@@ -6774,7 +6662,7 @@ users_watch() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in ${optParams} none
+            select option in none ${optParams}
             do
                 if [[ -n ${option} ]]
                 then
@@ -6855,7 +6743,7 @@ users_watch() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            select option in ${inpParams} none
+            select option in none ${inpParams} 
             do
                 if [[ -n ${option} ]]
                 then
