@@ -8,6 +8,8 @@
 
     gapicCredsWiz="${gapicBinDir}gapic_creds.sh"
     gapicLibWiz="${gapicBinDir}gapic_lib.sh"
+    gapicParamWiz="${gapicBinDir}gapic_paramstore.sh"
+
     gapicSavedPar="${gapicDataDir}.api_params"
 
 gapicBootstrap() {
@@ -37,6 +39,15 @@ gapicBootstrap() {
         exit 1
     else
         source ${gapicLibWiz}
+    fi
+
+    if ! [[ -f ${gapicParamWiz} ]]
+    then
+        clear
+        echo -en "# No parameter store source file found! Please re-run the generator."
+        exit 1
+    else
+        source ${gapicParamWiz}
     fi
 
     if [[ -f ${gapicSavedPar} ]]
