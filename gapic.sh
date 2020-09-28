@@ -402,7 +402,7 @@ checkAccess() {
 
             echo -e "# Request sent:\n\n"
             echo -e "#########################\n"
-            echo \${(qqq)sentRequest}
+            echo "\${sentRequest}"
             echo -e "\n\n"
             echo -e "#########################\n"
 
@@ -992,9 +992,14 @@ EOF
                         if ! [[ -z "\${(P)\${optParam}}" ]]
                         then 
                             checkParams \${option} "true"
-                            ${curPrefix}URL+="\${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ \${${curPrefix}URL} =~ \${option} ]]
+                            then
+                                ${curPrefix}URL+="\${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams \${option} "true"
@@ -1064,9 +1069,14 @@ EOF
                         if ! [[ -z "\${(P)\${optParam}}" ]]
                         then 
                             checkParams \${option} "true"
-                            ${curPrefix}URL+="\${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ \${${curPrefix}URL} =~ \${option} ]]
+                            then
+                                ${curPrefix}URL+="\${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams \${option} "true"

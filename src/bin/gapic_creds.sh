@@ -33,7 +33,7 @@ checkCreds() {
         if ! [[ -z ${SAVED_OAUTH2_SCOPE} ]]
         then
             clear
-            echo -e "# Found saved OAuth scope: ${SAVED_OAUTH2_SCOPE}. Do you want to use this one? [y/n]\n~> "
+            echo -en "# Found saved OAuth scope: ${SAVED_OAUTH2_SCOPE}. Do you want to use this one? [y/n]\n~> "
             read -r savedOptScope
             clear
             if ! [[ ${savedOptScope} =~ "n" ]] \
@@ -165,7 +165,7 @@ checkAccess() {
 
             echo -e "# Request sent:\n\n"
             echo -e "#########################\n"
-            echo ${(qqq)sentRequest}
+            echo "${sentRequest}"
             echo -e "\n\n"
             echo -e "#########################\n"
 

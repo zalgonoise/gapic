@@ -463,9 +463,14 @@ chromeosdevices_get() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${CHROMEOSDEVICES_GET_URL} =~ ${option} ]]
+                            then
+                                CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -590,9 +595,14 @@ chromeosdevices_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${CHROMEOSDEVICES_LIST_URL} =~ ${option} ]]
+                            then
+                                CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -656,9 +666,14 @@ chromeosdevices_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${CHROMEOSDEVICES_LIST_URL} =~ ${option} ]]
+                            then
+                                CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -878,9 +893,14 @@ chromeosdevices_patch() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${CHROMEOSDEVICES_PATCH_URL} =~ ${option} ]]
+                            then
+                                CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -1017,9 +1037,14 @@ chromeosdevices_update() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${CHROMEOSDEVICES_UPDATE_URL} =~ ${option} ]]
+                            then
+                                CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -1565,9 +1590,14 @@ domainAliases_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            DOMAINALIASES_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${DOMAINALIASES_LIST_URL} =~ ${option} ]]
+                            then
+                                DOMAINALIASES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -2135,9 +2165,14 @@ groups_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            GROUPS_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${GROUPS_LIST_URL} =~ ${option} ]]
+                            then
+                                GROUPS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -2211,9 +2246,14 @@ groups_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            GROUPS_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${GROUPS_LIST_URL} =~ ${option} ]]
+                            then
+                                GROUPS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -2790,9 +2830,14 @@ members_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            MEMBERS_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${MEMBERS_LIST_URL} =~ ${option} ]]
+                            then
+                                MEMBERS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -3269,9 +3314,14 @@ mobiledevices_get() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            MOBILEDEVICES_GET_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${MOBILEDEVICES_GET_URL} =~ ${option} ]]
+                            then
+                                MOBILEDEVICES_GET_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -3396,9 +3446,14 @@ mobiledevices_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${MOBILEDEVICES_LIST_URL} =~ ${option} ]]
+                            then
+                                MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -3457,9 +3512,14 @@ mobiledevices_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${MOBILEDEVICES_LIST_URL} =~ ${option} ]]
+                            then
+                                MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -3805,9 +3865,14 @@ orgunits_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            ORGUNITS_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${ORGUNITS_LIST_URL} =~ ${option} ]]
+                            then
+                                ORGUNITS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -3856,9 +3921,14 @@ orgunits_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            ORGUNITS_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${ORGUNITS_LIST_URL} =~ ${option} ]]
+                            then
+                                ORGUNITS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -4455,9 +4525,14 @@ roleAssignments_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            ROLEASSIGNMENTS_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${ROLEASSIGNMENTS_LIST_URL} =~ ${option} ]]
+                            then
+                                ROLEASSIGNMENTS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -4807,9 +4882,14 @@ roles_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            ROLES_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${ROLES_LIST_URL} =~ ${option} ]]
+                            then
+                                ROLES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -5931,9 +6011,14 @@ users_get() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            USERS_GET_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${USERS_GET_URL} =~ ${option} ]]
+                            then
+                                USERS_GET_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -5982,9 +6067,14 @@ users_get() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            USERS_GET_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${USERS_GET_URL} =~ ${option} ]]
+                            then
+                                USERS_GET_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -6142,9 +6232,14 @@ users_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            USERS_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${USERS_LIST_URL} =~ ${option} ]]
+                            then
+                                USERS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -6223,9 +6318,14 @@ users_list() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            USERS_LIST_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${USERS_LIST_URL} =~ ${option} ]]
+                            then
+                                USERS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -6677,9 +6777,14 @@ users_watch() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            USERS_WATCH_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${USERS_WATCH_URL} =~ ${option} ]]
+                            then
+                                USERS_WATCH_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
@@ -6758,9 +6863,14 @@ users_watch() {
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
                             checkParams ${option} "true"
-                            USERS_WATCH_URL+="${tempUrlPar}"
-                            unset tempUrlPar
 
+                            if ! [[ ${USERS_WATCH_URL} =~ ${option} ]]
+                            then
+                                USERS_WATCH_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            else
+                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            fi
 
                         else
                             getParams ${option} "true"
