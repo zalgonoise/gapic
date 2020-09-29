@@ -993,9 +993,10 @@ EOF
                         then 
                             checkParams \${option} "true"
 
-                            if ! [[ \${${curPrefix}URL} =~ \${option} ]]
+                            if ! [[ \${addedParams} =~ \${option} ]]
                             then
                                 ${curPrefix}URL+="\${tempUrlPar}"
+                                addedParams+=( "\${option}" )
                                 unset tempUrlPar
                             else
                                 echo -e "# Error! Parameter already provided before, skipping.\n\n"
@@ -1070,9 +1071,10 @@ EOF
                         then 
                             checkParams \${option} "true"
 
-                            if ! [[ \${${curPrefix}URL} =~ \${option} ]]
+                            if ! [[ \${addedParams} =~ \${option} ]]
                             then
                                 ${curPrefix}URL+="\${tempUrlPar}"
+                                addedParams+=( "\${option}" )
                                 unset tempUrlPar
                             else
                                 echo -e "# Error! Parameter already provided before, skipping.\n\n"
