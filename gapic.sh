@@ -181,15 +181,41 @@ gapicPostExec() {
         then
             if [ -f \${credFileAccess} ]
             then
-                echo -e "# Invalid Credentials error.\n\nRemoving Access Token"
+                echo -e "# Invalid Credentials error.\n\n# Removing Access Token to generate a new one:\n\n"
                 rm \${credFileAccess}
-                gapicExec
+                genAccess
+
+                echo -e "# Repeating previously configured request:\n\n"
+                execRequest
+
+                ((repeatCount++))
+                if ! [[ \${repeatCount} -ge 2 ]]
+                then
+                    gapicPostExec
+                else
+                    echo "# Unable to authenticate with the provided credentials. Please relaunch and reauthenticate yourself.\n\n"
+                    exit 1
+                fi
+
             elif ! [ -f \${credFileAccess} ] \\
                 && [ -f \${credFileRefresh} ]
             then
-                echo -e "# Invalid Credentials error.\n\nRemoving Refresh Token"
+                echo -e "# Invalid Credentials error.\n\n# Removing Refresh Token and generating a new one:\n\n"
                 rm \${credFileRefresh}
-                gapicExec
+                genRefresh
+                
+                echo -e "# Repeating previously configured request:\n\n"
+                execRequest
+
+                ((repeatCount++))
+                if ! [[ \${repeatCount} -ge 2 ]]
+                then
+                    gapicPostExec
+                else
+                    echo "# Unable to authenticate with the provided credentials. Please relaunch and reauthenticate yourself.\n\n"
+                    exit 1
+                fi
+
             else
                 echo -e "# Error in execution: Invalid Credentials\n\n"
                 echo "\${outputJson}"
@@ -1096,19 +1122,18 @@ EOF
         fi
 
 
-    # Define curl
-
 
         cat << EOF >> ${outputLibWiz}
-
-    curl -s \\
-        --request ${curMethod} \\
-        \${${curPrefix}URL} \\
+    execRequest() {
+    
+        curl -s \\
+            --request ${curMethod} \\
+            \${${curPrefix}URL} \\
 EOF
         for (( k = 1 ; k <= ${#curHeaderSet[@]} ; k++ ))
         do
             cat << EOF >> ${outputLibWiz}
-        --header "${curHeaderSet[$k]}" \\
+            --header "${curHeaderSet[$k]}" \\
 EOF
         done
 
@@ -1118,12 +1143,10 @@ EOF
         unset k 
 
         cat << EOF >> ${outputLibWiz}
-        --compressed \\
-        | jq -c '.' \\
-        | read -r outputJson
+            --compressed \\
+            | jq -c '.' \\
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=${(qq)sentRequest}
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1150,7 +1173,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 EOF
 
         unset sentRequest

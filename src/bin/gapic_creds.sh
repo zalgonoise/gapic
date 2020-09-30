@@ -125,6 +125,108 @@ offlineCode() {
     echo ${urlGen}
 }
 
+genRefresh() {
+    echo -en "# Please visit the URL below to generate an access code. Once authenticated you will be provided a code - paste it below: \n\n "
+    
+    offlineCode
+    
+    echo -en "\nOffline code\t~> "
+    read -r OFFLINECODE
+    clear
+
+    sentAuthRequest="curl -s \ \n    https://accounts.google.com/o/oauth2/token \ \n    -d code=${OFFLINECODE} \ \n    -d client_id=${CLIENTID} \ \n    -d client_secret=${CLIENTSECRET} \ \n    -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \ \n    -d grant_type=authorization_code"
+    
+    echo -e "# Request sent:\n\n"
+    echo -e "#########################\n"
+    echo "${sentAuthRequest}"
+    echo -e "\n\n"
+    echo -e "#########################\n"
+    unset sentAuthRequest
+    
+    curl -s \
+    https://accounts.google.com/o/oauth2/token \
+    -d code=${OFFLINECODE} \
+    -d client_id=${CLIENTID} \
+    -d client_secret=${CLIENTSECRET} \
+    -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \
+    -d grant_type=authorization_code \
+    | jq -c '.' | read -r authPayload
+    
+    if ! [[ `echo ${authPayload} | jq '.refresh_token'` =~ "null" ]] \
+    && ! [[ `echo ${authPayload} | jq '.access_token'` =~ "null" ]]
+    then 
+        REFRESHTOKEN=`echo ${authPayload} | jq '.refresh_token'`
+        ACCESSTOKEN=`echo ${authPayload} | jq '.access_token'`
+        ACCESSTOKEN=${ACCESSTOKEN//\"/}
+        export REFRESHTOKEN ACCESSTOKEN
+        cat << EOIF > ${credFileRefresh}
+SAVED_REFRESHTOKEN=${REFRESHTOKEN}
+EOIF
+
+        cat << EOIF > ${credFileAccess}
+SAVED_ACCESSTOKEN=${ACCESSTOKEN}
+EOIF
+
+        echo -e "# Execution complete!\n\n"
+        echo -e "#########################\n"
+        echo "${authPayload}" | jq '.'
+        echo -e "\n\n"
+        echo -e "#########################\n"
+    else
+        echo -e "# Error in the authentication!\n\n"
+        echo -e "#########################\n"
+        echo "${authPayload}" | jq '.'
+        echo -e "\n\n"
+        echo -e "#########################\n"
+        exit 1
+    fi
+}
+
+genAccess() {
+    # get a new Access Token with Refresh Token
+    # https://developers.google.com/identity/protocols/oauth2/web-server#httprest_7
+    
+    sentRequest="curl -s \ \n    --request POST \ \n    -d client_id=${CLIENTID} \ \n    -d client_secret=${CLIENTSECRET} \ \n    -d refresh_token=${REFRESHTOKEN} \ \n    -d grant_type=refresh_token \ \n    \"https://accounts.google.com/o/oauth2/token\""
+    
+    echo -e "# Request sent:\n\n"
+    echo -e "#########################\n"
+    echo "${sentRequest}"
+    echo -e "\n\n"
+    echo -e "#########################\n"
+    unset sentRequest
+    
+    curl -s \
+    --request POST \
+    -d client_id=${CLIENTID} \
+    -d client_secret=${CLIENTSECRET} \
+    -d refresh_token=${REFRESHTOKEN} \
+    -d grant_type=refresh_token \
+    "https://accounts.google.com/o/oauth2/token" \
+        | jq -c '.' \
+        | read -r authPayload
+    
+    if ! [[ `echo ${authPayload} | jq '.access_token'` =~ "null" ]]
+    then 
+        ACCESSTOKEN=`echo ${authPayload} | jq '.access_token'`
+        ACCESSTOKEN=${ACCESSTOKEN//\"/}
+        export ACCESSTOKEN
+        cat << EOIF > ${credFileAccess}
+SAVED_ACCESSTOKEN=${ACCESSTOKEN}
+EOIF
+        echo -e "# Execution complete!\n\n"
+        echo -e "#########################\n"
+        echo "${authPayload}" | jq '.'
+        echo -e "\n\n"
+        echo -e "#########################\n"
+    else
+        echo -e "# Error in the authentication!\n\n"
+        echo -e "#########################\n"
+        echo "${authPayload}" | jq '.'
+        echo -e "\n\n"
+        echo -e "#########################\n"
+        exit 1
+    fi
+}
 
 # Checks for Access Token and Refresh Token
 
@@ -151,115 +253,11 @@ checkAccess() {
 
         if [ -z ${REFRESHTOKEN} ]
         then
-
-            echo -en "# Please visit the URL below to generate an access code. Once authenticated you will be provided a code - paste it below: \n\n "
-
-            offlineCode
-
-            echo -en "\nOffline code\t~> "
-            read -r OFFLINECODE
-
-            clear
-
-            sentRequest="curl -s \ \n    https://accounts.google.com/o/oauth2/token \ \n    -d code=${OFFLINECODE} \ \n    -d client_id=${CLIENTID} \ \n    -d client_secret=${CLIENTSECRET} \ \n    -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \ \n    -d grant_type=authorization_code"
-
-            echo -e "# Request sent:\n\n"
-            echo -e "#########################\n"
-            echo "${sentRequest}"
-            echo -e "\n\n"
-            echo -e "#########################\n"
-
-            unset sentRequest
-
-            curl -s \
-            https://accounts.google.com/o/oauth2/token \
-            -d code=${OFFLINECODE} \
-            -d client_id=${CLIENTID} \
-            -d client_secret=${CLIENTSECRET} \
-            -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \
-            -d grant_type=authorization_code \
-            | jq -c '.' | read -r authPayload
+            genRefresh
             
-            if ! [[ `echo ${authPayload} | jq '.refresh_token'` =~ "null" ]] \
-            && ! [[ `echo ${authPayload} | jq '.access_token'` =~ "null" ]]
-            then 
-                REFRESHTOKEN=`echo ${authPayload} | jq '.refresh_token'`
-                ACCESSTOKEN=`echo ${authPayload} | jq '.access_token'`
-                ACCESSTOKEN=${ACCESSTOKEN//\"/}
-
-                export REFRESHTOKEN ACCESSTOKEN
-
-                cat << EOIF > ${credFileRefresh}
-SAVED_REFRESHTOKEN=${REFRESHTOKEN}
-EOIF
-
-                cat << EOIF > ${credFileAccess}
-SAVED_ACCESSTOKEN=${ACCESSTOKEN}
-EOIF
-
-                echo -e "# Execution complete!\n\n"
-                echo -e "#########################\n"
-                echo "${authPayload}" | jq '.'
-                echo -e "\n\n"
-                echo -e "#########################\n"
-            else
-                echo -e "# Error in the authentication!\n\n"
-                echo -e "#########################\n"
-                echo "${authPayload}" | jq '.'
-                echo -e "\n\n"
-                echo -e "#########################\n"
-                exit 1
-            fi
 
         else
-            # get a new Access Token with Refresh Token
-            # https://developers.google.com/identity/protocols/oauth2/web-server#httprest_7
-
-
-            sentRequest="curl -s \ \n    --request POST \ \n    -d client_id=${CLIENTID} \ \n    -d client_secret=${CLIENTSECRET} \ \n    -d refresh_token=${REFRESHTOKEN} \ \n    -d grant_type=refresh_token \ \n    \"https://accounts.google.com/o/oauth2/token\""
-
-            echo -e "# Request sent:\n\n"
-            echo -e "#########################\n"
-            echo "${sentRequest}"
-            echo -e "\n\n"
-            echo -e "#########################\n"
-
-            unset sentRequest
-
-
-            curl -s \
-            --request POST \
-            -d client_id=${CLIENTID} \
-            -d client_secret=${CLIENTSECRET} \
-            -d refresh_token=${REFRESHTOKEN} \
-            -d grant_type=refresh_token \
-            "https://accounts.google.com/o/oauth2/token" \
-                | jq -c '.' \
-                | read -r authPayload
-
-            if ! [[ `echo ${authPayload} | jq '.access_token'` =~ "null" ]]
-            then 
-                ACCESSTOKEN=`echo ${authPayload} | jq '.access_token'`
-                ACCESSTOKEN=${ACCESSTOKEN//\"/}
-
-                export ACCESSTOKEN
-
-                cat << EOIF > ${credFileAccess}
-SAVED_ACCESSTOKEN=${ACCESSTOKEN}
-EOIF
-                echo -e "# Execution complete!\n\n"
-                echo -e "#########################\n"
-                echo "${authPayload}" | jq '.'
-                echo -e "\n\n"
-                echo -e "#########################\n"
-            else
-                echo -e "# Error in the authentication!\n\n"
-                echo -e "#########################\n"
-                echo "${authPayload}" | jq '.'
-                echo -e "\n\n"
-                echo -e "#########################\n"
-                exit 1
-            fi
+            genAccess
 
         fi
 

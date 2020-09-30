@@ -66,18 +66,17 @@ asps_delete() {
 
     ASPS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/asps/${codeId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${ASPS_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${ASPS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -99,7 +98,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -149,18 +149,17 @@ asps_get() {
 
     ASPS_GET_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/asps/${codeId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${ASPS_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${ASPS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -182,7 +181,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -212,18 +212,17 @@ asps_list() {
 
     ASPS_LIST_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/asps?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${ASPS_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${ASPS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -245,7 +244,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -255,19 +255,18 @@ channels_stop() {
 
     CHANNELS_STOP_URL="https://www.googleapis.com/admin/directory_v1/channels/stop?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${CHANNELS_STOP_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${CHANNELS_STOP_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -292,7 +291,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -342,19 +342,18 @@ chromeosdevices_action() {
 
     CHROMEOSDEVICES_ACTION_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/chromeos/${resourceId}/action?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${CHROMEOSDEVICES_ACTION_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${CHROMEOSDEVICES_ACTION_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -379,7 +378,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -487,18 +487,17 @@ chromeosdevices_get() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${CHROMEOSDEVICES_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${CHROMEOSDEVICES_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -520,7 +519,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -692,18 +692,17 @@ chromeosdevices_list() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${CHROMEOSDEVICES_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${CHROMEOSDEVICES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -725,7 +724,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -775,19 +775,18 @@ chromeosdevices_moveDevicesToOu() {
 
     CHROMEOSDEVICES_MOVEDEVICESTOOU_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/chromeos/moveDevicesToOu?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -812,7 +811,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -920,19 +920,18 @@ chromeosdevices_patch() {
             done
         done
     fi
-
-    curl -s \
-        --request PATCH \
-        ${CHROMEOSDEVICES_PATCH_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PATCH \
+            ${CHROMEOSDEVICES_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -957,7 +956,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1065,19 +1065,18 @@ chromeosdevices_update() {
             done
         done
     fi
-
-    curl -s \
-        --request PUT \
-        ${CHROMEOSDEVICES_UPDATE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PUT \
+            ${CHROMEOSDEVICES_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1102,7 +1101,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1132,18 +1132,17 @@ customers_get() {
 
     CUSTOMERS_GET_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${CUSTOMERS_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${CUSTOMERS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1165,7 +1164,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1195,19 +1195,18 @@ customers_patch() {
 
     CUSTOMERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PATCH \
-        ${CUSTOMERS_PATCH_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PATCH \
+            ${CUSTOMERS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1232,7 +1231,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1262,19 +1262,18 @@ customers_update() {
 
     CUSTOMERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PUT \
-        ${CUSTOMERS_UPDATE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PUT \
+            ${CUSTOMERS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1299,7 +1298,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1349,18 +1349,17 @@ domainAliases_delete() {
 
     DOMAINALIASES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases/${domainAliasName}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${DOMAINALIASES_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${DOMAINALIASES_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1382,7 +1381,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1432,18 +1432,17 @@ domainAliases_get() {
 
     DOMAINALIASES_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases/${domainAliasName}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${DOMAINALIASES_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${DOMAINALIASES_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1465,7 +1464,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1495,19 +1495,18 @@ domainAliases_insert() {
 
     DOMAINALIASES_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${DOMAINALIASES_INSERT_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${DOMAINALIASES_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1532,7 +1531,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1619,18 +1619,17 @@ domainAliases_list() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${DOMAINALIASES_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${DOMAINALIASES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1652,7 +1651,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1702,18 +1702,17 @@ domains_delete() {
 
     DOMAINS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains/${domainName}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${DOMAINS_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${DOMAINS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1735,7 +1734,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1785,18 +1785,17 @@ domains_get() {
 
     DOMAINS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains/${domainName}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${DOMAINS_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${DOMAINS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1818,7 +1817,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1848,19 +1848,18 @@ domains_insert() {
 
     DOMAINS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${DOMAINS_INSERT_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${DOMAINS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1885,7 +1884,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1915,18 +1915,17 @@ domains_list() {
 
     DOMAINS_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${DOMAINS_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${DOMAINS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1948,7 +1947,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -1978,18 +1978,17 @@ groups_delete() {
 
     GROUPS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${GROUPS_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${GROUPS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2011,7 +2010,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2041,18 +2041,17 @@ groups_get() {
 
     GROUPS_GET_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${GROUPS_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${GROUPS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2074,7 +2073,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2084,19 +2084,18 @@ groups_insert() {
 
     GROUPS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/groups?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${GROUPS_INSERT_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${GROUPS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2121,7 +2120,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2277,18 +2277,17 @@ groups_list() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${GROUPS_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${GROUPS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2310,7 +2309,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2340,19 +2340,18 @@ groups_patch() {
 
     GROUPS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PATCH \
-        ${GROUPS_PATCH_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PATCH \
+            ${GROUPS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2377,7 +2376,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2407,19 +2407,18 @@ groups_update() {
 
     GROUPS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PUT \
-        ${GROUPS_UPDATE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PUT \
+            ${GROUPS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2444,7 +2443,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2494,18 +2494,17 @@ members_delete() {
 
     MEMBERS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${MEMBERS_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${MEMBERS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2527,7 +2526,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2577,18 +2577,17 @@ members_get() {
 
     MEMBERS_GET_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${MEMBERS_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${MEMBERS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2610,7 +2609,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2660,18 +2660,17 @@ members_hasMember() {
 
     MEMBERS_HASMEMBER_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/hasMember/${memberKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${MEMBERS_HASMEMBER_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${MEMBERS_HASMEMBER_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2693,7 +2692,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2723,19 +2723,18 @@ members_insert() {
 
     MEMBERS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${MEMBERS_INSERT_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${MEMBERS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2760,7 +2759,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2862,18 +2862,17 @@ members_list() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${MEMBERS_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${MEMBERS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2895,7 +2894,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -2945,19 +2945,18 @@ members_patch() {
 
     MEMBERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PATCH \
-        ${MEMBERS_PATCH_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PATCH \
+            ${MEMBERS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2982,7 +2981,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -3032,19 +3032,18 @@ members_update() {
 
     MEMBERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PUT \
-        ${MEMBERS_UPDATE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PUT \
+            ${MEMBERS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3069,7 +3068,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -3119,19 +3119,18 @@ mobiledevices_action() {
 
     MOBILEDEVICES_ACTION_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/mobile/${resourceId}/action?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${MOBILEDEVICES_ACTION_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${MOBILEDEVICES_ACTION_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3156,7 +3155,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -3206,18 +3206,17 @@ mobiledevices_delete() {
 
     MOBILEDEVICES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/mobile/${resourceId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${MOBILEDEVICES_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${MOBILEDEVICES_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3239,7 +3238,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -3347,18 +3347,17 @@ mobiledevices_get() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${MOBILEDEVICES_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${MOBILEDEVICES_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3380,7 +3379,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -3547,18 +3547,17 @@ mobiledevices_list() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${MOBILEDEVICES_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${MOBILEDEVICES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3580,7 +3579,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -3630,18 +3630,17 @@ orgunits_delete() {
 
     ORGUNITS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${ORGUNITS_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${ORGUNITS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3663,7 +3662,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -3713,18 +3713,17 @@ orgunits_get() {
 
     ORGUNITS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${ORGUNITS_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${ORGUNITS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3746,7 +3745,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -3776,19 +3776,18 @@ orgunits_insert() {
 
     ORGUNITS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${ORGUNITS_INSERT_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${ORGUNITS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3813,7 +3812,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -3958,18 +3958,17 @@ orgunits_list() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${ORGUNITS_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${ORGUNITS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3991,7 +3990,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4041,19 +4041,18 @@ orgunits_patch() {
 
     ORGUNITS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PATCH \
-        ${ORGUNITS_PATCH_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PATCH \
+            ${ORGUNITS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4078,7 +4077,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4128,19 +4128,18 @@ orgunits_update() {
 
     ORGUNITS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PUT \
-        ${ORGUNITS_UPDATE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PUT \
+            ${ORGUNITS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4165,7 +4164,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4195,18 +4195,17 @@ privileges_list() {
 
     PRIVILEGES_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/ALL/privileges?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${PRIVILEGES_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${PRIVILEGES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4228,7 +4227,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4278,18 +4278,17 @@ roleAssignments_delete() {
 
     ROLEASSIGNMENTS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments/${roleAssignmentId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${ROLEASSIGNMENTS_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${ROLEASSIGNMENTS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4311,7 +4310,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4361,18 +4361,17 @@ roleAssignments_get() {
 
     ROLEASSIGNMENTS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments/${roleAssignmentId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${ROLEASSIGNMENTS_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${ROLEASSIGNMENTS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4394,7 +4393,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4424,19 +4424,18 @@ roleAssignments_insert() {
 
     ROLEASSIGNMENTS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${ROLEASSIGNMENTS_INSERT_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${ROLEASSIGNMENTS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4461,7 +4460,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4563,18 +4563,17 @@ roleAssignments_list() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${ROLEASSIGNMENTS_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${ROLEASSIGNMENTS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4596,7 +4595,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4646,18 +4646,17 @@ roles_delete() {
 
     ROLES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${ROLES_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${ROLES_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4679,7 +4678,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4729,18 +4729,17 @@ roles_get() {
 
     ROLES_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${ROLES_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${ROLES_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4762,7 +4761,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4792,19 +4792,18 @@ roles_insert() {
 
     ROLES_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${ROLES_INSERT_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${ROLES_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4829,7 +4828,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -4921,18 +4921,17 @@ roles_list() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${ROLES_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${ROLES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4954,7 +4953,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5004,19 +5004,18 @@ roles_patch() {
 
     ROLES_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PATCH \
-        ${ROLES_PATCH_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PATCH \
+            ${ROLES_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5041,7 +5040,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5091,19 +5091,18 @@ roles_update() {
 
     ROLES_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PUT \
-        ${ROLES_UPDATE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PUT \
+            ${ROLES_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5128,7 +5127,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5178,18 +5178,17 @@ schemas_delete() {
 
     SCHEMAS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${SCHEMAS_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${SCHEMAS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5211,7 +5210,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5261,18 +5261,17 @@ schemas_get() {
 
     SCHEMAS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${SCHEMAS_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${SCHEMAS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5294,7 +5293,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5324,19 +5324,18 @@ schemas_insert() {
 
     SCHEMAS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${SCHEMAS_INSERT_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${SCHEMAS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5361,7 +5360,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5391,18 +5391,17 @@ schemas_list() {
 
     SCHEMAS_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${SCHEMAS_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${SCHEMAS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5424,7 +5423,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5474,19 +5474,18 @@ schemas_patch() {
 
     SCHEMAS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PATCH \
-        ${SCHEMAS_PATCH_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PATCH \
+            ${SCHEMAS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5511,7 +5510,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5561,19 +5561,18 @@ schemas_update() {
 
     SCHEMAS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PUT \
-        ${SCHEMAS_UPDATE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PUT \
+            ${SCHEMAS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5598,7 +5597,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5648,18 +5648,17 @@ tokens_delete() {
 
     TOKENS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/tokens/${clientId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${TOKENS_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${TOKENS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5681,7 +5680,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5731,18 +5731,17 @@ tokens_get() {
 
     TOKENS_GET_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/tokens/${clientId}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${TOKENS_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${TOKENS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5764,7 +5763,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5794,18 +5794,17 @@ tokens_list() {
 
     TOKENS_LIST_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/tokens?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${TOKENS_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${TOKENS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5827,7 +5826,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5857,19 +5857,18 @@ twoStepVerification_turnOff() {
 
     TWOSTEPVERIFICATION_TURNOFF_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/twoStepVerification/turnOff?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${TWOSTEPVERIFICATION_TURNOFF_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${TWOSTEPVERIFICATION_TURNOFF_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5894,7 +5893,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -5924,18 +5924,17 @@ users_delete() {
 
     USERS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request DELETE \
-        ${USERS_DELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request DELETE \
+            ${USERS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5957,7 +5956,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -6108,18 +6108,17 @@ users_get() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${USERS_GET_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${USERS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6141,7 +6140,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -6151,19 +6151,18 @@ users_insert() {
 
     USERS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/users?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${USERS_INSERT_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${USERS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6188,7 +6187,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -6361,18 +6361,17 @@ users_list() {
             done
         done
     fi
-
-    curl -s \
-        --request GET \
-        ${USERS_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${USERS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6394,7 +6393,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -6424,19 +6424,18 @@ users_makeAdmin() {
 
     USERS_MAKEADMIN_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/makeAdmin?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${USERS_MAKEADMIN_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${USERS_MAKEADMIN_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6461,7 +6460,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -6491,19 +6491,18 @@ users_patch() {
 
     USERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PATCH \
-        ${USERS_PATCH_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PATCH \
+            ${USERS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6528,7 +6527,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -6558,19 +6558,18 @@ users_signOut() {
 
     USERS_SIGNOUT_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/signOut?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${USERS_SIGNOUT_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${USERS_SIGNOUT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6595,7 +6594,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -6625,19 +6625,18 @@ users_undelete() {
 
     USERS_UNDELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/undelete?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${USERS_UNDELETE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${USERS_UNDELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6662,7 +6661,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -6692,19 +6692,18 @@ users_update() {
 
     USERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
-
-    curl -s \
-        --request PUT \
-        ${USERS_UPDATE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request PUT \
+            ${USERS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6729,7 +6728,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -6908,19 +6908,18 @@ users_watch() {
             done
         done
     fi
-
-    curl -s \
-        --request POST \
-        ${USERS_WATCH_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${USERS_WATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6945,7 +6944,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -6975,19 +6975,18 @@ verificationCodes_generate() {
 
     VERIFICATIONCODES_GENERATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes/generate?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${VERIFICATIONCODES_GENERATE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${VERIFICATIONCODES_GENERATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -7012,7 +7011,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -7042,19 +7042,18 @@ verificationCodes_invalidate() {
 
     VERIFICATIONCODES_INVALIDATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes/invalidate?key=${CLIENTID}"
 
-
-    curl -s \
-        --request POST \
-        ${VERIFICATIONCODES_INVALIDATE_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --header "Content-Type: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request POST \
+            ${VERIFICATIONCODES_INVALIDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -7079,7 +7078,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
@@ -7109,18 +7109,17 @@ verificationCodes_list() {
 
     VERIFICATIONCODES_LIST_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes?key=${CLIENTID}"
 
-
-    curl -s \
-        --request GET \
-        ${VERIFICATIONCODES_LIST_URL} \
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+    execRequest() {
+    
+        curl -s \
+            --request GET \
+            ${VERIFICATIONCODES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
         export outputJson
-
-        #sentRequest=''
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -7142,7 +7141,8 @@ EOIF
 
         echo -e "\n\n"
         echo -e "#########################\n"
-
+    }
+    execRequest
 
 }
 
