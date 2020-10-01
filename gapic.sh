@@ -7,23 +7,31 @@
 # doublecheck `clear` events
 
 
-inputFile=`realpath $1`
+if ! [[ -z ${1} ]]
+then
+    inputFile=`realpath $1`
+fi
+
+inputSchemaUrl="https://www.googleapis.com/discovery/v1/apis/admin/directory_v1/rest"
 output=`realpath $0`
 output=${output//gapic.sh/}
 
 outputSrcDir="${output}src/"
 outputBinDir="${output}src/bin"
 outputDataDir="${output}src/data"
+outputSchemaDir="${output}src/schema"
+
 outputCredsWiz="${outputBinDir}/gapic_creds.sh"
 outputLibWiz="${outputBinDir}/gapic_lib.sh"
 outputExecWiz="${outputBinDir}/gapic_exec.sh"
 outputParamStoreWiz="${outputBinDir}/gapic_paramstore.sh"
 
+defaultSchemaFile="${outputSchemaDir}/gapic_AdminSDK_Directory.json"
+
 if ! [ -d ${outputSrcDir} ]
 then
     mkdir ${outputSrcDir}
 fi
-
 
 if ! [ -d ${outputBinDir} ]
 then
@@ -33,6 +41,11 @@ fi
 if ! [ -d ${outputDataDir} ]
 then
     mkdir ${outputDataDir}
+fi
+
+if ! [ -d ${outputSchemaDir} ]
+then
+    mkdir ${outputSchemaDir}
 fi
 
 if ! [ -f ${outputCredsWiz} ] \
@@ -716,22 +729,49 @@ rmParams() {
 
 EOF
 
+# if an input JSON file isn't supplied, defaults to fetching the Directory API schema via curl
+# if other files already exist, rename the active one
+
+if [[ -z ${inputFile} ]]
+then
+    schemaDirContents=( `find ${outputSchemaDir} -name "gapic_AdminSDK_Directory*"` )
+
+    if ! [[ -z ${schemaDirContents} ]]
+    then
+        lastSavedSchema=${schemaDirContents[${#schemaDirContents[@]}]}
+        
+        newSchemaName=${lastSavedSchema//.json/}
+        newSchemaName=${newSchemaName//${outputSchemaDir}\/gapic_AdminSDK_Directory/}
+        newSchemaName=${newSchemaName//_/}
+        newSchemaName=$((${newSchemaName}+1))
+        newSchemaName=${outputSchemaDir}/gapic_AdminSDK_Directory_${newSchemaName}.json
+
+        mv ${defaultSchemaFile} ${newSchemaName}
+
+    fi
+        
+    curl -s \
+    ${inputSchemaUrl} \
+    > ${defaultSchemaFile}
+    
+    inputFile=${defaultSchemaFile}
+
+fi
 
 # Testing if input is file
 
-
-if ! [ -f ${inputFile} ]
+if ! [[ -f ${inputFile} ]]
 then
     echo "Invalid input file, please make sure you enter the path to a valid file"
     exit 1
 fi
 
 # Testing if input file is JSON-valid
-
 cat "${inputFile}" \
     | jq -c '.' 2>&1 \
     | read -r inputJson
 
+    
 
 if [[ ${inputJson} =~ "parse error" ]]
 then
