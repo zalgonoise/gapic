@@ -114,10 +114,10 @@ gapicFuzzySchema() {
     | jq 'path(..) | map(tostring) | join(".")' \
     | sed "s/\"//g" \
     | sed "s/^/./" \
+    | sed "s/\.\([[:digit:]]\)/[\1]/g" \
     | fzf  --preview "cat <(jq -C {1} < \${1})" \
     | xargs -ri jq -C {} <(cat \${1})
 }
-
 
 
 # Check for existing credentials and access token
