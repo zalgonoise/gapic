@@ -110,12 +110,12 @@ gapicBootstrap() {
 # Schema explorer / fuzzy finder
 
 gapicFuzzySchema() {
-    cat \${schemaFile} \
+    cat \${1} \
     | jq 'path(..) | map(tostring) | join(".")' \
     | sed "s/\"//g" \
     | sed "s/^/./" \
-    | fzf  --preview "cat <(jq -C {1} < \${schemaFile})" \
-    | xargs -ri jq -C {} <(cat \${schemaFile})
+    | fzf  --preview "cat <(jq -C {1} < \${1})" \
+    | xargs -ri jq -C {} <(cat \${1})
 }
 
 
