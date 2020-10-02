@@ -53,6 +53,8 @@ cat << EOF >> ${outputExecWiz}
     gapicBinDir=\`realpath \$0\`
     gapicBinDir=\${gapicBinDir//gapic_exec.sh/}
     gapicDataDir=\${gapicBinDir//bin/data}
+    gapicSchemaDir=\${gapicBinDir//bin/schema}
+    schemaFile=\${gapicSchemaDir}/gapic_AdminSDK_Directory.json
 
     gapicCredsWiz="\${gapicBinDir}gapic_creds.sh"
     gapicLibWiz="\${gapicBinDir}gapic_lib.sh"
@@ -103,8 +105,20 @@ gapicBootstrap() {
         source \${gapicSavedPar}
     fi
 
-
 }
+
+# Schema explorer / fuzzy finder
+
+gapicFuzzySchema() {
+    cat \${schemaFile} \
+    | jq 'path(..) | map(tostring) | join(".")' \
+    | sed "s/\"//g" \
+    | sed "s/^/./" \
+    | fzf  --preview "cat <(jq -C {1} < \${schemaFile})" \
+    | xargs -ri jq -C {} <(cat \${schemaFile})
+}
+
+
 
 # Check for existing credentials and access token
 
