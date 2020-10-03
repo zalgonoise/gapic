@@ -121,7 +121,7 @@ gapicFuzzySchema() {
     --bind "ctrl-b:preview(cat <(jq -c {1} < \${1}) | base64 -d)" \\
     --bind "ctrl-k:preview(cat <(jq -c {1} < \${1}) | jq '. | keys[]')" \\
     --bind "ctrl-r:replace-query" \\
-    --bind "ctrl-space:execute% cat <(jq -r {1} < \${1}) | less > /dev/tty 2>&1 %" \\
+    --bind "ctrl-space:execute% cat <(jq -C {1} < \${1}) | less -r > /dev/tty 2>&1 %" \\
     | xargs -ri jq -C {} <(cat \${1})
 }
 
