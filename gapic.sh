@@ -757,7 +757,7 @@ then
     if [[ -f ${newSchemaName} ]]
     then
         
-        checkDiff=`diff <(cat ${newSchemaName} | jq '.schemas[]' | jq 'path(..) | map(tostring) | join(".")'  | sort) <(cat ${defaultSchemaFile} | jq '.schemas[]' | jq 'path(..) | map(tostring) | join(".")'  | sort)`
+        checkDiff=`diff <(cat ${newSchemaName} | jq -c --sort-keys '.[]' | sort) <(cat ${defaultSchemaFile} | jq -c --sort-keys '.[]' | sort)`
         
         if [[ -z ${checkDiff} ]]
         then
