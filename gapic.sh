@@ -753,6 +753,18 @@ then
     curl -s \
     ${inputSchemaUrl} \
     > ${defaultSchemaFile}
+
+    if [[ -f ${newSchemaName} ]]
+    then
+        
+        checkDiff=`diff <(cat ${newSchemaName} | jq '.schemas[]' | jq 'path(..) | map(tostring) | join(".")'  | sort) <(cat ${defaultSchemaFile} | jq '.schemas[]' | jq 'path(..) | map(tostring) | join(".")'  | sort)`
+        
+        if [[ -z ${checkDiff} ]]
+        then
+            rm ${newSchemaName}
+        fi
+    
+    fi
     
     inputFile=${defaultSchemaFile}
 
