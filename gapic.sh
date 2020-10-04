@@ -729,43 +729,106 @@ rmParams() {
 
 EOF
 
+# Log message
+echo -e "[SCHEMA][INPUTCHECK]\t[--] Checking for input file."
+
+
+
 # if an input JSON file isn't supplied, defaults to fetching the Directory API schema via curl
 # if other files already exist, rename the active one
 
 if [[ -z ${inputFile} ]]
 then
+
+    # Log message
+    echo -e "[SCHEMA][INPUTCHECK]\t[FAIL] Input file wasn't provided."
+    echo -e "[SCHEMA][FILECHECK]\t[--] Checking for previously fetched schemas."
+
+
+    # Build an array with the saved schema files
+
     schemaDirContents=( `find ${outputSchemaDir} -name "gapic_AdminSDK_Directory*"` )
 
-    if ! [[ -z ${schemaDirContents} ]]
+    # If there are saved schemas and if the default file exists,
+    # move the default file to the next available index
+
+    if ! [[ -z ${schemaDirContents} ]] \
+      && [[ -f ${defaultSchemaFile} ]]
     then
+
+        # Log message
+        echo -e "[SCHEMA][FILECHECK]\t[WARNING] Found existing schema files in '${outputSchemaDir}'."
+
+        # Grab the last file in the array (highest in the index)
         lastSavedSchema=${schemaDirContents[${#schemaDirContents[@]}]}
         
+        # Strip the file extension, directory and file name, besides the index
         newSchemaName=${lastSavedSchema//.json/}
         newSchemaName=${newSchemaName//${outputSchemaDir}\/gapic_AdminSDK_Directory/}
         newSchemaName=${newSchemaName//_/}
+
+        # Add 1 to the index (next in line)
         newSchemaName=$((${newSchemaName}+1))
+
+        # Setup the new filename for the currently active schema, 
+        # based on the same directory and filename 
         newSchemaName=${outputSchemaDir}/gapic_AdminSDK_Directory_${newSchemaName}.json
 
+        #Log message
+        echo -e "[SCHEMA][RENAME]\t[OK] Renaming active schema to ${newSchemaname//${outputSchemaDir}/}."
+
+        # Rename the currently active schema
         mv ${defaultSchemaFile} ${newSchemaName}
 
     fi
-        
+    
+
+    # Log message
+    echo -e "[SCHEMA][CURL]\t[--] Fetching API schema via cURL."
+
+    # Then, fetch the schema file via curl
+
     curl -s \
     ${inputSchemaUrl} \
     > ${defaultSchemaFile}
 
+    echo -e "[SCHEMA][CURL]\t[OK] Schema saved in '${defaultSchemaFile}'"
+
+
+    # If the active schema was renamed, compare contents with the 
+    # downloaded file; delete the old file if they are the same
+
     if [[ -f ${newSchemaName} ]]
     then
+
+        # Log message
+        echo -e "[SCHEMA][DIFF]\t[--] Comparing downloaded schema with ${newSchemaname//${outputSchemaDir}/}."
         
+        # Google randomizes the JSON keys order each time the file is fetched
+        # with `jq -c --sort-keys '.[]' | sort`, it's possible to accurately 
+        # capture any differences in the files
+
         checkDiff=`diff <(cat ${newSchemaName} | jq -c --sort-keys '.[]' | sort) <(cat ${defaultSchemaFile} | jq -c --sort-keys '.[]' | sort)`
         
+        # If the created variable with the diff is empty, remove the old file
+        # ergo, there are no differences in files. If a  difference is found,
+        # log warning to console (and to logfile), keep both files and dump diff
+
         if [[ -z ${checkDiff} ]]
         then
+            echo -e "[SCHEMA][DIFF]\t[OK] API schemas are identical. Removing old copy."
             rm ${newSchemaName}
+        else
+            echo -en "[SCHEMA][DIFF]\t[WARNING] Found differences in the schema. Keeping both files"
+            echo -e ":\n\n"
+            echo ${checkDiff}
+            echo -e "\n\n"
         fi
     
     fi
     
+    # Always set the input file variable as the default schema file path 
+
     inputFile=${defaultSchemaFile}
 
 fi
@@ -779,6 +842,7 @@ then
 fi
 
 # Testing if input file is JSON-valid
+
 cat "${inputFile}" \
     | jq -c '.' 2>&1 \
     | read -r inputJson
