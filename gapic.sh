@@ -117,12 +117,19 @@ gapicFuzzySchema() {
     | sed "s/\.\([[:digit:]]\+\)/[\1]/g" \\
     | fzf  \\
     --preview "cat <(jq -C {1} < \${1})" \\
-    --bind "ctrl-s:preview(cat <(jq -c {1} < \${1}))" \\
+    --bind "ctrl-s:execute% cat <(jq -c {1} < \${1}) | less -r > /dev/tty 2>&1 %" \\
     --bind "ctrl-b:preview(cat <(jq -c {1} < \${1}) | base64 -d)" \\
     --bind "ctrl-k:preview(cat <(jq -c {1} < \${1}) | jq '. | keys[]')" \\
-    --bind "ctrl-r:replace-query" \\
+    --bind "tab:replace-query" \\
     --bind "ctrl-space:execute% cat <(jq -C {1} < \${1}) | less -r > /dev/tty 2>&1 %" \\
-    | xargs -ri jq -C {} <(cat \${1})
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black \\
+    | xargs -ri jq -c {} <(cat \${1})
 }
 
 
