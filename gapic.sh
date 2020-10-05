@@ -775,7 +775,7 @@ then
         newSchemaName=${outputSchemaDir}/gapic_AdminSDK_Directory_${newSchemaName}.json
 
         #Log message
-        echo -e "[SCHEMA][RENAME]\t[OK] Renaming active schema to ${newSchemaname//${outputSchemaDir}/}."
+        echo -e "[SCHEMA][RENAME]\t[OK] Renaming active schema to '${newSchemaName//${outputSchemaDir}/}'."
 
         # Rename the currently active schema
         mv ${defaultSchemaFile} ${newSchemaName}
@@ -786,10 +786,12 @@ then
     # Log message
     echo -e "[SCHEMA][CURL]\t[--] Fetching API schema via cURL."
 
-    # Then, fetch the schema file via curl
+    # Then, fetch the schema file via curl, and sort the keys to make the
+    # object a bit more consistent when exploring
 
     curl -s \
     ${inputSchemaUrl} \
+    | jq --sort-keys \
     > ${defaultSchemaFile}
 
     echo -e "[SCHEMA][CURL]\t[OK] Schema saved in '${defaultSchemaFile}'"
@@ -802,7 +804,7 @@ then
     then
 
         # Log message
-        echo -e "[SCHEMA][DIFF]\t[--] Comparing downloaded schema with ${newSchemaname//${outputSchemaDir}/}."
+        echo -e "[SCHEMA][DIFF]\t[--] Comparing downloaded schema with '${newSchemaName//${outputSchemaDir}/}'."
         
         # Google randomizes the JSON keys order each time the file is fetched
         # with `jq -c --sort-keys '.[]' | sort`, it's possible to accurately 
@@ -816,7 +818,7 @@ then
 
         if [[ -z ${checkDiff} ]]
         then
-            echo -e "[SCHEMA][DIFF]\t[OK] API schemas are identical. Removing old copy."
+            echo -e "[SCHEMA][DIFF]\t[OK] API schemas are identical. Removing '${newSchemaName//${outputSchemaDir}/}'."
             rm ${newSchemaName}
         else
             echo -en "[SCHEMA][DIFF]\t[WARNING] Found differences in the schema. Keeping both files"
