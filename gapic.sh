@@ -1,4 +1,17 @@
 #!/bin/zsh
+#   Copyright 2020 ZalgoNoise
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
 
 ## TODO
 # test deployment
@@ -56,10 +69,35 @@ then
     touch ${outputCredsWiz} ${outputLibWiz} ${outputExecWiz} ${outputParamStoreWiz}
 fi
 
+apacheLicense() {
+    cat << EOF
+#!/bin/zsh
+#   Copyright 2020 ZalgoNoise
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+EOF
+}
+
+
+
 # Prepare output file with exec functions
 
+
+apacheLicense > ${outputExecWiz}
+
 cat << EOF >> ${outputExecWiz}
-#!/bin/zsh
+
 
 # Bootstrap by importing wizard files
 
@@ -299,9 +337,9 @@ EOF
 
 
 # Prepare output file with auth functions
+apacheLicense > ${outputCredsWiz}
 
-cat << EOF > ${outputCredsWiz}
-#!/bin/zsh
+cat << EOF >> ${outputCredsWiz}
 # Retrieve needed credentials
     # Define credentials output file path
 
@@ -571,8 +609,10 @@ EOF
 
 # Create Parameter Store file
 
-cat << EOF > ${outputParamStoreWiz}
-#!/bin/zsh
+apacheLicense > ${outputParamStoreWiz}
+
+cat << EOF >> ${outputParamStoreWiz}
+
 
 # handle storing parameters
 
@@ -909,8 +949,9 @@ done
 
 # Send available API sets to file
 
+apacheLicense > ${outputLibWiz}
+
 cat << EOF >> ${outputLibWiz}
-#!/bin/zsh
 
 gapicSets=( ${apiSets[@]} )
 
