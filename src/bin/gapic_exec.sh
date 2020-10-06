@@ -21,7 +21,7 @@
     gapicBinDir=${gapicBinDir//gapic_exec.sh/}
     gapicDataDir=${gapicBinDir//bin/data}
     gapicSchemaDir=${gapicBinDir//bin/schema}
-    schemaFile=${gapicSchemaDir}/gapic_AdminSDK_Directory.json
+    schemaFile=${gapicSchemaDir}gapic_AdminSDK_Directory.json
 
     gapicCredsWiz="${gapicBinDir}gapic_creds.sh"
     gapicLibWiz="${gapicBinDir}gapic_lib.sh"
@@ -84,11 +84,11 @@ gapicFuzzySchema() {
     | sed "s/\.\([[:digit:]]\+\)/[\1]/g" \
     | fzf  \
     --preview "cat <(jq -C {1} < ${1})" \
-    --bind "ctrl-s:execute% cat <(jq -c {1} < ${1}) | less -r > /dev/tty 2>&1 %" \
+    --bind "ctrl-s:execute% cat <(jq -c {1} < ${1}) | less -R > /dev/tty 2>&1 %" \
     --bind "ctrl-b:preview(cat <(jq -c {1} < ${1}) | base64 -d)" \
     --bind "ctrl-k:preview(cat <(jq -c {1} < ${1}) | jq '. | keys[]')" \
     --bind "tab:replace-query" \
-    --bind "ctrl-space:execute% cat <(jq -C {1} < ${1}) | less -r > /dev/tty 2>&1 %" \
+    --bind "ctrl-space:execute% cat <(jq -C {1} < ${1}) | less -R > /dev/tty 2>&1 %" \
     --bind "change:top" \
     --layout=reverse-list \
     --prompt="~ " \
@@ -96,7 +96,47 @@ gapicFuzzySchema() {
     --header="# Fuzzy Object Explorer #" \
     --color=dark \
     --black \
-    | xargs -ri jq -c {} <(cat ${1})
+    | xargs -ri jq -C {} <(cat ${1})
+}
+
+gapicFuzzyResources() {
+    sed 's/ /\n/g' \
+    | fzf \
+    --preview \
+        "cat \
+          <( cat ${1} | jq -C  \
+            '.resources.{}.methods | keys[]')
+        " \
+    --bind "tab:replace-query" \
+    --bind "ctrl-space:execute% cat ${1}  | jq --sort-keys -C .resources.{}.methods | less -R > /dev/tty 2>&1 %" \
+    --bind "change:top" \
+    --layout=reverse-list \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# Fuzzy Object Explorer #" \
+    --color=dark \
+    --black 
+}
+
+gapicFuzzyMethods() {
+    sed 's/ /\n/g' \
+    | sed "s/^[^.]*_//g" \
+    | fzf \
+    --preview \
+        "cat \
+          <( cat ${1} | jq -C  \
+            .resources.${2}.methods.{})
+        " \
+    --bind "tab:replace-query" \
+    --bind "ctrl-space:execute% cat ${1}  | jq --sort-keys -C .resources.${2}.methods.{} | less -R > /dev/tty 2>&1 %" \
+    --bind "change:top" \
+    --layout=reverse-list \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# Fuzzy Object Explorer #" \
+    --color=dark \
+    --black 
+
 }
 
 
@@ -123,22 +163,21 @@ gapicExec() {
         exit 1
     else
         clear
-        select option in ${gapicSets} "API-Explorer"
-        do
-            if [[ -n ${option} ]]
-            then
-                if [[ ${option} =~ "API-Explorer" ]]
-                then
-                    unset option
-                    gapicFuzzySchema ${schemaFile}
-                    exit
-                else
-                    setOption=${option}
-                    clear
-                    break
-                fi
-            fi
-        done
+
+        echo ${gapicSets} \
+        | gapicFuzzyResources ${schemaFile} \
+        | read -r option
+        
+        if ! [[ -n ${option} ]]
+        then
+            unset option
+            gapicFuzzySchema ${schemaFile}
+            exit
+        else
+            setOption=${option}
+            clear
+        fi
+        
     fi
     unset option
 
@@ -148,22 +187,20 @@ gapicExec() {
         echo -en "# No API methods found in the source file! Please re-run the generator."
         exit 1
     else
-        select option in ${(P)setOption[@]} "API-Explorer"
-        do
-            if [[ -n ${option} ]]
-            then
-                if [[ ${option} =~ "API-Explorer" ]]
-                then
-                    unset option
-                    gapicFuzzySchema ${schemaFile}
-                    exit
-                else
-                    methOption=${option}
-                    clear
-                    break
-                fi
-            fi
-        done
+        echo ${(P)setOption[@]} \
+        | gapicFuzzyMethods ${schemaFile} ${setOption} \
+        | read -r option
+
+        if ! [[ -n ${option} ]]
+        then
+            unset option
+            gapicFuzzySchema ${schemaFile}
+            exit
+        else
+            methOption=${option}
+            clear
+        fi
+
     fi
     unset option
     gapicCreds
