@@ -123,13 +123,20 @@ gapicExec() {
         exit 1
     else
         clear
-        select option in ${gapicSets}
+        select option in ${gapicSets} "API-Explorer"
         do
             if [[ -n ${option} ]]
             then
-                setOption=${option}
-                clear
-                break
+                if [[ ${option} =~ "API-Explorer" ]]
+                then
+                    unset option
+                    gapicFuzzySchema ${schemaFile}
+                    exit
+                else
+                    setOption=${option}
+                    clear
+                    break
+                fi
             fi
         done
     fi
@@ -141,13 +148,20 @@ gapicExec() {
         echo -en "# No API methods found in the source file! Please re-run the generator."
         exit 1
     else
-        select option in ${(P)setOption[@]}
+        select option in ${(P)setOption[@]} "API-Explorer"
         do
             if [[ -n ${option} ]]
             then
-                methOption=${option}
-                clear
-                break
+                if [[ ${option} =~ "API-Explorer" ]]
+                then
+                    unset option
+                    gapicFuzzySchema ${schemaFile}
+                    exit
+                else
+                    methOption=${option}
+                    clear
+                    break
+                fi
             fi
         done
     fi
