@@ -254,16 +254,15 @@ gapicExec() {
         
         if ! [[ -n \${option} ]]
         then
-            unset option
             gapicFuzzySchema \${schemaFile}
             exit
         else
             setOption=\${option}
             clear
+            unset option
         fi
         
     fi
-    unset option
 
     if [[ -z \${(P)setOption[@]} ]]
     then
@@ -277,18 +276,20 @@ gapicExec() {
 
         if ! [[ -n \${option} ]]
         then
-            unset option
             gapicFuzzySchema \${schemaFile}
             exit
         else
             methOption=\${option}
             clear
+            unset option
         fi
 
     fi
-    unset option
     gapicCreds
-    \${methOption}
+
+    execOption=\${setOption}_\${methOption}
+
+    \${execOption}
 
     if ! [[ -z \${outputJson} ]]
     then
