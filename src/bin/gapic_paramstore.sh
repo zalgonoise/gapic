@@ -86,39 +86,55 @@ EOIF
 
 # Handle saved parameters
 
+    #--bind "ctrl-r:execute% cat ${1}  | jq --sort-keys -C ..resources.${2}.methods.${3}.parameters.{} | less -R > /dev/tty 2>&1 %" \
+
+fuzzExSimpleParameters() {
+    sed 's/ /\n/g' \
+    | fzf \
+    --bind "tab:replace-query" \
+    --bind "change:top" \
+    --layout=reverse-list \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# Fuzzy Object Explorer #" \
+    --color=dark \
+    --black \
+
+}
+
+
 checkParams() {
     local tempPar=${1}
     local urlVar=${2}
 
     tempCarrier=PARAM_${tempPar}
     echo -en "# You have saved values for the ${tempPar} parameter. Do you want to use one?\n\n"
-    select checkOption in none ${(P)${tempCarrier}} "remove a parameter"
-    do
-        if [[ -n ${checkOption} ]]
+    
+    echo "${(P)${tempCarrier}} [none] [remove]" \
+    | fuzzExSimpleParameters \
+    | read -r checkOption
+    
+    if [[ -n ${checkOption} ]]
+    then
+        if [[ ${checkOption} == "[none]" ]]
         then
-            if [[ ${checkOption} =~ "none" ]]
+            clear
+            getParams ${tempPar} ${urlVar}
+        elif [[ ${checkOption} == "[remove]" ]]
+        then
+            rmParams ${tempPar}
+        else
+            clear
+            declare -g "${tempPar}=${checkOption}"
+            if [[ "${urlVar}" == "true" ]]
             then
-                clear
-                getParams ${tempPar} ${urlVar}
-                break
-            elif [[ ${checkOption} =~ "remove a parameter" ]]
-            then
-                rmParams ${tempPar}
-            else
-                clear
-                declare -g "${tempPar}=${checkOption}"
-
-                if [[ "${urlVar}" =~ "true" ]]
-                then
-                    declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
-                fi
-                
-                unset checkOption
-                break
+                declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
             fi
-        
+            
+            unset checkOption
         fi
-    done
+    
+    fi
 
 
     if [[ -z "${(P)${tempPar}}" ]]
@@ -135,7 +151,7 @@ checkParams() {
 rmParams() {
     local paramToRemove=${1}
 
-    echo -e "# Fetching the parameter store for saved results on ${paramToRemove}:\n"
+    echo -e "# Fetching the parameter store for saved results on ${paramToRemove} to remove:\n"
     
     paramResults=( `grep -n "${paramToRemove}" ${gapicSavedPar} | tr ')' ' '` )
     

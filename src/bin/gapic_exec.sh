@@ -136,7 +136,6 @@ gapicFuzzyMethods() {
     --header="# Fuzzy Object Explorer #" \
     --color=dark \
     --black 
-
 }
 
 
