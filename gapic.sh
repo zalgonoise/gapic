@@ -38,6 +38,7 @@ outputCredsWiz="${outputBinDir}/gapic_creds.sh"
 outputLibWiz="${outputBinDir}/gapic_lib.sh"
 outputExecWiz="${outputBinDir}/gapic_exec.sh"
 outputParamStoreWiz="${outputBinDir}/gapic_paramstore.sh"
+outputFuzzWiz="${outputBinDir}/gapic_fuzzex.sh"
 
 defaultSchemaFile="${outputSchemaDir}/gapic_AdminSDK_Directory.json"
 
@@ -64,9 +65,10 @@ fi
 if ! [ -f ${outputCredsWiz} ] \
 || ! [ -f ${outputLibWiz} ] \
 || ! [ -f ${outputExecWiz} ] \
-|| ! [ -f ${outputParamStoreWiz} ]
+|| ! [ -f ${outputParamStoreWiz} ] \
+|| ! [ -f ${outputFuzzWiz} ]
 then
-    touch ${outputCredsWiz} ${outputLibWiz} ${outputExecWiz} ${outputParamStoreWiz}
+    touch ${outputCredsWiz} ${outputLibWiz} ${outputExecWiz} ${outputParamStoreWiz} ${outputFuzzWiz}
 fi
 
 apacheLicense() {
@@ -110,6 +112,7 @@ cat << EOF >> ${outputExecWiz}
     gapicCredsWiz="\${gapicBinDir}gapic_creds.sh"
     gapicLibWiz="\${gapicBinDir}gapic_lib.sh"
     gapicParamWiz="\${gapicBinDir}gapic_paramstore.sh"
+    gapicFuzzWiz="\${gapicBinDir}gapic_fuzzex.sh"
 
     gapicSavedPar="\${gapicDataDir}.api_params"
 
@@ -156,72 +159,16 @@ gapicBootstrap() {
         source \${gapicSavedPar}
     fi
 
+    if ! [[ -f \${gapicFuzzWiz} ]]
+    then
+        clear
+        echo -en "# No FuzzEx source file found! Please re-run the generator."
+        exit 1
+    else
+        source \${gapicFuzzWiz}
+    fi
+
 }
-
-# Schema explorer / fuzzy finder
-
-gapicFuzzySchema() {
-    cat \${1} \\
-    | jq 'path(..) | map(tostring) | join(".")' \\
-    | sed "s/\"//g" \\
-    | sed "s/^/./" \\
-    | sed "s/\.\([[:digit:]]\+\)/[\1]/g" \\
-    | fzf  \\
-    --preview "cat <(jq -C {1} < \${1})" \\
-    --bind "ctrl-s:execute% cat <(jq -c {1} < \${1}) | less -R > /dev/tty 2>&1 %" \\
-    --bind "ctrl-b:preview(cat <(jq -c {1} < \${1}) | base64 -d)" \\
-    --bind "ctrl-k:preview(cat <(jq -c {1} < \${1}) | jq '. | keys[]')" \\
-    --bind "tab:replace-query" \\
-    --bind "ctrl-space:execute% cat <(jq -C {1} < \${1}) | less -R > /dev/tty 2>&1 %" \\
-    --bind "change:top" \\
-    --layout=reverse-list \\
-    --prompt="~ " \\
-    --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
-    --color=dark \\
-    --black \\
-    | xargs -ri jq -C {} <(cat \${1})
-}
-
-gapicFuzzyResources() {
-    sed 's/ /\n/g' \\
-    | fzf \\
-    --preview \\
-        "cat \\
-          <( cat \${1} | jq -C  \\
-            '.resources.{}.methods | keys[]')
-        " \\
-    --bind "tab:replace-query" \\
-    --bind "ctrl-space:execute% cat \${1}  | jq --sort-keys -C .resources.{}.methods | less -R > /dev/tty 2>&1 %" \\
-    --bind "change:top" \\
-    --layout=reverse-list \\
-    --prompt="~ " \\
-    --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
-    --color=dark \\
-    --black 
-}
-
-gapicFuzzyMethods() {
-    sed 's/ /\n/g' \\
-    | sed "s/^[^.]*_//g" \\
-    | fzf \\
-    --preview \\
-        "cat \\
-          <( cat \${1} | jq -C  \\
-            .resources.\${2}.methods.{})
-        " \\
-    --bind "tab:replace-query" \\
-    --bind "ctrl-space:execute% cat \${1}  | jq --sort-keys -C .resources.\${2}.methods.{} | less -R > /dev/tty 2>&1 %" \\
-    --bind "change:top" \\
-    --layout=reverse-list \\
-    --prompt="~ " \\
-    --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
-    --color=dark \\
-    --black 
-}
-
 
 # Check for existing credentials and access token
 
@@ -741,67 +688,6 @@ EOIF
 
 # Handle saved parameters
 
-    #--bind "ctrl-r:execute% cat \${1}  | jq --sort-keys -C ..resources.\${2}.methods.\${3}.parameters.{} | less -R > /dev/tty 2>&1 %" \\
-
-fuzzExSimpleParameters() {
-    sed 's/ /\n/g' \\
-    | fzf \\
-    --bind "tab:replace-query" \\
-    --bind "change:top" \\
-    --layout=reverse-list \\
-    --bind "ctrl-r:execute% source \${gapicParamWiz} && rmParams \${tempPar} {} \${gapicSavedPar} %+preview(cat <(echo -e \# Removed {}))" \\
-    --preview "cat \${schemaFile} | jq --sort-keys -C  .resources.\${1}.methods.\${2}.parameters.\${3}" \\
-    --prompt="~ " \\
-    --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
-    --color=dark \\
-    --black \\
-}
-
-fuzzExOptParameters() {
-    sed 's/ /\n/g' \\
-    | fzf \\
-    --bind "tab:replace-query" \\
-    --bind "change:top" \\
-    --layout=reverse-list \\
-    --preview "cat \${schemaFile} | jq --sort-keys -C  .resources.\${1}.methods.\${2}.parameters.\${3}" \\
-    --prompt="~ " \\
-    --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
-    --color=dark \\
-    --black \\
-}
-
-fuzzExAllParameters() {
-    sed 's/ /\n/g' \\
-    | fzf \\
-    --bind "tab:replace-query" \\
-    --bind "change:top" \\
-    --layout=reverse-list \\
-    --preview "cat \${schemaFile} | jq --sort-keys -C  \".resources.\${1}.methods.\${2}.parameters\"" \\
-    --prompt="~ " \\
-    --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
-    --color=dark \\
-    --black \\
-}
-
-fuzzExPromptParameters() {
-    sed 's/ /\n/g' \\
-    | fzf \\
-    --bind "tab:replace-query" \\
-    --bind "change:top" \\
-    --layout=reverse-list \\
-    --preview "cat <(echo \${1} | sed 's/ /\\n/g')" \\
-    --prompt="~ " \\
-    --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
-    --color=dark \\
-    --black \\
-  
-
-}
-
 checkParams() {
     local sourceRef=\${1}
     local tempPar=\${2}
@@ -862,6 +748,136 @@ rmParams() {
 }
 
 EOF
+
+apacheLicense > ${outputFuzzWiz}
+
+cat << EOF >> ${outputFuzzWiz}
+
+# Schema explorer / fuzzy finder
+
+gapicFuzzySchema() {
+    cat \${1} \\
+    | jq 'path(..) | map(tostring) | join(".")' \\
+    | sed "s/\"//g" \\
+    | sed "s/^/./" \\
+    | sed "s/\.\([[:digit:]]\+\)/[\1]/g" \\
+    | fzf  \\
+    --preview "cat <(jq -C {1} < \${1})" \\
+    --bind "ctrl-s:execute% cat <(jq -c {1} < \${1}) | less -R > /dev/tty 2>&1 %" \\
+    --bind "ctrl-b:preview(cat <(jq -c {1} < \${1}) | base64 -d)" \\
+    --bind "ctrl-k:preview(cat <(jq -c {1} < \${1}) | jq '. | keys[]')" \\
+    --bind "tab:replace-query" \\
+    --bind "ctrl-space:execute% cat <(jq -C {1} < \${1}) | less -R > /dev/tty 2>&1 %" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black \\
+    | xargs -ri jq -C {} <(cat \${1})
+}
+
+gapicFuzzyResources() {
+    sed 's/ /\n/g' \\
+    | fzf \\
+    --preview \\
+        "cat \\
+          <( cat \${1} | jq -C  \\
+            '.resources.{}.methods | keys[]')
+        " \\
+    --bind "tab:replace-query" \\
+    --bind "ctrl-space:execute% cat \${1}  | jq --sort-keys -C .resources.{}.methods | less -R > /dev/tty 2>&1 %" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black 
+}
+
+gapicFuzzyMethods() {
+    sed 's/ /\n/g' \\
+    | sed "s/^[^.]*_//g" \\
+    | fzf \\
+    --preview \\
+        "cat \\
+          <( cat \${1} | jq -C  \\
+            .resources.\${2}.methods.{})
+        " \\
+    --bind "tab:replace-query" \\
+    --bind "ctrl-space:execute% cat \${1}  | jq --sort-keys -C .resources.\${2}.methods.{} | less -R > /dev/tty 2>&1 %" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black 
+}
+
+fuzzExSimpleParameters() {
+    sed 's/ /\n/g' \\
+    | fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --bind "ctrl-r:execute% source \${gapicParamWiz} && rmParams \${tempPar} {} \${gapicSavedPar} %+preview(cat <(echo -e \# Removed {}))" \\
+    --preview "cat \${schemaFile} | jq --sort-keys -C  .resources.\${1}.methods.\${2}.parameters.\${3}" \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black \\
+}
+
+fuzzExOptParameters() {
+    sed 's/ /\n/g' \\
+    | fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --preview "cat \${schemaFile} | jq --sort-keys -C  .resources.\${1}.methods.\${2}.parameters.\${3}" \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black \\
+}
+
+fuzzExAllParameters() {
+    sed 's/ /\n/g' \\
+    | fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --preview "cat \${schemaFile} | jq --sort-keys -C  \".resources.\${1}.methods.\${2}.parameters\"" \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black \\
+}
+
+fuzzExPromptParameters() {
+    sed 's/ /\n/g' \\
+    | fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --preview "cat <(echo \${1} | sed 's/ /\\n/g')" \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black \\
+  
+
+}
+
+EOF
+
 
 # Log message
 echo -e "[SCHEMA][INPUTCHECK]\t[--] Checking for input file."
@@ -1269,18 +1285,12 @@ EOF
 
             cat << EOF >> "${outputLibWiz}"
 
-    #echo -en "# Would you like to define extra parameters? [y/n] \n\${optParams}\n\n~> "
-    #read -r optParChoice
-    #clear
-
     echo "yes no" \\
     | fuzzExPromptParameters "\${optParams}" \\
     | read -r optParChoice
 
 
-    
-
-    if [[ \${optParChoice} =~ "y" ]] || [[ \${optParChoice} =~ "Y" ]]
+    if [[ \${optParChoice} == "yes" ]]
     then
         for (( i = 1 ; i <= \${#optParams[@]} ; i++ ))
         do
@@ -1350,9 +1360,13 @@ EOF
 
             cat << EOF >> "${outputLibWiz}"
 
-    echo -en "# Would you like to define input parameters? [y/n] \n\${inpParams}\n\n~> "
-    read -r inpParChoice
-    clear
+    #echo -en "# Would you like to define input parameters? [y/n] \n\${inpParams}\n\n~> "
+    #read -r inpParChoice
+    #clear
+    #
+    echo "yes no" \\
+    | fuzzExPromptParameters "\${inpParams}" \\
+    | read -r inpParChoice
 
 
     if [[ \${inpParChoice} =~ "y" ]] || [[ \${inpParChoice} =~ "Y" ]]
@@ -1360,43 +1374,40 @@ EOF
         for (( i = 1 ; i <= \${#inpParams[@]} ; i++ ))
         do
 
-            select option in none \${inpParams} 
-            do
-                if [[ -n \${option} ]]
+            #select option in none \${inpParams} 
+            #do
+            echo "\${inpParams}" "[none]" \\
+            | fuzzExAllParameters "\${apiQueryRef[1]}" "\${apiQueryRef[2]}" \\
+            | read -r option
+
+            if [[ -n \${option} ]]
+            then
+                if [[ \${option} == "[none]" ]]
                 then
-                    if [[ \${option} =~ "none" ]]
-                    then
-                        clear
-                        break 2
-                    else
-                        clear
-
-                        local optParam=PARAM_\${option}
-                        if ! [[ -z "\${(P)\${optParam}}" ]]
-                        then 
-                            checkParams ${(P)${apiSets[$c]}[$d]} \${option} "true"
-
-                            if ! [[ \${addedParams} =~ \${option} ]]
-                            then
-                                ${curPrefix}URL+="\${tempUrlPar}"
-                                addedParams+=( "\${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
+                    clear
+                    break 
+                else
+                    clear
+                    local optParam=PARAM_\${option}
+                    if ! [[ -z "\${(P)\${optParam}}" ]]
+                    then 
+                        checkParams ${(P)${apiSets[$c]}[$d]} \${option} "true"
+                        if ! [[ \${addedParams} =~ \${option} ]]
+                        then
                             ${curPrefix}URL+="\${tempUrlPar}"
+                            addedParams+=( "\${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-
-                        break
+                    else
+                        getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
+                        ${curPrefix}URL+="\${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
                 fi
-            done
+            fi
         done
     fi
 EOF

@@ -91,67 +91,6 @@ EOIF
 
 # Handle saved parameters
 
-    #--bind "ctrl-r:execute% cat ${1}  | jq --sort-keys -C ..resources.${2}.methods.${3}.parameters.{} | less -R > /dev/tty 2>&1 %" \
-
-fuzzExSimpleParameters() {
-    sed 's/ /\n/g' \
-    | fzf \
-    --bind "tab:replace-query" \
-    --bind "change:top" \
-    --layout=reverse-list \
-    --bind "ctrl-r:execute% source ${gapicParamWiz} && rmParams ${tempPar} {} ${gapicSavedPar} %+preview(cat <(echo -e \# Removed {}))" \
-    --preview "cat ${schemaFile} | jq --sort-keys -C  .resources.${1}.methods.${2}.parameters.${3}" \
-    --prompt="~ " \
-    --pointer="~ " \
-    --header="# Fuzzy Object Explorer #" \
-    --color=dark \
-    --black \
-}
-
-fuzzExOptParameters() {
-    sed 's/ /\n/g' \
-    | fzf \
-    --bind "tab:replace-query" \
-    --bind "change:top" \
-    --layout=reverse-list \
-    --preview "cat ${schemaFile} | jq --sort-keys -C  .resources.${1}.methods.${2}.parameters.${3}" \
-    --prompt="~ " \
-    --pointer="~ " \
-    --header="# Fuzzy Object Explorer #" \
-    --color=dark \
-    --black \
-}
-
-fuzzExAllParameters() {
-    sed 's/ /\n/g' \
-    | fzf \
-    --bind "tab:replace-query" \
-    --bind "change:top" \
-    --layout=reverse-list \
-    --preview "cat ${schemaFile} | jq --sort-keys -C  \".resources.${1}.methods.${2}.parameters\"" \
-    --prompt="~ " \
-    --pointer="~ " \
-    --header="# Fuzzy Object Explorer #" \
-    --color=dark \
-    --black \
-}
-
-fuzzExPromptParameters() {
-    sed 's/ /\n/g' \
-    | fzf \
-    --bind "tab:replace-query" \
-    --bind "change:top" \
-    --layout=reverse-list \
-    --preview "cat <(echo ${1} | sed 's/ /\n/g')" \
-    --prompt="~ " \
-    --pointer="~ " \
-    --header="# Fuzzy Object Explorer #" \
-    --color=dark \
-    --black \
-  
-
-}
-
 checkParams() {
     local sourceRef=${1}
     local tempPar=${2}

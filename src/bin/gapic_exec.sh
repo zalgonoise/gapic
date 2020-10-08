@@ -26,6 +26,7 @@
     gapicCredsWiz="${gapicBinDir}gapic_creds.sh"
     gapicLibWiz="${gapicBinDir}gapic_lib.sh"
     gapicParamWiz="${gapicBinDir}gapic_paramstore.sh"
+    gapicFuzzWiz="${gapicBinDir}gapic_fuzzex.sh"
 
     gapicSavedPar="${gapicDataDir}.api_params"
 
@@ -72,72 +73,16 @@ gapicBootstrap() {
         source ${gapicSavedPar}
     fi
 
+    if ! [[ -f ${gapicFuzzWiz} ]]
+    then
+        clear
+        echo -en "# No FuzzEx source file found! Please re-run the generator."
+        exit 1
+    else
+        source ${gapicFuzzWiz}
+    fi
+
 }
-
-# Schema explorer / fuzzy finder
-
-gapicFuzzySchema() {
-    cat ${1} \
-    | jq 'path(..) | map(tostring) | join(".")' \
-    | sed "s/\"//g" \
-    | sed "s/^/./" \
-    | sed "s/\.\([[:digit:]]\+\)/[\1]/g" \
-    | fzf  \
-    --preview "cat <(jq -C {1} < ${1})" \
-    --bind "ctrl-s:execute% cat <(jq -c {1} < ${1}) | less -R > /dev/tty 2>&1 %" \
-    --bind "ctrl-b:preview(cat <(jq -c {1} < ${1}) | base64 -d)" \
-    --bind "ctrl-k:preview(cat <(jq -c {1} < ${1}) | jq '. | keys[]')" \
-    --bind "tab:replace-query" \
-    --bind "ctrl-space:execute% cat <(jq -C {1} < ${1}) | less -R > /dev/tty 2>&1 %" \
-    --bind "change:top" \
-    --layout=reverse-list \
-    --prompt="~ " \
-    --pointer="~ " \
-    --header="# Fuzzy Object Explorer #" \
-    --color=dark \
-    --black \
-    | xargs -ri jq -C {} <(cat ${1})
-}
-
-gapicFuzzyResources() {
-    sed 's/ /\n/g' \
-    | fzf \
-    --preview \
-        "cat \
-          <( cat ${1} | jq -C  \
-            '.resources.{}.methods | keys[]')
-        " \
-    --bind "tab:replace-query" \
-    --bind "ctrl-space:execute% cat ${1}  | jq --sort-keys -C .resources.{}.methods | less -R > /dev/tty 2>&1 %" \
-    --bind "change:top" \
-    --layout=reverse-list \
-    --prompt="~ " \
-    --pointer="~ " \
-    --header="# Fuzzy Object Explorer #" \
-    --color=dark \
-    --black 
-}
-
-gapicFuzzyMethods() {
-    sed 's/ /\n/g' \
-    | sed "s/^[^.]*_//g" \
-    | fzf \
-    --preview \
-        "cat \
-          <( cat ${1} | jq -C  \
-            .resources.${2}.methods.{})
-        " \
-    --bind "tab:replace-query" \
-    --bind "ctrl-space:execute% cat ${1}  | jq --sort-keys -C .resources.${2}.methods.{} | less -R > /dev/tty 2>&1 %" \
-    --bind "change:top" \
-    --layout=reverse-list \
-    --prompt="~ " \
-    --pointer="~ " \
-    --header="# Fuzzy Object Explorer #" \
-    --color=dark \
-    --black 
-}
-
 
 # Check for existing credentials and access token
 
