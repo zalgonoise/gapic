@@ -686,15 +686,20 @@ getParams() {
     else
         tempOpts=(\`echo \${(P)\${tempMeta}[3]} | jq -r ".[]"\`)
         echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempMeta}[1]}).\n#\n# Desc: \${(P)\${tempMeta}[2]}\n~> "
-        select getOption in \${tempOpts}
-        do
+        
+        echo "\${tempOpts}" \
+        | fuzzExOptParameters \
+        | read -r getOption
+
+        #select getOption in \${tempOpts}
+        #do
             if [[ -n \${getOption} ]]
             then
                 declare -g "tempVal=\${getOption}"
                 clear
-                break
+        #        break
             fi
-        done
+        #done
         unset getOption 
     fi
     unset tempParMeta
@@ -750,7 +755,19 @@ fuzzExSimpleParameters() {
     --header="# Fuzzy Object Explorer #" \\
     --color=dark \\
     --black \\
+}
 
+fuzzExOptParameters() {
+    sed 's/ /\n/g' \\
+    | fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black \\
 }
 
 
