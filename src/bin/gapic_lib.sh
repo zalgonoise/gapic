@@ -36,6 +36,8 @@ users=( users_delete users_get users_insert users_list users_makeAdmin users_pat
 verificationCodes=( verificationCodes_generate verificationCodes_invalidate verificationCodes_list )
 asps_delete() {
 
+    apiQueryRef=( `echo asps delete`)
+
 
     codeIdMeta=( 
         'integer'
@@ -50,7 +52,7 @@ asps_delete() {
             checkParams asps_delete codeId "false"
             
         else
-            getParams codeId
+            getParams "asps_delete" "codeId"
         fi
         declare -g "ASPS_DELETE_codeId=${codeId}"
 
@@ -70,7 +72,7 @@ asps_delete() {
             checkParams asps_delete userKey "false"
             
         else
-            getParams userKey
+            getParams "asps_delete" "userKey"
         fi
         declare -g "ASPS_DELETE_userKey=${userKey}"
 
@@ -119,6 +121,8 @@ EOIF
 
 asps_get() {
 
+    apiQueryRef=( `echo asps get`)
+
 
     codeIdMeta=( 
         'integer'
@@ -133,7 +137,7 @@ asps_get() {
             checkParams asps_get codeId "false"
             
         else
-            getParams codeId
+            getParams "asps_get" "codeId"
         fi
         declare -g "ASPS_GET_codeId=${codeId}"
 
@@ -153,7 +157,7 @@ asps_get() {
             checkParams asps_get userKey "false"
             
         else
-            getParams userKey
+            getParams "asps_get" "userKey"
         fi
         declare -g "ASPS_GET_userKey=${userKey}"
 
@@ -202,6 +206,8 @@ EOIF
 
 asps_list() {
 
+    apiQueryRef=( `echo asps list`)
+
 
     userKeyMeta=( 
         'string'
@@ -216,7 +222,7 @@ asps_list() {
             checkParams asps_list userKey "false"
             
         else
-            getParams userKey
+            getParams "asps_list" "userKey"
         fi
         declare -g "ASPS_LIST_userKey=${userKey}"
 
@@ -265,6 +271,8 @@ EOIF
 
 channels_stop() {
 
+    apiQueryRef=( `echo channels stop`)
+
 
 
     CHANNELS_STOP_URL="https://www.googleapis.com/admin/directory_v1/channels/stop?key=${CLIENTID}"
@@ -312,6 +320,8 @@ EOIF
 
 chromeosdevices_action() {
 
+    apiQueryRef=( `echo chromeosdevices action`)
+
 
     customerIdMeta=( 
         'string'
@@ -326,7 +336,7 @@ chromeosdevices_action() {
             checkParams chromeosdevices_action customerId "false"
             
         else
-            getParams customerId
+            getParams "chromeosdevices_action" "customerId"
         fi
         declare -g "CHROMEOSDEVICES_ACTION_customerId=${customerId}"
 
@@ -346,7 +356,7 @@ chromeosdevices_action() {
             checkParams chromeosdevices_action resourceId "false"
             
         else
-            getParams resourceId
+            getParams "chromeosdevices_action" "resourceId"
         fi
         declare -g "CHROMEOSDEVICES_ACTION_resourceId=${resourceId}"
 
@@ -399,6 +409,8 @@ EOIF
 
 chromeosdevices_get() {
 
+    apiQueryRef=( `echo chromeosdevices get`)
+
 
     customerIdMeta=( 
         'string'
@@ -413,7 +425,7 @@ chromeosdevices_get() {
             checkParams chromeosdevices_get customerId "false"
             
         else
-            getParams customerId
+            getParams "chromeosdevices_get" "customerId"
         fi
         declare -g "CHROMEOSDEVICES_GET_customerId=${customerId}"
 
@@ -433,7 +445,7 @@ chromeosdevices_get() {
             checkParams chromeosdevices_get deviceId "false"
             
         else
-            getParams deviceId
+            getParams "chromeosdevices_get" "deviceId"
         fi
         declare -g "CHROMEOSDEVICES_GET_deviceId=${deviceId}"
 
@@ -457,19 +469,25 @@ chromeosdevices_get() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -488,17 +506,17 @@ chromeosdevices_get() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "chromeosdevices_get" "${option}" "true"
                             CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     execRequest() {
@@ -540,6 +558,8 @@ EOIF
 
 chromeosdevices_list() {
 
+    apiQueryRef=( `echo chromeosdevices list`)
+
 
     customerIdMeta=( 
         'string'
@@ -554,7 +574,7 @@ chromeosdevices_list() {
             checkParams chromeosdevices_list customerId "false"
             
         else
-            getParams customerId
+            getParams "chromeosdevices_list" "customerId"
         fi
         declare -g "CHROMEOSDEVICES_LIST_customerId=${customerId}"
 
@@ -590,19 +610,25 @@ chromeosdevices_list() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -621,17 +647,17 @@ chromeosdevices_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "chromeosdevices_list" "${option}" "true"
                             CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     inpParams=( maxResults orgUnitPath pageToken query )
@@ -693,7 +719,7 @@ chromeosdevices_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "chromeosdevices_list" "${option}" "true"
                             CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -745,6 +771,8 @@ EOIF
 
 chromeosdevices_moveDevicesToOu() {
 
+    apiQueryRef=( `echo chromeosdevices moveDevicesToOu`)
+
 
     customerIdMeta=( 
         'string'
@@ -759,7 +787,7 @@ chromeosdevices_moveDevicesToOu() {
             checkParams chromeosdevices_moveDevicesToOu customerId "false"
             
         else
-            getParams customerId
+            getParams "chromeosdevices_moveDevicesToOu" "customerId"
         fi
         declare -g "CHROMEOSDEVICES_MOVEDEVICESTOOU_customerId=${customerId}"
 
@@ -779,7 +807,7 @@ chromeosdevices_moveDevicesToOu() {
             checkParams chromeosdevices_moveDevicesToOu orgUnitPath "false"
             
         else
-            getParams orgUnitPath
+            getParams "chromeosdevices_moveDevicesToOu" "orgUnitPath"
         fi
         declare -g "CHROMEOSDEVICES_MOVEDEVICESTOOU_orgUnitPath=${orgUnitPath}"
 
@@ -832,6 +860,8 @@ EOIF
 
 chromeosdevices_patch() {
 
+    apiQueryRef=( `echo chromeosdevices patch`)
+
 
     customerIdMeta=( 
         'string'
@@ -846,7 +876,7 @@ chromeosdevices_patch() {
             checkParams chromeosdevices_patch customerId "false"
             
         else
-            getParams customerId
+            getParams "chromeosdevices_patch" "customerId"
         fi
         declare -g "CHROMEOSDEVICES_PATCH_customerId=${customerId}"
 
@@ -866,7 +896,7 @@ chromeosdevices_patch() {
             checkParams chromeosdevices_patch deviceId "false"
             
         else
-            getParams deviceId
+            getParams "chromeosdevices_patch" "deviceId"
         fi
         declare -g "CHROMEOSDEVICES_PATCH_deviceId=${deviceId}"
 
@@ -890,19 +920,25 @@ chromeosdevices_patch() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -921,17 +957,17 @@ chromeosdevices_patch() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "chromeosdevices_patch" "${option}" "true"
                             CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     execRequest() {
@@ -977,6 +1013,8 @@ EOIF
 
 chromeosdevices_update() {
 
+    apiQueryRef=( `echo chromeosdevices update`)
+
 
     customerIdMeta=( 
         'string'
@@ -991,7 +1029,7 @@ chromeosdevices_update() {
             checkParams chromeosdevices_update customerId "false"
             
         else
-            getParams customerId
+            getParams "chromeosdevices_update" "customerId"
         fi
         declare -g "CHROMEOSDEVICES_UPDATE_customerId=${customerId}"
 
@@ -1011,7 +1049,7 @@ chromeosdevices_update() {
             checkParams chromeosdevices_update deviceId "false"
             
         else
-            getParams deviceId
+            getParams "chromeosdevices_update" "deviceId"
         fi
         declare -g "CHROMEOSDEVICES_UPDATE_deviceId=${deviceId}"
 
@@ -1035,19 +1073,25 @@ chromeosdevices_update() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -1066,17 +1110,17 @@ chromeosdevices_update() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "chromeosdevices_update" "${option}" "true"
                             CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     execRequest() {
@@ -1122,6 +1166,8 @@ EOIF
 
 customers_get() {
 
+    apiQueryRef=( `echo customers get`)
+
 
     customerKeyMeta=( 
         'string'
@@ -1136,7 +1182,7 @@ customers_get() {
             checkParams customers_get customerKey "false"
             
         else
-            getParams customerKey
+            getParams "customers_get" "customerKey"
         fi
         declare -g "CUSTOMERS_GET_customerKey=${customerKey}"
 
@@ -1185,6 +1231,8 @@ EOIF
 
 customers_patch() {
 
+    apiQueryRef=( `echo customers patch`)
+
 
     customerKeyMeta=( 
         'string'
@@ -1199,7 +1247,7 @@ customers_patch() {
             checkParams customers_patch customerKey "false"
             
         else
-            getParams customerKey
+            getParams "customers_patch" "customerKey"
         fi
         declare -g "CUSTOMERS_PATCH_customerKey=${customerKey}"
 
@@ -1252,6 +1300,8 @@ EOIF
 
 customers_update() {
 
+    apiQueryRef=( `echo customers update`)
+
 
     customerKeyMeta=( 
         'string'
@@ -1266,7 +1316,7 @@ customers_update() {
             checkParams customers_update customerKey "false"
             
         else
-            getParams customerKey
+            getParams "customers_update" "customerKey"
         fi
         declare -g "CUSTOMERS_UPDATE_customerKey=${customerKey}"
 
@@ -1319,6 +1369,8 @@ EOIF
 
 domainAliases_delete() {
 
+    apiQueryRef=( `echo domainAliases delete`)
+
 
     customerMeta=( 
         'string'
@@ -1333,7 +1385,7 @@ domainAliases_delete() {
             checkParams domainAliases_delete customer "false"
             
         else
-            getParams customer
+            getParams "domainAliases_delete" "customer"
         fi
         declare -g "DOMAINALIASES_DELETE_customer=${customer}"
 
@@ -1353,7 +1405,7 @@ domainAliases_delete() {
             checkParams domainAliases_delete domainAliasName "false"
             
         else
-            getParams domainAliasName
+            getParams "domainAliases_delete" "domainAliasName"
         fi
         declare -g "DOMAINALIASES_DELETE_domainAliasName=${domainAliasName}"
 
@@ -1402,6 +1454,8 @@ EOIF
 
 domainAliases_get() {
 
+    apiQueryRef=( `echo domainAliases get`)
+
 
     customerMeta=( 
         'string'
@@ -1416,7 +1470,7 @@ domainAliases_get() {
             checkParams domainAliases_get customer "false"
             
         else
-            getParams customer
+            getParams "domainAliases_get" "customer"
         fi
         declare -g "DOMAINALIASES_GET_customer=${customer}"
 
@@ -1436,7 +1490,7 @@ domainAliases_get() {
             checkParams domainAliases_get domainAliasName "false"
             
         else
-            getParams domainAliasName
+            getParams "domainAliases_get" "domainAliasName"
         fi
         declare -g "DOMAINALIASES_GET_domainAliasName=${domainAliasName}"
 
@@ -1485,6 +1539,8 @@ EOIF
 
 domainAliases_insert() {
 
+    apiQueryRef=( `echo domainAliases insert`)
+
 
     customerMeta=( 
         'string'
@@ -1499,7 +1555,7 @@ domainAliases_insert() {
             checkParams domainAliases_insert customer "false"
             
         else
-            getParams customer
+            getParams "domainAliases_insert" "customer"
         fi
         declare -g "DOMAINALIASES_INSERT_customer=${customer}"
 
@@ -1552,6 +1608,8 @@ EOIF
 
 domainAliases_list() {
 
+    apiQueryRef=( `echo domainAliases list`)
+
 
     customerMeta=( 
         'string'
@@ -1566,7 +1624,7 @@ domainAliases_list() {
             checkParams domainAliases_list customer "false"
             
         else
-            getParams customer
+            getParams "domainAliases_list" "customer"
         fi
         declare -g "DOMAINALIASES_LIST_customer=${customer}"
 
@@ -1620,7 +1678,7 @@ domainAliases_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "domainAliases_list" "${option}" "true"
                             DOMAINALIASES_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -1672,6 +1730,8 @@ EOIF
 
 domains_delete() {
 
+    apiQueryRef=( `echo domains delete`)
+
 
     customerMeta=( 
         'string'
@@ -1686,7 +1746,7 @@ domains_delete() {
             checkParams domains_delete customer "false"
             
         else
-            getParams customer
+            getParams "domains_delete" "customer"
         fi
         declare -g "DOMAINS_DELETE_customer=${customer}"
 
@@ -1706,7 +1766,7 @@ domains_delete() {
             checkParams domains_delete domainName "false"
             
         else
-            getParams domainName
+            getParams "domains_delete" "domainName"
         fi
         declare -g "DOMAINS_DELETE_domainName=${domainName}"
 
@@ -1755,6 +1815,8 @@ EOIF
 
 domains_get() {
 
+    apiQueryRef=( `echo domains get`)
+
 
     customerMeta=( 
         'string'
@@ -1769,7 +1831,7 @@ domains_get() {
             checkParams domains_get customer "false"
             
         else
-            getParams customer
+            getParams "domains_get" "customer"
         fi
         declare -g "DOMAINS_GET_customer=${customer}"
 
@@ -1789,7 +1851,7 @@ domains_get() {
             checkParams domains_get domainName "false"
             
         else
-            getParams domainName
+            getParams "domains_get" "domainName"
         fi
         declare -g "DOMAINS_GET_domainName=${domainName}"
 
@@ -1838,6 +1900,8 @@ EOIF
 
 domains_insert() {
 
+    apiQueryRef=( `echo domains insert`)
+
 
     customerMeta=( 
         'string'
@@ -1852,7 +1916,7 @@ domains_insert() {
             checkParams domains_insert customer "false"
             
         else
-            getParams customer
+            getParams "domains_insert" "customer"
         fi
         declare -g "DOMAINS_INSERT_customer=${customer}"
 
@@ -1905,6 +1969,8 @@ EOIF
 
 domains_list() {
 
+    apiQueryRef=( `echo domains list`)
+
 
     customerMeta=( 
         'string'
@@ -1919,7 +1985,7 @@ domains_list() {
             checkParams domains_list customer "false"
             
         else
-            getParams customer
+            getParams "domains_list" "customer"
         fi
         declare -g "DOMAINS_LIST_customer=${customer}"
 
@@ -1968,6 +2034,8 @@ EOIF
 
 groups_delete() {
 
+    apiQueryRef=( `echo groups delete`)
+
 
     groupKeyMeta=( 
         'string'
@@ -1982,7 +2050,7 @@ groups_delete() {
             checkParams groups_delete groupKey "false"
             
         else
-            getParams groupKey
+            getParams "groups_delete" "groupKey"
         fi
         declare -g "GROUPS_DELETE_groupKey=${groupKey}"
 
@@ -2031,6 +2099,8 @@ EOIF
 
 groups_get() {
 
+    apiQueryRef=( `echo groups get`)
+
 
     groupKeyMeta=( 
         'string'
@@ -2045,7 +2115,7 @@ groups_get() {
             checkParams groups_get groupKey "false"
             
         else
-            getParams groupKey
+            getParams "groups_get" "groupKey"
         fi
         declare -g "GROUPS_GET_groupKey=${groupKey}"
 
@@ -2094,6 +2164,8 @@ EOIF
 
 groups_insert() {
 
+    apiQueryRef=( `echo groups insert`)
+
 
 
     GROUPS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/groups?key=${CLIENTID}"
@@ -2141,6 +2213,8 @@ EOIF
 
 groups_list() {
 
+    apiQueryRef=( `echo groups list`)
+
 
 
     GROUPS_LIST_URL="https://www.googleapis.com/admin/directory/v1/groups?key=${CLIENTID}"
@@ -2165,19 +2239,25 @@ groups_list() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -2196,17 +2276,17 @@ groups_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "groups_list" "${option}" "true"
                             GROUPS_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     inpParams=( customer domain maxResults pageToken query userKey )
@@ -2278,7 +2358,7 @@ groups_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "groups_list" "${option}" "true"
                             GROUPS_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -2330,6 +2410,8 @@ EOIF
 
 groups_patch() {
 
+    apiQueryRef=( `echo groups patch`)
+
 
     groupKeyMeta=( 
         'string'
@@ -2344,7 +2426,7 @@ groups_patch() {
             checkParams groups_patch groupKey "false"
             
         else
-            getParams groupKey
+            getParams "groups_patch" "groupKey"
         fi
         declare -g "GROUPS_PATCH_groupKey=${groupKey}"
 
@@ -2397,6 +2479,8 @@ EOIF
 
 groups_update() {
 
+    apiQueryRef=( `echo groups update`)
+
 
     groupKeyMeta=( 
         'string'
@@ -2411,7 +2495,7 @@ groups_update() {
             checkParams groups_update groupKey "false"
             
         else
-            getParams groupKey
+            getParams "groups_update" "groupKey"
         fi
         declare -g "GROUPS_UPDATE_groupKey=${groupKey}"
 
@@ -2464,6 +2548,8 @@ EOIF
 
 members_delete() {
 
+    apiQueryRef=( `echo members delete`)
+
 
     groupKeyMeta=( 
         'string'
@@ -2478,7 +2564,7 @@ members_delete() {
             checkParams members_delete groupKey "false"
             
         else
-            getParams groupKey
+            getParams "members_delete" "groupKey"
         fi
         declare -g "MEMBERS_DELETE_groupKey=${groupKey}"
 
@@ -2498,7 +2584,7 @@ members_delete() {
             checkParams members_delete memberKey "false"
             
         else
-            getParams memberKey
+            getParams "members_delete" "memberKey"
         fi
         declare -g "MEMBERS_DELETE_memberKey=${memberKey}"
 
@@ -2547,6 +2633,8 @@ EOIF
 
 members_get() {
 
+    apiQueryRef=( `echo members get`)
+
 
     groupKeyMeta=( 
         'string'
@@ -2561,7 +2649,7 @@ members_get() {
             checkParams members_get groupKey "false"
             
         else
-            getParams groupKey
+            getParams "members_get" "groupKey"
         fi
         declare -g "MEMBERS_GET_groupKey=${groupKey}"
 
@@ -2581,7 +2669,7 @@ members_get() {
             checkParams members_get memberKey "false"
             
         else
-            getParams memberKey
+            getParams "members_get" "memberKey"
         fi
         declare -g "MEMBERS_GET_memberKey=${memberKey}"
 
@@ -2630,6 +2718,8 @@ EOIF
 
 members_hasMember() {
 
+    apiQueryRef=( `echo members hasMember`)
+
 
     groupKeyMeta=( 
         'string'
@@ -2644,7 +2734,7 @@ members_hasMember() {
             checkParams members_hasMember groupKey "false"
             
         else
-            getParams groupKey
+            getParams "members_hasMember" "groupKey"
         fi
         declare -g "MEMBERS_HASMEMBER_groupKey=${groupKey}"
 
@@ -2664,7 +2754,7 @@ members_hasMember() {
             checkParams members_hasMember memberKey "false"
             
         else
-            getParams memberKey
+            getParams "members_hasMember" "memberKey"
         fi
         declare -g "MEMBERS_HASMEMBER_memberKey=${memberKey}"
 
@@ -2713,6 +2803,8 @@ EOIF
 
 members_insert() {
 
+    apiQueryRef=( `echo members insert`)
+
 
     groupKeyMeta=( 
         'string'
@@ -2727,7 +2819,7 @@ members_insert() {
             checkParams members_insert groupKey "false"
             
         else
-            getParams groupKey
+            getParams "members_insert" "groupKey"
         fi
         declare -g "MEMBERS_INSERT_groupKey=${groupKey}"
 
@@ -2780,6 +2872,8 @@ EOIF
 
 members_list() {
 
+    apiQueryRef=( `echo members list`)
+
 
     groupKeyMeta=( 
         'string'
@@ -2794,7 +2888,7 @@ members_list() {
             checkParams members_list groupKey "false"
             
         else
-            getParams groupKey
+            getParams "members_list" "groupKey"
         fi
         declare -g "MEMBERS_LIST_groupKey=${groupKey}"
 
@@ -2863,7 +2957,7 @@ members_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "members_list" "${option}" "true"
                             MEMBERS_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -2915,6 +3009,8 @@ EOIF
 
 members_patch() {
 
+    apiQueryRef=( `echo members patch`)
+
 
     groupKeyMeta=( 
         'string'
@@ -2929,7 +3025,7 @@ members_patch() {
             checkParams members_patch groupKey "false"
             
         else
-            getParams groupKey
+            getParams "members_patch" "groupKey"
         fi
         declare -g "MEMBERS_PATCH_groupKey=${groupKey}"
 
@@ -2949,7 +3045,7 @@ members_patch() {
             checkParams members_patch memberKey "false"
             
         else
-            getParams memberKey
+            getParams "members_patch" "memberKey"
         fi
         declare -g "MEMBERS_PATCH_memberKey=${memberKey}"
 
@@ -3002,6 +3098,8 @@ EOIF
 
 members_update() {
 
+    apiQueryRef=( `echo members update`)
+
 
     groupKeyMeta=( 
         'string'
@@ -3016,7 +3114,7 @@ members_update() {
             checkParams members_update groupKey "false"
             
         else
-            getParams groupKey
+            getParams "members_update" "groupKey"
         fi
         declare -g "MEMBERS_UPDATE_groupKey=${groupKey}"
 
@@ -3036,7 +3134,7 @@ members_update() {
             checkParams members_update memberKey "false"
             
         else
-            getParams memberKey
+            getParams "members_update" "memberKey"
         fi
         declare -g "MEMBERS_UPDATE_memberKey=${memberKey}"
 
@@ -3089,6 +3187,8 @@ EOIF
 
 mobiledevices_action() {
 
+    apiQueryRef=( `echo mobiledevices action`)
+
 
     customerIdMeta=( 
         'string'
@@ -3103,7 +3203,7 @@ mobiledevices_action() {
             checkParams mobiledevices_action customerId "false"
             
         else
-            getParams customerId
+            getParams "mobiledevices_action" "customerId"
         fi
         declare -g "MOBILEDEVICES_ACTION_customerId=${customerId}"
 
@@ -3123,7 +3223,7 @@ mobiledevices_action() {
             checkParams mobiledevices_action resourceId "false"
             
         else
-            getParams resourceId
+            getParams "mobiledevices_action" "resourceId"
         fi
         declare -g "MOBILEDEVICES_ACTION_resourceId=${resourceId}"
 
@@ -3176,6 +3276,8 @@ EOIF
 
 mobiledevices_delete() {
 
+    apiQueryRef=( `echo mobiledevices delete`)
+
 
     customerIdMeta=( 
         'string'
@@ -3190,7 +3292,7 @@ mobiledevices_delete() {
             checkParams mobiledevices_delete customerId "false"
             
         else
-            getParams customerId
+            getParams "mobiledevices_delete" "customerId"
         fi
         declare -g "MOBILEDEVICES_DELETE_customerId=${customerId}"
 
@@ -3210,7 +3312,7 @@ mobiledevices_delete() {
             checkParams mobiledevices_delete resourceId "false"
             
         else
-            getParams resourceId
+            getParams "mobiledevices_delete" "resourceId"
         fi
         declare -g "MOBILEDEVICES_DELETE_resourceId=${resourceId}"
 
@@ -3259,6 +3361,8 @@ EOIF
 
 mobiledevices_get() {
 
+    apiQueryRef=( `echo mobiledevices get`)
+
 
     customerIdMeta=( 
         'string'
@@ -3273,7 +3377,7 @@ mobiledevices_get() {
             checkParams mobiledevices_get customerId "false"
             
         else
-            getParams customerId
+            getParams "mobiledevices_get" "customerId"
         fi
         declare -g "MOBILEDEVICES_GET_customerId=${customerId}"
 
@@ -3293,7 +3397,7 @@ mobiledevices_get() {
             checkParams mobiledevices_get resourceId "false"
             
         else
-            getParams resourceId
+            getParams "mobiledevices_get" "resourceId"
         fi
         declare -g "MOBILEDEVICES_GET_resourceId=${resourceId}"
 
@@ -3317,19 +3421,25 @@ mobiledevices_get() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -3348,17 +3458,17 @@ mobiledevices_get() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "mobiledevices_get" "${option}" "true"
                             MOBILEDEVICES_GET_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     execRequest() {
@@ -3400,6 +3510,8 @@ EOIF
 
 mobiledevices_list() {
 
+    apiQueryRef=( `echo mobiledevices list`)
+
 
     customerIdMeta=( 
         'string'
@@ -3414,7 +3526,7 @@ mobiledevices_list() {
             checkParams mobiledevices_list customerId "false"
             
         else
-            getParams customerId
+            getParams "mobiledevices_list" "customerId"
         fi
         declare -g "MOBILEDEVICES_LIST_customerId=${customerId}"
 
@@ -3450,19 +3562,25 @@ mobiledevices_list() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -3481,17 +3599,17 @@ mobiledevices_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "mobiledevices_list" "${option}" "true"
                             MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     inpParams=( maxResults pageToken query )
@@ -3548,7 +3666,7 @@ mobiledevices_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "mobiledevices_list" "${option}" "true"
                             MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -3600,6 +3718,8 @@ EOIF
 
 orgunits_delete() {
 
+    apiQueryRef=( `echo orgunits delete`)
+
 
     customerIdMeta=( 
         'string'
@@ -3614,7 +3734,7 @@ orgunits_delete() {
             checkParams orgunits_delete customerId "false"
             
         else
-            getParams customerId
+            getParams "orgunits_delete" "customerId"
         fi
         declare -g "ORGUNITS_DELETE_customerId=${customerId}"
 
@@ -3634,7 +3754,7 @@ orgunits_delete() {
             checkParams orgunits_delete orgUnitPath "false"
             
         else
-            getParams orgUnitPath
+            getParams "orgunits_delete" "orgUnitPath"
         fi
         declare -g "ORGUNITS_DELETE_orgUnitPath=${orgUnitPath}"
 
@@ -3683,6 +3803,8 @@ EOIF
 
 orgunits_get() {
 
+    apiQueryRef=( `echo orgunits get`)
+
 
     customerIdMeta=( 
         'string'
@@ -3697,7 +3819,7 @@ orgunits_get() {
             checkParams orgunits_get customerId "false"
             
         else
-            getParams customerId
+            getParams "orgunits_get" "customerId"
         fi
         declare -g "ORGUNITS_GET_customerId=${customerId}"
 
@@ -3717,7 +3839,7 @@ orgunits_get() {
             checkParams orgunits_get orgUnitPath "false"
             
         else
-            getParams orgUnitPath
+            getParams "orgunits_get" "orgUnitPath"
         fi
         declare -g "ORGUNITS_GET_orgUnitPath=${orgUnitPath}"
 
@@ -3766,6 +3888,8 @@ EOIF
 
 orgunits_insert() {
 
+    apiQueryRef=( `echo orgunits insert`)
+
 
     customerIdMeta=( 
         'string'
@@ -3780,7 +3904,7 @@ orgunits_insert() {
             checkParams orgunits_insert customerId "false"
             
         else
-            getParams customerId
+            getParams "orgunits_insert" "customerId"
         fi
         declare -g "ORGUNITS_INSERT_customerId=${customerId}"
 
@@ -3833,6 +3957,8 @@ EOIF
 
 orgunits_list() {
 
+    apiQueryRef=( `echo orgunits list`)
+
 
     customerIdMeta=( 
         'string'
@@ -3847,7 +3973,7 @@ orgunits_list() {
             checkParams orgunits_list customerId "false"
             
         else
-            getParams customerId
+            getParams "orgunits_list" "customerId"
         fi
         declare -g "ORGUNITS_LIST_customerId=${customerId}"
 
@@ -3871,19 +3997,25 @@ orgunits_list() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -3902,17 +4034,17 @@ orgunits_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "orgunits_list" "${option}" "true"
                             ORGUNITS_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     inpParams=( orgUnitPath )
@@ -3959,7 +4091,7 @@ orgunits_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "orgunits_list" "${option}" "true"
                             ORGUNITS_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -4011,6 +4143,8 @@ EOIF
 
 orgunits_patch() {
 
+    apiQueryRef=( `echo orgunits patch`)
+
 
     customerIdMeta=( 
         'string'
@@ -4025,7 +4159,7 @@ orgunits_patch() {
             checkParams orgunits_patch customerId "false"
             
         else
-            getParams customerId
+            getParams "orgunits_patch" "customerId"
         fi
         declare -g "ORGUNITS_PATCH_customerId=${customerId}"
 
@@ -4045,7 +4179,7 @@ orgunits_patch() {
             checkParams orgunits_patch orgUnitPath "false"
             
         else
-            getParams orgUnitPath
+            getParams "orgunits_patch" "orgUnitPath"
         fi
         declare -g "ORGUNITS_PATCH_orgUnitPath=${orgUnitPath}"
 
@@ -4098,6 +4232,8 @@ EOIF
 
 orgunits_update() {
 
+    apiQueryRef=( `echo orgunits update`)
+
 
     customerIdMeta=( 
         'string'
@@ -4112,7 +4248,7 @@ orgunits_update() {
             checkParams orgunits_update customerId "false"
             
         else
-            getParams customerId
+            getParams "orgunits_update" "customerId"
         fi
         declare -g "ORGUNITS_UPDATE_customerId=${customerId}"
 
@@ -4132,7 +4268,7 @@ orgunits_update() {
             checkParams orgunits_update orgUnitPath "false"
             
         else
-            getParams orgUnitPath
+            getParams "orgunits_update" "orgUnitPath"
         fi
         declare -g "ORGUNITS_UPDATE_orgUnitPath=${orgUnitPath}"
 
@@ -4185,6 +4321,8 @@ EOIF
 
 privileges_list() {
 
+    apiQueryRef=( `echo privileges list`)
+
 
     customerMeta=( 
         'string'
@@ -4199,7 +4337,7 @@ privileges_list() {
             checkParams privileges_list customer "false"
             
         else
-            getParams customer
+            getParams "privileges_list" "customer"
         fi
         declare -g "PRIVILEGES_LIST_customer=${customer}"
 
@@ -4248,6 +4386,8 @@ EOIF
 
 roleAssignments_delete() {
 
+    apiQueryRef=( `echo roleAssignments delete`)
+
 
     customerMeta=( 
         'string'
@@ -4262,7 +4402,7 @@ roleAssignments_delete() {
             checkParams roleAssignments_delete customer "false"
             
         else
-            getParams customer
+            getParams "roleAssignments_delete" "customer"
         fi
         declare -g "ROLEASSIGNMENTS_DELETE_customer=${customer}"
 
@@ -4282,7 +4422,7 @@ roleAssignments_delete() {
             checkParams roleAssignments_delete roleAssignmentId "false"
             
         else
-            getParams roleAssignmentId
+            getParams "roleAssignments_delete" "roleAssignmentId"
         fi
         declare -g "ROLEASSIGNMENTS_DELETE_roleAssignmentId=${roleAssignmentId}"
 
@@ -4331,6 +4471,8 @@ EOIF
 
 roleAssignments_get() {
 
+    apiQueryRef=( `echo roleAssignments get`)
+
 
     customerMeta=( 
         'string'
@@ -4345,7 +4487,7 @@ roleAssignments_get() {
             checkParams roleAssignments_get customer "false"
             
         else
-            getParams customer
+            getParams "roleAssignments_get" "customer"
         fi
         declare -g "ROLEASSIGNMENTS_GET_customer=${customer}"
 
@@ -4365,7 +4507,7 @@ roleAssignments_get() {
             checkParams roleAssignments_get roleAssignmentId "false"
             
         else
-            getParams roleAssignmentId
+            getParams "roleAssignments_get" "roleAssignmentId"
         fi
         declare -g "ROLEASSIGNMENTS_GET_roleAssignmentId=${roleAssignmentId}"
 
@@ -4414,6 +4556,8 @@ EOIF
 
 roleAssignments_insert() {
 
+    apiQueryRef=( `echo roleAssignments insert`)
+
 
     customerMeta=( 
         'string'
@@ -4428,7 +4572,7 @@ roleAssignments_insert() {
             checkParams roleAssignments_insert customer "false"
             
         else
-            getParams customer
+            getParams "roleAssignments_insert" "customer"
         fi
         declare -g "ROLEASSIGNMENTS_INSERT_customer=${customer}"
 
@@ -4481,6 +4625,8 @@ EOIF
 
 roleAssignments_list() {
 
+    apiQueryRef=( `echo roleAssignments list`)
+
 
     customerMeta=( 
         'string'
@@ -4495,7 +4641,7 @@ roleAssignments_list() {
             checkParams roleAssignments_list customer "false"
             
         else
-            getParams customer
+            getParams "roleAssignments_list" "customer"
         fi
         declare -g "ROLEASSIGNMENTS_LIST_customer=${customer}"
 
@@ -4564,7 +4710,7 @@ roleAssignments_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "roleAssignments_list" "${option}" "true"
                             ROLEASSIGNMENTS_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -4616,6 +4762,8 @@ EOIF
 
 roles_delete() {
 
+    apiQueryRef=( `echo roles delete`)
+
 
     customerMeta=( 
         'string'
@@ -4630,7 +4778,7 @@ roles_delete() {
             checkParams roles_delete customer "false"
             
         else
-            getParams customer
+            getParams "roles_delete" "customer"
         fi
         declare -g "ROLES_DELETE_customer=${customer}"
 
@@ -4650,7 +4798,7 @@ roles_delete() {
             checkParams roles_delete roleId "false"
             
         else
-            getParams roleId
+            getParams "roles_delete" "roleId"
         fi
         declare -g "ROLES_DELETE_roleId=${roleId}"
 
@@ -4699,6 +4847,8 @@ EOIF
 
 roles_get() {
 
+    apiQueryRef=( `echo roles get`)
+
 
     customerMeta=( 
         'string'
@@ -4713,7 +4863,7 @@ roles_get() {
             checkParams roles_get customer "false"
             
         else
-            getParams customer
+            getParams "roles_get" "customer"
         fi
         declare -g "ROLES_GET_customer=${customer}"
 
@@ -4733,7 +4883,7 @@ roles_get() {
             checkParams roles_get roleId "false"
             
         else
-            getParams roleId
+            getParams "roles_get" "roleId"
         fi
         declare -g "ROLES_GET_roleId=${roleId}"
 
@@ -4782,6 +4932,8 @@ EOIF
 
 roles_insert() {
 
+    apiQueryRef=( `echo roles insert`)
+
 
     customerMeta=( 
         'string'
@@ -4796,7 +4948,7 @@ roles_insert() {
             checkParams roles_insert customer "false"
             
         else
-            getParams customer
+            getParams "roles_insert" "customer"
         fi
         declare -g "ROLES_INSERT_customer=${customer}"
 
@@ -4849,6 +5001,8 @@ EOIF
 
 roles_list() {
 
+    apiQueryRef=( `echo roles list`)
+
 
     customerMeta=( 
         'string'
@@ -4863,7 +5017,7 @@ roles_list() {
             checkParams roles_list customer "false"
             
         else
-            getParams customer
+            getParams "roles_list" "customer"
         fi
         declare -g "ROLES_LIST_customer=${customer}"
 
@@ -4922,7 +5076,7 @@ roles_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "roles_list" "${option}" "true"
                             ROLES_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -4974,6 +5128,8 @@ EOIF
 
 roles_patch() {
 
+    apiQueryRef=( `echo roles patch`)
+
 
     customerMeta=( 
         'string'
@@ -4988,7 +5144,7 @@ roles_patch() {
             checkParams roles_patch customer "false"
             
         else
-            getParams customer
+            getParams "roles_patch" "customer"
         fi
         declare -g "ROLES_PATCH_customer=${customer}"
 
@@ -5008,7 +5164,7 @@ roles_patch() {
             checkParams roles_patch roleId "false"
             
         else
-            getParams roleId
+            getParams "roles_patch" "roleId"
         fi
         declare -g "ROLES_PATCH_roleId=${roleId}"
 
@@ -5061,6 +5217,8 @@ EOIF
 
 roles_update() {
 
+    apiQueryRef=( `echo roles update`)
+
 
     customerMeta=( 
         'string'
@@ -5075,7 +5233,7 @@ roles_update() {
             checkParams roles_update customer "false"
             
         else
-            getParams customer
+            getParams "roles_update" "customer"
         fi
         declare -g "ROLES_UPDATE_customer=${customer}"
 
@@ -5095,7 +5253,7 @@ roles_update() {
             checkParams roles_update roleId "false"
             
         else
-            getParams roleId
+            getParams "roles_update" "roleId"
         fi
         declare -g "ROLES_UPDATE_roleId=${roleId}"
 
@@ -5148,6 +5306,8 @@ EOIF
 
 schemas_delete() {
 
+    apiQueryRef=( `echo schemas delete`)
+
 
     customerIdMeta=( 
         'string'
@@ -5162,7 +5322,7 @@ schemas_delete() {
             checkParams schemas_delete customerId "false"
             
         else
-            getParams customerId
+            getParams "schemas_delete" "customerId"
         fi
         declare -g "SCHEMAS_DELETE_customerId=${customerId}"
 
@@ -5182,7 +5342,7 @@ schemas_delete() {
             checkParams schemas_delete schemaKey "false"
             
         else
-            getParams schemaKey
+            getParams "schemas_delete" "schemaKey"
         fi
         declare -g "SCHEMAS_DELETE_schemaKey=${schemaKey}"
 
@@ -5231,6 +5391,8 @@ EOIF
 
 schemas_get() {
 
+    apiQueryRef=( `echo schemas get`)
+
 
     customerIdMeta=( 
         'string'
@@ -5245,7 +5407,7 @@ schemas_get() {
             checkParams schemas_get customerId "false"
             
         else
-            getParams customerId
+            getParams "schemas_get" "customerId"
         fi
         declare -g "SCHEMAS_GET_customerId=${customerId}"
 
@@ -5265,7 +5427,7 @@ schemas_get() {
             checkParams schemas_get schemaKey "false"
             
         else
-            getParams schemaKey
+            getParams "schemas_get" "schemaKey"
         fi
         declare -g "SCHEMAS_GET_schemaKey=${schemaKey}"
 
@@ -5314,6 +5476,8 @@ EOIF
 
 schemas_insert() {
 
+    apiQueryRef=( `echo schemas insert`)
+
 
     customerIdMeta=( 
         'string'
@@ -5328,7 +5492,7 @@ schemas_insert() {
             checkParams schemas_insert customerId "false"
             
         else
-            getParams customerId
+            getParams "schemas_insert" "customerId"
         fi
         declare -g "SCHEMAS_INSERT_customerId=${customerId}"
 
@@ -5381,6 +5545,8 @@ EOIF
 
 schemas_list() {
 
+    apiQueryRef=( `echo schemas list`)
+
 
     customerIdMeta=( 
         'string'
@@ -5395,7 +5561,7 @@ schemas_list() {
             checkParams schemas_list customerId "false"
             
         else
-            getParams customerId
+            getParams "schemas_list" "customerId"
         fi
         declare -g "SCHEMAS_LIST_customerId=${customerId}"
 
@@ -5444,6 +5610,8 @@ EOIF
 
 schemas_patch() {
 
+    apiQueryRef=( `echo schemas patch`)
+
 
     customerIdMeta=( 
         'string'
@@ -5458,7 +5626,7 @@ schemas_patch() {
             checkParams schemas_patch customerId "false"
             
         else
-            getParams customerId
+            getParams "schemas_patch" "customerId"
         fi
         declare -g "SCHEMAS_PATCH_customerId=${customerId}"
 
@@ -5478,7 +5646,7 @@ schemas_patch() {
             checkParams schemas_patch schemaKey "false"
             
         else
-            getParams schemaKey
+            getParams "schemas_patch" "schemaKey"
         fi
         declare -g "SCHEMAS_PATCH_schemaKey=${schemaKey}"
 
@@ -5531,6 +5699,8 @@ EOIF
 
 schemas_update() {
 
+    apiQueryRef=( `echo schemas update`)
+
 
     customerIdMeta=( 
         'string'
@@ -5545,7 +5715,7 @@ schemas_update() {
             checkParams schemas_update customerId "false"
             
         else
-            getParams customerId
+            getParams "schemas_update" "customerId"
         fi
         declare -g "SCHEMAS_UPDATE_customerId=${customerId}"
 
@@ -5565,7 +5735,7 @@ schemas_update() {
             checkParams schemas_update schemaKey "false"
             
         else
-            getParams schemaKey
+            getParams "schemas_update" "schemaKey"
         fi
         declare -g "SCHEMAS_UPDATE_schemaKey=${schemaKey}"
 
@@ -5618,6 +5788,8 @@ EOIF
 
 tokens_delete() {
 
+    apiQueryRef=( `echo tokens delete`)
+
 
     clientIdMeta=( 
         'string'
@@ -5632,7 +5804,7 @@ tokens_delete() {
             checkParams tokens_delete clientId "false"
             
         else
-            getParams clientId
+            getParams "tokens_delete" "clientId"
         fi
         declare -g "TOKENS_DELETE_clientId=${clientId}"
 
@@ -5652,7 +5824,7 @@ tokens_delete() {
             checkParams tokens_delete userKey "false"
             
         else
-            getParams userKey
+            getParams "tokens_delete" "userKey"
         fi
         declare -g "TOKENS_DELETE_userKey=${userKey}"
 
@@ -5701,6 +5873,8 @@ EOIF
 
 tokens_get() {
 
+    apiQueryRef=( `echo tokens get`)
+
 
     clientIdMeta=( 
         'string'
@@ -5715,7 +5889,7 @@ tokens_get() {
             checkParams tokens_get clientId "false"
             
         else
-            getParams clientId
+            getParams "tokens_get" "clientId"
         fi
         declare -g "TOKENS_GET_clientId=${clientId}"
 
@@ -5735,7 +5909,7 @@ tokens_get() {
             checkParams tokens_get userKey "false"
             
         else
-            getParams userKey
+            getParams "tokens_get" "userKey"
         fi
         declare -g "TOKENS_GET_userKey=${userKey}"
 
@@ -5784,6 +5958,8 @@ EOIF
 
 tokens_list() {
 
+    apiQueryRef=( `echo tokens list`)
+
 
     userKeyMeta=( 
         'string'
@@ -5798,7 +5974,7 @@ tokens_list() {
             checkParams tokens_list userKey "false"
             
         else
-            getParams userKey
+            getParams "tokens_list" "userKey"
         fi
         declare -g "TOKENS_LIST_userKey=${userKey}"
 
@@ -5847,6 +6023,8 @@ EOIF
 
 twoStepVerification_turnOff() {
 
+    apiQueryRef=( `echo twoStepVerification turnOff`)
+
 
     userKeyMeta=( 
         'string'
@@ -5861,7 +6039,7 @@ twoStepVerification_turnOff() {
             checkParams twoStepVerification_turnOff userKey "false"
             
         else
-            getParams userKey
+            getParams "twoStepVerification_turnOff" "userKey"
         fi
         declare -g "TWOSTEPVERIFICATION_TURNOFF_userKey=${userKey}"
 
@@ -5914,6 +6092,8 @@ EOIF
 
 users_delete() {
 
+    apiQueryRef=( `echo users delete`)
+
 
     userKeyMeta=( 
         'string'
@@ -5928,7 +6108,7 @@ users_delete() {
             checkParams users_delete userKey "false"
             
         else
-            getParams userKey
+            getParams "users_delete" "userKey"
         fi
         declare -g "USERS_DELETE_userKey=${userKey}"
 
@@ -5977,6 +6157,8 @@ EOIF
 
 users_get() {
 
+    apiQueryRef=( `echo users get`)
+
 
     userKeyMeta=( 
         'string'
@@ -5991,7 +6173,7 @@ users_get() {
             checkParams users_get userKey "false"
             
         else
-            getParams userKey
+            getParams "users_get" "userKey"
         fi
         declare -g "USERS_GET_userKey=${userKey}"
 
@@ -6021,19 +6203,25 @@ users_get() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -6052,17 +6240,17 @@ users_get() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "users_get" "${option}" "true"
                             USERS_GET_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     inpParams=( customFieldMask )
@@ -6109,7 +6297,7 @@ users_get() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "users_get" "${option}" "true"
                             USERS_GET_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -6161,6 +6349,8 @@ EOIF
 
 users_insert() {
 
+    apiQueryRef=( `echo users insert`)
+
 
 
     USERS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/users?key=${CLIENTID}"
@@ -6208,6 +6398,8 @@ EOIF
 
 users_list() {
 
+    apiQueryRef=( `echo users list`)
+
 
 
     USERS_LIST_URL="https://www.googleapis.com/admin/directory/v1/users?key=${CLIENTID}"
@@ -6244,19 +6436,25 @@ users_list() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -6275,17 +6473,17 @@ users_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "users_list" "${option}" "true"
                             USERS_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     inpParams=( customFieldMask customer domain maxResults pageToken query showDeleted )
@@ -6362,7 +6560,7 @@ users_list() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "users_list" "${option}" "true"
                             USERS_LIST_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -6414,6 +6612,8 @@ EOIF
 
 users_makeAdmin() {
 
+    apiQueryRef=( `echo users makeAdmin`)
+
 
     userKeyMeta=( 
         'string'
@@ -6428,7 +6628,7 @@ users_makeAdmin() {
             checkParams users_makeAdmin userKey "false"
             
         else
-            getParams userKey
+            getParams "users_makeAdmin" "userKey"
         fi
         declare -g "USERS_MAKEADMIN_userKey=${userKey}"
 
@@ -6481,6 +6681,8 @@ EOIF
 
 users_patch() {
 
+    apiQueryRef=( `echo users patch`)
+
 
     userKeyMeta=( 
         'string'
@@ -6495,7 +6697,7 @@ users_patch() {
             checkParams users_patch userKey "false"
             
         else
-            getParams userKey
+            getParams "users_patch" "userKey"
         fi
         declare -g "USERS_PATCH_userKey=${userKey}"
 
@@ -6548,6 +6750,8 @@ EOIF
 
 users_signOut() {
 
+    apiQueryRef=( `echo users signOut`)
+
 
     userKeyMeta=( 
         'string'
@@ -6562,7 +6766,7 @@ users_signOut() {
             checkParams users_signOut userKey "false"
             
         else
-            getParams userKey
+            getParams "users_signOut" "userKey"
         fi
         declare -g "USERS_SIGNOUT_userKey=${userKey}"
 
@@ -6615,6 +6819,8 @@ EOIF
 
 users_undelete() {
 
+    apiQueryRef=( `echo users undelete`)
+
 
     userKeyMeta=( 
         'string'
@@ -6629,7 +6835,7 @@ users_undelete() {
             checkParams users_undelete userKey "false"
             
         else
-            getParams userKey
+            getParams "users_undelete" "userKey"
         fi
         declare -g "USERS_UNDELETE_userKey=${userKey}"
 
@@ -6682,6 +6888,8 @@ EOIF
 
 users_update() {
 
+    apiQueryRef=( `echo users update`)
+
 
     userKeyMeta=( 
         'string'
@@ -6696,7 +6904,7 @@ users_update() {
             checkParams users_update userKey "false"
             
         else
-            getParams userKey
+            getParams "users_update" "userKey"
         fi
         declare -g "USERS_UPDATE_userKey=${userKey}"
 
@@ -6749,6 +6957,8 @@ EOIF
 
 users_watch() {
 
+    apiQueryRef=( `echo users watch`)
+
 
 
     USERS_WATCH_URL="https://www.googleapis.com/admin/directory/v1/users/watch?key=${CLIENTID}"
@@ -6791,19 +7001,25 @@ users_watch() {
     clear
 
 
+    
+
     if [[ ${optParChoice} =~ "y" ]] || [[ ${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            select option in none ${optParams}
-            do
+            #select option in none ${optParams}
+            #do
+            echo "${optParams}" "[none]" \
+            | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
+            | read -r option
+            
                 if [[ -n ${option} ]]
                 then
-                    if [[ ${option} =~ "none" ]]
+                    if [[ ${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -6822,17 +7038,17 @@ users_watch() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "users_watch" "${option}" "true"
                             USERS_WATCH_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
     inpParams=( customFieldMask customer domain maxResults pageToken query showDeleted )
@@ -6909,7 +7125,7 @@ users_watch() {
                             fi
 
                         else
-                            getParams ${option} "true"
+                            getParams "users_watch" "${option}" "true"
                             USERS_WATCH_URL+="${tempUrlPar}"
                             unset tempUrlPar
 
@@ -6965,6 +7181,8 @@ EOIF
 
 verificationCodes_generate() {
 
+    apiQueryRef=( `echo verificationCodes generate`)
+
 
     userKeyMeta=( 
         'string'
@@ -6979,7 +7197,7 @@ verificationCodes_generate() {
             checkParams verificationCodes_generate userKey "false"
             
         else
-            getParams userKey
+            getParams "verificationCodes_generate" "userKey"
         fi
         declare -g "VERIFICATIONCODES_GENERATE_userKey=${userKey}"
 
@@ -7032,6 +7250,8 @@ EOIF
 
 verificationCodes_invalidate() {
 
+    apiQueryRef=( `echo verificationCodes invalidate`)
+
 
     userKeyMeta=( 
         'string'
@@ -7046,7 +7266,7 @@ verificationCodes_invalidate() {
             checkParams verificationCodes_invalidate userKey "false"
             
         else
-            getParams userKey
+            getParams "verificationCodes_invalidate" "userKey"
         fi
         declare -g "VERIFICATIONCODES_INVALIDATE_userKey=${userKey}"
 
@@ -7099,6 +7319,8 @@ EOIF
 
 verificationCodes_list() {
 
+    apiQueryRef=( `echo verificationCodes list`)
+
 
     userKeyMeta=( 
         'string'
@@ -7113,7 +7335,7 @@ verificationCodes_list() {
             checkParams verificationCodes_list userKey "false"
             
         else
-            getParams userKey
+            getParams "verificationCodes_list" "userKey"
         fi
         declare -g "VERIFICATIONCODES_LIST_userKey=${userKey}"
 

@@ -18,8 +18,12 @@
 # handle storing parameters
 
 getParams() {
-    local tempPar=${1}
-    local urlVar=${2}
+    local sourceRef=${1}
+    local tempPar=${2}
+    local urlVar=${3}
+
+    local apiRef=(`echo ${sourceRef//_/ }` )
+
 
     local tempCarrier=PARAM_${tempPar}
     local tempMeta=${tempPar}Meta
@@ -37,7 +41,9 @@ getParams() {
         tempOpts=(`echo ${(P)${tempMeta}[3]} | jq -r ".[]"`)
         echo -en "# Please supply a value for the ${tempPar} parameter (${(P)${tempMeta}[1]}).\n#\n# Desc: ${(P)${tempMeta}[2]}\n~> "
         
-        echo "${tempOpts}"         | fuzzExOptParameters         | read -r getOption
+        echo "${tempOpts}" \
+        | fuzzExOptParameters "${apiRef[1]}" "${apiRef[2]}" "${tempPar}" \
+        | read -r getOption
 
         if [[ -n ${getOption} ]]
         then
@@ -108,6 +114,7 @@ fuzzExOptParameters() {
     --bind "tab:replace-query" \
     --bind "change:top" \
     --layout=reverse-list \
+    --preview "cat ${schemaFile} | jq --sort-keys -C  .resources.${1}.methods.${2}.parameters.${3}" \
     --prompt="~ " \
     --pointer="~ " \
     --header="# Fuzzy Object Explorer #" \
@@ -115,6 +122,19 @@ fuzzExOptParameters() {
     --black \
 }
 
+fuzzExAllParameters() {
+    sed 's/ /\n/g' \
+    | fzf \
+    --bind "tab:replace-query" \
+    --bind "change:top" \
+    --layout=reverse-list \
+    --preview "cat ${schemaFile} | jq --sort-keys -C  \".resources.${1}.methods.${2}.parameters\"" \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# Fuzzy Object Explorer #" \
+    --color=dark \
+    --black \
+}
 
 checkParams() {
     local sourceRef=${1}
@@ -135,7 +155,7 @@ checkParams() {
         if [[ ${checkOption} == "[none]" ]]
         then
             clear
-            getParams ${tempPar} ${urlVar}
+            getParams ${sourceRef} ${tempPar} ${urlVar}
         else
             clear
             declare -g "${tempPar}=${checkOption}"
@@ -148,13 +168,13 @@ checkParams() {
         fi
     else
         clear
-        getParams ${tempPar} ${urlVar}
+        getParams ${sourceRef} ${tempPar} ${urlVar}
     fi
 
 
     if [[ -z "${(P)${tempPar}}" ]]
     then
-        getParams ${tempPar} ${urlVar}
+        getParams ${sourceRef} ${tempPar} ${urlVar}
     fi
     unset tempPar reuseParOpt tempCarrier
 }

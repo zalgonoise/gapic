@@ -668,8 +668,12 @@ cat << EOF >> ${outputParamStoreWiz}
 # handle storing parameters
 
 getParams() {
-    local tempPar=\${1}
-    local urlVar=\${2}
+    local sourceRef=\${1}
+    local tempPar=\${2}
+    local urlVar=\${3}
+
+    local apiRef=(\`echo \${sourceRef//_/ }\` )
+
 
     local tempCarrier=PARAM_\${tempPar}
     local tempMeta=\${tempPar}Meta
@@ -687,8 +691,8 @@ getParams() {
         tempOpts=(\`echo \${(P)\${tempMeta}[3]} | jq -r ".[]"\`)
         echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempMeta}[1]}).\n#\n# Desc: \${(P)\${tempMeta}[2]}\n~> "
         
-        echo "\${tempOpts}" \
-        | fuzzExOptParameters \
+        echo "\${tempOpts}" \\
+        | fuzzExOptParameters "\${apiRef[1]}" "\${apiRef[2]}" "\${tempPar}" \\
         | read -r getOption
 
         if [[ -n \${getOption} ]]
@@ -760,6 +764,7 @@ fuzzExOptParameters() {
     --bind "tab:replace-query" \\
     --bind "change:top" \\
     --layout=reverse-list \\
+    --preview "cat \${schemaFile} | jq --sort-keys -C  .resources.\${1}.methods.\${2}.parameters.\${3}" \\
     --prompt="~ " \\
     --pointer="~ " \\
     --header="# Fuzzy Object Explorer #" \\
@@ -767,6 +772,19 @@ fuzzExOptParameters() {
     --black \\
 }
 
+fuzzExAllParameters() {
+    sed 's/ /\n/g' \\
+    | fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --preview "cat \${schemaFile} | jq --sort-keys -C  \".resources.\${1}.methods.\${2}.parameters\"" \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black \\
+}
 
 checkParams() {
     local sourceRef=\${1}
@@ -787,7 +805,7 @@ checkParams() {
         if [[ \${checkOption} == "[none]" ]]
         then
             clear
-            getParams \${tempPar} \${urlVar}
+            getParams \${sourceRef} \${tempPar} \${urlVar}
         else
             clear
             declare -g "\${tempPar}=\${checkOption}"
@@ -800,13 +818,13 @@ checkParams() {
         fi
     else
         clear
-        getParams \${tempPar} \${urlVar}
+        getParams \${sourceRef} \${tempPar} \${urlVar}
     fi
 
 
     if [[ -z "\${(P)\${tempPar}}" ]]
     then
-        getParams \${tempPar} \${urlVar}
+        getParams \${sourceRef} \${tempPar} \${urlVar}
     fi
     unset tempPar reuseParOpt tempCarrier
 }
@@ -1150,6 +1168,8 @@ do
         cat << EOF >> ${outputLibWiz}
 ${(P)${apiSets[$c]}[$d]}() {
 
+    apiQueryRef=( \`echo ${(P)${apiSets[$c]}[$d]//_/ }\`)
+
 
 EOF
 
@@ -1186,7 +1206,7 @@ EOF
             checkParams ${(P)${apiSets[$c]}[$d]} ${curReqParams[$h]} "false"
             
         else
-            getParams ${curReqParams[$h]}
+            getParams "${(P)${apiSets[$c]}[$d]}" "${curReqParams[$h]}"
         fi
         declare -g "${curPrefix}${curReqParams[$h]}=\${${curReqParams[$h]}}"
 
@@ -1238,19 +1258,25 @@ EOF
     clear
 
 
+    
+
     if [[ \${optParChoice} =~ "y" ]] || [[ \${optParChoice} =~ "Y" ]]
     then
         for (( i = 1 ; i <= \${#optParams[@]} ; i++ ))
         do
 
-            select option in none \${optParams}
-            do
+            #select option in none \${optParams}
+            #do
+            echo "\${optParams}" "[none]" \\
+            | fuzzExAllParameters "\${apiQueryRef[1]}" "\${apiQueryRef[2]}" \\
+            | read -r option
+            
                 if [[ -n \${option} ]]
                 then
-                    if [[ \${option} =~ "none" ]]
+                    if [[ \${option} == "[none]" ]]
                     then
                         clear
-                        break 2
+                        break
                     else
                         clear
 
@@ -1269,17 +1295,17 @@ EOF
                             fi
 
                         else
-                            getParams \${option} "true"
+                            getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
                             ${curPrefix}URL+="\${tempUrlPar}"
                             unset tempUrlPar
 
                         fi
                         unset optParam
                         
-                        break
+            #            break
                     fi
                 fi
-            done
+            #done
         done
     fi
 EOF
@@ -1347,7 +1373,7 @@ EOF
                             fi
 
                         else
-                            getParams \${option} "true"
+                            getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
                             ${curPrefix}URL+="\${tempUrlPar}"
                             unset tempUrlPar
 
