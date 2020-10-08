@@ -786,6 +786,22 @@ fuzzExAllParameters() {
     --black \\
 }
 
+fuzzExPromptParameters() {
+    sed 's/ /\n/g' \\
+    | fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --preview "cat <(echo \${1} | sed 's/ /\\n/g')" \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black \\
+  
+
+}
+
 checkParams() {
     local sourceRef=\${1}
     local tempPar=\${2}
@@ -1253,9 +1269,13 @@ EOF
 
             cat << EOF >> "${outputLibWiz}"
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n\${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n\${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \\
+    | fuzzExPromptParameters "\${optParams}" \\
+    | read -r optParChoice
 
 
     
@@ -1265,47 +1285,40 @@ EOF
         for (( i = 1 ; i <= \${#optParams[@]} ; i++ ))
         do
 
-            #select option in none \${optParams}
-            #do
             echo "\${optParams}" "[none]" \\
             | fuzzExAllParameters "\${apiQueryRef[1]}" "\${apiQueryRef[2]}" \\
             | read -r option
             
-                if [[ -n \${option} ]]
+            if [[ -n \${option} ]]
+            then
+                if [[ \${option} == "[none]" ]]
                 then
-                    if [[ \${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_\${option}
-                        if ! [[ -z "\${(P)\${optParam}}" ]]
-                        then 
-                            checkParams ${(P)${apiSets[$c]}[$d]} \${option} "true"
-
-                            if ! [[ \${addedParams} =~ \${option} ]]
-                            then
-                                ${curPrefix}URL+="\${tempUrlPar}"
-                                addedParams+=( "\${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
+                    local optParam=PARAM_\${option}
+                    if ! [[ -z "\${(P)\${optParam}}" ]]
+                    then 
+                        checkParams ${(P)${apiSets[$c]}[$d]} \${option} "true"
+                        if ! [[ \${addedParams} =~ \${option} ]]
+                        then
                             ${curPrefix}URL+="\${tempUrlPar}"
+                            addedParams+=( "\${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
+                        ${curPrefix}URL+="\${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
 EOF

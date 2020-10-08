@@ -464,9 +464,13 @@ chromeosdevices_get() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -476,47 +480,40 @@ chromeosdevices_get() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams chromeosdevices_get ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "chromeosdevices_get" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams chromeosdevices_get ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "chromeosdevices_get" "${option}" "true"
+                        CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     execRequest() {
@@ -605,9 +602,13 @@ chromeosdevices_list() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -617,47 +618,40 @@ chromeosdevices_list() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams chromeosdevices_list ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "chromeosdevices_list" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams chromeosdevices_list ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "chromeosdevices_list" "${option}" "true"
+                        CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     inpParams=( maxResults orgUnitPath pageToken query )
@@ -915,9 +909,13 @@ chromeosdevices_patch() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -927,47 +925,40 @@ chromeosdevices_patch() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams chromeosdevices_patch ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "chromeosdevices_patch" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams chromeosdevices_patch ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "chromeosdevices_patch" "${option}" "true"
+                        CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     execRequest() {
@@ -1068,9 +1059,13 @@ chromeosdevices_update() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -1080,47 +1075,40 @@ chromeosdevices_update() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams chromeosdevices_update ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "chromeosdevices_update" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams chromeosdevices_update ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "chromeosdevices_update" "${option}" "true"
+                        CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     execRequest() {
@@ -2234,9 +2222,13 @@ groups_list() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -2246,47 +2238,40 @@ groups_list() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams groups_list ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                GROUPS_LIST_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "groups_list" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams groups_list ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             GROUPS_LIST_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "groups_list" "${option}" "true"
+                        GROUPS_LIST_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     inpParams=( customer domain maxResults pageToken query userKey )
@@ -3416,9 +3401,13 @@ mobiledevices_get() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -3428,47 +3417,40 @@ mobiledevices_get() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams mobiledevices_get ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                MOBILEDEVICES_GET_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "mobiledevices_get" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams mobiledevices_get ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             MOBILEDEVICES_GET_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "mobiledevices_get" "${option}" "true"
+                        MOBILEDEVICES_GET_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     execRequest() {
@@ -3557,9 +3539,13 @@ mobiledevices_list() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -3569,47 +3555,40 @@ mobiledevices_list() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams mobiledevices_list ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "mobiledevices_list" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams mobiledevices_list ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "mobiledevices_list" "${option}" "true"
+                        MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     inpParams=( maxResults pageToken query )
@@ -3992,9 +3971,13 @@ orgunits_list() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -4004,47 +3987,40 @@ orgunits_list() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams orgunits_list ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                ORGUNITS_LIST_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "orgunits_list" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams orgunits_list ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             ORGUNITS_LIST_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "orgunits_list" "${option}" "true"
+                        ORGUNITS_LIST_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     inpParams=( orgUnitPath )
@@ -6198,9 +6174,13 @@ users_get() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -6210,47 +6190,40 @@ users_get() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams users_get ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                USERS_GET_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "users_get" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams users_get ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             USERS_GET_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "users_get" "${option}" "true"
+                        USERS_GET_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     inpParams=( customFieldMask )
@@ -6431,9 +6404,13 @@ users_list() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -6443,47 +6420,40 @@ users_list() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams users_list ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                USERS_LIST_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "users_list" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams users_list ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             USERS_LIST_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "users_list" "${option}" "true"
+                        USERS_LIST_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     inpParams=( customFieldMask customer domain maxResults pageToken query showDeleted )
@@ -6996,9 +6966,13 @@ users_watch() {
     )
 
 
-    echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
-    read -r optParChoice
-    clear
+    #echo -en "# Would you like to define extra parameters? [y/n] \n${optParams}\n\n~> "
+    #read -r optParChoice
+    #clear
+
+    echo "yes no" \
+    | fuzzExPromptParameters "${optParams}" \
+    | read -r optParChoice
 
 
     
@@ -7008,47 +6982,40 @@ users_watch() {
         for (( i = 1 ; i <= ${#optParams[@]} ; i++ ))
         do
 
-            #select option in none ${optParams}
-            #do
             echo "${optParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
             
-                if [[ -n ${option} ]]
+            if [[ -n ${option} ]]
+            then
+                if [[ ${option} == "[none]" ]]
                 then
-                    if [[ ${option} == "[none]" ]]
-                    then
-                        clear
-                        break
-                    else
-                        clear
+                    clear
+                    break
+                else
+                    clear
 
-                        local optParam=PARAM_${option}
-                        if ! [[ -z "${(P)${optParam}}" ]]
-                        then 
-                            checkParams users_watch ${option} "true"
-
-                            if ! [[ ${addedParams} =~ ${option} ]]
-                            then
-                                USERS_WATCH_URL+="${tempUrlPar}"
-                                addedParams+=( "${option}" )
-                                unset tempUrlPar
-                            else
-                                echo -e "# Error! Parameter already provided before, skipping.\n\n"
-                            fi
-
-                        else
-                            getParams "users_watch" "${option}" "true"
+                    local optParam=PARAM_${option}
+                    if ! [[ -z "${(P)${optParam}}" ]]
+                    then 
+                        checkParams users_watch ${option} "true"
+                        if ! [[ ${addedParams} =~ ${option} ]]
+                        then
                             USERS_WATCH_URL+="${tempUrlPar}"
+                            addedParams+=( "${option}" )
                             unset tempUrlPar
-
+                        else
+                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
                         fi
-                        unset optParam
-                        
-            #            break
+                    else
+                        getParams "users_watch" "${option}" "true"
+                        USERS_WATCH_URL+="${tempUrlPar}"
+                        unset tempUrlPar
                     fi
+                    unset optParam
+                        
                 fi
-            #done
+            fi
         done
     fi
     inpParams=( customFieldMask customer domain maxResults pageToken query showDeleted )

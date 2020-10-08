@@ -136,6 +136,22 @@ fuzzExAllParameters() {
     --black \
 }
 
+fuzzExPromptParameters() {
+    sed 's/ /\n/g' \
+    | fzf \
+    --bind "tab:replace-query" \
+    --bind "change:top" \
+    --layout=reverse-list \
+    --preview "cat <(echo ${1} | sed 's/ /\n/g')" \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# Fuzzy Object Explorer #" \
+    --color=dark \
+    --black \
+  
+
+}
+
 checkParams() {
     local sourceRef=${1}
     local tempPar=${2}
