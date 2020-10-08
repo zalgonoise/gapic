@@ -744,6 +744,7 @@ fuzzExSimpleParameters() {
     --bind "tab:replace-query" \\
     --bind "change:top" \\
     --layout=reverse-list \\
+    --bind "ctrl-r:execute% source \${gapicParamWiz} && rmParams \${tempPar} {} \${gapicSavedPar} %+preview(cat <(echo -e \# Removed {}))" \\
     --prompt="~ " \\
     --pointer="~ " \\
     --header="# Fuzzy Object Explorer #" \\
@@ -760,19 +761,16 @@ checkParams() {
     tempCarrier=PARAM_\${tempPar}
     echo -en "# You have saved values for the \${tempPar} parameter. Do you want to use one?\n\n"
     
-    echo "\${(P)\${tempCarrier}} [none] [remove]" \\
+    echo "\${(P)\${tempCarrier}} [none]" \\
     | fuzzExSimpleParameters \\
     | read -r checkOption
-    
+   
     if [[ -n \${checkOption} ]]
     then
         if [[ \${checkOption} == "[none]" ]]
         then
             clear
             getParams \${tempPar} \${urlVar}
-        elif [[ \${checkOption} == "[remove]" ]]
-        then
-            rmParams \${tempPar}
         else
             clear
             declare -g "\${tempPar}=\${checkOption}"
@@ -783,7 +781,9 @@ checkParams() {
             
             unset checkOption
         fi
-    
+    else
+        clear
+        getParams \${tempPar} \${urlVar}
     fi
 
 
@@ -799,39 +799,15 @@ checkParams() {
 # Handle parameter removal
 
 rmParams() {
-    local paramToRemove=\${1}
+    local paramRef=\${1}
+    local paramToRemove=\${2}
+    local paramFile=\${3}
 
-    echo -e "# Fetching the parameter store for saved results on \${paramToRemove} to remove:\n"
-    
-    paramResults=( \`grep -n "\${paramToRemove}" \${gapicSavedPar} | tr ')' ' '\` )
-    
-    for (( x = 1 ; x <= \${#paramResults[@]} ; x++ ))
-    do
-        paramResKeys+=( "\${paramResults[\$x]}" )
-        ((x++))
-        paramResVals+=( "\${paramResults[\$x]}" )
-    done
-
-    select remOpt in none \${paramResVals[@]}
-    do
-        if [[ -n \${remOpt} ]]
-        then
-            if [[ "\${remOpt}" =~ "none" ]]
-            then
-                break
-            else
-                lineToRemove=\`egrep -n "\\<PARAM_\${paramToRemove}\\>.*\\<\${remOpt}\\>" \${gapicSavedPar} | tr ':' ' ' | awk '{print \$1}' \`
-                if ! [[ -z \${lineToRemove} ]]
-                then
-                    sed -i "\${lineToRemove}d" \${gapicSavedPar}
-                    echo -e "Removed parameter '\${remOpt}' from parameter store!\n\n"
-                fi
-                break
-            fi
-        fi
-    done
-
-
+    lineToRemove=\`egrep -n "\\<PARAM_\${paramRef}\\>.*\\<\${paramToRemove}\\>" \${paramFile} | tr ':' ' ' | awk '{print \$1}' \`
+    if ! [[ -z \${lineToRemove} ]]
+    then
+        sed -i "\${lineToRemove}d" \${paramFile}
+    fi
 }
 
 EOF
