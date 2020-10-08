@@ -691,15 +691,11 @@ getParams() {
         | fuzzExOptParameters \
         | read -r getOption
 
-        #select getOption in \${tempOpts}
-        #do
-            if [[ -n \${getOption} ]]
-            then
-                declare -g "tempVal=\${getOption}"
-                clear
-        #        break
-            fi
-        #done
+        if [[ -n \${getOption} ]]
+        then
+            declare -g "tempVal=\${getOption}"
+            clear
+        fi
         unset getOption 
     fi
     unset tempParMeta
@@ -750,6 +746,7 @@ fuzzExSimpleParameters() {
     --bind "change:top" \\
     --layout=reverse-list \\
     --bind "ctrl-r:execute% source \${gapicParamWiz} && rmParams \${tempPar} {} \${gapicSavedPar} %+preview(cat <(echo -e \# Removed {}))" \\
+    --preview "cat \${schemaFile} | jq --sort-keys -C  .resources.\${1}.methods.\${2}.parameters.\${3}" \\
     --prompt="~ " \\
     --pointer="~ " \\
     --header="# Fuzzy Object Explorer #" \\
@@ -772,14 +769,17 @@ fuzzExOptParameters() {
 
 
 checkParams() {
-    local tempPar=\${1}
-    local urlVar=\${2}
+    local sourceRef=\${1}
+    local tempPar=\${2}
+    local urlVar=\${3}
+
+    local apiRef=(\`echo \${sourceRef//_/ }\` )
 
     tempCarrier=PARAM_\${tempPar}
     echo -en "# You have saved values for the \${tempPar} parameter. Do you want to use one?\n\n"
     
     echo "\${(P)\${tempCarrier}} [none]" \\
-    | fuzzExSimpleParameters \\
+    | fuzzExSimpleParameters "\${apiRef[1]}" "\${apiRef[2]}" "\${tempPar}" \\
     | read -r checkOption
    
     if [[ -n \${checkOption} ]]
@@ -1183,7 +1183,7 @@ EOF
     then
         if ! [[ -z "\${PARAM_${curReqParams[$h]}}" ]]
         then 
-            checkParams ${curReqParams[$h]} "false"
+            checkParams ${(P)${apiSets[$c]}[$d]} ${curReqParams[$h]} "false"
             
         else
             getParams ${curReqParams[$h]}
@@ -1257,7 +1257,7 @@ EOF
                         local optParam=PARAM_\${option}
                         if ! [[ -z "\${(P)\${optParam}}" ]]
                         then 
-                            checkParams \${option} "true"
+                            checkParams ${(P)${apiSets[$c]}[$d]} \${option} "true"
 
                             if ! [[ \${addedParams} =~ \${option} ]]
                             then
@@ -1335,7 +1335,7 @@ EOF
                         local optParam=PARAM_\${option}
                         if ! [[ -z "\${(P)\${optParam}}" ]]
                         then 
-                            checkParams \${option} "true"
+                            checkParams ${(P)${apiSets[$c]}[$d]} \${option} "true"
 
                             if ! [[ \${addedParams} =~ \${option} ]]
                             then

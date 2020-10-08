@@ -47,7 +47,7 @@ asps_delete() {
     then
         if ! [[ -z "${PARAM_codeId}" ]]
         then 
-            checkParams codeId "false"
+            checkParams asps_delete codeId "false"
             
         else
             getParams codeId
@@ -67,7 +67,7 @@ asps_delete() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams asps_delete userKey "false"
             
         else
             getParams userKey
@@ -130,7 +130,7 @@ asps_get() {
     then
         if ! [[ -z "${PARAM_codeId}" ]]
         then 
-            checkParams codeId "false"
+            checkParams asps_get codeId "false"
             
         else
             getParams codeId
@@ -150,7 +150,7 @@ asps_get() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams asps_get userKey "false"
             
         else
             getParams userKey
@@ -213,7 +213,7 @@ asps_list() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams asps_list userKey "false"
             
         else
             getParams userKey
@@ -323,7 +323,7 @@ chromeosdevices_action() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams chromeosdevices_action customerId "false"
             
         else
             getParams customerId
@@ -343,7 +343,7 @@ chromeosdevices_action() {
     then
         if ! [[ -z "${PARAM_resourceId}" ]]
         then 
-            checkParams resourceId "false"
+            checkParams chromeosdevices_action resourceId "false"
             
         else
             getParams resourceId
@@ -410,7 +410,7 @@ chromeosdevices_get() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams chromeosdevices_get customerId "false"
             
         else
             getParams customerId
@@ -430,7 +430,7 @@ chromeosdevices_get() {
     then
         if ! [[ -z "${PARAM_deviceId}" ]]
         then 
-            checkParams deviceId "false"
+            checkParams chromeosdevices_get deviceId "false"
             
         else
             getParams deviceId
@@ -476,7 +476,7 @@ chromeosdevices_get() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams chromeosdevices_get ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -551,7 +551,7 @@ chromeosdevices_list() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams chromeosdevices_list customerId "false"
             
         else
             getParams customerId
@@ -609,7 +609,7 @@ chromeosdevices_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams chromeosdevices_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -681,7 +681,7 @@ chromeosdevices_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams chromeosdevices_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -756,7 +756,7 @@ chromeosdevices_moveDevicesToOu() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams chromeosdevices_moveDevicesToOu customerId "false"
             
         else
             getParams customerId
@@ -776,7 +776,7 @@ chromeosdevices_moveDevicesToOu() {
     then
         if ! [[ -z "${PARAM_orgUnitPath}" ]]
         then 
-            checkParams orgUnitPath "false"
+            checkParams chromeosdevices_moveDevicesToOu orgUnitPath "false"
             
         else
             getParams orgUnitPath
@@ -843,7 +843,7 @@ chromeosdevices_patch() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams chromeosdevices_patch customerId "false"
             
         else
             getParams customerId
@@ -863,7 +863,7 @@ chromeosdevices_patch() {
     then
         if ! [[ -z "${PARAM_deviceId}" ]]
         then 
-            checkParams deviceId "false"
+            checkParams chromeosdevices_patch deviceId "false"
             
         else
             getParams deviceId
@@ -909,7 +909,7 @@ chromeosdevices_patch() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams chromeosdevices_patch ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -988,7 +988,7 @@ chromeosdevices_update() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams chromeosdevices_update customerId "false"
             
         else
             getParams customerId
@@ -1008,7 +1008,7 @@ chromeosdevices_update() {
     then
         if ! [[ -z "${PARAM_deviceId}" ]]
         then 
-            checkParams deviceId "false"
+            checkParams chromeosdevices_update deviceId "false"
             
         else
             getParams deviceId
@@ -1054,7 +1054,7 @@ chromeosdevices_update() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams chromeosdevices_update ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -1133,7 +1133,7 @@ customers_get() {
     then
         if ! [[ -z "${PARAM_customerKey}" ]]
         then 
-            checkParams customerKey "false"
+            checkParams customers_get customerKey "false"
             
         else
             getParams customerKey
@@ -1196,7 +1196,7 @@ customers_patch() {
     then
         if ! [[ -z "${PARAM_customerKey}" ]]
         then 
-            checkParams customerKey "false"
+            checkParams customers_patch customerKey "false"
             
         else
             getParams customerKey
@@ -1263,7 +1263,7 @@ customers_update() {
     then
         if ! [[ -z "${PARAM_customerKey}" ]]
         then 
-            checkParams customerKey "false"
+            checkParams customers_update customerKey "false"
             
         else
             getParams customerKey
@@ -1330,7 +1330,7 @@ domainAliases_delete() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams domainAliases_delete customer "false"
             
         else
             getParams customer
@@ -1350,7 +1350,7 @@ domainAliases_delete() {
     then
         if ! [[ -z "${PARAM_domainAliasName}" ]]
         then 
-            checkParams domainAliasName "false"
+            checkParams domainAliases_delete domainAliasName "false"
             
         else
             getParams domainAliasName
@@ -1413,7 +1413,7 @@ domainAliases_get() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams domainAliases_get customer "false"
             
         else
             getParams customer
@@ -1433,7 +1433,7 @@ domainAliases_get() {
     then
         if ! [[ -z "${PARAM_domainAliasName}" ]]
         then 
-            checkParams domainAliasName "false"
+            checkParams domainAliases_get domainAliasName "false"
             
         else
             getParams domainAliasName
@@ -1496,7 +1496,7 @@ domainAliases_insert() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams domainAliases_insert customer "false"
             
         else
             getParams customer
@@ -1563,7 +1563,7 @@ domainAliases_list() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams domainAliases_list customer "false"
             
         else
             getParams customer
@@ -1608,7 +1608,7 @@ domainAliases_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams domainAliases_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -1683,7 +1683,7 @@ domains_delete() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams domains_delete customer "false"
             
         else
             getParams customer
@@ -1703,7 +1703,7 @@ domains_delete() {
     then
         if ! [[ -z "${PARAM_domainName}" ]]
         then 
-            checkParams domainName "false"
+            checkParams domains_delete domainName "false"
             
         else
             getParams domainName
@@ -1766,7 +1766,7 @@ domains_get() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams domains_get customer "false"
             
         else
             getParams customer
@@ -1786,7 +1786,7 @@ domains_get() {
     then
         if ! [[ -z "${PARAM_domainName}" ]]
         then 
-            checkParams domainName "false"
+            checkParams domains_get domainName "false"
             
         else
             getParams domainName
@@ -1849,7 +1849,7 @@ domains_insert() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams domains_insert customer "false"
             
         else
             getParams customer
@@ -1916,7 +1916,7 @@ domains_list() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams domains_list customer "false"
             
         else
             getParams customer
@@ -1979,7 +1979,7 @@ groups_delete() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams groups_delete groupKey "false"
             
         else
             getParams groupKey
@@ -2042,7 +2042,7 @@ groups_get() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams groups_get groupKey "false"
             
         else
             getParams groupKey
@@ -2184,7 +2184,7 @@ groups_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams groups_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -2266,7 +2266,7 @@ groups_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams groups_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -2341,7 +2341,7 @@ groups_patch() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams groups_patch groupKey "false"
             
         else
             getParams groupKey
@@ -2408,7 +2408,7 @@ groups_update() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams groups_update groupKey "false"
             
         else
             getParams groupKey
@@ -2475,7 +2475,7 @@ members_delete() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams members_delete groupKey "false"
             
         else
             getParams groupKey
@@ -2495,7 +2495,7 @@ members_delete() {
     then
         if ! [[ -z "${PARAM_memberKey}" ]]
         then 
-            checkParams memberKey "false"
+            checkParams members_delete memberKey "false"
             
         else
             getParams memberKey
@@ -2558,7 +2558,7 @@ members_get() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams members_get groupKey "false"
             
         else
             getParams groupKey
@@ -2578,7 +2578,7 @@ members_get() {
     then
         if ! [[ -z "${PARAM_memberKey}" ]]
         then 
-            checkParams memberKey "false"
+            checkParams members_get memberKey "false"
             
         else
             getParams memberKey
@@ -2641,7 +2641,7 @@ members_hasMember() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams members_hasMember groupKey "false"
             
         else
             getParams groupKey
@@ -2661,7 +2661,7 @@ members_hasMember() {
     then
         if ! [[ -z "${PARAM_memberKey}" ]]
         then 
-            checkParams memberKey "false"
+            checkParams members_hasMember memberKey "false"
             
         else
             getParams memberKey
@@ -2724,7 +2724,7 @@ members_insert() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams members_insert groupKey "false"
             
         else
             getParams groupKey
@@ -2791,7 +2791,7 @@ members_list() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams members_list groupKey "false"
             
         else
             getParams groupKey
@@ -2851,7 +2851,7 @@ members_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams members_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -2926,7 +2926,7 @@ members_patch() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams members_patch groupKey "false"
             
         else
             getParams groupKey
@@ -2946,7 +2946,7 @@ members_patch() {
     then
         if ! [[ -z "${PARAM_memberKey}" ]]
         then 
-            checkParams memberKey "false"
+            checkParams members_patch memberKey "false"
             
         else
             getParams memberKey
@@ -3013,7 +3013,7 @@ members_update() {
     then
         if ! [[ -z "${PARAM_groupKey}" ]]
         then 
-            checkParams groupKey "false"
+            checkParams members_update groupKey "false"
             
         else
             getParams groupKey
@@ -3033,7 +3033,7 @@ members_update() {
     then
         if ! [[ -z "${PARAM_memberKey}" ]]
         then 
-            checkParams memberKey "false"
+            checkParams members_update memberKey "false"
             
         else
             getParams memberKey
@@ -3100,7 +3100,7 @@ mobiledevices_action() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams mobiledevices_action customerId "false"
             
         else
             getParams customerId
@@ -3120,7 +3120,7 @@ mobiledevices_action() {
     then
         if ! [[ -z "${PARAM_resourceId}" ]]
         then 
-            checkParams resourceId "false"
+            checkParams mobiledevices_action resourceId "false"
             
         else
             getParams resourceId
@@ -3187,7 +3187,7 @@ mobiledevices_delete() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams mobiledevices_delete customerId "false"
             
         else
             getParams customerId
@@ -3207,7 +3207,7 @@ mobiledevices_delete() {
     then
         if ! [[ -z "${PARAM_resourceId}" ]]
         then 
-            checkParams resourceId "false"
+            checkParams mobiledevices_delete resourceId "false"
             
         else
             getParams resourceId
@@ -3270,7 +3270,7 @@ mobiledevices_get() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams mobiledevices_get customerId "false"
             
         else
             getParams customerId
@@ -3290,7 +3290,7 @@ mobiledevices_get() {
     then
         if ! [[ -z "${PARAM_resourceId}" ]]
         then 
-            checkParams resourceId "false"
+            checkParams mobiledevices_get resourceId "false"
             
         else
             getParams resourceId
@@ -3336,7 +3336,7 @@ mobiledevices_get() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams mobiledevices_get ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -3411,7 +3411,7 @@ mobiledevices_list() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams mobiledevices_list customerId "false"
             
         else
             getParams customerId
@@ -3469,7 +3469,7 @@ mobiledevices_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams mobiledevices_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -3536,7 +3536,7 @@ mobiledevices_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams mobiledevices_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -3611,7 +3611,7 @@ orgunits_delete() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams orgunits_delete customerId "false"
             
         else
             getParams customerId
@@ -3631,7 +3631,7 @@ orgunits_delete() {
     then
         if ! [[ -z "${PARAM_orgUnitPath}" ]]
         then 
-            checkParams orgUnitPath "false"
+            checkParams orgunits_delete orgUnitPath "false"
             
         else
             getParams orgUnitPath
@@ -3694,7 +3694,7 @@ orgunits_get() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams orgunits_get customerId "false"
             
         else
             getParams customerId
@@ -3714,7 +3714,7 @@ orgunits_get() {
     then
         if ! [[ -z "${PARAM_orgUnitPath}" ]]
         then 
-            checkParams orgUnitPath "false"
+            checkParams orgunits_get orgUnitPath "false"
             
         else
             getParams orgUnitPath
@@ -3777,7 +3777,7 @@ orgunits_insert() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams orgunits_insert customerId "false"
             
         else
             getParams customerId
@@ -3844,7 +3844,7 @@ orgunits_list() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams orgunits_list customerId "false"
             
         else
             getParams customerId
@@ -3890,7 +3890,7 @@ orgunits_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams orgunits_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -3947,7 +3947,7 @@ orgunits_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams orgunits_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -4022,7 +4022,7 @@ orgunits_patch() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams orgunits_patch customerId "false"
             
         else
             getParams customerId
@@ -4042,7 +4042,7 @@ orgunits_patch() {
     then
         if ! [[ -z "${PARAM_orgUnitPath}" ]]
         then 
-            checkParams orgUnitPath "false"
+            checkParams orgunits_patch orgUnitPath "false"
             
         else
             getParams orgUnitPath
@@ -4109,7 +4109,7 @@ orgunits_update() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams orgunits_update customerId "false"
             
         else
             getParams customerId
@@ -4129,7 +4129,7 @@ orgunits_update() {
     then
         if ! [[ -z "${PARAM_orgUnitPath}" ]]
         then 
-            checkParams orgUnitPath "false"
+            checkParams orgunits_update orgUnitPath "false"
             
         else
             getParams orgUnitPath
@@ -4196,7 +4196,7 @@ privileges_list() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams privileges_list customer "false"
             
         else
             getParams customer
@@ -4259,7 +4259,7 @@ roleAssignments_delete() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams roleAssignments_delete customer "false"
             
         else
             getParams customer
@@ -4279,7 +4279,7 @@ roleAssignments_delete() {
     then
         if ! [[ -z "${PARAM_roleAssignmentId}" ]]
         then 
-            checkParams roleAssignmentId "false"
+            checkParams roleAssignments_delete roleAssignmentId "false"
             
         else
             getParams roleAssignmentId
@@ -4342,7 +4342,7 @@ roleAssignments_get() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams roleAssignments_get customer "false"
             
         else
             getParams customer
@@ -4362,7 +4362,7 @@ roleAssignments_get() {
     then
         if ! [[ -z "${PARAM_roleAssignmentId}" ]]
         then 
-            checkParams roleAssignmentId "false"
+            checkParams roleAssignments_get roleAssignmentId "false"
             
         else
             getParams roleAssignmentId
@@ -4425,7 +4425,7 @@ roleAssignments_insert() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams roleAssignments_insert customer "false"
             
         else
             getParams customer
@@ -4492,7 +4492,7 @@ roleAssignments_list() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams roleAssignments_list customer "false"
             
         else
             getParams customer
@@ -4552,7 +4552,7 @@ roleAssignments_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams roleAssignments_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -4627,7 +4627,7 @@ roles_delete() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams roles_delete customer "false"
             
         else
             getParams customer
@@ -4647,7 +4647,7 @@ roles_delete() {
     then
         if ! [[ -z "${PARAM_roleId}" ]]
         then 
-            checkParams roleId "false"
+            checkParams roles_delete roleId "false"
             
         else
             getParams roleId
@@ -4710,7 +4710,7 @@ roles_get() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams roles_get customer "false"
             
         else
             getParams customer
@@ -4730,7 +4730,7 @@ roles_get() {
     then
         if ! [[ -z "${PARAM_roleId}" ]]
         then 
-            checkParams roleId "false"
+            checkParams roles_get roleId "false"
             
         else
             getParams roleId
@@ -4793,7 +4793,7 @@ roles_insert() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams roles_insert customer "false"
             
         else
             getParams customer
@@ -4860,7 +4860,7 @@ roles_list() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams roles_list customer "false"
             
         else
             getParams customer
@@ -4910,7 +4910,7 @@ roles_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams roles_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -4985,7 +4985,7 @@ roles_patch() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams roles_patch customer "false"
             
         else
             getParams customer
@@ -5005,7 +5005,7 @@ roles_patch() {
     then
         if ! [[ -z "${PARAM_roleId}" ]]
         then 
-            checkParams roleId "false"
+            checkParams roles_patch roleId "false"
             
         else
             getParams roleId
@@ -5072,7 +5072,7 @@ roles_update() {
     then
         if ! [[ -z "${PARAM_customer}" ]]
         then 
-            checkParams customer "false"
+            checkParams roles_update customer "false"
             
         else
             getParams customer
@@ -5092,7 +5092,7 @@ roles_update() {
     then
         if ! [[ -z "${PARAM_roleId}" ]]
         then 
-            checkParams roleId "false"
+            checkParams roles_update roleId "false"
             
         else
             getParams roleId
@@ -5159,7 +5159,7 @@ schemas_delete() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams schemas_delete customerId "false"
             
         else
             getParams customerId
@@ -5179,7 +5179,7 @@ schemas_delete() {
     then
         if ! [[ -z "${PARAM_schemaKey}" ]]
         then 
-            checkParams schemaKey "false"
+            checkParams schemas_delete schemaKey "false"
             
         else
             getParams schemaKey
@@ -5242,7 +5242,7 @@ schemas_get() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams schemas_get customerId "false"
             
         else
             getParams customerId
@@ -5262,7 +5262,7 @@ schemas_get() {
     then
         if ! [[ -z "${PARAM_schemaKey}" ]]
         then 
-            checkParams schemaKey "false"
+            checkParams schemas_get schemaKey "false"
             
         else
             getParams schemaKey
@@ -5325,7 +5325,7 @@ schemas_insert() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams schemas_insert customerId "false"
             
         else
             getParams customerId
@@ -5392,7 +5392,7 @@ schemas_list() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams schemas_list customerId "false"
             
         else
             getParams customerId
@@ -5455,7 +5455,7 @@ schemas_patch() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams schemas_patch customerId "false"
             
         else
             getParams customerId
@@ -5475,7 +5475,7 @@ schemas_patch() {
     then
         if ! [[ -z "${PARAM_schemaKey}" ]]
         then 
-            checkParams schemaKey "false"
+            checkParams schemas_patch schemaKey "false"
             
         else
             getParams schemaKey
@@ -5542,7 +5542,7 @@ schemas_update() {
     then
         if ! [[ -z "${PARAM_customerId}" ]]
         then 
-            checkParams customerId "false"
+            checkParams schemas_update customerId "false"
             
         else
             getParams customerId
@@ -5562,7 +5562,7 @@ schemas_update() {
     then
         if ! [[ -z "${PARAM_schemaKey}" ]]
         then 
-            checkParams schemaKey "false"
+            checkParams schemas_update schemaKey "false"
             
         else
             getParams schemaKey
@@ -5629,7 +5629,7 @@ tokens_delete() {
     then
         if ! [[ -z "${PARAM_clientId}" ]]
         then 
-            checkParams clientId "false"
+            checkParams tokens_delete clientId "false"
             
         else
             getParams clientId
@@ -5649,7 +5649,7 @@ tokens_delete() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams tokens_delete userKey "false"
             
         else
             getParams userKey
@@ -5712,7 +5712,7 @@ tokens_get() {
     then
         if ! [[ -z "${PARAM_clientId}" ]]
         then 
-            checkParams clientId "false"
+            checkParams tokens_get clientId "false"
             
         else
             getParams clientId
@@ -5732,7 +5732,7 @@ tokens_get() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams tokens_get userKey "false"
             
         else
             getParams userKey
@@ -5795,7 +5795,7 @@ tokens_list() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams tokens_list userKey "false"
             
         else
             getParams userKey
@@ -5858,7 +5858,7 @@ twoStepVerification_turnOff() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams twoStepVerification_turnOff userKey "false"
             
         else
             getParams userKey
@@ -5925,7 +5925,7 @@ users_delete() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams users_delete userKey "false"
             
         else
             getParams userKey
@@ -5988,7 +5988,7 @@ users_get() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams users_get userKey "false"
             
         else
             getParams userKey
@@ -6040,7 +6040,7 @@ users_get() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams users_get ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -6097,7 +6097,7 @@ users_get() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams users_get ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -6263,7 +6263,7 @@ users_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams users_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -6350,7 +6350,7 @@ users_list() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams users_list ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -6425,7 +6425,7 @@ users_makeAdmin() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams users_makeAdmin userKey "false"
             
         else
             getParams userKey
@@ -6492,7 +6492,7 @@ users_patch() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams users_patch userKey "false"
             
         else
             getParams userKey
@@ -6559,7 +6559,7 @@ users_signOut() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams users_signOut userKey "false"
             
         else
             getParams userKey
@@ -6626,7 +6626,7 @@ users_undelete() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams users_undelete userKey "false"
             
         else
             getParams userKey
@@ -6693,7 +6693,7 @@ users_update() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams users_update userKey "false"
             
         else
             getParams userKey
@@ -6810,7 +6810,7 @@ users_watch() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams users_watch ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -6897,7 +6897,7 @@ users_watch() {
                         local optParam=PARAM_${option}
                         if ! [[ -z "${(P)${optParam}}" ]]
                         then 
-                            checkParams ${option} "true"
+                            checkParams users_watch ${option} "true"
 
                             if ! [[ ${addedParams} =~ ${option} ]]
                             then
@@ -6976,7 +6976,7 @@ verificationCodes_generate() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams verificationCodes_generate userKey "false"
             
         else
             getParams userKey
@@ -7043,7 +7043,7 @@ verificationCodes_invalidate() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams verificationCodes_invalidate userKey "false"
             
         else
             getParams userKey
@@ -7110,7 +7110,7 @@ verificationCodes_list() {
     then
         if ! [[ -z "${PARAM_userKey}" ]]
         then 
-            checkParams userKey "false"
+            checkParams verificationCodes_list userKey "false"
             
         else
             getParams userKey
