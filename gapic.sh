@@ -32,6 +32,7 @@ output=${output//gapic.sh/}
 outputSrcDir="${output}src/"
 outputBinDir="${output}src/bin"
 outputDataDir="${output}src/data"
+outputCredsDir="${output}src/data/.creds"
 outputSchemaDir="${output}src/schema"
 
 outputCredsWiz="${outputBinDir}/gapic_creds.sh"
@@ -61,6 +62,11 @@ fi
 if ! [ -d ${outputSchemaDir} ]
 then
     mkdir ${outputSchemaDir}
+fi
+
+if ! [ -d ${outputCredsDir} ]
+then
+    mkdir ${outputCredsDir}
 fi
 
 if ! [ -f ${outputCredsWiz} ] \
@@ -175,11 +181,9 @@ gapicBootstrap() {
 # Check for existing credentials and access token
 
 gapicCreds() {
-    clear
-    echo -en "# Initializing gAPIc ~ checking for credentials.\n\n"
 
-    checkCreds
-    checkAccess
+    checkCreds "\${1}" "\${2}" "\${3}"
+    checkAccess "\${1}" "\${2}" "\${3}"
 
 }
 
@@ -233,7 +237,8 @@ gapicExec() {
         fi
 
     fi
-    gapicCreds
+
+    gapicCreds "\${setOption}" "\${methOption}" \${schemaFile}
 
     execOption=\${setOption}_\${methOption}
 
@@ -343,18 +348,94 @@ cat << EOF >> ${outputCredsWiz}
 # Retrieve needed credentials
     # Define credentials output file path
 
+    credPath=\`realpath \$0\`
+    export credPath=\${credFile//bin\/gapic_creds.sh/data\/.creds}
+
+
     credFile=\`realpath \$0\`
     export credFile=\${credFile//bin\/gapic_creds.sh/data\/.api_creds}
     export credFileRefresh=\${credFile//.api_creds/.api_refresh}
     export credFileAccess=\${credFile//.api_creds/.api_access}
     export credFileParams=\${credFile//.api_creds/.api_params}
 
-checkCreds() {
-    # Check Client ID variable
+clientCreate() {
+    jq -cn \\
+    --arg cid "\${1}" \\
+    --arg cs "" \\
+    --arg scp "" \\
+    --arg rt "" \\
+    --arg at "" \\
+    '{clientId: $cid, clientSecret: $cs, authScopes: [ {scopeUrl: $scp, refreshToken: $rt, accessToken: $at} ]}' \\
+    | read newClient
 
-    if [ -f \${credFile} ]
+    local clientName=\`echo \${1//-/ } | awk '{print \$1}' `\
+
+    cat \${credFile} \\
+    | jq '.[]' \\
+    | jq -s "[.[],\${newClient}]" \\
+    > \${credPath}/${clientName}
+}
+
+
+
+clientCheck() {
+    local fileRef=\`echo \${1} | jq '.clientId' | sed 's/-/ /' | awk '{print \$1}' \`
+    local clientId=\`echo \${1} | jq '.clientId'\`
+    local clientSecret=\`echo \${1} | jq '.clientSecret'\`
+
+    local temp=\`mktemp\`
+
+    if [[ -z \${clientSecret} ]]
     then
-        source \${credFile}
+        fuzzExInputCreds "Enter your Client Secret for \${clientId}" \\
+        | read clientSecret
+
+        cat \${credPath}/\${fileRef} \\
+        | jq ".clientSecret=\"\${clientSecret}\"" \\
+        > \${temp}
+
+        if [[ `jq \${temp}` ]]
+        then 
+            mv \{temp} \${credPath}/\${fileRef}
+        fi
+    fi
+}
+
+checkCreds() {
+    # Check for existing client IDs
+
+    if [[ \`find \${credPath}/*\`]]
+    then 
+        ls \${credPath}/* \\
+        | fuzzExSavedCreds "Re-use any of these ClientIDs?" "\${credPath}" \\
+        | read -r clientJson
+
+        clientCheck "\${clientJson}"
+
+    else 
+        fuzzExInputCreds "Enter your ClientID" \\
+        | read clientId
+
+        clientCreate "\${clientId}"
+        checkCreds
+    fi
+
+#### TODO
+# Checking flows for checkCreds()
+# Adding scope retrieval from schema
+# Adding auto credentials validation
+# Adding Access Token TTL and gen-date (change in clientCreate())
+
+
+
+
+
+
+
+
+
+
+
 
         if ! [[ -z \${SAVED_CLIENTID} ]] \\
         && ! [[ -z \${SAVED_CLIENTSECRET} ]]
@@ -839,7 +920,7 @@ fuzzExSimpleParameters() {
     --pointer="~ " \\
     --header="# \${1}.\${2}: Saved \${3} Params #" \\
     --color=dark \\
-    --black \\
+    --black 
 }
 
 fuzzExOptParameters() {
@@ -853,7 +934,7 @@ fuzzExOptParameters() {
     --pointer="~ " \\
     --header="# \${1}.\${2}: \${3} Param #" \\
     --color=dark \\
-    --black \\
+    --black 
 }
 
 fuzzExAllParameters() {
@@ -867,7 +948,7 @@ fuzzExAllParameters() {
     --pointer="~ " \\
     --header="# \${1}.\${2}: Available Params #" \\
     --color=dark \\
-    --black \\
+    --black 
 }
 
 fuzzExPromptParameters() {
@@ -881,9 +962,35 @@ fuzzExPromptParameters() {
     --pointer="~ " \\
     --header="# \${1} #" \\
     --color=dark \\
-    --black \\
-  
+    --black 
+}
 
+#    --preview "cat <( source \${credFile} && echo \${SAVED_CLIENTID} | sed 's/-/ /g' | awk '{print \$1}' | grep {} | read -r var && )" \\
+
+
+fuzzExSavedCreds() {
+    fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --preview "cat <( cat \${2}/{} | jq -C )" \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# \${1} #" \\
+    --color=dark \\
+    --black \\
+    | xargs -ri jq -c '.' <(cat \${2})
+}
+
+fuzzExInputCreds(){
+    echo \\
+    | fzf \\
+    --print-query \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# \${1} #" \\
+    --color=dark \\
+    --black
 }
 
 EOF
