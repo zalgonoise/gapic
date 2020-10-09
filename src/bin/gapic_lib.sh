@@ -465,7 +465,7 @@ chromeosdevices_get() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -597,7 +597,7 @@ chromeosdevices_list() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -665,12 +665,8 @@ chromeosdevices_list() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -679,8 +675,6 @@ chromeosdevices_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
@@ -899,7 +893,7 @@ chromeosdevices_patch() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -1043,7 +1037,7 @@ chromeosdevices_update() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -1607,12 +1601,8 @@ domainAliases_list() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -1621,8 +1611,6 @@ domainAliases_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
@@ -2201,7 +2189,7 @@ groups_list() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -2279,12 +2267,8 @@ groups_list() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -2293,8 +2277,6 @@ groups_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
@@ -2879,12 +2861,8 @@ members_list() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -2893,8 +2871,6 @@ members_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
@@ -3376,7 +3352,7 @@ mobiledevices_get() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -3508,7 +3484,7 @@ mobiledevices_list() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -3571,12 +3547,8 @@ mobiledevices_list() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -3585,8 +3557,6 @@ mobiledevices_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
@@ -3935,7 +3905,7 @@ orgunits_list() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -3988,12 +3958,8 @@ orgunits_list() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -4002,8 +3968,6 @@ orgunits_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
@@ -4608,12 +4572,8 @@ roleAssignments_list() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -4622,8 +4582,6 @@ roleAssignments_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
@@ -4975,12 +4933,8 @@ roles_list() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -4989,8 +4943,6 @@ roles_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
@@ -6135,7 +6087,7 @@ users_get() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -6188,12 +6140,8 @@ users_get() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -6202,8 +6150,6 @@ users_get() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
@@ -6360,7 +6306,7 @@ users_list() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -6443,12 +6389,8 @@ users_list() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -6457,8 +6399,6 @@ users_list() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option
@@ -6917,7 +6857,7 @@ users_watch() {
 
 
     echo "yes no" \
-    | fuzzExPromptParameters "${optParams}" \
+    | fuzzExPromptParameters "Define optional params?" "${optParams}" \
     | read -r optParChoice
 
 
@@ -7000,12 +6940,8 @@ users_watch() {
     )
 
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \
-    | fuzzExPromptParameters "${inpParams}" \
+    | fuzzExPromptParameters "Define input params?" "${inpParams}" \
     | read -r inpParChoice
 
 
@@ -7014,8 +6950,6 @@ users_watch() {
         for (( i = 1 ; i <= ${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none ${inpParams} 
-            #do
             echo "${inpParams}" "[none]" \
             | fuzzExAllParameters "${apiQueryRef[1]}" "${apiQueryRef[2]}" \
             | read -r option

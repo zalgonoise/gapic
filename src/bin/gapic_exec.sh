@@ -22,6 +22,7 @@
     gapicDataDir=${gapicBinDir//bin/data}
     gapicSchemaDir=${gapicBinDir//bin/schema}
     schemaFile=${gapicSchemaDir}gapic_AdminSDK_Directory.json
+    schemaRef=`cat ${schemaFile} | jq '. | "\(.title) \(.version)"'`
 
     gapicCredsWiz="${gapicBinDir}gapic_creds.sh"
     gapicLibWiz="${gapicBinDir}gapic_lib.sh"

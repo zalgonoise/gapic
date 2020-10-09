@@ -42,6 +42,7 @@ outputFuzzWiz="${outputBinDir}/gapic_fuzzex.sh"
 
 defaultSchemaFile="${outputSchemaDir}/gapic_AdminSDK_Directory.json"
 
+
 if ! [ -d ${outputSrcDir} ]
 then
     mkdir ${outputSrcDir}
@@ -108,6 +109,7 @@ cat << EOF >> ${outputExecWiz}
     gapicDataDir=\${gapicBinDir//bin/data}
     gapicSchemaDir=\${gapicBinDir//bin/schema}
     schemaFile=\${gapicSchemaDir}gapic_AdminSDK_Directory.json
+    schemaRef=\`cat \${schemaFile} | jq '. | "\(.title) \(.version)"'\`
 
     gapicCredsWiz="\${gapicBinDir}gapic_creds.sh"
     gapicLibWiz="\${gapicBinDir}gapic_lib.sh"
@@ -762,7 +764,12 @@ gapicFuzzySchema() {
     | sed "s/^/./" \\
     | sed "s/\.\([[:digit:]]\+\)/[\1]/g" \\
     | fzf  \\
-    --preview "cat <(jq -C {1} < \${1})" \\
+    --preview \\
+        "cat \\
+          <(echo -e \"# Ctrl-space: Expand preview (use '/' to search) #\")  \\
+          <(echo -e \"# Ctrl-k: preview keys #\") \\
+          <(echo -e \"# Tab: query quick-replace #\n\n\") \\
+          <(jq -C {1} < \${1})" \\
     --bind "ctrl-s:execute% cat <(jq -c {1} < \${1}) | less -R > /dev/tty 2>&1 %" \\
     --bind "ctrl-b:preview(cat <(jq -c {1} < \${1}) | base64 -d)" \\
     --bind "ctrl-k:preview(cat <(jq -c {1} < \${1}) | jq '. | keys[]')" \\
@@ -783,6 +790,8 @@ gapicFuzzyResources() {
     | fzf \\
     --preview \\
         "cat \\
+          <(echo -e \"# Ctrl-space: Expand preview (use '/' to search) #\") \\
+          <(echo -e \"# Tab: query quick-replace #\n\n\") \\
           <( cat \${1} | jq -C  \\
             '.resources.{}.methods | keys[]')
         " \\
@@ -792,7 +801,7 @@ gapicFuzzyResources() {
     --layout=reverse-list \\
     --prompt="~ " \\
     --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
+    --header="# \${schemaRef}: Resources #" \\
     --color=dark \\
     --black 
 }
@@ -803,6 +812,7 @@ gapicFuzzyMethods() {
     | fzf \\
     --preview \\
         "cat \\
+          <(echo -e \"# Ctrl-space: Expand preview (use '/' to search) #\n\n\") \\
           <( cat \${1} | jq -C  \\
             .resources.\${2}.methods.{})
         " \\
@@ -812,7 +822,7 @@ gapicFuzzyMethods() {
     --layout=reverse-list \\
     --prompt="~ " \\
     --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
+    --header="# \${2}: Methods #" \\
     --color=dark \\
     --black 
 }
@@ -824,10 +834,10 @@ fuzzExSimpleParameters() {
     --bind "change:top" \\
     --layout=reverse-list \\
     --bind "ctrl-r:execute% source \${gapicParamWiz} && rmParams \${tempPar} {} \${gapicSavedPar} %+preview(cat <(echo -e \# Removed {}))" \\
-    --preview "cat \${schemaFile} | jq --sort-keys -C  .resources.\${1}.methods.\${2}.parameters.\${3}" \\
+    --preview "cat <(echo -e \"# Ctrl-r: Remove entry #\n\n\") <( cat \${schemaFile} | jq --sort-keys -C  .resources.\${1}.methods.\${2}.parameters.\${3})" \\
     --prompt="~ " \\
     --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
+    --header="# \${1}.\${2}: Saved \${3} Params #" \\
     --color=dark \\
     --black \\
 }
@@ -841,7 +851,7 @@ fuzzExOptParameters() {
     --preview "cat \${schemaFile} | jq --sort-keys -C  .resources.\${1}.methods.\${2}.parameters.\${3}" \\
     --prompt="~ " \\
     --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
+    --header="# \${1}.\${2}: \${3} Param #" \\
     --color=dark \\
     --black \\
 }
@@ -855,7 +865,7 @@ fuzzExAllParameters() {
     --preview "cat \${schemaFile} | jq --sort-keys -C  \".resources.\${1}.methods.\${2}.parameters\"" \\
     --prompt="~ " \\
     --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
+    --header="# \${1}.\${2}: Available Params #" \\
     --color=dark \\
     --black \\
 }
@@ -866,10 +876,10 @@ fuzzExPromptParameters() {
     --bind "tab:replace-query" \\
     --bind "change:top" \\
     --layout=reverse-list \\
-    --preview "cat <(echo \${1} | sed 's/ /\\n/g')" \\
+    --preview "cat <(echo \${2} | sed 's/ /\\n/g')" \\
     --prompt="~ " \\
     --pointer="~ " \\
-    --header="# Fuzzy Object Explorer #" \\
+    --header="# \${1} #" \\
     --color=dark \\
     --black \\
   
@@ -1286,7 +1296,7 @@ EOF
             cat << EOF >> "${outputLibWiz}"
 
     echo "yes no" \\
-    | fuzzExPromptParameters "\${optParams}" \\
+    | fuzzExPromptParameters "Define optional params?" "\${optParams}" \\
     | read -r optParChoice
 
 
@@ -1360,12 +1370,8 @@ EOF
 
             cat << EOF >> "${outputLibWiz}"
 
-    #echo -en "# Would you like to define input parameters? [y/n] \n\${inpParams}\n\n~> "
-    #read -r inpParChoice
-    #clear
-    #
     echo "yes no" \\
-    | fuzzExPromptParameters "\${inpParams}" \\
+    | fuzzExPromptParameters "Define input params?" "\${inpParams}" \\
     | read -r inpParChoice
 
 
@@ -1374,8 +1380,6 @@ EOF
         for (( i = 1 ; i <= \${#inpParams[@]} ; i++ ))
         do
 
-            #select option in none \${inpParams} 
-            #do
             echo "\${inpParams}" "[none]" \\
             | fuzzExAllParameters "\${apiQueryRef[1]}" "\${apiQueryRef[2]}" \\
             | read -r option
