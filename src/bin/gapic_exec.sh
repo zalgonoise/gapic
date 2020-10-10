@@ -20,6 +20,7 @@
     gapicBinDir=`realpath $0`
     gapicBinDir=${gapicBinDir//gapic_exec.sh/}
     gapicDataDir=${gapicBinDir//bin/data}
+    gapicCredsDir=${gapicBinDir//bin/data\/.creds}
     gapicSchemaDir=${gapicBinDir//bin/schema}
     schemaFile=${gapicSchemaDir}gapic_AdminSDK_Directory.json
     schemaRef=`cat ${schemaFile} | jq '. | "\(.title) \(.version)"'`
@@ -88,11 +89,9 @@ gapicBootstrap() {
 # Check for existing credentials and access token
 
 gapicCreds() {
-    clear
-    echo -en "# Initializing gAPIc ~ checking for credentials.\n\n"
 
-    checkCreds
-    checkAccess
+    checkCreds 
+    checkScopes "${1}" "${2}" "${3}" "${credPath}/${fileRef}"
 
 }
 
@@ -146,7 +145,8 @@ gapicExec() {
         fi
 
     fi
-    gapicCreds
+
+    gapicCreds "${setOption}" "${methOption}" ${schemaFile}
 
     execOption=${setOption}_${methOption}
 
@@ -170,11 +170,12 @@ gapicPostExec() {
         if [[ `echo ${outputJson} | jq '.error.code'` =~ "401" ]] \
         && [[ `echo ${outputJson} | jq '.error.errors[].message'` =~ "Invalid Credentials" ]]
         then
-            if [ -f ${credFileAccess} ]
+            if ! [[ `cat "${credPath}/${fileRef}" | jq ".authScopes[${activeIndex}].accessToken"` == null ]]
             then
                 echo -e "# Invalid Credentials error.\n\n# Removing Access Token to generate a new one:\n\n"
-                rm ${credFileAccess}
-                genAccess
+                
+                rmCreds "${credPath}/${fileRef}" "${activeIndex}" "accessToken" 
+                rebuildAuth "${activeIndex}" "${credPath}/${fileRef}"
 
                 echo -e "# Repeating previously configured request:\n\n"
                 execRequest
@@ -188,12 +189,13 @@ gapicPostExec() {
                     exit 1
                 fi
 
-            elif ! [ -f ${credFileAccess} ] \
-                && [ -f ${credFileRefresh} ]
+            if [[ `cat "${credPath}/${fileRef}" | jq ".authScopes[${activeIndex}].accessToken"` == null ]] \
+            && ! [[ `cat "${credPath}/${fileRef}" | jq ".authScopes[${activeIndex}].refreshToken"` == null ]]
             then
                 echo -e "# Invalid Credentials error.\n\n# Removing Refresh Token and generating a new one:\n\n"
-                rm ${credFileRefresh}
-                genRefresh
+
+                rmCreds "${credPath}/${fileRef}" "${activeIndex}" "refreshToken" 
+                buildAuth "${activeIndex}" "${credPath}/${fileRef}"
                 
                 echo -e "# Repeating previously configured request:\n\n"
                 execRequest

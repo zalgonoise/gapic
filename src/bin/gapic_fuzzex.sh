@@ -98,7 +98,7 @@ fuzzExSimpleParameters() {
     --pointer="~ " \
     --header="# ${1}.${2}: Saved ${3} Params #" \
     --color=dark \
-    --black \
+    --black 
 }
 
 fuzzExOptParameters() {
@@ -112,7 +112,7 @@ fuzzExOptParameters() {
     --pointer="~ " \
     --header="# ${1}.${2}: ${3} Param #" \
     --color=dark \
-    --black \
+    --black 
 }
 
 fuzzExAllParameters() {
@@ -126,7 +126,7 @@ fuzzExAllParameters() {
     --pointer="~ " \
     --header="# ${1}.${2}: Available Params #" \
     --color=dark \
-    --black \
+    --black 
 }
 
 fuzzExPromptParameters() {
@@ -140,8 +140,61 @@ fuzzExPromptParameters() {
     --pointer="~ " \
     --header="# ${1} #" \
     --color=dark \
-    --black \
-  
+    --black 
+}
 
+fuzzExSavedCreds() {
+    fzf \
+    --bind "tab:replace-query" \
+    --bind "change:top" \
+    --layout=reverse-list \
+    --preview "cat <( cat ${2}/{} | jq -C )" \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# ${1} #" \
+    --color=dark \
+    --black \
+    | xargs -ri jq -c '.' <(cat ${2})
+}
+
+fuzzExInputCreds(){
+    echo \
+    | fzf \
+    --print-query \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# ${1} #" \
+    --color=dark \
+    --black
+}
+
+fuzzExSavedScopes() {
+    jq ".scopeUrl" \
+    | fzf \
+    --bind "tab:replace-query" \
+    --bind "change:top" \
+    --layout=reverse-list \
+    --preview "cat <( echo ${2}/{} | jq -C \".authScopes[] | select(.scopeUrl == {})\" )" \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# ${1} #" \
+    --color=dark \
+    --black \
+    | xargs -ri jq -c ".authScopes[] | select(.scopeUrl == {})" <(echo ${2} )
+   
+}
+
+fuzzExCreateScopes() {
+    jq ".resources.${2}.methods.${3}.scopes[]" \
+    | fzf \
+    --bind "tab:replace-query" \
+    --bind "change:top" \
+    --layout=reverse-list \
+    --preview "cat <( cat ${4} | jq -C \".resources.${2}.methods.${3}\" \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# ${1} #" \
+    --color=dark \
+    --black
 }
 

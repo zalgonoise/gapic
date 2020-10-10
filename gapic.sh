@@ -113,6 +113,7 @@ cat << EOF >> ${outputExecWiz}
     gapicBinDir=\`realpath \$0\`
     gapicBinDir=\${gapicBinDir//gapic_exec.sh/}
     gapicDataDir=\${gapicBinDir//bin/data}
+    gapicCredsDir=\${gapicBinDir//bin/data\/.creds}
     gapicSchemaDir=\${gapicBinDir//bin/schema}
     schemaFile=\${gapicSchemaDir}gapic_AdminSDK_Directory.json
     schemaRef=\`cat \${schemaFile} | jq '. | "\(.title) \(.version)"'\`
@@ -262,7 +263,7 @@ gapicPostExec() {
         if [[ \`echo \${outputJson} | jq '.error.code'\` =~ "401" ]] \\
         && [[ \`echo \${outputJson} | jq '.error.errors[].message'\` =~ "Invalid Credentials" ]]
         then
-            if [ -f \${credFileAccess} ]
+            if ! [[ \`cat "\${credPath}/\${fileRef}" | jq ".authScopes[\${activeIndex}].accessToken"\` == null ]]
             then
                 echo -e "# Invalid Credentials error.\n\n# Removing Access Token to generate a new one:\n\n"
                 
@@ -281,12 +282,13 @@ gapicPostExec() {
                     exit 1
                 fi
 
-            elif ! [ -f \${credFileAccess} ] \\
-                && [ -f \${credFileRefresh} ]
+            if [[ \`cat "\${credPath}/\${fileRef}" | jq ".authScopes[\${activeIndex}].accessToken"\` == null ]] \\
+            && ! [[ \`cat "\${credPath}/\${fileRef}" | jq ".authScopes[\${activeIndex}].refreshToken"\` == null ]]
             then
                 echo -e "# Invalid Credentials error.\n\n# Removing Refresh Token and generating a new one:\n\n"
-                rm \${credFileRefresh}
-                genRefresh
+
+                rmCreds "\${credPath}/\${fileRef}" "\${activeIndex}" "refreshToken" 
+                buildAuth "\${activeIndex}" "\${credPath}/\${fileRef}"
                 
                 echo -e "# Repeating previously configured request:\n\n"
                 execRequest
@@ -350,14 +352,11 @@ cat << EOF >> ${outputCredsWiz}
     # Define credentials output file path
 
     credPath=\`realpath \$0\`
-    export credPath=\${credFile//bin\/gapic_creds.sh/data\/.creds}
+    export credPath=\${credPath//bin\/gapic_creds.sh/data\/.creds}
 
 
     credFile=\`realpath \$0\`
-    export credFile=\${credFile//bin\/gapic_creds.sh/data\/.api_creds}
-    export credFileRefresh=\${credFile//.api_creds/.api_refresh}
-    export credFileAccess=\${credFile//.api_creds/.api_access}
-    export credFileParams=\${credFile//.api_creds/.api_params}
+    export credFileParams=\${credFile//bin\/gapic_creds.sh/data\/.api_params}
 
 clientCreate() {
     jq -cn \\
@@ -368,10 +367,7 @@ clientCreate() {
 
     local clientName=\`echo \${1//-/ } | awk '{print \$1}' \`
 
-    cat \${credFile} \\
-    | jq '.[]' \\
-    | jq -s "[.[],\${newClient}]" \\
-    > \${credPath}/${clientName}
+    echo \${newClient} > \${credPath}/${clientName}
 }
 
 scopeCreate() {
@@ -471,7 +467,7 @@ buildAuth() {
         | jq ".authScopes[\${1}].refreshToken=\${authRefreshToken} | .authScopes[\${1}].accessToken=\${authAccessToken}" \\
         > \${tmp}
 
-        if [[ `cat \${tmp} | jq` ]]
+        if [[ \`cat \${tmp} | jq\` ]]
         then 
             mv \${tmp} \${2}
         fi
@@ -531,7 +527,7 @@ rebuildAuth() {
         | jq ".authScopes[\${1}].accessToken=\${authAccessToken}" \\
         > \${tmp}
 
-        if [[ `cat \${tmp} | jq` ]]
+        if [[ \`cat \${tmp} | jq\` ]]
         then 
             mv \${tmp} \${2}
         fi
@@ -575,7 +571,7 @@ clientCheck() {
     local clientId=\`echo \${1} | jq '.clientId'\`
     local clientSecret=\`echo \${1} | jq '.clientSecret'\`
 
-    local temp=\`mktemp\`
+    local tmp=\`mktemp\`
 
     if [[ \${clientSecret} == null ]]
     then
@@ -584,11 +580,11 @@ clientCheck() {
 
         cat \${credPath}/\${fileRef} \\
         | jq ".clientSecret=\"\${clientSecret}\"" \\
-        > \${temp}
+        > \${tmp}
 
-        if [[ `jq \${temp}` ]]
+        if [[ \`jq \${tmp}\` ]]
         then 
-            mv \{temp} \${credPath}/\${fileRef}
+            mv \{tmp} \${credPath}/\${fileRef}
         fi
     fi
 }
@@ -623,7 +619,7 @@ rmCreds() {
     | jq -C ".authScopes[\${2}].\${3}=null" \\
     > \${tmp}
 
-    if [[ `cat \${tmp} | jq` ]]
+    if [[ \`cat \${tmp} | jq\` ]]
     then
         mv \${tmp} \${1}
     fi
@@ -966,9 +962,6 @@ fuzzExPromptParameters() {
     --color=dark \\
     --black 
 }
-
-#    --preview "cat <( source \${credFile} && echo \${SAVED_CLIENTID} | sed 's/-/ /g' | awk '{print \$1}' | grep {} | read -r var && )" \\
-
 
 fuzzExSavedCreds() {
     fzf \\
