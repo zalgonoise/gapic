@@ -189,7 +189,7 @@ gapicPostExec() {
                     exit 1
                 fi
 
-            if [[ `cat "${credPath}/${fileRef}" | jq ".authScopes[${activeIndex}].accessToken"` == null ]] \
+            elif [[ `cat "${credPath}/${fileRef}" | jq ".authScopes[${activeIndex}].accessToken"` == null ]] \
             && ! [[ `cat "${credPath}/${fileRef}" | jq ".authScopes[${activeIndex}].refreshToken"` == null ]]
             then
                 echo -e "# Invalid Credentials error.\n\n# Removing Refresh Token and generating a new one:\n\n"

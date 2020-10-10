@@ -282,7 +282,7 @@ gapicPostExec() {
                     exit 1
                 fi
 
-            if [[ \`cat "\${credPath}/\${fileRef}" | jq ".authScopes[\${activeIndex}].accessToken"\` == null ]] \\
+            elif [[ \`cat "\${credPath}/\${fileRef}" | jq ".authScopes[\${activeIndex}].accessToken"\` == null ]] \\
             && ! [[ \`cat "\${credPath}/\${fileRef}" | jq ".authScopes[\${activeIndex}].refreshToken"\` == null ]]
             then
                 echo -e "# Invalid Credentials error.\n\n# Removing Refresh Token and generating a new one:\n\n"
@@ -584,7 +584,7 @@ clientCheck() {
 
         if [[ \`jq \${tmp}\` ]]
         then 
-            mv \{tmp} \${credPath}/\${fileRef}
+            mv \${tmp} \${credPath}/\${fileRef}
         fi
     fi
 }
@@ -592,7 +592,7 @@ clientCheck() {
 checkCreds() {
     # Check for existing client IDs
 
-    if [[ \`find \${credPath}/*\`]] \\
+    if [[ \`find \${credPath}/*\` ]] \\
     || [[ -z \${clientJson} ]]
     then 
         ls \${credPath}/ \\
@@ -631,9 +631,9 @@ scopeLookup() {
     do
         for (( a = 1 ; a <= \${(P)#2[@]} ; a++ ))
         do
-            if [[ \`echo \${(P)1[\${i}]} | jq -c '.scopeUrl' \` == ${(P)2[\${a}]} ]]
+            if [[ \` echo "\${(P)1[\${i}]}" | jq -c '.scopeUrl' \` == "\${(P)2[\${a}]}" ]]
             then
-                export scopeIndex+=( \`cat \${4} | jq -c ".authScopes[\${i}]"\` )
+                export scopeIndex+=( \` cat \${4} | jq -c ".authScopes[\${i}]" \` )
                 export scopeIndexNo+=( \$((\${i}-1)) )
             fi
         done
@@ -661,22 +661,23 @@ checkScopes() {
     
         if [[ \${#scopeIndex[@]} -gt 1 ]]
         then
-        echo \${scopeIndex[@]} \\
-        | fuzzExSavedScopes "Re-use any of these OAuth Scopes?" "\${clientJson}" \\
-        | read -r clientScopes
+            echo \${scopeIndex[@]} \\
+            | fuzzExSavedScopes "Re-use any of these OAuth Scopes?" "\${clientJson}" \\
+            | read -r clientScopes
 
-        if [[ -z \${clientScopes} ]]
-        then
-            scopeCreate "\${1}" "\${2}" "\${3}" "\${4}"
-        else
-            for (( i = 1 ; i <= \${#scopeIndex[@]} ; i++ ))
-            do
-                if [[ \${scopeIndex[\${i}]} == \${clientScopes} ]]
-                then
-                    activeIndex=\${scopeIndexNo[\${i}]}
-                    checkScopeAccess "\${activeIndex}" "\${4}"
-                fi
-            done
+            if [[ -z \${clientScopes} ]]
+            then
+                scopeCreate "\${1}" "\${2}" "\${3}" "\${4}"
+            else
+                for (( i = 1 ; i <= \${#scopeIndex[@]} ; i++ ))
+                do
+                    if [[ \${scopeIndex[\${i}]} == \${clientScopes} ]]
+                    then
+                        activeIndex=\${scopeIndexNo[\${i}]}
+                        checkScopeAccess "\${activeIndex}" "\${4}"
+                    fi
+                done
+            fi
         fi
     else
         checkScopeAccess "\${activeIndex}" "\${4}"
