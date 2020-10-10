@@ -182,8 +182,8 @@ gapicBootstrap() {
 
 gapicCreds() {
 
-    checkCreds "\${1}" "\${2}" "\${3}"
-    checkAccess "\${1}" "\${2}" "\${3}"
+    checkCreds 
+    checkScopes "\${1}" "\${2}" "\${3}" "\${credPath}/\${fileRef}"
 
 }
 
@@ -265,8 +265,9 @@ gapicPostExec() {
             if [ -f \${credFileAccess} ]
             then
                 echo -e "# Invalid Credentials error.\n\n# Removing Access Token to generate a new one:\n\n"
-                rm \${credFileAccess}
-                genAccess
+                
+                rmCreds "\${credPath}/\${fileRef}" "\${activeIndex}" "accessToken" 
+                rebuildAuth "\${activeIndex}" "\${credPath}/\${fileRef}"
 
                 echo -e "# Repeating previously configured request:\n\n"
                 execRequest
@@ -361,14 +362,11 @@ cat << EOF >> ${outputCredsWiz}
 clientCreate() {
     jq -cn \\
     --arg cid "\${1}" \\
-    --arg cs "" \\
-    --arg scp "" \\
-    --arg rt "" \\
-    --arg at "" \\
-    '{clientId: $cid, clientSecret: $cs, authScopes: [ {scopeUrl: $scp, refreshToken: $rt, accessToken: $at} ]}' \\
+    --argjson cs null \\
+    '{clientId: \$cid, clientSecret: \$cs, authScopes: [ ]}' \\
     | read newClient
 
-    local clientName=\`echo \${1//-/ } | awk '{print \$1}' `\
+    local clientName=\`echo \${1//-/ } | awk '{print \$1}' \`
 
     cat \${credFile} \\
     | jq '.[]' \\
@@ -376,16 +374,210 @@ clientCreate() {
     > \${credPath}/${clientName}
 }
 
+scopeCreate() {
+    cat \${3} \\
+    | fuzzExCreateScopes "Which scope do you want to authorize?" "\${1}" "\{2}" \"${3} \\
+    | read -r requestScope
 
+    if ! [[ -z \${requestScope} ]]
+    then
+        activeScopesArr=( \`cat \${4} | jq -c ".authScopes[]" \` )
+        activeIndex=\${#activeScopesArr}
+
+        activeScopesString=\`echo \{activeScopesArr} | sed 's/ /,/g'\`
+
+        jq -cn \\
+        --arg scp "\${requestScope}" \\
+        --argjson rt null \\
+        --argjson at null \\
+        '{scopeUrl: \$scp, refreshToken: \$rt, accessToken: \$at}' \\
+        | read -r newScope
+
+        activeScopesString=\${activeScopesString},\${newScope}
+
+        tmp=\`mktemp\`
+
+        cat \${4} \\
+        | jq -C ".authScopes=[\${activeScopesString}]" \\
+        > \${tmp}
+
+        if [[ \`cat \${tmp} | jq\` ]]
+        then
+            mv \${tmp} \${4}
+        fi
+    else
+        exit 1
+    fi
+}
+
+buildAuth() {
+    # Generate an offline access code via URL
+    # Ref [:1] https://developers.google.com/youtube/v3/live/guides/auth/installed-apps#Obtaining_Access_Tokens
+    # Ref [:2] https://developers.google.com/google-ads/api/docs/concepts/curl-example
+
+    clear
+    echo -en "# Please visit the URL below to generate an access code. Once authenticated you will be provided a code - paste it below: \n\n "
+
+
+    requestClientID=\`cat \${2} | jq -c '.clientId'\`
+    requestClientSecret=\`cat \${2} | jq -c '.clientSecret'\`
+    requestScope=\`cat \${2} | jq -c ".authScopes[\${1}].scopeUrl"\`
+    requestScope=\${requestScope//:/%3A}
+    requestScope=\${requestScope//\\//%2F}
+
+    export CLIENTID=\${requestClientID}
+
+    urlString1='https://accounts.google.com/o/oauth2/auth?client_id='
+    urlString2='&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&access_type=offline&prompt=consent&scope='
+
+    urlGen=\${urlString1}\${requestClientID}\${urlString2}\${requestScope}
+
+    echo \${urlGen}
+
+    echo -en "\nOffline code\t~> "
+    read -r offlineCode
+    clear
+
+    sentAuthRequest="curl -s \\ \n    https://accounts.google.com/o/oauth2/token \\ \n    -d code=\${offlineCode} \\ \n    -d client_id=\${requestClientID} \\ \n    -d client_secret=\${requestClientSecret} \\ \n    -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \\ \n    -d grant_type=authorization_code"
+    
+    echo -e "# Request sent:\n\n"
+    echo -e "#########################\n"
+    echo "\${sentAuthRequest}"
+    echo -e "\n\n"
+    echo -e "#########################\n"
+    unset sentAuthRequest
+    
+    curl -s \\
+    https://accounts.google.com/o/oauth2/token \\
+    -d code=\${offlineCode} \\
+    -d client_id=\${requestClientID} \\
+    -d client_secret=\${requestClientSecret} \\
+    -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \\
+    -d grant_type=authorization_code \\
+    | jq -c '.' | read -r authPayload
+
+    
+    if ! [[ \`echo \${authPayload} | jq '.refresh_token'\` == "null" ]] \\
+    && ! [[ \`echo \${authPayload} | jq '.access_token'\` == "null" ]]
+    then 
+        authRefreshToken=\`echo \${authPayload} | jq '.refresh_token'\`
+        authAccessToken=\`echo \${authPayload} | jq '.access_token'\`
+
+        export ACCESSTOKEN=\${authAccessToken}
+
+        tmp=\`mktemp\`
+
+        cat \${2} \\
+        | jq ".authScopes[\${1}].refreshToken=\${authRefreshToken} | .authScopes[\${1}].accessToken=\${authAccessToken}" \\
+        > \${tmp}
+
+        if [[ `cat \${tmp} | jq` ]]
+        then 
+            mv \${tmp} \${2}
+        fi
+
+        echo -e "# Execution complete!\n\n"
+        echo -e "#########################\n"
+        echo "\${authPayload}" | jq '.'
+        echo -e "\n\n"
+        echo -e "#########################\n"
+    else
+        echo -e "# Error in the authentication!\n\n"
+        echo -e "#########################\n"
+        echo "\${authPayload}" | jq '.'
+        echo -e "\n\n"
+        echo -e "#########################\n"
+        exit 1
+    fi
+}
+
+rebuildAuth() {
+    # get a new Access Token with Refresh Token
+    # https://developers.google.com/identity/protocols/oauth2/web-server#httprest_7
+     
+    requestClientID=\`cat \${2} | jq -c '.clientId'\`
+    requestClientSecret=\`cat \${2} | jq -c '.clientSecret'\`
+    requestRefreshToken=\`cat \${2} | jq -c ".authScopes[\${1}].refreshToken"\`
+
+    export CLIENTID=\${requestClientID}
+
+    sentRequest="curl -s \\ \n    --request POST \\ \n    -d client_id=\${requestClientID} \\ \n    -d client_secret=\${requestClientSecret} \\ \n    -d refresh_token=\${requestRefreshToken} \\ \n    -d grant_type=refresh_token \\ \n    \"https://accounts.google.com/o/oauth2/token\""
+
+    echo -e "# Request sent:\n\n"
+    echo -e "#########################\n"
+    echo "\${sentRequest}"
+    echo -e "\n\n"
+    echo -e "#########################\n"
+    unset sentRequest
+    
+    curl -s \\
+    --request POST \\
+    -d client_id=\${requestClientID} \\
+    -d client_secret=\${requestClientSecret} \\
+    -d refresh_token=\${requestRefreshToken} \\
+    -d grant_type=refresh_token \\
+    "https://accounts.google.com/o/oauth2/token" \\
+        | jq -c '.' \\
+        | read -r authPayload
+
+    if ! [[ \`echo \${authPayload} | jq '.access_token'\` == "null" ]]
+    then 
+        authAccessToken=\`echo \${authPayload} | jq '.access_token'\`
+
+        export ACCESSTOKEN=\${authAccessToken}
+
+
+        cat \${2} \\
+        | jq ".authScopes[\${1}].accessToken=\${authAccessToken}" \\
+        > \${tmp}
+
+        if [[ `cat \${tmp} | jq` ]]
+        then 
+            mv \${tmp} \${2}
+        fi
+
+        echo -e "# Execution complete!\n\n"
+        echo -e "#########################\n"
+        echo "\${authPayload}" | jq '.'
+        echo -e "\n\n"
+        echo -e "#########################\n"
+    else
+        echo -e "# Error in the authentication!\n\n"
+        echo -e "#########################\n"
+        echo "\${authPayload}" | jq '.'
+        echo -e "\n\n"
+        echo -e "#########################\n"
+        exit 1
+    fi
+
+}
+
+checkScopeAccess() {
+    cat \${2} \\
+    | jq ".authScopes[\${1}]" \\
+    read -r accessCheckJson
+
+    if [[ \`echo \${accessCheckJson} | jq ".refreshToken" \` == null ]] \\
+    && [[ \`echo \${accessCheckJson} | jq ".accessToken" \` == null ]]
+    then
+        buildAuth "\${1}" "\${2}"
+
+    elif [[ \`echo \${accessCheckJson} | jq ".refreshToken" \` != null ]] \\
+    && [[ \`echo \${accessCheckJson} | jq ".accessToken" \` == null ]]
+    then
+        rebuildAuth "\${1}" "\${2}"
+    fi
+
+}
 
 clientCheck() {
-    local fileRef=\`echo \${1} | jq '.clientId' | sed 's/-/ /' | awk '{print \$1}' \`
+    export fileRef=\`echo \${1} | jq '.clientId' | sed 's/-/ /' | awk '{print \$1}' \`
     local clientId=\`echo \${1} | jq '.clientId'\`
     local clientSecret=\`echo \${1} | jq '.clientSecret'\`
 
     local temp=\`mktemp\`
 
-    if [[ -z \${clientSecret} ]]
+    if [[ \${clientSecret} == null ]]
     then
         fuzzExInputCreds "Enter your Client Secret for \${clientId}" \\
         | read clientSecret
@@ -404,9 +596,10 @@ clientCheck() {
 checkCreds() {
     # Check for existing client IDs
 
-    if [[ \`find \${credPath}/*\`]]
+    if [[ \`find \${credPath}/*\`]] \\
+    || [[ -z \${clientJson} ]]
     then 
-        ls \${credPath}/* \\
+        ls \${credPath}/ \\
         | fuzzExSavedCreds "Re-use any of these ClientIDs?" "\${credPath}" \\
         | read -r clientJson
 
@@ -420,272 +613,81 @@ checkCreds() {
         checkCreds
     fi
 
-#### TODO
-# Checking flows for checkCreds()
-# Adding scope retrieval from schema
-# Adding auto credentials validation
-# Adding Access Token TTL and gen-date (change in clientCreate())
+    export clientJson
+}
+
+rmCreds() {
+    tmp=\`mktemp\`
+
+    cat \${1} \\
+    | jq -C ".authScopes[\${2}].\${3}=null" \\
+    > \${tmp}
+
+    if [[ `cat \${tmp} | jq` ]]
+    then
+        mv \${tmp} \${1}
+    fi
+}
 
 
-
-
-
-
-
-
-
-
-
-
-        if ! [[ -z \${SAVED_CLIENTID} ]] \\
-        && ! [[ -z \${SAVED_CLIENTSECRET} ]]
-        then
-            clear
-            echo -en "# Found saved ClientID: \${SAVED_CLIENTID}. Do you want to use this one? [y/n]\n~> "
-            read -r savedOptClient
-            clear
-            if ! [[ \${savedOptClient} =~ "n" ]] \\
-            || ! [[ \${savedOptClient} =~ "N" ]]
+scopeLookup() {
+    for (( i = 1 ; i <= \${(P)#1[@]} ; i++ ))
+    do
+        for (( a = 1 ; a <= \${(P)#2[@]} ; a++ ))
+        do
+            if [[ \`echo \${(P)1[\${i}]} | jq -c '.scopeUrl' \` == ${(P)2[\${a}]} ]]
             then
-                CLIENTID=\${SAVED_CLIENTID}
-                CLIENTSECRET=\${SAVED_CLIENTSECRET}
+                export scopeIndex+=( \`cat \${4} | jq -c ".authScopes[\${i}]"\` )
+                export scopeIndexNo+=( \$((\${i}-1)) )
             fi
-        fi
+        done
+    done
+}
 
-        if ! [[ -z \${SAVED_OAUTH2_SCOPE} ]]
+
+checkScopes() {
+    availableScopes=( \`cat \${3} | jq  ".resources.\${1}.methods.\${2}.scopes[]"\` )
+    savedScopes=( \`cat \${4} | jq -c '.authScopes[]'\` )
+    scopeIndex=( )
+    scopeIndexNo=( )
+
+    if [[ -z \${savedScopes} ]]
+    then
+        scopeCreate "\${1}" "\${2}" "\${3}" "\${4}"
+        savedScopes=( \`cat \${4} | jq -c '.authScopes[]'\` )
+
+    fi
+
+    if [[ -z \${activeIndex} ]]
+    then
+
+        scopeLookup "savedScopes" "availableScopes"
+    
+        if [[ \${#scopeIndex[@]} -gt 1 ]]
         then
-            clear
-            echo -en "# Found saved OAuth scope: \${SAVED_OAUTH2_SCOPE}. Do you want to use this one? [y/n]\n~> "
-            read -r savedOptScope
-            clear
-            if ! [[ \${savedOptScope} =~ "n" ]] \\
-            || ! [[ \${savedOptScope} =~ "N" ]]
-            then
-                OAUTH2_SCOPE=\${SAVED_OAUTH2_SCOPE}
+        echo \${scopeIndex[@]} \\
+        | fuzzExSavedScopes "Re-use any of these OAuth Scopes?" "\${clientJson}" \\
+        | read -r clientScopes
 
-
-            fi
-        fi
-
-        if ! [[ \${savedOptClient} =~ "n" ]] \\
-        || ! [[ \${savedOptClient} =~ "N" ]] \\
-        || ! [[ \${savedOptScope} =~ "n" ]] \\
-        || ! [[ \${savedOptScope} =~ "N" ]] \\
-        && ! [[ -z \${SAVED_REFRESHTOKEN} ]] \\
-        || ! [[ -z \${SAVED_ACCESSTOKEN} ]]
+        if [[ -z \${clientScopes} ]]
         then
-            REFRESHTOKEN=\${SAVED_REFRESHTOKEN}
-            ACCESSTOKEN=\${SAVED_ACCESSTOKEN}
-        fi
-
-    fi
-
-    if [ -z \${CLIENTID} ]
-    then
-        clear
-        echo -en "# enter API Key or ClientID:\n~> "
-        read -r CLIENTID
-        cat << EOIF >> \${credFile}
-SAVED_CLIENTID=\${CLIENTID}
-EOIF
-        clear
-    fi
-
-    # Check Client Secret variable
-
-    if [ -z \${CLIENTSECRET} ]
-    then
-        echo -en "# enter Client Secret:\n~> "
-        read -r CLIENTSECRET
-        cat << EOIF >> \${credFile}
-SAVED_CLIENTSECRET=\${CLIENTSECRET}
-EOIF
-        clear
-    fi
-
-    # Check Authorized Scope variable
-
-    if [ -z \${OAUTH2_SCOPE} ]
-    then
-        echo -en "# enter Authorization Scope. Set \"a\" to default to https://www.googleapis.com/auth/admin.directory.user \n~> "
-        read -r OAUTH2_SCOPE
-        clear
-    fi
-
-    if [[ \${OAUTH2_SCOPE} == "a" ]]
-    then
-        OAUTH2_SCOPE='https://www.googleapis.com/auth/admin.directory.user'
-    fi
-
-    if [[ -f \${\${credFile}} ]] \\
-    && ! [[ \`grep "SAVED_OAUTH2_SCOPE=\${OAUTH2_SCOPE}" \${credFile}\` ]]
-    then
-        cat << EOIF >> \${credFile}
-SAVED_OAUTH2_SCOPE=\${OAUTH2_SCOPE}
-EOIF
-    fi
-
-    export CLIENTID CLIENTSECRET OAUTH2_SCOPE
-}
-
-
-# Generate an offline access code via URL
-# Ref [:1] https://developers.google.com/youtube/v3/live/guides/auth/installed-apps#Obtaining_Access_Tokens
-# Ref [:2] https://developers.google.com/google-ads/api/docs/concepts/curl-example
-
-offlineCode() {
-    clientId="\${CLIENTID}"
-    accessScope="\${OAUTH2_SCOPE}"
-    accessScope=\${accessScope//:/%3A}
-    accessScope=\${accessScope//\\//%2F}
-
-    urlString1='https://accounts.google.com/o/oauth2/auth?client_id='
-    urlString2='&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&access_type=offline&prompt=consent&scope='
-
-    urlGen=\${urlString1}\${clientId}\${urlString2}\${accessScope}
-
-    echo \${urlGen}
-}
-
-genRefresh() {
-    echo -en "# Please visit the URL below to generate an access code. Once authenticated you will be provided a code - paste it below: \n\n "
-    
-    offlineCode
-    
-    echo -en "\nOffline code\t~> "
-    read -r OFFLINECODE
-    clear
-
-    sentAuthRequest="curl -s \\ \n    https://accounts.google.com/o/oauth2/token \\ \n    -d code=\${OFFLINECODE} \\ \n    -d client_id=\${CLIENTID} \\ \n    -d client_secret=\${CLIENTSECRET} \\ \n    -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \\ \n    -d grant_type=authorization_code"
-    
-    echo -e "# Request sent:\n\n"
-    echo -e "#########################\n"
-    echo "\${sentAuthRequest}"
-    echo -e "\n\n"
-    echo -e "#########################\n"
-    unset sentAuthRequest
-    
-    curl -s \\
-    https://accounts.google.com/o/oauth2/token \\
-    -d code=\${OFFLINECODE} \\
-    -d client_id=\${CLIENTID} \\
-    -d client_secret=\${CLIENTSECRET} \\
-    -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \\
-    -d grant_type=authorization_code \\
-    | jq -c '.' | read -r authPayload
-    
-    if ! [[ \`echo \${authPayload} | jq '.refresh_token'\` =~ "null" ]] \\
-    && ! [[ \`echo \${authPayload} | jq '.access_token'\` =~ "null" ]]
-    then 
-        REFRESHTOKEN=\`echo \${authPayload} | jq '.refresh_token'\`
-        ACCESSTOKEN=\`echo \${authPayload} | jq '.access_token'\`
-        ACCESSTOKEN=\${ACCESSTOKEN//\\"/}
-        export REFRESHTOKEN ACCESSTOKEN
-        cat << EOIF > \${credFileRefresh}
-SAVED_REFRESHTOKEN=\${REFRESHTOKEN}
-EOIF
-
-        cat << EOIF > \${credFileAccess}
-SAVED_ACCESSTOKEN=\${ACCESSTOKEN}
-EOIF
-
-        echo -e "# Execution complete!\n\n"
-        echo -e "#########################\n"
-        echo "\${authPayload}" | jq '.'
-        echo -e "\n\n"
-        echo -e "#########################\n"
-    else
-        echo -e "# Error in the authentication!\n\n"
-        echo -e "#########################\n"
-        echo "\${authPayload}" | jq '.'
-        echo -e "\n\n"
-        echo -e "#########################\n"
-        exit 1
-    fi
-}
-
-genAccess() {
-    # get a new Access Token with Refresh Token
-    # https://developers.google.com/identity/protocols/oauth2/web-server#httprest_7
-    
-    sentRequest="curl -s \\ \n    --request POST \\ \n    -d client_id=\${CLIENTID} \\ \n    -d client_secret=\${CLIENTSECRET} \\ \n    -d refresh_token=\${REFRESHTOKEN} \\ \n    -d grant_type=refresh_token \\ \n    \"https://accounts.google.com/o/oauth2/token\""
-    
-    echo -e "# Request sent:\n\n"
-    echo -e "#########################\n"
-    echo "\${sentRequest}"
-    echo -e "\n\n"
-    echo -e "#########################\n"
-    unset sentRequest
-    
-    curl -s \\
-    --request POST \\
-    -d client_id=\${CLIENTID} \\
-    -d client_secret=\${CLIENTSECRET} \\
-    -d refresh_token=\${REFRESHTOKEN} \\
-    -d grant_type=refresh_token \\
-    "https://accounts.google.com/o/oauth2/token" \\
-        | jq -c '.' \\
-        | read -r authPayload
-    
-    if ! [[ \`echo \${authPayload} | jq '.access_token'\` =~ "null" ]]
-    then 
-        ACCESSTOKEN=\`echo \${authPayload} | jq '.access_token'\`
-        ACCESSTOKEN=\${ACCESSTOKEN//\\"/}
-        export ACCESSTOKEN
-        cat << EOIF > \${credFileAccess}
-SAVED_ACCESSTOKEN=\${ACCESSTOKEN}
-EOIF
-        echo -e "# Execution complete!\n\n"
-        echo -e "#########################\n"
-        echo "\${authPayload}" | jq '.'
-        echo -e "\n\n"
-        echo -e "#########################\n"
-    else
-        echo -e "# Error in the authentication!\n\n"
-        echo -e "#########################\n"
-        echo "\${authPayload}" | jq '.'
-        echo -e "\n\n"
-        echo -e "#########################\n"
-        exit 1
-    fi
-}
-
-# Checks for Access Token and Refresh Token
-
-checkAccess() {
-
-    if [ -f \${credFileRefresh} ]
-    then
-        source \${credFileRefresh}
-        REFRESHTOKEN=\${SAVED_REFRESHTOKEN}
-    fi
-
-    if [ -f \${credFileAccess} ]
-    then
-        source \${credFileAccess}
-        ACCESSTOKEN=\${SAVED_ACCESSTOKEN}
-    fi
-
-
-
-    if [ -z \${ACCESSTOKEN} ]
-    then
-
-        echo -e "# No Access Token found. Generating one: \n"
-
-        if [ -z \${REFRESHTOKEN} ]
-        then
-            genRefresh
-            
-
+            scopeCreate "\${1}" "\${2}" "\${3}" "\${4}"
         else
-            genAccess
-
+            for (( i = 1 ; i <= \${#scopeIndex[@]} ; i++ ))
+            do
+                if [[ \${scopeIndex[\${i}]} == \${clientScopes} ]]
+                then
+                    activeIndex=\${scopeIndexNo[\${i}]}
+                    checkScopeAccess "\${activeIndex}" "\${4}"
+                fi
+            done
         fi
+    else
+        checkScopeAccess "\${activeIndex}" "\${4}"
 
     fi
-
 }
+
 EOF
 
 # Create Parameter Store file
@@ -986,6 +988,36 @@ fuzzExInputCreds(){
     echo \\
     | fzf \\
     --print-query \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# \${1} #" \\
+    --color=dark \\
+    --black
+}
+
+fuzzExSavedScopes() {
+    jq ".scopeUrl" \\
+    | fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --preview "cat <( echo \${2}/{} | jq -C \".authScopes[] | select(.scopeUrl == {})\" )" \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# \${1} #" \\
+    --color=dark \\
+    --black \\
+    | xargs -ri jq -c ".authScopes[] | select(.scopeUrl == {})" <(echo \${2} )
+   
+}
+
+fuzzExCreateScopes() {
+    jq ".resources.\${2}.methods.\${3}.scopes[]" \\
+    | fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --preview "cat <( cat \${4} | jq -C \".resources.\${2}.methods.\${3}\" \\
     --prompt="~ " \\
     --pointer="~ " \\
     --header="# \${1} #" \\
