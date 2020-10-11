@@ -154,7 +154,8 @@ fuzzExSavedCreds() {
     --header="# ${1} #" \
     --color=dark \
     --black \
-    | xargs -ri jq -c '.' <(cat ${2})
+    | xargs -ri cat ${2}/{} \
+    | jq -c '.' 
 }
 
 fuzzExInputCreds(){
@@ -174,13 +175,13 @@ fuzzExSavedScopes() {
     --bind "tab:replace-query" \
     --bind "change:top" \
     --layout=reverse-list \
-    --preview "cat <( echo ${2}/{} | jq -C \".authScopes[] | select(.scopeUrl == {})\" )" \
+    --preview "cat ${2} | jq -C \".authScopes[] | select(.scopeUrl == \"{}\")\" " \
     --prompt="~ " \
     --pointer="~ " \
     --header="# ${1} #" \
     --color=dark \
     --black \
-    | xargs -ri jq -c ".authScopes[] | select(.scopeUrl == {})" <(echo ${2} )
+    | xargs -ri jq -c ".authScopes[] | select(.scopeUrl == \"{}\")" <(cat ${2} )
    
 }
 
@@ -190,11 +191,13 @@ fuzzExCreateScopes() {
     --bind "tab:replace-query" \
     --bind "change:top" \
     --layout=reverse-list \
-    --preview "cat <( cat ${4} | jq -C \".resources.${2}.methods.${3}\" \
+    --preview "cat <( cat ${4} | jq -C \".resources.${2}.methods.${3}\")" \
     --prompt="~ " \
     --pointer="~ " \
     --header="# ${1} #" \
     --color=dark \
-    --black
+    --black \
+    | xargs -ri echo {} \
+    | sed 's/"//g'
 }
 

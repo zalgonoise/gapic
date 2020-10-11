@@ -32,34 +32,44 @@ clientCreate() {
 
     local clientName=`echo ${1//-/ } | awk '{print $1}' `
 
-    echo ${newClient} > ${credPath}/
+    echo ${newClient} | jq '.' > ${credPath}/${clientName}
 }
 
 scopeCreate() {
     cat ${3} \
-    | fuzzExCreateScopes "Which scope do you want to authorize?" "${1}" "\{2}" \" \
+    | fuzzExCreateScopes "Which scope do you want to authorize?" "${1}" "${2}" "${3}" \
     | read -r requestScope
+
+    clientScopes=${requestScope}
+
 
     if ! [[ -z ${requestScope} ]]
     then
+        export requestScope clientScopes
+
         activeScopesArr=( `cat ${4} | jq -c ".authScopes[]" ` )
         activeIndex=${#activeScopesArr}
 
-        activeScopesString=`echo \{activeScopesArr} | sed 's/ /,/g'`
+        activeScopesString=`echo ${activeScopesArr} | sed 's/ /,/g'`
 
         jq -cn \
-        --arg scp "${requestScope}" \
+        --arg scp ${requestScope} \
         --argjson rt null \
         --argjson at null \
         '{scopeUrl: $scp, refreshToken: $rt, accessToken: $at}' \
         | read -r newScope
 
-        activeScopesString=${activeScopesString},${newScope}
+        if ! [[ -z ${activeScopesString} ]]
+        then
+            activeScopesString=${activeScopesString},${newScope}
+        else
+            activeScopesString=${newScope}
+        fi
 
         tmp=`mktemp`
 
         cat ${4} \
-        | jq -C ".authScopes=[${activeScopesString}]" \
+        | jq ".authScopes=[${activeScopesString}]" \
         > ${tmp}
 
         if [[ `cat ${tmp} | jq` ]]
@@ -80,9 +90,9 @@ buildAuth() {
     echo -en "# Please visit the URL below to generate an access code. Once authenticated you will be provided a code - paste it below: \n\n "
 
 
-    requestClientID=`cat ${2} | jq -c '.clientId'`
-    requestClientSecret=`cat ${2} | jq -c '.clientSecret'`
-    requestScope=`cat ${2} | jq -c ".authScopes[${1}].scopeUrl"`
+    requestClientID=`cat ${2} | jq -c '.clientId' | sed 's/"//g' `
+    requestClientSecret=`cat ${2} | jq -c '.clientSecret' | sed 's/"//g'`
+    requestScope=`cat ${2} | jq -c ".authScopes[${1}].scopeUrl" | sed 's/"//g' `
     requestScope=${requestScope//:/%3A}
     requestScope=${requestScope//\//%2F}
 
@@ -118,21 +128,21 @@ buildAuth() {
     | jq -c '.' | read -r authPayload
 
     
-    if ! [[ `echo ${authPayload} | jq '.refresh_token'` == "null" ]] \
-    && ! [[ `echo ${authPayload} | jq '.access_token'` == "null" ]]
+    if ! [[ `echo ${authPayload} | jq '.refresh_token' | sed 's/"//g' ` == "null" ]] \
+    && ! [[ `echo ${authPayload} | jq '.access_token' | sed 's/"//g' ` == "null" ]]
     then 
-        authRefreshToken=`echo ${authPayload} | jq '.refresh_token'`
-        authAccessToken=`echo ${authPayload} | jq '.access_token'`
+        authRefreshToken=`echo ${authPayload} | jq '.refresh_token' | sed 's/"//g' `
+        authAccessToken=`echo ${authPayload} | jq '.access_token' | sed 's/"//g' `
 
         export ACCESSTOKEN=${authAccessToken}
 
         tmp=`mktemp`
 
         cat ${2} \
-        | jq ".authScopes[${1}].refreshToken=${authRefreshToken} | .authScopes[${1}].accessToken=${authAccessToken}" \
+        | jq ".authScopes[${1}].refreshToken=\"${authRefreshToken}\" | .authScopes[${1}].accessToken=\"${authAccessToken}\"" \
         > ${tmp}
 
-        if [[ `cat ${tmp} | jq` ]]
+        if [[ `cat ${tmp} | jq ` ]]
         then 
             mv ${tmp} ${2}
         fi
@@ -156,9 +166,9 @@ rebuildAuth() {
     # get a new Access Token with Refresh Token
     # https://developers.google.com/identity/protocols/oauth2/web-server#httprest_7
      
-    requestClientID=`cat ${2} | jq -c '.clientId'`
-    requestClientSecret=`cat ${2} | jq -c '.clientSecret'`
-    requestRefreshToken=`cat ${2} | jq -c ".authScopes[${1}].refreshToken"`
+    requestClientID=`cat ${2} | jq -c '.clientId' | sed 's/"//g' `
+    requestClientSecret=`cat ${2} | jq -c '.clientSecret' | sed 's/"//g' `
+    requestRefreshToken=`cat ${2} | jq -c ".authScopes[${1}].refreshToken" | sed 's/"//g' `
 
     export CLIENTID=${requestClientID}
 
@@ -183,13 +193,13 @@ rebuildAuth() {
 
     if ! [[ `echo ${authPayload} | jq '.access_token'` == "null" ]]
     then 
-        authAccessToken=`echo ${authPayload} | jq '.access_token'`
+        authAccessToken=`echo ${authPayload} | jq '.access_token' | sed 's/"//g'`
 
         export ACCESSTOKEN=${authAccessToken}
 
 
         cat ${2} \
-        | jq ".authScopes[${1}].accessToken=${authAccessToken}" \
+        | jq ".authScopes[${1}].accessToken=\"${authAccessToken}\"" \
         > ${tmp}
 
         if [[ `cat ${tmp} | jq` ]]
@@ -215,8 +225,8 @@ rebuildAuth() {
 
 checkScopeAccess() {
     cat ${2} \
-    | jq ".authScopes[${1}]" \
-    read -r accessCheckJson
+    | jq -c ".authScopes[${1}]" \
+    | read -r accessCheckJson
 
     if [[ `echo ${accessCheckJson} | jq ".refreshToken" ` == null ]] \
     && [[ `echo ${accessCheckJson} | jq ".accessToken" ` == null ]]
@@ -227,14 +237,19 @@ checkScopeAccess() {
     && [[ `echo ${accessCheckJson} | jq ".accessToken" ` == null ]]
     then
         rebuildAuth "${1}" "${2}"
+    else
+        export ACCESSTOKEN=`echo ${accessCheckJson} | jq '.accessToken' | sed 's/"//g' `
     fi
 
 }
 
 clientCheck() {
-    export fileRef=`echo ${1} | jq '.clientId' | sed 's/-/ /' | awk '{print $1}' `
-    local clientId=`echo ${1} | jq '.clientId'`
-    local clientSecret=`echo ${1} | jq '.clientSecret'`
+    export fileRef=`echo ${1} | jq '.clientId' | sed 's/-/ /' | awk '{print $1}' | sed 's/"//g' `
+    local clientId=`echo ${1} | jq '.clientId' | sed 's/"//g' `
+    local clientSecret=`echo ${1} | jq '.clientSecret' | sed 's/"//g' `
+
+    export CLIENTID=${clientId}
+    export CLIENTSECRET${clientSecret}
 
     local tmp=`mktemp`
 
@@ -247,7 +262,7 @@ clientCheck() {
         | jq ".clientSecret=\"${clientSecret}\"" \
         > ${tmp}
 
-        if [[ `jq ${tmp}` ]]
+        if [[ `cat ${tmp} | jq '.' ` ]]
         then 
             mv ${tmp} ${credPath}/${fileRef}
         fi
@@ -263,6 +278,15 @@ checkCreds() {
         ls ${credPath}/ \
         | fuzzExSavedCreds "Re-use any of these ClientIDs?" "${credPath}" \
         | read -r clientJson
+
+        if [[ -z ${clientJson} ]]
+        then
+            fuzzExInputCreds "Enter your ClientID"             | read clientId
+
+            clientCreate "${clientId}"
+            checkCreds
+
+        fi
 
         clientCheck "${clientJson}"
 
@@ -281,7 +305,7 @@ rmCreds() {
     tmp=`mktemp`
 
     cat ${1} \
-    | jq -C ".authScopes[${2}].${3}=null" \
+    | jq ".authScopes[${2}].${3}=null" \
     > ${tmp}
 
     if [[ `cat ${tmp} | jq` ]]
@@ -296,19 +320,22 @@ scopeLookup() {
     do
         for (( a = 1 ; a <= ${(P)#2[@]} ; a++ ))
         do
-            if [[ ` echo "${(P)1[${i}]}" | jq -c '.scopeUrl' ` == "${(P)2[${a}]}" ]]
+            if [[ ` echo "${(P)1[${i}]}" | jq -c '.scopeUrl' | sed 's/\"//g' ` == "${(P)2[${a}]}" ]]
             then
-                export scopeIndex+=( ` cat ${4} | jq -c ".authScopes[${i}]" ` )
-                export scopeIndexNo+=( $((${i}-1)) )
+                scopeIndex+=( ` cat ${credPath}/${fileRef} | jq -c ".authScopes[((${i}-1))]" ` )
+                scopeIndexNo+=( $((${i}-1)) )
             fi
         done
     done
+
+    export scopeIndex
+    export scopeIndexNo
 }
 
 
 checkScopes() {
-    availableScopes=( `cat ${3} | jq  ".resources.${1}.methods.${2}.scopes[]"` )
-    savedScopes=( `cat ${4} | jq -c '.authScopes[]'` )
+    availableScopes=( `cat ${3} | jq  ".resources.${1}.methods.${2}.scopes[]" | sed 's/\"//g' ` )
+    savedScopes=( `cat ${4} | jq -c '.authScopes[]'  ` )
     scopeIndex=( )
     scopeIndexNo=( )
 
@@ -324,25 +351,46 @@ checkScopes() {
 
         scopeLookup "savedScopes" "availableScopes"
     
-        if [[ ${#scopeIndex[@]} -gt 1 ]]
+        if [[ -z ${scopeIndex[@]} ]] \
+        || [[ ${#savedScopes[@]} -lt ${#availableScopes[@]} ]] \
+        || [[ ${#scopeIndex[@]} -gt 1 ]]
         then
             echo ${scopeIndex[@]} \
-            | fuzzExSavedScopes "Re-use any of these OAuth Scopes?" "${clientJson}" \
+            | fuzzExSavedScopes "Re-use any of these OAuth Scopes?" "${4}" \
             | read -r clientScopes
 
             if [[ -z ${clientScopes} ]]
             then
-                scopeCreate "${1}" "${2}" "${3}" "${4}"
-            else
-                for (( i = 1 ; i <= ${#scopeIndex[@]} ; i++ ))
-                do
-                    if [[ ${scopeIndex[${i}]} == ${clientScopes} ]]
-                    then
-                        activeIndex=${scopeIndexNo[${i}]}
-                        checkScopeAccess "${activeIndex}" "${4}"
+                if [[ ${#savedScopes[@]} -eq ${#availableScopes[@]} ]]
+                then
+                    echo ${scopeIndex[@]} \
+                    | fuzzExSavedScopes "Can't add any more scopes to this method. Re-use any?" "${4}" \
+                    | read -r clientScopes
+
+                    if [[ -z ${clientScopes} ]]
+                    then 
+                        exit 1
                     fi
-                done
+                elif [[ ${#savedScopes[@]} -lt ${#availableScopes[@]} ]]
+                then
+                    scopeCreate "${1}" "${2}" "${3}" "${4}"
+                    savedScopes=( `cat ${4} | jq -c '.authScopes[]'` )
+                    scopeLookup "savedScopes" "availableScopes"
+                fi
             fi
+            
+            for (( i = 1 ; i <= ${#scopeIndex[@]} ; i++ ))
+            do
+                if [[ `echo ${scopeIndex[${i}]} | jq '.scopeUrl' | sed 's/"//g' ` == ${clientScopes} ]]
+                then
+                    activeIndex=${scopeIndexNo[${i}]}
+                    checkScopeAccess "${activeIndex}" "${4}"
+                fi
+            done
+            
+        else
+            activeIndex=${scopeIndexNo}
+            checkScopeAccess "${activeIndex}" "${4}"
         fi
     else
         checkScopeAccess "${activeIndex}" "${4}"
