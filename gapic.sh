@@ -607,8 +607,8 @@ clientCheck() {
 checkCreds() {
     # Check for existing client IDs
 
-    if [[ \`find \${credPath}/*\` ]] \\
-    || [[ -z \${clientJson} ]]
+    if [[ \`find \${credPath} -type f\` ]] \\
+    && [[ -z \${clientJson} ]]
     then 
         ls \${credPath}/ \\
         | fuzzExSavedCreds "Re-use any of these ClientIDs?" "\${credPath}" \\
@@ -616,8 +616,19 @@ checkCreds() {
 
         if [[ -z \${clientJson} ]]
         then
-            fuzzExInputCreds "Enter your ClientID" \
+            fuzzExInputCreds "Enter your ClientID" \\
             | read clientId
+
+            if [[ -z \${clientId} ]]
+            then
+                ((noClientCounter++))
+                
+                if [[ \${noClientCounter} -gt 3 ]]
+                then
+                    exit 1
+                fi
+                checkCreds
+            fi
 
             clientCreate "\${clientId}"
             checkCreds
@@ -630,12 +641,24 @@ checkCreds() {
         fuzzExInputCreds "Enter your ClientID" \\
         | read clientId
 
+        if [[ -z \${clientId} ]]
+        then
+            ((noClientCounter++))
+            
+            if [[ \${noClientCounter} -gt 3 ]]
+            then
+                exit 1
+            fi
+            checkCreds
+        fi
+
         clientCreate "\${clientId}"
         checkCreds
     fi
 
     export clientJson
 }
+
 
 rmCreds() {
     tmp=\`mktemp\`
