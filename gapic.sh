@@ -1098,7 +1098,7 @@ EOF
 
 
 # Log message
-echo -e "[SCHEMA][INPUTCHECK]\t[--] Checking for input file."
+echo -e "[SCHEMA][INPUTCHECK]\t[INFO] Checking for input file."
 
 
 
@@ -1109,8 +1109,8 @@ if [[ -z ${inputFile} ]]
 then
 
     # Log message
-    echo -e "[SCHEMA][INPUTCHECK]\t[FAIL] Input file wasn't provided."
-    echo -e "[SCHEMA][FILECHECK]\t[--] Checking for previously fetched schemas."
+    echo -e "[SCHEMA][INPUTCHECK]\t[INFO] Input file wasn't provided."
+    echo -e "[SCHEMA][FILECHECK]\t[INFO] Checking for previously fetched schemas."
 
 
     # Build an array with the saved schema files
@@ -1125,7 +1125,7 @@ then
     then
 
         # Log message
-        echo -e "[SCHEMA][FILECHECK]\t[WARNING] Found existing schema files in '${outputSchemaDir}'."
+        echo -e "[SCHEMA][FILECHECK]\t[INFO] Found existing schema files in '${outputSchemaDir}'."
 
         # Grab the last file in the array (highest in the index)
         lastSavedSchema=${schemaDirContents[${#schemaDirContents[@]}]}
@@ -1152,7 +1152,7 @@ then
     
 
     # Log message
-    echo -e "[SCHEMA][CURL]\t[--] Fetching API schema via cURL."
+    echo -e "[SCHEMA][CURL]\t\t[INFO] Fetching API schema via cURL."
 
     # Then, fetch the schema file via curl, and sort the keys to make the
     # object a bit more consistent when exploring
@@ -1162,7 +1162,7 @@ then
     | jq --sort-keys \
     > ${defaultSchemaFile}
 
-    echo -e "[SCHEMA][CURL]\t[OK] Schema saved in '${defaultSchemaFile}'"
+    echo -e "[SCHEMA][CURL]\t\t[OK] Schema saved in '${defaultSchemaFile}'"
 
 
     # If the active schema was renamed, compare contents with the 
@@ -1172,7 +1172,7 @@ then
     then
 
         # Log message
-        echo -e "[SCHEMA][DIFF]\t[--] Comparing downloaded schema with '${newSchemaName//${outputSchemaDir}/}'."
+        echo -e "[SCHEMA][DIFF]\t\t[INFO] Comparing downloaded schema with '${newSchemaName//${outputSchemaDir}/}'."
         
         # Google randomizes the JSON keys order each time the file is fetched
         # with `jq -c --sort-keys '.[]' | sort`, it's possible to accurately 
@@ -1186,10 +1186,10 @@ then
 
         if [[ -z ${checkDiff} ]]
         then
-            echo -e "[SCHEMA][DIFF]\t[OK] API schemas are identical. Removing '${newSchemaName//${outputSchemaDir}/}'."
+            echo -e "[SCHEMA][DIFF]\t\t[OK] API schemas are identical. Removing '${newSchemaName//${outputSchemaDir}/}'."
             rm ${newSchemaName}
         else
-            echo -en "[SCHEMA][DIFF]\t[WARNING] Found differences in the schema. Keeping both files"
+            echo -en "[SCHEMA][DIFF]\t\t[WARNING] Found differences in the schema. Keeping both files"
             echo -e ":\n\n"
             echo ${checkDiff}
             echo -e "\n\n"
