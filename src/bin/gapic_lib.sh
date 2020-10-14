@@ -34,6 +34,7 @@ tokens=( tokens_delete tokens_get tokens_list )
 twoStepVerification=( twoStepVerification_turnOff )
 users=( users_delete users_get users_insert users_list users_makeAdmin users_patch users_signOut users_undelete users_update users_watch )
 verificationCodes=( verificationCodes_generate verificationCodes_invalidate verificationCodes_list )
+
 asps_delete() {
 
     apiQueryRef=( `echo asps delete`)
@@ -118,6 +119,7 @@ EOIF
     execRequest
 
 }
+
 
 asps_get() {
 
@@ -204,6 +206,7 @@ EOIF
 
 }
 
+
 asps_list() {
 
     apiQueryRef=( `echo asps list`)
@@ -269,6 +272,7 @@ EOIF
 
 }
 
+
 channels_stop() {
 
     apiQueryRef=( `echo channels stop`)
@@ -317,6 +321,7 @@ EOIF
     execRequest
 
 }
+
 
 chromeosdevices_action() {
 
@@ -406,6 +411,7 @@ EOIF
     execRequest
 
 }
+
 
 chromeosdevices_get() {
 
@@ -546,6 +552,7 @@ EOIF
     execRequest
 
 }
+
 
 chromeosdevices_list() {
 
@@ -746,6 +753,7 @@ EOIF
 
 }
 
+
 chromeosdevices_moveDevicesToOu() {
 
     apiQueryRef=( `echo chromeosdevices moveDevicesToOu`)
@@ -834,6 +842,7 @@ EOIF
     execRequest
 
 }
+
 
 chromeosdevices_patch() {
 
@@ -979,6 +988,7 @@ EOIF
 
 }
 
+
 chromeosdevices_update() {
 
     apiQueryRef=( `echo chromeosdevices update`)
@@ -1123,6 +1133,7 @@ EOIF
 
 }
 
+
 customers_get() {
 
     apiQueryRef=( `echo customers get`)
@@ -1187,6 +1198,7 @@ EOIF
     execRequest
 
 }
+
 
 customers_patch() {
 
@@ -1257,6 +1269,7 @@ EOIF
 
 }
 
+
 customers_update() {
 
     apiQueryRef=( `echo customers update`)
@@ -1325,6 +1338,7 @@ EOIF
     execRequest
 
 }
+
 
 domainAliases_delete() {
 
@@ -1411,6 +1425,7 @@ EOIF
 
 }
 
+
 domainAliases_get() {
 
     apiQueryRef=( `echo domainAliases get`)
@@ -1496,6 +1511,7 @@ EOIF
 
 }
 
+
 domainAliases_insert() {
 
     apiQueryRef=( `echo domainAliases insert`)
@@ -1564,6 +1580,7 @@ EOIF
     execRequest
 
 }
+
 
 domainAliases_list() {
 
@@ -1682,6 +1699,7 @@ EOIF
 
 }
 
+
 domains_delete() {
 
     apiQueryRef=( `echo domains delete`)
@@ -1766,6 +1784,7 @@ EOIF
     execRequest
 
 }
+
 
 domains_get() {
 
@@ -1852,6 +1871,7 @@ EOIF
 
 }
 
+
 domains_insert() {
 
     apiQueryRef=( `echo domains insert`)
@@ -1921,6 +1941,7 @@ EOIF
 
 }
 
+
 domains_list() {
 
     apiQueryRef=( `echo domains list`)
@@ -1985,6 +2006,7 @@ EOIF
     execRequest
 
 }
+
 
 groups_delete() {
 
@@ -2051,6 +2073,7 @@ EOIF
 
 }
 
+
 groups_get() {
 
     apiQueryRef=( `echo groups get`)
@@ -2116,6 +2139,7 @@ EOIF
 
 }
 
+
 groups_insert() {
 
     apiQueryRef=( `echo groups insert`)
@@ -2164,6 +2188,7 @@ EOIF
     execRequest
 
 }
+
 
 groups_list() {
 
@@ -2348,6 +2373,7 @@ EOIF
 
 }
 
+
 groups_patch() {
 
     apiQueryRef=( `echo groups patch`)
@@ -2417,6 +2443,7 @@ EOIF
 
 }
 
+
 groups_update() {
 
     apiQueryRef=( `echo groups update`)
@@ -2485,6 +2512,7 @@ EOIF
     execRequest
 
 }
+
 
 members_delete() {
 
@@ -2571,6 +2599,7 @@ EOIF
 
 }
 
+
 members_get() {
 
     apiQueryRef=( `echo members get`)
@@ -2655,6 +2684,7 @@ EOIF
     execRequest
 
 }
+
 
 members_hasMember() {
 
@@ -2741,6 +2771,7 @@ EOIF
 
 }
 
+
 members_insert() {
 
     apiQueryRef=( `echo members insert`)
@@ -2809,6 +2840,7 @@ EOIF
     execRequest
 
 }
+
 
 members_list() {
 
@@ -2942,6 +2974,7 @@ EOIF
 
 }
 
+
 members_patch() {
 
     apiQueryRef=( `echo members patch`)
@@ -3030,6 +3063,7 @@ EOIF
     execRequest
 
 }
+
 
 members_update() {
 
@@ -3120,6 +3154,7 @@ EOIF
 
 }
 
+
 mobiledevices_action() {
 
     apiQueryRef=( `echo mobiledevices action`)
@@ -3209,6 +3244,7 @@ EOIF
 
 }
 
+
 mobiledevices_delete() {
 
     apiQueryRef=( `echo mobiledevices delete`)
@@ -3293,6 +3329,7 @@ EOIF
     execRequest
 
 }
+
 
 mobiledevices_get() {
 
@@ -3433,6 +3470,7 @@ EOIF
     execRequest
 
 }
+
 
 mobiledevices_list() {
 
@@ -3628,6 +3666,7 @@ EOIF
 
 }
 
+
 orgunits_delete() {
 
     apiQueryRef=( `echo orgunits delete`)
@@ -3712,6 +3751,7 @@ EOIF
     execRequest
 
 }
+
 
 orgunits_get() {
 
@@ -3798,6 +3838,7 @@ EOIF
 
 }
 
+
 orgunits_insert() {
 
     apiQueryRef=( `echo orgunits insert`)
@@ -3866,6 +3907,7 @@ EOIF
     execRequest
 
 }
+
 
 orgunits_list() {
 
@@ -4039,6 +4081,7 @@ EOIF
 
 }
 
+
 orgunits_patch() {
 
     apiQueryRef=( `echo orgunits patch`)
@@ -4127,6 +4170,7 @@ EOIF
     execRequest
 
 }
+
 
 orgunits_update() {
 
@@ -4217,6 +4261,7 @@ EOIF
 
 }
 
+
 privileges_list() {
 
     apiQueryRef=( `echo privileges list`)
@@ -4281,6 +4326,7 @@ EOIF
     execRequest
 
 }
+
 
 roleAssignments_delete() {
 
@@ -4367,6 +4413,7 @@ EOIF
 
 }
 
+
 roleAssignments_get() {
 
     apiQueryRef=( `echo roleAssignments get`)
@@ -4452,6 +4499,7 @@ EOIF
 
 }
 
+
 roleAssignments_insert() {
 
     apiQueryRef=( `echo roleAssignments insert`)
@@ -4520,6 +4568,7 @@ EOIF
     execRequest
 
 }
+
 
 roleAssignments_list() {
 
@@ -4653,6 +4702,7 @@ EOIF
 
 }
 
+
 roles_delete() {
 
     apiQueryRef=( `echo roles delete`)
@@ -4737,6 +4787,7 @@ EOIF
     execRequest
 
 }
+
 
 roles_get() {
 
@@ -4823,6 +4874,7 @@ EOIF
 
 }
 
+
 roles_insert() {
 
     apiQueryRef=( `echo roles insert`)
@@ -4891,6 +4943,7 @@ EOIF
     execRequest
 
 }
+
 
 roles_list() {
 
@@ -5014,6 +5067,7 @@ EOIF
 
 }
 
+
 roles_patch() {
 
     apiQueryRef=( `echo roles patch`)
@@ -5102,6 +5156,7 @@ EOIF
     execRequest
 
 }
+
 
 roles_update() {
 
@@ -5192,6 +5247,7 @@ EOIF
 
 }
 
+
 schemas_delete() {
 
     apiQueryRef=( `echo schemas delete`)
@@ -5276,6 +5332,7 @@ EOIF
     execRequest
 
 }
+
 
 schemas_get() {
 
@@ -5362,6 +5419,7 @@ EOIF
 
 }
 
+
 schemas_insert() {
 
     apiQueryRef=( `echo schemas insert`)
@@ -5431,6 +5489,7 @@ EOIF
 
 }
 
+
 schemas_list() {
 
     apiQueryRef=( `echo schemas list`)
@@ -5495,6 +5554,7 @@ EOIF
     execRequest
 
 }
+
 
 schemas_patch() {
 
@@ -5585,6 +5645,7 @@ EOIF
 
 }
 
+
 schemas_update() {
 
     apiQueryRef=( `echo schemas update`)
@@ -5674,6 +5735,7 @@ EOIF
 
 }
 
+
 tokens_delete() {
 
     apiQueryRef=( `echo tokens delete`)
@@ -5758,6 +5820,7 @@ EOIF
     execRequest
 
 }
+
 
 tokens_get() {
 
@@ -5844,6 +5907,7 @@ EOIF
 
 }
 
+
 tokens_list() {
 
     apiQueryRef=( `echo tokens list`)
@@ -5908,6 +5972,7 @@ EOIF
     execRequest
 
 }
+
 
 twoStepVerification_turnOff() {
 
@@ -5978,6 +6043,7 @@ EOIF
 
 }
 
+
 users_delete() {
 
     apiQueryRef=( `echo users delete`)
@@ -6042,6 +6108,7 @@ EOIF
     execRequest
 
 }
+
 
 users_get() {
 
@@ -6221,6 +6288,7 @@ EOIF
 
 }
 
+
 users_insert() {
 
     apiQueryRef=( `echo users insert`)
@@ -6269,6 +6337,7 @@ EOIF
     execRequest
 
 }
+
 
 users_list() {
 
@@ -6470,6 +6539,7 @@ EOIF
 
 }
 
+
 users_makeAdmin() {
 
     apiQueryRef=( `echo users makeAdmin`)
@@ -6538,6 +6608,7 @@ EOIF
     execRequest
 
 }
+
 
 users_patch() {
 
@@ -6608,6 +6679,7 @@ EOIF
 
 }
 
+
 users_signOut() {
 
     apiQueryRef=( `echo users signOut`)
@@ -6676,6 +6748,7 @@ EOIF
     execRequest
 
 }
+
 
 users_undelete() {
 
@@ -6746,6 +6819,7 @@ EOIF
 
 }
 
+
 users_update() {
 
     apiQueryRef=( `echo users update`)
@@ -6814,6 +6888,7 @@ EOIF
     execRequest
 
 }
+
 
 users_watch() {
 
@@ -7025,6 +7100,7 @@ EOIF
 
 }
 
+
 verificationCodes_generate() {
 
     apiQueryRef=( `echo verificationCodes generate`)
@@ -7094,6 +7170,7 @@ EOIF
 
 }
 
+
 verificationCodes_invalidate() {
 
     apiQueryRef=( `echo verificationCodes invalidate`)
@@ -7162,6 +7239,7 @@ EOIF
     execRequest
 
 }
+
 
 verificationCodes_list() {
 

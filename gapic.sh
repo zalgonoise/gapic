@@ -19,6 +19,20 @@
 # handling post requests (w/ presets & jq)
 # doublecheck `clear` events
 
+gapicLogger() {
+    logGroup="${1}"
+    logSet="${2}"
+    logSep="${3}"
+    logStatus="${4}"
+    logMessage="${5}"
+
+    echo -e "[`date +%y-%m-%d`][`date +%H-%M-%S`][${logGroup}][$logSet]${logSep}[${logStatus}] # ${logMessage}"
+}
+
+
+
+#Log message
+gapicLogger "ENGINE" "VARIABLES" '\t\t' "INFO" "Preparing variables."
 
 if ! [[ -z ${1} ]]
 then
@@ -42,6 +56,10 @@ outputParamStoreWiz="${outputBinDir}/gapic_paramstore.sh"
 outputFuzzWiz="${outputBinDir}/gapic_fuzzex.sh"
 
 defaultSchemaFile="${outputSchemaDir}/gapic_AdminSDK_Directory.json"
+
+#Log message
+gapicLogger "ENGINE" "DIRECTORIES" '\t' "INFO" "Setting up directories."
+
 
 
 if ! [ -d ${outputSrcDir} ]
@@ -68,6 +86,9 @@ if ! [ -d ${outputCredsDir} ]
 then
     mkdir ${outputCredsDir}
 fi
+
+#Log message
+gapicLogger "ENGINE" "SOURCE" '\t\t' "INFO" "Setting up source files."
 
 if ! [ -f ${outputCredsWiz} ] \
 || ! [ -f ${outputLibWiz} ] \
@@ -102,6 +123,8 @@ EOF
 
 # Prepare output file with exec functions
 
+#Log message
+gapicLogger "ENGINE" "EXEC" '\t\t' "INFO" "Creating gapic executable under: ${outputExecWiz}"
 
 apacheLicense > ${outputExecWiz}
 
@@ -345,6 +368,10 @@ EOF
 
 
 # Prepare output file with auth functions
+
+#Log message
+gapicLogger "ENGINE" "EXEC" '\t\t' "INFO" "Creating gapic credentials wizard under: ${outputCredsWiz}"
+
 apacheLicense > ${outputCredsWiz}
 
 cat << EOF >> ${outputCredsWiz}
@@ -761,6 +788,10 @@ EOF
 
 # Create Parameter Store file
 
+#Log message
+gapicLogger "ENGINE" "EXEC" '\t\t' "INFO" "Creating gapic parameter store wizard under: ${outputCredsWiz}"
+
+
 apacheLicense > ${outputParamStoreWiz}
 
 cat << EOF >> ${outputParamStoreWiz}
@@ -902,6 +933,12 @@ rmParams() {
 }
 
 EOF
+
+
+# Create Fuzzy Explorer file
+
+#Log message
+gapicLogger "ENGINE" "EXEC" '\t\t' "INFO" "Creating gapic fuzzy explorer wizard under: ${outputFuzzWiz}"
 
 apacheLicense > ${outputFuzzWiz}
 
@@ -1097,20 +1134,19 @@ fuzzExCreateScopes() {
 EOF
 
 
-# Log message
-echo -e "[SCHEMA][INPUTCHECK]\t[INFO] Checking for input file."
-
-
 
 # if an input JSON file isn't supplied, defaults to fetching the Directory API schema via curl
 # if other files already exist, rename the active one
 
+#Log message
+gapicLogger "SCHEMA" "INPUTCHECK" '\t' "INFO" "Checking for input file."
+
+
 if [[ -z ${inputFile} ]]
 then
 
-    # Log message
-    echo -e "[SCHEMA][INPUTCHECK]\t[INFO] Input file wasn't provided."
-    echo -e "[SCHEMA][FILECHECK]\t[INFO] Checking for previously fetched schemas."
+    gapicLogger "SCHEMA" "INPUTCHECK" '\t' "INFO" "Input file wasn't provided."
+    gapicLogger "SCHEMA" "FILECHECK" '\t\t' "INFO" "Checking for previously fetched schemas."
 
 
     # Build an array with the saved schema files
@@ -1124,8 +1160,8 @@ then
       && [[ -f ${defaultSchemaFile} ]]
     then
 
-        # Log message
-        echo -e "[SCHEMA][FILECHECK]\t[INFO] Found existing schema files in '${outputSchemaDir}'."
+        #Log message
+        gapicLogger "SCHEMA" "FILECHECK" '\t\t' "INFO" "Found existing schema files in '${outputSchemaDir}'."
 
         # Grab the last file in the array (highest in the index)
         lastSavedSchema=${schemaDirContents[${#schemaDirContents[@]}]}
@@ -1143,7 +1179,7 @@ then
         newSchemaName=${outputSchemaDir}/gapic_AdminSDK_Directory_${newSchemaName}.json
 
         #Log message
-        echo -e "[SCHEMA][RENAME]\t[OK] Renaming active schema to '${newSchemaName//${outputSchemaDir}/}'."
+        gapicLogger "SCHEMA" "RENAME" '\t\t' " OK " "Renaming active schema to '${newSchemaName//${outputSchemaDir}/}'."
 
         # Rename the currently active schema
         mv ${defaultSchemaFile} ${newSchemaName}
@@ -1151,8 +1187,9 @@ then
     fi
     
 
-    # Log message
-    echo -e "[SCHEMA][CURL]\t\t[INFO] Fetching API schema via cURL."
+    #Log message
+    gapicLogger "SCHEMA" "CURL" '\t\t' "INFO" "Fetching API schema via cURL."
+
 
     # Then, fetch the schema file via curl, and sort the keys to make the
     # object a bit more consistent when exploring
@@ -1161,8 +1198,10 @@ then
     ${inputSchemaUrl} \
     | jq --sort-keys \
     > ${defaultSchemaFile}
+    
+    #Log message
+    gapicLogger "SCHEMA" "CURL" '\t\t' " OK " "Schema saved in '${defaultSchemaFile}'."
 
-    echo -e "[SCHEMA][CURL]\t\t[OK] Schema saved in '${defaultSchemaFile}'"
 
 
     # If the active schema was renamed, compare contents with the 
@@ -1171,8 +1210,9 @@ then
     if [[ -f ${newSchemaName} ]]
     then
 
-        # Log message
-        echo -e "[SCHEMA][DIFF]\t\t[INFO] Comparing downloaded schema with '${newSchemaName//${outputSchemaDir}/}'."
+        #Log message
+        gapicLogger "SCHEMA" "DIFF" '\t\t' "INFO" "Comparing downloaded schema with '${newSchemaName//${outputSchemaDir}/}'."
+
         
         # Google randomizes the JSON keys order each time the file is fetched
         # with `jq -c --sort-keys '.[]' | sort`, it's possible to accurately 
@@ -1186,10 +1226,14 @@ then
 
         if [[ -z ${checkDiff} ]]
         then
-            echo -e "[SCHEMA][DIFF]\t\t[OK] API schemas are identical. Removing '${newSchemaName//${outputSchemaDir}/}'."
+            #Log message
+            gapicLogger "SCHEMA" "DIFF" '\t\t' " OK " "API schemas are identical. Removing '${newSchemaName//${outputSchemaDir}/}'."
+
             rm ${newSchemaName}
         else
-            echo -en "[SCHEMA][DIFF]\t\t[WARNING] Found differences in the schema. Keeping both files"
+            #Log message
+            gapicLogger "SCHEMA" "DIFF" '\t\t' "WARNING" "Found differences in the schema. Keeping both files."
+
             echo -e ":\n\n"
             echo ${checkDiff}
             echo -e "\n\n"
@@ -1199,6 +1243,9 @@ then
     
     # Always set the input file variable as the default schema file path 
 
+    #Log message
+    gapicLogger "SCHEMA" "FILECHECK" '\t\t' "INFO" "Setting input file to: ${defaultSchemaFile}."
+
     inputFile=${defaultSchemaFile}
 
 fi
@@ -1207,7 +1254,8 @@ fi
 
 if ! [[ -f ${inputFile} ]]
 then
-    echo "Invalid input file, please make sure you enter the path to a valid file"
+    #Log message
+    gapicLogger "SCHEMA" "FILECHECK" '\t\t' "ERROR" "Invalid input file, please make sure you enter the path to a valid file. Exiting."
     exit 1
 fi
 
@@ -1221,7 +1269,8 @@ cat "${inputFile}" \
 
 if [[ ${inputJson} =~ "parse error" ]]
 then
-    echo -e "# Invalid JSON, please check your input file and verify it using `jq`. Error details:\n\n${inputJson}"
+    #Log message
+    gapicLogger "SCHEMA" "JSONCHECK" '\t\t' "ERROR" "Invalid JSON, please check your input file and verify it using \`jq\`. Error details:\n\n${inputJson}\n\n"
     exit 1
 fi
 
@@ -1233,8 +1282,17 @@ fi
 
 apiSets=(`echo ${inputJson} | jq -c '.resources | keys[]' | grep -v "resources" | tr '"' ' '`)
 
+#Log message
+gapicLogger "API" "RESOURCES" '\t\t' "INFO" "Collected ${#apiSets[@]} resources."
+gapicLogger "API" "RESOURCES" '\t\t' "INFO" "Iterating through each resource to collect data."
+
+
 for (( a = 1 ; a <= ${#apiSets[@]} ; a++ ))
 do 
+
+    #Log message
+    gapicLogger "API" "RESOURCES" '\t\t' "INFO" "[${(U)apiSets[$a]}] - Collecting metadata."
+
 
     ### Iterate through each API and retrieve its method, and capitalize the variable
     
@@ -1243,6 +1301,9 @@ do
 
     for (( b = 1 ; b <= ${#localMethods[@]} ; b++ ))
     do
+
+        #Log message
+        gapicLogger "API" "METHODS" '\t\t' "INFO" "[${(U)apiSets[$a]}][${(U)localMethods[$b]}] - Collecting metadata."
 
         ### Iterate through each method, prefix the resource to it (for function names)
         ### Also initialize those values as arrays (nesting them) to define query structure naming,
@@ -1277,6 +1338,12 @@ done
 
 # Send available API sets to file
 
+#Log message
+gapicLogger "ENGINE" "EXEC" '\t\t' "INFO" "Creating gapic API library wizard under: ${outputLibWiz}."
+gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "Preparing array with resources."
+
+
+
 apacheLicense > ${outputLibWiz}
 
 cat << EOF >> ${outputLibWiz}
@@ -1285,7 +1352,8 @@ gapicSets=( ${apiSets[@]} )
 
 EOF
 
-
+#Log message
+gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "Nesting with arrays with methods."
 
 
 # Define function names
@@ -1293,6 +1361,10 @@ EOF
 for (( a = 1 ; a <= ${#apiSets[@]} ; a++ ))
 do
     # define local sets, similar to ${apiSets}
+
+    #Log message
+    gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(U)apiSets[$a]}] - Preparing nested arrays for methods."
+
      
     cat << EOF >> ${outputLibWiz}
 ${apiSets[$a]}=( ${(P)${apiSets[$a]}[@]} )
@@ -1301,16 +1373,27 @@ EOF
 done
 
 
+#Log message
+gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "Preparing functions for each method, for each resource."
+
+
 
 # loop through all resources
 
 for (( c = 1 ; c <= ${#apiSets[@]} ; c++ ))
 do
 
+    #Log message
+    gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(U)apiSets[$c]}] - Initializing."
+
+
     # loop through all methods within each resource
 
     for (( d = 1 ; d <= ${(P)#apiSets[$c]} ; d++ ))
     do
+
+        #Log message
+        gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Preparing needed metadata."
 
         # define variable prefix for this method
 
@@ -1330,6 +1413,10 @@ do
         curMethod=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".httpMethod"`
 
         # fetch all available query parameters (not the post data)
+
+        #Log message
+        gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Preparing parameters."
+
 
         curParams=(`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".parameters | keys[]"`)
 
@@ -1392,6 +1479,10 @@ do
             fi
         done
 
+        
+        #Log message
+        gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Preparing request headers."
+
         # define default cURL-compatible headers
         curHeaderSet=(
             "Authorization: Bearer \${ACCESSTOKEN}"
@@ -1415,7 +1506,12 @@ do
 
         # Function headers
 
+        #Log message
+        gapicLogger "ENGINE" "BUILD" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Creating function."
+
+
         cat << EOF >> ${outputLibWiz}
+
 ${(P)${apiSets[$c]}[$d]}() {
 
     apiQueryRef=( \`echo ${(P)${apiSets[$c]}[$d]//_/ }\`)
@@ -1691,8 +1787,15 @@ EOF
 
 EOF
 
+        #Log message
+        gapicLogger "ENGINE" "BUILD" '\t\t' " OK " "[${(P)apiSets[$c][$d]/_//}] - Function created."
+
+
         unset curPrefix curUrl curReqParams curOptParams curInpParams curMethod
     done
 done
 
 chmod +x ${outputExecWiz}
+
+#Log message
+gapicLogger "ENGINE" "COMPLETE" '\t\t' " OK " "Built gapic successfully. Run with \`$ ${outputExecWiz}\`"
