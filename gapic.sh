@@ -17,7 +17,8 @@
 # test deployment
 # doublecheck parameter parsing
 # handling post requests (w/ presets & jq)
-# doublecheck `clear` events
+
+startTimestamp=`date +%s`
 
 gapicLogger() {
     logGroup="${1}"
@@ -26,13 +27,8 @@ gapicLogger() {
     logStatus="${4}"
     logMessage="${5}"
 
-    echo -e "[`date +%y-%m-%d`][`date +%H-%M-%S`][${logGroup}][$logSet]${logSep}[${logStatus}] # ${logMessage}"
+    echo -e "[`date +%y-%m-%d`][`date +%H-%M-%S`.`printf "%03d" "$(($(date +%N)/1000000))"`][${logGroup}][$logSet]${logSep}[${logStatus}] # ${logMessage}" | tee -a ${outputLogDir:-.}/gapic_build.log
 }
-
-
-
-#Log message
-gapicLogger "ENGINE" "VARIABLES" '\t\t' "INFO" "Preparing variables."
 
 if ! [[ -z ${1} ]]
 then
@@ -46,8 +42,20 @@ output=${output//gapic.sh/}
 outputSrcDir="${output}src/"
 outputBinDir="${output}src/bin"
 outputDataDir="${output}src/data"
+outputLogDir="${output}src/log"
 outputCredsDir="${output}src/data/.creds"
 outputSchemaDir="${output}src/schema"
+
+if ! [[ -d ${outputLogDir} ]]
+then
+    mkdir -p ${outputLogDir}
+fi
+
+#Log message
+gapicLogger "ENGINE" "INIT" '\t\t' " OK " "# # gapic init # # #"
+gapicLogger "ENGINE" "VARIABLES" '\t' "INFO" "Preparing variables."
+
+
 
 outputCredsWiz="${outputBinDir}/gapic_creds.sh"
 outputLibWiz="${outputBinDir}/gapic_lib.sh"
@@ -64,31 +72,31 @@ gapicLogger "ENGINE" "DIRECTORIES" '\t' "INFO" "Setting up directories."
 
 if ! [ -d ${outputSrcDir} ]
 then
-    mkdir ${outputSrcDir}
+    mkdir -p ${outputSrcDir}
 fi
 
 if ! [ -d ${outputBinDir} ]
 then
-    mkdir ${outputBinDir}
+    mkdir -p ${outputBinDir}
 fi
 
 if ! [ -d ${outputDataDir} ]
 then
-    mkdir ${outputDataDir}
+    mkdir -p ${outputDataDir}
 fi
 
 if ! [ -d ${outputSchemaDir} ]
 then
-    mkdir ${outputSchemaDir}
+    mkdir -p ${outputSchemaDir}
 fi
 
 if ! [ -d ${outputCredsDir} ]
 then
-    mkdir ${outputCredsDir}
+    mkdir -p ${outputCredsDir}
 fi
 
 #Log message
-gapicLogger "ENGINE" "SOURCE" '\t\t' "INFO" "Setting up source files."
+gapicLogger "ENGINE" "SOURCE" '\t' "INFO" "Setting up source files."
 
 if ! [ -f ${outputCredsWiz} ] \
 || ! [ -f ${outputLibWiz} ] \
@@ -1146,7 +1154,7 @@ if [[ -z ${inputFile} ]]
 then
 
     gapicLogger "SCHEMA" "INPUTCHECK" '\t' "INFO" "Input file wasn't provided."
-    gapicLogger "SCHEMA" "FILECHECK" '\t\t' "INFO" "Checking for previously fetched schemas."
+    gapicLogger "SCHEMA" "FILECHECK" '\t' "INFO" "Checking for previously fetched schemas."
 
 
     # Build an array with the saved schema files
@@ -1179,7 +1187,7 @@ then
         newSchemaName=${outputSchemaDir}/gapic_AdminSDK_Directory_${newSchemaName}.json
 
         #Log message
-        gapicLogger "SCHEMA" "RENAME" '\t\t' " OK " "Renaming active schema to '${newSchemaName//${outputSchemaDir}/}'."
+        gapicLogger "SCHEMA" "RENAME" '\t' " OK " "Renaming active schema to '${newSchemaName//${outputSchemaDir}/}'."
 
         # Rename the currently active schema
         mv ${defaultSchemaFile} ${newSchemaName}
@@ -1244,7 +1252,7 @@ then
     # Always set the input file variable as the default schema file path 
 
     #Log message
-    gapicLogger "SCHEMA" "FILECHECK" '\t\t' "INFO" "Setting input file to: ${defaultSchemaFile}."
+    gapicLogger "SCHEMA" "FILECHECK" '\t' "INFO" "Setting input file to: ${defaultSchemaFile}."
 
     inputFile=${defaultSchemaFile}
 
@@ -1283,15 +1291,15 @@ fi
 apiSets=(`echo ${inputJson} | jq -c '.resources | keys[]' | grep -v "resources" | tr '"' ' '`)
 
 #Log message
-gapicLogger "API" "RESOURCES" '\t\t' "INFO" "Collected ${#apiSets[@]} resources."
-gapicLogger "API" "RESOURCES" '\t\t' "INFO" "Iterating through each resource to collect data."
+gapicLogger "API" "RESOURCES" '\t' "INFO" "Collected ${#apiSets[@]} resources."
+gapicLogger "API" "RESOURCES" '\t' "INFO" "Iterating through each resource to collect data."
 
 
 for (( a = 1 ; a <= ${#apiSets[@]} ; a++ ))
 do 
 
     #Log message
-    gapicLogger "API" "RESOURCES" '\t\t' "INFO" "[${(U)apiSets[$a]}] - Collecting metadata."
+    gapicLogger "API" "RESOURCES" '\t' "INFO" "[${(U)apiSets[$a]}] - Collecting metadata."
 
 
     ### Iterate through each API and retrieve its method, and capitalize the variable
@@ -1797,5 +1805,14 @@ done
 
 chmod +x ${outputExecWiz}
 
+endTimestamp=`date +%s`
+
+diffTimestamp=$((${endTimestamp}-${startTimestamp}))
+elapsedMins=$((${diffTimestamp}/60))
+elapsedSecs=`printf "%02d" $((${diffTimestamp}%60))`
+
+
 #Log message
-gapicLogger "ENGINE" "COMPLETE" '\t\t' " OK " "Built gapic successfully. Run with \`$ ${outputExecWiz}\`"
+gapicLogger "ENGINE" "EXEC" '\t\t' " OK " "Executable set up. Run with \`$ ${outputExecWiz}\`"
+gapicLogger "ENGINE" "COMPLETE" '\t' " OK " "Build completed in ${elapsedMins}m ${elapsedSecs}s"
+gapicLogger "ENGINE" "COMPLETE" '\t' " OK " "# # gapic exit # # #"

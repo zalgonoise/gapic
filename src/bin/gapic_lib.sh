@@ -14,11 +14,12 @@
 #   limitations under the License.
 
 
-gapicSets=( asps channels chromeosdevices customers domainAliases domains groups members mobiledevices orgunits privileges roleAssignments roles schemas tokens twoStepVerification users verificationCodes )
+gapicSets=( asps channels chromeosdevices customer customers domainAliases domains groups members mobiledevices orgunits privileges roleAssignments roles schemas tokens twoStepVerification users verificationCodes )
 
 asps=( asps_delete asps_get asps_list )
 channels=( channels_stop )
 chromeosdevices=( chromeosdevices_action chromeosdevices_get chromeosdevices_list chromeosdevices_moveDevicesToOu chromeosdevices_patch chromeosdevices_update )
+customer=(  )
 customers=( customers_get customers_patch customers_update )
 domainAliases=( domainAliases_delete domainAliases_get domainAliases_insert domainAliases_list )
 domains=( domains_delete domains_get domains_insert domains_list )

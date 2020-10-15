@@ -1,3 +1,4 @@
 src/data/*
 src/data/.*
 src/schema/*
+src/log/*
