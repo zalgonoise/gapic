@@ -135,6 +135,7 @@ buildAuth() {
         authAccessToken=`echo ${authPayload} | jq '.access_token' | sed 's/"//g' `
 
         export ACCESSTOKEN=${authAccessToken}
+        export REFRESHTOKEN=${authRefreshToken}
 
         tmp=`mktemp`
 
@@ -171,6 +172,8 @@ rebuildAuth() {
     requestRefreshToken=`cat ${2} | jq -c ".authScopes[${1}].refreshToken" | sed 's/"//g' `
 
     export CLIENTID=${requestClientID}
+    export REFRESHTOKEN=${authRefreshToken}
+
 
     sentRequest="curl -s \ \n    --request POST \ \n    -d client_id=${requestClientID} \ \n    -d client_secret=${requestClientSecret} \ \n    -d refresh_token=${requestRefreshToken} \ \n    -d grant_type=refresh_token \ \n    \"https://accounts.google.com/o/oauth2/token\""
 

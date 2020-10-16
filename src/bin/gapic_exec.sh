@@ -22,6 +22,7 @@
     gapicDataDir=${gapicBinDir//bin/data}
     gapicCredsDir=${gapicBinDir//bin/data\/.creds}
     gapicSchemaDir=${gapicBinDir//bin/schema}
+    gapicLogDir=${gapicBinDir//bin/log}
     schemaFile=${gapicSchemaDir}gapic_AdminSDK_Directory.json
     schemaRef=`cat ${schemaFile} | jq '. | "\(.title) \(.version)"'`
 
@@ -29,6 +30,7 @@
     gapicLibWiz="${gapicBinDir}gapic_lib.sh"
     gapicParamWiz="${gapicBinDir}gapic_paramstore.sh"
     gapicFuzzWiz="${gapicBinDir}gapic_fuzzex.sh"
+    gapicHistWiz="${gapicBinDir}gapic_history.sh"
 
     gapicSavedPar="${gapicDataDir}.api_params"
 
@@ -83,6 +85,16 @@ gapicBootstrap() {
     else
         source ${gapicFuzzWiz}
     fi
+
+    if ! [[ -f ${gapicHistWiz} ]]
+    then
+        clear
+        echo -en "# No Request History source file found! Please re-run the generator."
+        exit 1
+    else
+        source ${gapicHistWiz}
+    fi
+
 
 }
 

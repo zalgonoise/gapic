@@ -62,6 +62,7 @@ outputLibWiz="${outputBinDir}/gapic_lib.sh"
 outputExecWiz="${outputBinDir}/gapic_exec.sh"
 outputParamStoreWiz="${outputBinDir}/gapic_paramstore.sh"
 outputFuzzWiz="${outputBinDir}/gapic_fuzzex.sh"
+outputHistWiz="${outputBinDir}/gapic_history.sh"
 
 defaultSchemaFile="${outputSchemaDir}/gapic_AdminSDK_Directory.json"
 
@@ -102,9 +103,10 @@ if ! [ -f ${outputCredsWiz} ] \
 || ! [ -f ${outputLibWiz} ] \
 || ! [ -f ${outputExecWiz} ] \
 || ! [ -f ${outputParamStoreWiz} ] \
-|| ! [ -f ${outputFuzzWiz} ]
+|| ! [ -f ${outputFuzzWiz} ] \
+|| ! [ -f ${outputHistWiz} ]
 then
-    touch ${outputCredsWiz} ${outputLibWiz} ${outputExecWiz} ${outputParamStoreWiz} ${outputFuzzWiz}
+    touch ${outputCredsWiz} ${outputLibWiz} ${outputExecWiz} ${outputParamStoreWiz} ${outputFuzzWiz} ${outputHistWiz}
 fi
 
 apacheLicense() {
@@ -146,6 +148,7 @@ cat << EOF >> ${outputExecWiz}
     gapicDataDir=\${gapicBinDir//bin/data}
     gapicCredsDir=\${gapicBinDir//bin/data\/.creds}
     gapicSchemaDir=\${gapicBinDir//bin/schema}
+    gapicLogDir=\${gapicBinDir//bin/log}
     schemaFile=\${gapicSchemaDir}gapic_AdminSDK_Directory.json
     schemaRef=\`cat \${schemaFile} | jq '. | "\(.title) \(.version)"'\`
 
@@ -153,6 +156,7 @@ cat << EOF >> ${outputExecWiz}
     gapicLibWiz="\${gapicBinDir}gapic_lib.sh"
     gapicParamWiz="\${gapicBinDir}gapic_paramstore.sh"
     gapicFuzzWiz="\${gapicBinDir}gapic_fuzzex.sh"
+    gapicHistWiz="\${gapicBinDir}gapic_history.sh"
 
     gapicSavedPar="\${gapicDataDir}.api_params"
 
@@ -207,6 +211,16 @@ gapicBootstrap() {
     else
         source \${gapicFuzzWiz}
     fi
+
+    if ! [[ -f \${gapicHistWiz} ]]
+    then
+        clear
+        echo -en "# No Request History source file found! Please re-run the generator."
+        exit 1
+    else
+        source \${gapicHistWiz}
+    fi
+
 
 }
 
@@ -505,6 +519,7 @@ buildAuth() {
         authAccessToken=\`echo \${authPayload} | jq '.access_token' | sed 's/"//g' \`
 
         export ACCESSTOKEN=\${authAccessToken}
+        export REFRESHTOKEN=\${authRefreshToken}
 
         tmp=\`mktemp\`
 
@@ -541,6 +556,8 @@ rebuildAuth() {
     requestRefreshToken=\`cat \${2} | jq -c ".authScopes[\${1}].refreshToken" | sed 's/"//g' \`
 
     export CLIENTID=\${requestClientID}
+    export REFRESHTOKEN=\${authRefreshToken}
+
 
     sentRequest="curl -s \\ \n    --request POST \\ \n    -d client_id=\${requestClientID} \\ \n    -d client_secret=\${requestClientSecret} \\ \n    -d refresh_token=\${requestRefreshToken} \\ \n    -d grant_type=refresh_token \\ \n    \"https://accounts.google.com/o/oauth2/token\""
 
@@ -1143,6 +1160,55 @@ EOF
 
 
 
+# Create Request History file
+
+#Log message
+gapicLogger "ENGINE" "EXEC" '\t\t' "INFO" "Creating request history wizard under: ${outputHistWiz}"
+
+apacheLicense > ${outputHistWiz}
+
+cat << EOF >> ${outputHistWiz}
+
+# Request history JSON builder
+
+histGenRequest() {
+    local currentTimestamp=\`date +%s\`\$((\`date +%N\`/1000000))
+
+    jq -cn  \\
+    --arg ts \${currentTimestamp} \\
+    --arg cid \${1} \\
+    --arg atk \${2} \\
+    --arg rtk \${3} \\
+    --arg res \${4} \\
+    --arg met \${5} \\
+    --arg hmt \${6} \\
+    --arg url \${7} \\
+    '{timestamp: \$ts, auth: { clientId: \$cid, accessToken: \$atk, refreshToken: \$rtk }, request: { resource: \$res, method: \$met, httpMethod: \$hmt, url: \$url, headers: [] }}' \\
+    | read requestPayload
+
+    export requestPayload
+}
+
+histListBuild() {
+    jq "\${1}=[\${1}[],\"\${2}\"]"
+}
+
+histNewEntry() {
+    if ! [[ \`find  \${2} -type f\` ]]
+    then 
+        echo "[\${1}]" > \${2}/\${3}
+    else
+        cat \${2}/\${3} \\
+        | histListBuild "." "\${1}" \\
+        > \${2}/\${3}
+    fi
+}
+
+EOF
+
+
+
+
 # if an input JSON file isn't supplied, defaults to fetching the Directory API schema via curl
 # if other files already exist, rename the active one
 
@@ -1169,7 +1235,7 @@ then
     then
 
         #Log message
-        gapicLogger "SCHEMA" "FILECHECK" '\t\t' "INFO" "Found existing schema files in '${outputSchemaDir}'."
+        gapicLogger "SCHEMA" "FILECHECK" '\t' "INFO" "Found existing schema files in '${outputSchemaDir}'."
 
         # Grab the last file in the array (highest in the index)
         lastSavedSchema=${schemaDirContents[${#schemaDirContents[@]}]}
@@ -1733,6 +1799,21 @@ EOF
 
         cat << EOF >> ${outputLibWiz}
     execRequest() {
+        histGenRequest "\${CLIENTID}" "\${ACCESSTOKEN}" "\${REFRESHTOKEN}" "\${apiQueryRef[1]}" "\${apiQueryRef[2]}" "${curMethod}" "\${${curPrefix}URL}"
+
+EOF
+        for (( k = 1 ; k <= ${#curHeaderSet[@]} ; k++ ))
+        do
+            cat << EOF >> ${outputLibWiz}
+        echo \${requestPayload} \\
+        | histListBuild ".request.headers" "${curHeaderSet[$k]}"
+EOF
+        done
+
+
+
+        cat << EOF >> ${outputLibWiz}
+        histNewEntry "\${requestPayload}" "\${gapicLogDir}" "requests.json"
     
         curl -s \\
             --request ${curMethod} \\

@@ -85,6 +85,13 @@ asps_delete() {
     ASPS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/asps/${codeId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ASPS_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -171,6 +178,13 @@ asps_get() {
     ASPS_GET_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/asps/${codeId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ASPS_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -237,6 +251,13 @@ asps_list() {
     ASPS_LIST_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/asps?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ASPS_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -283,6 +304,15 @@ channels_stop() {
     CHANNELS_STOP_URL="https://www.googleapis.com/admin/directory_v1/channels/stop?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${CHANNELS_STOP_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -373,6 +403,15 @@ chromeosdevices_action() {
     CHROMEOSDEVICES_ACTION_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/chromeos/${resourceId}/action?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${CHROMEOSDEVICES_ACTION_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -518,6 +557,13 @@ chromeosdevices_get() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${CHROMEOSDEVICES_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -718,6 +764,13 @@ chromeosdevices_list() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${CHROMEOSDEVICES_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -804,6 +857,15 @@ chromeosdevices_moveDevicesToOu() {
     CHROMEOSDEVICES_MOVEDEVICESTOOU_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/chromeos/moveDevicesToOu?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -949,6 +1011,15 @@ chromeosdevices_patch() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${CHROMEOSDEVICES_PATCH_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PATCH \
@@ -1094,6 +1165,15 @@ chromeosdevices_update() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${CHROMEOSDEVICES_UPDATE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PUT \
@@ -1164,6 +1244,13 @@ customers_get() {
     CUSTOMERS_GET_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${CUSTOMERS_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -1230,6 +1317,15 @@ customers_patch() {
     CUSTOMERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${CUSTOMERS_PATCH_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PATCH \
@@ -1300,6 +1396,15 @@ customers_update() {
     CUSTOMERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${CUSTOMERS_UPDATE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PUT \
@@ -1390,6 +1495,13 @@ domainAliases_delete() {
     DOMAINALIASES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases/${domainAliasName}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${DOMAINALIASES_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -1476,6 +1588,13 @@ domainAliases_get() {
     DOMAINALIASES_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases/${domainAliasName}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINALIASES_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -1542,6 +1661,15 @@ domainAliases_insert() {
     DOMAINALIASES_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${DOMAINALIASES_INSERT_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -1664,6 +1792,13 @@ domainAliases_list() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINALIASES_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -1750,6 +1885,13 @@ domains_delete() {
     DOMAINS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains/${domainName}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${DOMAINS_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -1836,6 +1978,13 @@ domains_get() {
     DOMAINS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains/${domainName}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINS_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -1902,6 +2051,15 @@ domains_insert() {
     DOMAINS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${DOMAINS_INSERT_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -1972,6 +2130,13 @@ domains_list() {
     DOMAINS_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINS_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -2038,6 +2203,13 @@ groups_delete() {
     GROUPS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${GROUPS_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -2104,6 +2276,13 @@ groups_get() {
     GROUPS_GET_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${GROUPS_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -2150,6 +2329,15 @@ groups_insert() {
     GROUPS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/groups?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${GROUPS_INSERT_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -2338,6 +2526,13 @@ groups_list() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${GROUPS_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -2404,6 +2599,15 @@ groups_patch() {
     GROUPS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${GROUPS_PATCH_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PATCH \
@@ -2474,6 +2678,15 @@ groups_update() {
     GROUPS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${GROUPS_UPDATE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PUT \
@@ -2564,6 +2777,13 @@ members_delete() {
     MEMBERS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${MEMBERS_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -2650,6 +2870,13 @@ members_get() {
     MEMBERS_GET_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MEMBERS_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -2736,6 +2963,13 @@ members_hasMember() {
     MEMBERS_HASMEMBER_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/hasMember/${memberKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MEMBERS_HASMEMBER_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -2802,6 +3036,15 @@ members_insert() {
     MEMBERS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${MEMBERS_INSERT_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -2939,6 +3182,13 @@ members_list() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MEMBERS_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -3025,6 +3275,15 @@ members_patch() {
     MEMBERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${MEMBERS_PATCH_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PATCH \
@@ -3115,6 +3374,15 @@ members_update() {
     MEMBERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${MEMBERS_UPDATE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PUT \
@@ -3205,6 +3473,15 @@ mobiledevices_action() {
     MOBILEDEVICES_ACTION_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/mobile/${resourceId}/action?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${MOBILEDEVICES_ACTION_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -3295,6 +3572,13 @@ mobiledevices_delete() {
     MOBILEDEVICES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/mobile/${resourceId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${MOBILEDEVICES_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -3436,6 +3720,13 @@ mobiledevices_get() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MOBILEDEVICES_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -3631,6 +3922,13 @@ mobiledevices_list() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MOBILEDEVICES_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -3717,6 +4015,13 @@ orgunits_delete() {
     ORGUNITS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ORGUNITS_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -3803,6 +4108,13 @@ orgunits_get() {
     ORGUNITS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ORGUNITS_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -3869,6 +4181,15 @@ orgunits_insert() {
     ORGUNITS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${ORGUNITS_INSERT_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -4046,6 +4367,13 @@ orgunits_list() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ORGUNITS_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -4132,6 +4460,15 @@ orgunits_patch() {
     ORGUNITS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${ORGUNITS_PATCH_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PATCH \
@@ -4222,6 +4559,15 @@ orgunits_update() {
     ORGUNITS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${ORGUNITS_UPDATE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PUT \
@@ -4292,6 +4638,13 @@ privileges_list() {
     PRIVILEGES_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/ALL/privileges?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${PRIVILEGES_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -4378,6 +4731,13 @@ roleAssignments_delete() {
     ROLEASSIGNMENTS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments/${roleAssignmentId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ROLEASSIGNMENTS_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -4464,6 +4824,13 @@ roleAssignments_get() {
     ROLEASSIGNMENTS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments/${roleAssignmentId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLEASSIGNMENTS_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -4530,6 +4897,15 @@ roleAssignments_insert() {
     ROLEASSIGNMENTS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${ROLEASSIGNMENTS_INSERT_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -4667,6 +5043,13 @@ roleAssignments_list() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLEASSIGNMENTS_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -4753,6 +5136,13 @@ roles_delete() {
     ROLES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ROLES_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -4839,6 +5229,13 @@ roles_get() {
     ROLES_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLES_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -4905,6 +5302,15 @@ roles_insert() {
     ROLES_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${ROLES_INSERT_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -5032,6 +5438,13 @@ roles_list() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLES_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -5118,6 +5531,15 @@ roles_patch() {
     ROLES_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${ROLES_PATCH_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PATCH \
@@ -5208,6 +5630,15 @@ roles_update() {
     ROLES_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${ROLES_UPDATE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PUT \
@@ -5298,6 +5729,13 @@ schemas_delete() {
     SCHEMAS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${SCHEMAS_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -5384,6 +5822,13 @@ schemas_get() {
     SCHEMAS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${SCHEMAS_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -5450,6 +5895,15 @@ schemas_insert() {
     SCHEMAS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${SCHEMAS_INSERT_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -5520,6 +5974,13 @@ schemas_list() {
     SCHEMAS_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${SCHEMAS_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -5606,6 +6067,15 @@ schemas_patch() {
     SCHEMAS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${SCHEMAS_PATCH_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PATCH \
@@ -5696,6 +6166,15 @@ schemas_update() {
     SCHEMAS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${SCHEMAS_UPDATE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PUT \
@@ -5786,6 +6265,13 @@ tokens_delete() {
     TOKENS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/tokens/${clientId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${TOKENS_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -5872,6 +6358,13 @@ tokens_get() {
     TOKENS_GET_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/tokens/${clientId}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${TOKENS_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -5938,6 +6431,13 @@ tokens_list() {
     TOKENS_LIST_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/tokens?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${TOKENS_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -6004,6 +6504,15 @@ twoStepVerification_turnOff() {
     TWOSTEPVERIFICATION_TURNOFF_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/twoStepVerification/turnOff?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${TWOSTEPVERIFICATION_TURNOFF_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -6074,6 +6583,13 @@ users_delete() {
     USERS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${USERS_DELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request DELETE \
@@ -6253,6 +6769,13 @@ users_get() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${USERS_GET_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -6299,6 +6822,15 @@ users_insert() {
     USERS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/users?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_INSERT_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -6504,6 +7036,13 @@ users_list() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${USERS_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
@@ -6570,6 +7109,15 @@ users_makeAdmin() {
     USERS_MAKEADMIN_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/makeAdmin?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_MAKEADMIN_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -6640,6 +7188,15 @@ users_patch() {
     USERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${USERS_PATCH_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PATCH \
@@ -6710,6 +7267,15 @@ users_signOut() {
     USERS_SIGNOUT_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/signOut?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_SIGNOUT_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -6780,6 +7346,15 @@ users_undelete() {
     USERS_UNDELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/undelete?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_UNDELETE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -6850,6 +7425,15 @@ users_update() {
     USERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${USERS_UPDATE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request PUT \
@@ -7061,6 +7645,15 @@ users_watch() {
         done
     fi
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_WATCH_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -7131,6 +7724,15 @@ verificationCodes_generate() {
     VERIFICATIONCODES_GENERATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes/generate?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${VERIFICATIONCODES_GENERATE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -7201,6 +7803,15 @@ verificationCodes_invalidate() {
     VERIFICATIONCODES_INVALIDATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes/invalidate?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${VERIFICATIONCODES_INVALIDATE_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Content-Type: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request POST \
@@ -7271,6 +7882,13 @@ verificationCodes_list() {
     VERIFICATIONCODES_LIST_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes?key=${CLIENTID}"
 
     execRequest() {
+        histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${VERIFICATIONCODES_LIST_URL}"
+
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        echo ${requestPayload} \
+        | histListBuild ".request.headers" "Accept: application/json"
+        histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
             --request GET \
