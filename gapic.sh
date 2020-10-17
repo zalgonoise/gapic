@@ -172,10 +172,16 @@ gapicMenu() {
     | gapicFuzzyMenu \\
     | read -r gapicMenuOpt
 
-    if [[ \${gapicMenuOpt} == "Fuzzy History" ]]
+    if [[ \${gapicMenuOpt} == "Fuzzy_History" ]]
     then
-        echo "WORK IN PROGRESS"
+        cat \${gapicLogDir}\${gapicReqLog} \\
+        | gapicFuzzyHistory \${gapicLogDir}\${gapicReqLog} \\
+        | read -r histPayload
+
+
+        ### DEBUG
         exit 1
+        ###
     else
         schemaFile=\${gapicSchemaDir}\${gapicMenuOpt}.json
         schemaRef=\`cat \${schemaFile} | jq '. | "\(.title) \(.version)"'\`
@@ -1062,6 +1068,31 @@ gapicFuzzyMenu() {
     --color=dark \\
     --black 
 
+}
+
+# Fuzzy History
+
+gapicFuzzyHistory() { 
+    jq 'path(..) | map(tostring) | join(".")' \\
+    | sed 's/"//g' \\
+    | sed 's/^/\../g' \\
+    | sed 's/\.\([[:digit:]]\+\)/[\1]/g' \\
+    | fzf \\
+    --preview "cat \\
+      <(echo -e \"# Ctrl-space: Expand preview (use '/' to search) #\")  \\
+      <(echo -e \"# Tab: query quick-replace #\") \\
+      <(echo -e \"# Press Enter to replay when you have an entry such as '.[12]' #\n\n\") \\
+      <(jq -C {} < \${1} ) \\
+      " \\
+    --bind "ctrl-space:execute% cat <(jq -C {1} < \${1}) | less -R > /dev/tty 2>&1 %" \\
+    --bind "tab:replace-query" \\
+    --layout=reverse-list \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# Fuzzy Object Explorer #" \\
+    --color=dark \\
+    --black \\
+    | xargs -ri jq -c {} <(cat \${1})
 }
 
 # Schema explorer / fuzzy finder
@@ -1963,9 +1994,10 @@ EOF
             if ! [[ -z \${sentAuthRequest} ]] \\
             && ! [[ -z \${authPayload} ]]
             then 
-                echo \${requestPayload} \
+                echo \${requestPayload} \\
                 | histUpdatePayload ".auth.curl" "\${sentAuthRequest}"
-                echo ${requestPayload} \
+
+                echo ${requestPayload} \\
                 | histUpdatePayload ".auth.response" "\${authPayload}"
             fi
 
@@ -2015,7 +2047,7 @@ EOF
 
         histUpdateJson "\"\${requestId}\"" ".response" "\${outputJson}"          
 
-        execCurl="curl -s --request ${curMethod} \${${curPrefix}URL} "
+        execCurl="curl -s --request ${curMethod} \"\${${curPrefix}URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -2031,7 +2063,7 @@ EOF
         do
             
             cat << EOF >> ${outputLibWiz}
-        execCurl+="--header \"${curHeaderSet[$k]} "
+        execCurl+="--header '${curHeaderSet[$k]}' "
         cat << EOIF
         --header "${curHeaderSet[$k]}" \\\ 
 EOIF

@@ -91,8 +91,11 @@ asps_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -122,7 +125,7 @@ asps_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${ASPS_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${ASPS_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -133,11 +136,11 @@ asps_delete() {
         --request DELETE \\ 
         ${ASPS_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -213,8 +216,11 @@ asps_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -244,7 +250,7 @@ asps_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${ASPS_GET_URL} "
+        execCurl="curl -s --request GET \"${ASPS_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -255,11 +261,11 @@ asps_get() {
         --request GET \\ 
         ${ASPS_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -315,8 +321,11 @@ asps_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -346,7 +355,7 @@ asps_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${ASPS_LIST_URL} "
+        execCurl="curl -s --request GET \"${ASPS_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -357,11 +366,11 @@ asps_list() {
         --request GET \\ 
         ${ASPS_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -397,8 +406,11 @@ channels_stop() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -432,7 +444,7 @@ channels_stop() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${CHANNELS_STOP_URL} "
+        execCurl="curl -s --request POST \"${CHANNELS_STOP_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -443,15 +455,15 @@ channels_stop() {
         --request POST \\ 
         ${CHANNELS_STOP_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -527,8 +539,11 @@ chromeosdevices_action() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -562,7 +577,7 @@ chromeosdevices_action() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${CHROMEOSDEVICES_ACTION_URL} "
+        execCurl="curl -s --request POST \"${CHROMEOSDEVICES_ACTION_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -573,15 +588,15 @@ chromeosdevices_action() {
         --request POST \\ 
         ${CHROMEOSDEVICES_ACTION_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -712,8 +727,11 @@ chromeosdevices_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -743,7 +761,7 @@ chromeosdevices_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${CHROMEOSDEVICES_GET_URL} "
+        execCurl="curl -s --request GET \"${CHROMEOSDEVICES_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -754,11 +772,11 @@ chromeosdevices_get() {
         --request GET \\ 
         ${CHROMEOSDEVICES_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -948,8 +966,11 @@ chromeosdevices_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -979,7 +1000,7 @@ chromeosdevices_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${CHROMEOSDEVICES_LIST_URL} "
+        execCurl="curl -s --request GET \"${CHROMEOSDEVICES_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -990,11 +1011,11 @@ chromeosdevices_list() {
         --request GET \\ 
         ${CHROMEOSDEVICES_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -1070,8 +1091,11 @@ chromeosdevices_moveDevicesToOu() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -1105,7 +1129,7 @@ chromeosdevices_moveDevicesToOu() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} "
+        execCurl="curl -s --request POST \"${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -1116,15 +1140,15 @@ chromeosdevices_moveDevicesToOu() {
         --request POST \\ 
         ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -1255,8 +1279,11 @@ chromeosdevices_patch() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -1290,7 +1317,7 @@ chromeosdevices_patch() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PATCH ${CHROMEOSDEVICES_PATCH_URL} "
+        execCurl="curl -s --request PATCH \"${CHROMEOSDEVICES_PATCH_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -1301,15 +1328,15 @@ chromeosdevices_patch() {
         --request PATCH \\ 
         ${CHROMEOSDEVICES_PATCH_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -1440,8 +1467,11 @@ chromeosdevices_update() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -1475,7 +1505,7 @@ chromeosdevices_update() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PUT ${CHROMEOSDEVICES_UPDATE_URL} "
+        execCurl="curl -s --request PUT \"${CHROMEOSDEVICES_UPDATE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -1486,15 +1516,15 @@ chromeosdevices_update() {
         --request PUT \\ 
         ${CHROMEOSDEVICES_UPDATE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -1550,8 +1580,11 @@ customers_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -1581,7 +1614,7 @@ customers_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${CUSTOMERS_GET_URL} "
+        execCurl="curl -s --request GET \"${CUSTOMERS_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -1592,11 +1625,11 @@ customers_get() {
         --request GET \\ 
         ${CUSTOMERS_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -1652,8 +1685,11 @@ customers_patch() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -1687,7 +1723,7 @@ customers_patch() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PATCH ${CUSTOMERS_PATCH_URL} "
+        execCurl="curl -s --request PATCH \"${CUSTOMERS_PATCH_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -1698,15 +1734,15 @@ customers_patch() {
         --request PATCH \\ 
         ${CUSTOMERS_PATCH_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -1762,8 +1798,11 @@ customers_update() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -1797,7 +1836,7 @@ customers_update() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PUT ${CUSTOMERS_UPDATE_URL} "
+        execCurl="curl -s --request PUT \"${CUSTOMERS_UPDATE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -1808,15 +1847,15 @@ customers_update() {
         --request PUT \\ 
         ${CUSTOMERS_UPDATE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -1892,8 +1931,11 @@ domainAliases_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -1923,7 +1965,7 @@ domainAliases_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${DOMAINALIASES_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${DOMAINALIASES_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -1934,11 +1976,11 @@ domainAliases_delete() {
         --request DELETE \\ 
         ${DOMAINALIASES_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -2014,8 +2056,11 @@ domainAliases_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -2045,7 +2090,7 @@ domainAliases_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${DOMAINALIASES_GET_URL} "
+        execCurl="curl -s --request GET \"${DOMAINALIASES_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -2056,11 +2101,11 @@ domainAliases_get() {
         --request GET \\ 
         ${DOMAINALIASES_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -2116,8 +2161,11 @@ domainAliases_insert() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -2151,7 +2199,7 @@ domainAliases_insert() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${DOMAINALIASES_INSERT_URL} "
+        execCurl="curl -s --request POST \"${DOMAINALIASES_INSERT_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -2162,15 +2210,15 @@ domainAliases_insert() {
         --request POST \\ 
         ${DOMAINALIASES_INSERT_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -2278,8 +2326,11 @@ domainAliases_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -2309,7 +2360,7 @@ domainAliases_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${DOMAINALIASES_LIST_URL} "
+        execCurl="curl -s --request GET \"${DOMAINALIASES_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -2320,11 +2371,11 @@ domainAliases_list() {
         --request GET \\ 
         ${DOMAINALIASES_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -2400,8 +2451,11 @@ domains_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -2431,7 +2485,7 @@ domains_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${DOMAINS_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${DOMAINS_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -2442,11 +2496,11 @@ domains_delete() {
         --request DELETE \\ 
         ${DOMAINS_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -2522,8 +2576,11 @@ domains_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -2553,7 +2610,7 @@ domains_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${DOMAINS_GET_URL} "
+        execCurl="curl -s --request GET \"${DOMAINS_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -2564,11 +2621,11 @@ domains_get() {
         --request GET \\ 
         ${DOMAINS_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -2624,8 +2681,11 @@ domains_insert() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -2659,7 +2719,7 @@ domains_insert() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${DOMAINS_INSERT_URL} "
+        execCurl="curl -s --request POST \"${DOMAINS_INSERT_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -2670,15 +2730,15 @@ domains_insert() {
         --request POST \\ 
         ${DOMAINS_INSERT_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -2734,8 +2794,11 @@ domains_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -2765,7 +2828,7 @@ domains_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${DOMAINS_LIST_URL} "
+        execCurl="curl -s --request GET \"${DOMAINS_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -2776,11 +2839,11 @@ domains_list() {
         --request GET \\ 
         ${DOMAINS_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -2836,8 +2899,11 @@ groups_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -2867,7 +2933,7 @@ groups_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${GROUPS_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${GROUPS_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -2878,11 +2944,11 @@ groups_delete() {
         --request DELETE \\ 
         ${GROUPS_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -2938,8 +3004,11 @@ groups_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -2969,7 +3038,7 @@ groups_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${GROUPS_GET_URL} "
+        execCurl="curl -s --request GET \"${GROUPS_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -2980,11 +3049,11 @@ groups_get() {
         --request GET \\ 
         ${GROUPS_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -3020,8 +3089,11 @@ groups_insert() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -3055,7 +3127,7 @@ groups_insert() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${GROUPS_INSERT_URL} "
+        execCurl="curl -s --request POST \"${GROUPS_INSERT_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -3066,15 +3138,15 @@ groups_insert() {
         --request POST \\ 
         ${GROUPS_INSERT_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -3248,8 +3320,11 @@ groups_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -3279,7 +3354,7 @@ groups_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${GROUPS_LIST_URL} "
+        execCurl="curl -s --request GET \"${GROUPS_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -3290,11 +3365,11 @@ groups_list() {
         --request GET \\ 
         ${GROUPS_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -3350,8 +3425,11 @@ groups_patch() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -3385,7 +3463,7 @@ groups_patch() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PATCH ${GROUPS_PATCH_URL} "
+        execCurl="curl -s --request PATCH \"${GROUPS_PATCH_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -3396,15 +3474,15 @@ groups_patch() {
         --request PATCH \\ 
         ${GROUPS_PATCH_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -3460,8 +3538,11 @@ groups_update() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -3495,7 +3576,7 @@ groups_update() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PUT ${GROUPS_UPDATE_URL} "
+        execCurl="curl -s --request PUT \"${GROUPS_UPDATE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -3506,15 +3587,15 @@ groups_update() {
         --request PUT \\ 
         ${GROUPS_UPDATE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -3590,8 +3671,11 @@ members_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -3621,7 +3705,7 @@ members_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${MEMBERS_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${MEMBERS_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -3632,11 +3716,11 @@ members_delete() {
         --request DELETE \\ 
         ${MEMBERS_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -3712,8 +3796,11 @@ members_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -3743,7 +3830,7 @@ members_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${MEMBERS_GET_URL} "
+        execCurl="curl -s --request GET \"${MEMBERS_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -3754,11 +3841,11 @@ members_get() {
         --request GET \\ 
         ${MEMBERS_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -3834,8 +3921,11 @@ members_hasMember() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -3865,7 +3955,7 @@ members_hasMember() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${MEMBERS_HASMEMBER_URL} "
+        execCurl="curl -s --request GET \"${MEMBERS_HASMEMBER_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -3876,11 +3966,11 @@ members_hasMember() {
         --request GET \\ 
         ${MEMBERS_HASMEMBER_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -3936,8 +4026,11 @@ members_insert() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -3971,7 +4064,7 @@ members_insert() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${MEMBERS_INSERT_URL} "
+        execCurl="curl -s --request POST \"${MEMBERS_INSERT_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -3982,15 +4075,15 @@ members_insert() {
         --request POST \\ 
         ${MEMBERS_INSERT_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -4113,8 +4206,11 @@ members_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -4144,7 +4240,7 @@ members_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${MEMBERS_LIST_URL} "
+        execCurl="curl -s --request GET \"${MEMBERS_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -4155,11 +4251,11 @@ members_list() {
         --request GET \\ 
         ${MEMBERS_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -4235,8 +4331,11 @@ members_patch() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -4270,7 +4369,7 @@ members_patch() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PATCH ${MEMBERS_PATCH_URL} "
+        execCurl="curl -s --request PATCH \"${MEMBERS_PATCH_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -4281,15 +4380,15 @@ members_patch() {
         --request PATCH \\ 
         ${MEMBERS_PATCH_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -4365,8 +4464,11 @@ members_update() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -4400,7 +4502,7 @@ members_update() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PUT ${MEMBERS_UPDATE_URL} "
+        execCurl="curl -s --request PUT \"${MEMBERS_UPDATE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -4411,15 +4513,15 @@ members_update() {
         --request PUT \\ 
         ${MEMBERS_UPDATE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -4495,8 +4597,11 @@ mobiledevices_action() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -4530,7 +4635,7 @@ mobiledevices_action() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${MOBILEDEVICES_ACTION_URL} "
+        execCurl="curl -s --request POST \"${MOBILEDEVICES_ACTION_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -4541,15 +4646,15 @@ mobiledevices_action() {
         --request POST \\ 
         ${MOBILEDEVICES_ACTION_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -4625,8 +4730,11 @@ mobiledevices_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -4656,7 +4764,7 @@ mobiledevices_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${MOBILEDEVICES_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${MOBILEDEVICES_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -4667,11 +4775,11 @@ mobiledevices_delete() {
         --request DELETE \\ 
         ${MOBILEDEVICES_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -4802,8 +4910,11 @@ mobiledevices_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -4833,7 +4944,7 @@ mobiledevices_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${MOBILEDEVICES_GET_URL} "
+        execCurl="curl -s --request GET \"${MOBILEDEVICES_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -4844,11 +4955,11 @@ mobiledevices_get() {
         --request GET \\ 
         ${MOBILEDEVICES_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -5033,8 +5144,11 @@ mobiledevices_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -5064,7 +5178,7 @@ mobiledevices_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${MOBILEDEVICES_LIST_URL} "
+        execCurl="curl -s --request GET \"${MOBILEDEVICES_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -5075,11 +5189,11 @@ mobiledevices_list() {
         --request GET \\ 
         ${MOBILEDEVICES_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -5155,8 +5269,11 @@ orgunits_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -5186,7 +5303,7 @@ orgunits_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${ORGUNITS_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${ORGUNITS_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -5197,11 +5314,11 @@ orgunits_delete() {
         --request DELETE \\ 
         ${ORGUNITS_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -5277,8 +5394,11 @@ orgunits_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -5308,7 +5428,7 @@ orgunits_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${ORGUNITS_GET_URL} "
+        execCurl="curl -s --request GET \"${ORGUNITS_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -5319,11 +5439,11 @@ orgunits_get() {
         --request GET \\ 
         ${ORGUNITS_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -5379,8 +5499,11 @@ orgunits_insert() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -5414,7 +5537,7 @@ orgunits_insert() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${ORGUNITS_INSERT_URL} "
+        execCurl="curl -s --request POST \"${ORGUNITS_INSERT_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -5425,15 +5548,15 @@ orgunits_insert() {
         --request POST \\ 
         ${ORGUNITS_INSERT_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -5596,8 +5719,11 @@ orgunits_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -5627,7 +5753,7 @@ orgunits_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${ORGUNITS_LIST_URL} "
+        execCurl="curl -s --request GET \"${ORGUNITS_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -5638,11 +5764,11 @@ orgunits_list() {
         --request GET \\ 
         ${ORGUNITS_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -5718,8 +5844,11 @@ orgunits_patch() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -5753,7 +5882,7 @@ orgunits_patch() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PATCH ${ORGUNITS_PATCH_URL} "
+        execCurl="curl -s --request PATCH \"${ORGUNITS_PATCH_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -5764,15 +5893,15 @@ orgunits_patch() {
         --request PATCH \\ 
         ${ORGUNITS_PATCH_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -5848,8 +5977,11 @@ orgunits_update() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -5883,7 +6015,7 @@ orgunits_update() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PUT ${ORGUNITS_UPDATE_URL} "
+        execCurl="curl -s --request PUT \"${ORGUNITS_UPDATE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -5894,15 +6026,15 @@ orgunits_update() {
         --request PUT \\ 
         ${ORGUNITS_UPDATE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -5958,8 +6090,11 @@ privileges_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -5989,7 +6124,7 @@ privileges_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${PRIVILEGES_LIST_URL} "
+        execCurl="curl -s --request GET \"${PRIVILEGES_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -6000,11 +6135,11 @@ privileges_list() {
         --request GET \\ 
         ${PRIVILEGES_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -6080,8 +6215,11 @@ roleAssignments_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -6111,7 +6249,7 @@ roleAssignments_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${ROLEASSIGNMENTS_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${ROLEASSIGNMENTS_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -6122,11 +6260,11 @@ roleAssignments_delete() {
         --request DELETE \\ 
         ${ROLEASSIGNMENTS_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -6202,8 +6340,11 @@ roleAssignments_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -6233,7 +6374,7 @@ roleAssignments_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${ROLEASSIGNMENTS_GET_URL} "
+        execCurl="curl -s --request GET \"${ROLEASSIGNMENTS_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -6244,11 +6385,11 @@ roleAssignments_get() {
         --request GET \\ 
         ${ROLEASSIGNMENTS_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -6304,8 +6445,11 @@ roleAssignments_insert() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -6339,7 +6483,7 @@ roleAssignments_insert() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${ROLEASSIGNMENTS_INSERT_URL} "
+        execCurl="curl -s --request POST \"${ROLEASSIGNMENTS_INSERT_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -6350,15 +6494,15 @@ roleAssignments_insert() {
         --request POST \\ 
         ${ROLEASSIGNMENTS_INSERT_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -6481,8 +6625,11 @@ roleAssignments_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -6512,7 +6659,7 @@ roleAssignments_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${ROLEASSIGNMENTS_LIST_URL} "
+        execCurl="curl -s --request GET \"${ROLEASSIGNMENTS_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -6523,11 +6670,11 @@ roleAssignments_list() {
         --request GET \\ 
         ${ROLEASSIGNMENTS_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -6603,8 +6750,11 @@ roles_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -6634,7 +6784,7 @@ roles_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${ROLES_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${ROLES_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -6645,11 +6795,11 @@ roles_delete() {
         --request DELETE \\ 
         ${ROLES_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -6725,8 +6875,11 @@ roles_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -6756,7 +6909,7 @@ roles_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${ROLES_GET_URL} "
+        execCurl="curl -s --request GET \"${ROLES_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -6767,11 +6920,11 @@ roles_get() {
         --request GET \\ 
         ${ROLES_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -6827,8 +6980,11 @@ roles_insert() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -6862,7 +7018,7 @@ roles_insert() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${ROLES_INSERT_URL} "
+        execCurl="curl -s --request POST \"${ROLES_INSERT_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -6873,15 +7029,15 @@ roles_insert() {
         --request POST \\ 
         ${ROLES_INSERT_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -6994,8 +7150,11 @@ roles_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -7025,7 +7184,7 @@ roles_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${ROLES_LIST_URL} "
+        execCurl="curl -s --request GET \"${ROLES_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -7036,11 +7195,11 @@ roles_list() {
         --request GET \\ 
         ${ROLES_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -7116,8 +7275,11 @@ roles_patch() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -7151,7 +7313,7 @@ roles_patch() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PATCH ${ROLES_PATCH_URL} "
+        execCurl="curl -s --request PATCH \"${ROLES_PATCH_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -7162,15 +7324,15 @@ roles_patch() {
         --request PATCH \\ 
         ${ROLES_PATCH_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -7246,8 +7408,11 @@ roles_update() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -7281,7 +7446,7 @@ roles_update() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PUT ${ROLES_UPDATE_URL} "
+        execCurl="curl -s --request PUT \"${ROLES_UPDATE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -7292,15 +7457,15 @@ roles_update() {
         --request PUT \\ 
         ${ROLES_UPDATE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -7376,8 +7541,11 @@ schemas_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -7407,7 +7575,7 @@ schemas_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${SCHEMAS_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${SCHEMAS_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -7418,11 +7586,11 @@ schemas_delete() {
         --request DELETE \\ 
         ${SCHEMAS_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -7498,8 +7666,11 @@ schemas_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -7529,7 +7700,7 @@ schemas_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${SCHEMAS_GET_URL} "
+        execCurl="curl -s --request GET \"${SCHEMAS_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -7540,11 +7711,11 @@ schemas_get() {
         --request GET \\ 
         ${SCHEMAS_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -7600,8 +7771,11 @@ schemas_insert() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -7635,7 +7809,7 @@ schemas_insert() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${SCHEMAS_INSERT_URL} "
+        execCurl="curl -s --request POST \"${SCHEMAS_INSERT_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -7646,15 +7820,15 @@ schemas_insert() {
         --request POST \\ 
         ${SCHEMAS_INSERT_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -7710,8 +7884,11 @@ schemas_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -7741,7 +7918,7 @@ schemas_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${SCHEMAS_LIST_URL} "
+        execCurl="curl -s --request GET \"${SCHEMAS_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -7752,11 +7929,11 @@ schemas_list() {
         --request GET \\ 
         ${SCHEMAS_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -7832,8 +8009,11 @@ schemas_patch() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -7867,7 +8047,7 @@ schemas_patch() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PATCH ${SCHEMAS_PATCH_URL} "
+        execCurl="curl -s --request PATCH \"${SCHEMAS_PATCH_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -7878,15 +8058,15 @@ schemas_patch() {
         --request PATCH \\ 
         ${SCHEMAS_PATCH_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -7962,8 +8142,11 @@ schemas_update() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -7997,7 +8180,7 @@ schemas_update() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PUT ${SCHEMAS_UPDATE_URL} "
+        execCurl="curl -s --request PUT \"${SCHEMAS_UPDATE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -8008,15 +8191,15 @@ schemas_update() {
         --request PUT \\ 
         ${SCHEMAS_UPDATE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -8092,8 +8275,11 @@ tokens_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -8123,7 +8309,7 @@ tokens_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${TOKENS_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${TOKENS_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -8134,11 +8320,11 @@ tokens_delete() {
         --request DELETE \\ 
         ${TOKENS_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -8214,8 +8400,11 @@ tokens_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -8245,7 +8434,7 @@ tokens_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${TOKENS_GET_URL} "
+        execCurl="curl -s --request GET \"${TOKENS_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -8256,11 +8445,11 @@ tokens_get() {
         --request GET \\ 
         ${TOKENS_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -8316,8 +8505,11 @@ tokens_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -8347,7 +8539,7 @@ tokens_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${TOKENS_LIST_URL} "
+        execCurl="curl -s --request GET \"${TOKENS_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -8358,11 +8550,11 @@ tokens_list() {
         --request GET \\ 
         ${TOKENS_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -8418,8 +8610,11 @@ twoStepVerification_turnOff() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -8453,7 +8648,7 @@ twoStepVerification_turnOff() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${TWOSTEPVERIFICATION_TURNOFF_URL} "
+        execCurl="curl -s --request POST \"${TWOSTEPVERIFICATION_TURNOFF_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -8464,15 +8659,15 @@ twoStepVerification_turnOff() {
         --request POST \\ 
         ${TWOSTEPVERIFICATION_TURNOFF_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -8528,8 +8723,11 @@ users_delete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -8559,7 +8757,7 @@ users_delete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request DELETE ${USERS_DELETE_URL} "
+        execCurl="curl -s --request DELETE \"${USERS_DELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -8570,11 +8768,11 @@ users_delete() {
         --request DELETE \\ 
         ${USERS_DELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -8743,8 +8941,11 @@ users_get() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -8774,7 +8975,7 @@ users_get() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${USERS_GET_URL} "
+        execCurl="curl -s --request GET \"${USERS_GET_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -8785,11 +8986,11 @@ users_get() {
         --request GET \\ 
         ${USERS_GET_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -8825,8 +9026,11 @@ users_insert() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -8860,7 +9064,7 @@ users_insert() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${USERS_INSERT_URL} "
+        execCurl="curl -s --request POST \"${USERS_INSERT_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -8871,15 +9075,15 @@ users_insert() {
         --request POST \\ 
         ${USERS_INSERT_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -9070,8 +9274,11 @@ users_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -9101,7 +9308,7 @@ users_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${USERS_LIST_URL} "
+        execCurl="curl -s --request GET \"${USERS_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -9112,11 +9319,11 @@ users_list() {
         --request GET \\ 
         ${USERS_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
@@ -9172,8 +9379,11 @@ users_makeAdmin() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -9207,7 +9417,7 @@ users_makeAdmin() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${USERS_MAKEADMIN_URL} "
+        execCurl="curl -s --request POST \"${USERS_MAKEADMIN_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -9218,15 +9428,15 @@ users_makeAdmin() {
         --request POST \\ 
         ${USERS_MAKEADMIN_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -9282,8 +9492,11 @@ users_patch() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -9317,7 +9530,7 @@ users_patch() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PATCH ${USERS_PATCH_URL} "
+        execCurl="curl -s --request PATCH \"${USERS_PATCH_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -9328,15 +9541,15 @@ users_patch() {
         --request PATCH \\ 
         ${USERS_PATCH_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -9392,8 +9605,11 @@ users_signOut() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -9427,7 +9643,7 @@ users_signOut() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${USERS_SIGNOUT_URL} "
+        execCurl="curl -s --request POST \"${USERS_SIGNOUT_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -9438,15 +9654,15 @@ users_signOut() {
         --request POST \\ 
         ${USERS_SIGNOUT_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -9502,8 +9718,11 @@ users_undelete() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -9537,7 +9756,7 @@ users_undelete() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${USERS_UNDELETE_URL} "
+        execCurl="curl -s --request POST \"${USERS_UNDELETE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -9548,15 +9767,15 @@ users_undelete() {
         --request POST \\ 
         ${USERS_UNDELETE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -9612,8 +9831,11 @@ users_update() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -9647,7 +9869,7 @@ users_update() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request PUT ${USERS_UPDATE_URL} "
+        execCurl="curl -s --request PUT \"${USERS_UPDATE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -9658,15 +9880,15 @@ users_update() {
         --request PUT \\ 
         ${USERS_UPDATE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -9863,8 +10085,11 @@ users_watch() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -9898,7 +10123,7 @@ users_watch() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${USERS_WATCH_URL} "
+        execCurl="curl -s --request POST \"${USERS_WATCH_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -9909,15 +10134,15 @@ users_watch() {
         --request POST \\ 
         ${USERS_WATCH_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -9973,8 +10198,11 @@ verificationCodes_generate() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -10008,7 +10236,7 @@ verificationCodes_generate() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${VERIFICATIONCODES_GENERATE_URL} "
+        execCurl="curl -s --request POST \"${VERIFICATIONCODES_GENERATE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -10019,15 +10247,15 @@ verificationCodes_generate() {
         --request POST \\ 
         ${VERIFICATIONCODES_GENERATE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -10083,8 +10311,11 @@ verificationCodes_invalidate() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -10118,7 +10349,7 @@ verificationCodes_invalidate() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST ${VERIFICATIONCODES_INVALIDATE_URL} "
+        execCurl="curl -s --request POST \"${VERIFICATIONCODES_INVALIDATE_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -10129,15 +10360,15 @@ verificationCodes_invalidate() {
         --request POST \\ 
         ${VERIFICATIONCODES_INVALIDATE_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header \"Content-Type: application/json "
+        execCurl+="--header 'Content-Type: application/json' "
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
@@ -10193,8 +10424,11 @@ verificationCodes_list() {
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
             then 
-                echo ${requestPayload}                 | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
-                echo                  | histUpdatePayload ".auth.response" "${authPayload}"
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+
+                echo  \
+                | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
             echo ${requestPayload} \
@@ -10224,7 +10458,7 @@ verificationCodes_list() {
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request GET ${VERIFICATIONCODES_LIST_URL} "
+        execCurl="curl -s --request GET \"${VERIFICATIONCODES_LIST_URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -10235,11 +10469,11 @@ verificationCodes_list() {
         --request GET \\ 
         ${VERIFICATIONCODES_LIST_URL} \\ 
 EOIF
-        execCurl+="--header \"Authorization: Bearer ${ACCESSTOKEN} "
+        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
         --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
 EOIF
-        execCurl+="--header \"Accept: application/json "
+        execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF

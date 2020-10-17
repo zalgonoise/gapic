@@ -46,10 +46,16 @@ gapicMenu() {
     | gapicFuzzyMenu \
     | read -r gapicMenuOpt
 
-    if [[ ${gapicMenuOpt} == "Fuzzy History" ]]
+    if [[ ${gapicMenuOpt} == "Fuzzy_History" ]]
     then
-        echo "WORK IN PROGRESS"
+        cat ${gapicLogDir}${gapicReqLog} \
+        | gapicFuzzyHistory ${gapicLogDir}${gapicReqLog} \
+        | read -r histPayload
+
+
+        ### DEBUG
         exit 1
+        ###
     else
         schemaFile=${gapicSchemaDir}${gapicMenuOpt}.json
         schemaRef=`cat ${schemaFile} | jq '. | "\(.title) \(.version)"'`

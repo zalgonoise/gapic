@@ -37,6 +37,31 @@ gapicFuzzyMenu() {
 
 }
 
+# Fuzzy History
+
+gapicFuzzyHistory() { 
+    jq 'path(..) | map(tostring) | join(".")' \
+    | sed 's/"//g' \
+    | sed 's/^/\../g' \
+    | sed 's/\.\([[:digit:]]\+\)/[\1]/g' \
+    | fzf \
+    --preview "cat \
+      <(echo -e \"# Ctrl-space: Expand preview (use '/' to search) #\")  \
+      <(echo -e \"# Tab: query quick-replace #\") \
+      <(echo -e \"# Press Enter to replay when you have an entry such as '.[12]' #\n\n\") \
+      <(jq -C {} < ${1} ) \
+      " \
+    --bind "ctrl-space:execute% cat <(jq -C {1} < ${1}) | less -R > /dev/tty 2>&1 %" \
+    --bind "tab:replace-query" \
+    --layout=reverse-list \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# Fuzzy Object Explorer #" \
+    --color=dark \
+    --black \
+    | xargs -ri jq -c {} <(cat ${1})
+}
+
 # Schema explorer / fuzzy finder
 
 gapicFuzzySchema() {
