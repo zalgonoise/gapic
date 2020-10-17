@@ -120,6 +120,9 @@ asps_delete() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -230,6 +233,9 @@ asps_get() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -320,6 +326,9 @@ asps_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -393,6 +402,9 @@ channels_stop() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -510,6 +522,9 @@ chromeosdevices_action() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -678,6 +693,9 @@ chromeosdevices_get() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -903,6 +921,9 @@ chromeosdevices_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -1016,6 +1037,9 @@ chromeosdevices_moveDevicesToOu() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1189,6 +1213,9 @@ chromeosdevices_patch() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -1361,6 +1388,9 @@ chromeosdevices_update() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -1453,6 +1483,9 @@ customers_get() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1547,6 +1580,9 @@ customers_patch() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1644,6 +1680,9 @@ customers_update() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1758,6 +1797,9 @@ domainAliases_delete() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -1868,6 +1910,9 @@ domainAliases_get() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -1961,6 +2006,9 @@ domainAliases_insert() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2107,6 +2155,9 @@ domainAliases_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -2216,6 +2267,9 @@ domains_delete() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2327,6 +2381,9 @@ domains_get() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -2421,6 +2478,9 @@ domains_insert() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -2514,6 +2574,9 @@ domains_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -2603,6 +2666,9 @@ groups_delete() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2694,6 +2760,9 @@ groups_get() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -2767,6 +2836,9 @@ groups_insert() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -2979,6 +3051,9 @@ groups_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -3072,6 +3147,9 @@ groups_patch() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3169,6 +3247,9 @@ groups_update() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3283,6 +3364,9 @@ members_delete() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -3392,6 +3476,9 @@ members_get() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3503,6 +3590,9 @@ members_hasMember() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -3596,6 +3686,9 @@ members_insert() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3757,6 +3850,9 @@ members_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -3870,6 +3966,9 @@ members_patch() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -3988,6 +4087,9 @@ members_update() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -4105,6 +4207,9 @@ mobiledevices_action() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -4217,6 +4322,9 @@ mobiledevices_delete() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4382,6 +4490,9 @@ mobiledevices_get() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4602,6 +4713,9 @@ mobiledevices_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -4711,6 +4825,9 @@ orgunits_delete() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -4822,6 +4939,9 @@ orgunits_get() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -4915,6 +5035,9 @@ orgunits_insert() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5116,6 +5239,9 @@ orgunits_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -5229,6 +5355,9 @@ orgunits_patch() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5347,6 +5476,9 @@ orgunits_update() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -5439,6 +5571,9 @@ privileges_list() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5550,6 +5685,9 @@ roleAssignments_delete() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -5660,6 +5798,9 @@ roleAssignments_get() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -5753,6 +5894,9 @@ roleAssignments_insert() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -5914,6 +6058,9 @@ roleAssignments_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -6023,6 +6170,9 @@ roles_delete() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6134,6 +6284,9 @@ roles_get() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -6227,6 +6380,9 @@ roles_insert() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6378,6 +6534,9 @@ roles_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -6491,6 +6650,9 @@ roles_patch() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -6609,6 +6771,9 @@ roles_update() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -6722,6 +6887,9 @@ schemas_delete() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -6832,6 +7000,9 @@ schemas_get() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -6926,6 +7097,9 @@ schemas_insert() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -7018,6 +7192,9 @@ schemas_list() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -7132,6 +7309,9 @@ schemas_patch() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -7250,6 +7430,9 @@ schemas_update() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -7363,6 +7546,9 @@ tokens_delete() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -7473,6 +7659,9 @@ tokens_get() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -7562,6 +7751,9 @@ tokens_list() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -7657,6 +7849,9 @@ twoStepVerification_turnOff() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -7749,6 +7944,9 @@ users_delete() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -7953,6 +8151,9 @@ users_get() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -8026,6 +8227,9 @@ users_insert() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -8255,6 +8459,9 @@ users_list() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -8348,6 +8555,9 @@ users_makeAdmin() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -8446,6 +8656,9 @@ users_patch() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -8542,6 +8755,9 @@ users_signOut() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -8640,6 +8856,9 @@ users_undelete() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -8736,6 +8955,9 @@ users_update() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -8975,6 +9197,9 @@ users_watch() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -9071,6 +9296,9 @@ verificationCodes_generate() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -9169,6 +9397,9 @@ verificationCodes_invalidate() {
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
@@ -9261,6 +9492,9 @@ verificationCodes_list() {
             | jq -c '.' \
             | read -r outputJson
         export outputJson
+
+        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"

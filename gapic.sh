@@ -1965,6 +1965,9 @@ EOF
             | read -r outputJson
         export outputJson
 
+        histUpdateJson "\"\${requestId}\"" ".response" "\${outputJson}"          
+
+
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
         cat << EOIF
