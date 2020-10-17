@@ -109,15 +109,16 @@ buildAuth() {
     read -r offlineCode
     clear
 
-    sentAuthRequest="curl -s \ \n    https://accounts.google.com/o/oauth2/token \ \n    -d code=${offlineCode} \ \n    -d client_id=${requestClientID} \ \n    -d client_secret=${requestClientSecret} \ \n    -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \ \n    -d grant_type=authorization_code"
+    export sentAuthRequest="curl -s \ \n    https://accounts.google.com/o/oauth2/token \ \n    -d code=${offlineCode} \ \n    -d client_id=${requestClientID} \ \n    -d client_secret=${requestClientSecret} \ \n    -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \ \n    -d grant_type=authorization_code"
     
     echo -e "# Request sent:\n\n"
     echo -e "#########################\n"
     echo "${sentAuthRequest}"
     echo -e "\n\n"
     echo -e "#########################\n"
-    unset sentAuthRequest
-    
+    export sentAuthRequest="curl -s https://accounts.google.com/o/oauth2/token -d code=${offlineCode} -d client_id=${requestClientID} -d client_secret=${requestClientSecret} -d redirect_uri=urn:ietf:wg:oauth:2.0:oob -d grant_type=authorization_code"
+
+
     curl -s \
     https://accounts.google.com/o/oauth2/token \
     -d code=${offlineCode} \
@@ -126,6 +127,8 @@ buildAuth() {
     -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \
     -d grant_type=authorization_code \
     | jq -c '.' | read -r authPayload
+
+    export authPayload
 
     tmp=`mktemp`
 
@@ -195,15 +198,15 @@ rebuildAuth() {
     export REFRESHTOKEN=${requestRefreshToken}
 
 
-    sentRequest="curl -s \ \n    --request POST \ \n    -d client_id=${requestClientID} \ \n    -d client_secret=${requestClientSecret} \ \n    -d refresh_token=${requestRefreshToken} \ \n    -d grant_type=refresh_token \ \n    \"https://accounts.google.com/o/oauth2/token\""
+    export sentAuthRequest="curl -s \ \n    --request POST \ \n    -d client_id=${requestClientID} \ \n    -d client_secret=${requestClientSecret} \ \n    -d refresh_token=${requestRefreshToken} \ \n    -d grant_type=refresh_token \ \n    \"https://accounts.google.com/o/oauth2/token\""
 
     echo -e "# Request sent:\n\n"
     echo -e "#########################\n"
-    echo "${sentRequest}"
+    echo "${sentAuthRequest}"
     echo -e "\n\n"
     echo -e "#########################\n"
-    unset sentRequest
-    
+    export sentAuthRequest="curl -s --request POST -d client_id=${requestClientID} -d client_secret=${requestClientSecret} -d refresh_token=${requestRefreshToken} -d grant_type=refresh_token https://accounts.google.com/o/oauth2/token"
+
     curl -s \
     --request POST \
     -d client_id=${requestClientID} \
@@ -213,6 +216,8 @@ rebuildAuth() {
     "https://accounts.google.com/o/oauth2/token" \
         | jq -c '.' \
         | read -r authPayload
+
+    export authPayload
 
     tmp=`mktemp`
 

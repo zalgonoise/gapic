@@ -32,7 +32,7 @@ histGenRequest() {
     --arg met ${5} \
     --arg hmt ${6} \
     --arg url ${7} \
-    '{ requestId: $rid, timestamp: $ts, auth: { clientId: $cid, accessToken: $atk, refreshToken: $rtk }, request: { resource: $res, method: $met, httpMethod: $hmt, url: $url, headers: [] }}' \
+    '{ requestId: $rid, timestamp: $ts, auth: { clientId: $cid, accessToken: $atk, refreshToken: $rtk, curl: null, response: null}, request: { resource: $res, method: $met, httpMethod: $hmt, url: $url, headers: [] }, response: null}' \
     | read requestPayload
 
     export requestPayload
@@ -44,6 +44,13 @@ histListBuild() {
 
     export requestPayload
 }
+
+histUpdatePayload() {
+    jq -c "${1}=${2}"     | read -r requestPayload
+
+    export requestPayload
+}
+
 
 histNewEntry() {
     if ! [[ -f ${2}${3} ]]
@@ -59,7 +66,7 @@ histNewEntry() {
         echo ${savedPayload} \
         | histListBuild "." "${1}"
         
-        if [[ `echo ${requestPayload} | jq ` ]]
+        if [[ `echo ${requestPayload} | jq -c ` ]]
         then
             echo ${requestPayload} \
             | jq \
@@ -70,10 +77,12 @@ histNewEntry() {
 
 histUpdateToken() {
     cat ${gapicLogDir}${gapicReqLog} \
-    | jq -c "map((select(.requestId == \"${1}\") | ${2}) |=  \"${3}\")" \
+    | jq \
+    --arg replace ${3} -c \
+    "map((select(.requestId == ${1}) | ${2}) |=  \$replace)" \
     | read -r newPayload
 
-    if [[ `echo ${newPayload} | jq ` ]]
+    if [[ `echo ${newPayload} | jq -c ` ]]
     then
         echo ${newPayload} \
         | jq \
@@ -84,4 +93,20 @@ histUpdateToken() {
 
 }
 
+histUpdateJson() {
+    cat ${gapicLogDir}${gapicReqLog} \
+    | jq \
+    -c \
+    "map((select(.requestId == ${1}) | ${2}) |=  ${3})" \
+    | read -r newPayload
 
+    if [[ `echo ${newPayload} | jq -c ` ]]
+    then
+        echo ${newPayload} \
+        | jq \
+        > ${gapicLogDir}${gapicReqLog}
+    fi
+
+    unset newPayload
+
+}
