@@ -150,8 +150,14 @@ cat << EOF >> ${outputExecWiz}
     gapicSchemaDir=\${gapicBinDir//bin/schema}
     gapicLogDir=\${gapicBinDir//bin/log}
     gapicReqLog=requests.json
-    schemaFile=\${gapicSchemaDir}gapic_AdminSDK_Directory.json
-    schemaRef=\`cat \${schemaFile} | jq '. | "\(.title) \(.version)"'\`
+    
+    schemaFileArray=( \`find \${gapicSchemaDir} -type f\` )
+    uniqueSchemas=( \`echo \${schemaFileArray} | sed "s|\${gapicSchemaDir}||g" | sed 's/.json//g' | sed 's/_[[:digit:]]//g' | sed 's/ /\\n/g' | sort -u \` )
+
+    for (( s = 1 ; s <= \${#uniqueSchemas[@]} ; s++ ))
+    do
+        schemaFileSet+=( "\${gapicSchemaDir}\${uniqueSchemas[\${s}]}.json" )
+    done
 
     gapicCredsWiz="\${gapicBinDir}gapic_creds.sh"
     gapicLibWiz="\${gapicBinDir}gapic_lib.sh"
@@ -160,6 +166,22 @@ cat << EOF >> ${outputExecWiz}
     gapicHistWiz="\${gapicBinDir}gapic_history.sh"
 
     gapicSavedPar="\${gapicDataDir}.api_params"
+
+gapicMenu() {
+    echo \${uniqueSchemas} "Fuzzy_History" \\
+    | gapicFuzzyMenu \\
+    | read -r gapicMenuOpt
+
+    if [[ \${gapicMenuOpt} == "Fuzzy History" ]]
+    then
+        echo "WORK IN PROGRESS"
+        exit 1
+    else
+        schemaFile=\${gapicSchemaDir}\${gapicMenuOpt}.json
+        schemaRef=\`cat \${schemaFile} | jq '. | "\(.title) \(.version)"'\`
+    fi
+
+}
 
 gapicBootstrap() {
     if ! [[ -d \${gapicBinDir} ]]
@@ -380,6 +402,7 @@ gapicPostExec() {
 
 main() {
     gapicBootstrap
+    gapicMenu
     gapicExec
 }
 
@@ -1016,6 +1039,30 @@ gapicLogger "ENGINE" "EXEC" '\t\t' "INFO" "Creating gapic fuzzy explorer wizard 
 apacheLicense > ${outputFuzzWiz}
 
 cat << EOF >> ${outputFuzzWiz}
+
+# Fuzzy Menu
+
+gapicFuzzyMenu() {
+    sed 's/ /\n/g' \\
+    | fzf \\
+    --preview \\
+        "{ cat \\
+          <(echo -e \"# Please choose an option, and press Enter #\") \\
+          <(echo -e \"# Tab: Query quick-replace #\n\n\") \\
+         } && [[ -f \${gapicSchemaDir}{}.json ]] \\
+           && { cat  <( jq -C  '.' \${gapicSchemaDir}{}.json ) } \\
+           || { cat <( jq -C '.' \${gapicLogDir}\${gapicReqLog} ) }" \\
+    --bind "tab:replace-query" \\
+    --bind "ctrl-space:execute% cat \${1}  | jq --sort-keys -C .resources.{}.methods | less -R > /dev/tty 2>&1 %" \\
+    --bind "change:top" \
+    --layout=reverse-list \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# gapic: API Composer #" \\
+    --color=dark \\
+    --black 
+
+}
 
 # Schema explorer / fuzzy finder
 

@@ -24,8 +24,14 @@
     gapicSchemaDir=${gapicBinDir//bin/schema}
     gapicLogDir=${gapicBinDir//bin/log}
     gapicReqLog=requests.json
-    schemaFile=${gapicSchemaDir}gapic_AdminSDK_Directory.json
-    schemaRef=`cat ${schemaFile} | jq '. | "\(.title) \(.version)"'`
+    
+    schemaFileArray=( `find ${gapicSchemaDir} -type f` )
+    uniqueSchemas=( `echo ${schemaFileArray} | sed "s|${gapicSchemaDir}||g" | sed 's/.json//g' | sed 's/_[[:digit:]]//g' | sed 's/ /\n/g' | sort -u ` )
+
+    for (( s = 1 ; s <= ${#uniqueSchemas[@]} ; s++ ))
+    do
+        schemaFileSet+=( "${gapicSchemaDir}${uniqueSchemas[${s}]}.json" )
+    done
 
     gapicCredsWiz="${gapicBinDir}gapic_creds.sh"
     gapicLibWiz="${gapicBinDir}gapic_lib.sh"
@@ -34,6 +40,22 @@
     gapicHistWiz="${gapicBinDir}gapic_history.sh"
 
     gapicSavedPar="${gapicDataDir}.api_params"
+
+gapicMenu() {
+    echo ${uniqueSchemas} "Fuzzy_History" \
+    | gapicFuzzyMenu \
+    | read -r gapicMenuOpt
+
+    if [[ ${gapicMenuOpt} == "Fuzzy History" ]]
+    then
+        echo "WORK IN PROGRESS"
+        exit 1
+    else
+        schemaFile=${gapicSchemaDir}${gapicMenuOpt}.json
+        schemaRef=`cat ${schemaFile} | jq '. | "\(.title) \(.version)"'`
+    fi
+
+}
 
 gapicBootstrap() {
     if ! [[ -d ${gapicBinDir} ]]
@@ -254,6 +276,7 @@ gapicPostExec() {
 
 main() {
     gapicBootstrap
+    gapicMenu
     gapicExec
 }
 

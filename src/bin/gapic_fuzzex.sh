@@ -14,6 +14,29 @@
 #   limitations under the License.
 
 
+# Fuzzy Menu
+
+gapicFuzzyMenu() {
+    sed 's/ /\n/g' \
+    | fzf \
+    --preview \
+        "{ cat \
+          <(echo -e \"# Please choose an option, and press Enter #\") \
+          <(echo -e \"# Tab: Query quick-replace #\n\n\") \
+         } && [[ -f ${gapicSchemaDir}{}.json ]] \
+           && { cat  <( jq -C  '.' ${gapicSchemaDir}{}.json ) } \
+           || { cat <( jq -C '.' ${gapicLogDir}${gapicReqLog} ) }" \
+    --bind "tab:replace-query" \
+    --bind "ctrl-space:execute% cat ${1}  | jq --sort-keys -C .resources.{}.methods | less -R > /dev/tty 2>&1 %" \
+    --bind "change:top"     --layout=reverse-list \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# gapic: API Composer #" \
+    --color=dark \
+    --black 
+
+}
+
 # Schema explorer / fuzzy finder
 
 gapicFuzzySchema() {
