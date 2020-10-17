@@ -35,17 +35,30 @@ histGenRequest() {
 }
 
 histListBuild() {
-    jq "${1}=[${1}[],\"${2}\"]"
+    jq -c "${1}=[${1}[],${2}]" \
+    | read -r requestPayload
+
+    export requestPayload
 }
 
 histNewEntry() {
-    if ! [[ `find  ${2} -type f` ]]
+    if ! [[ -f ${2}${3} ]]
     then 
-        echo "[${1}]" > ${2}/${3}
+        echo "[${1}]" > ${2}${3}
     else
-        cat ${2}/${3} \
-        | histListBuild "." "${1}" \
-        > ${2}/${3}
+        cat ${2}${3} \
+        | jq -c \
+        | read -r savedPayload
+
+        echo ${savedPayload} \
+        | histListBuild "." "${1}"
+        
+        if [[ `echo ${requestPayload} | jq ` ]]
+        then
+            echo ${requestPayload} \
+            | jq \
+            > ${2}${3}
+        fi
     fi
 }
 

@@ -149,6 +149,7 @@ cat << EOF >> ${outputExecWiz}
     gapicCredsDir=\${gapicBinDir//bin/data\/.creds}
     gapicSchemaDir=\${gapicBinDir//bin/schema}
     gapicLogDir=\${gapicBinDir//bin/log}
+    gapicReqLog=requests.json
     schemaFile=\${gapicSchemaDir}gapic_AdminSDK_Directory.json
     schemaRef=\`cat \${schemaFile} | jq '. | "\(.title) \(.version)"'\`
 
@@ -615,17 +616,18 @@ checkScopeAccess() {
     | jq -c ".authScopes[\${1}]" \\
     | read -r accessCheckJson
 
-    if [[ \`echo \${accessCheckJson} | jq ".refreshToken" \` == null ]] \\
-    && [[ \`echo \${accessCheckJson} | jq ".accessToken" \` == null ]]
+    if [[ \`echo \${accessCheckJson} | jq ".refreshToken"| sed 's/"//g' \` == null ]] \\
+    && [[ \`echo \${accessCheckJson} | jq ".accessToken" | sed 's/"//g' \` == null ]]
     then
         buildAuth "\${1}" "\${2}"
 
-    elif [[ \`echo \${accessCheckJson} | jq ".refreshToken" \` != null ]] \\
-    && [[ \`echo \${accessCheckJson} | jq ".accessToken" \` == null ]]
+    elif [[ \`echo \${accessCheckJson} | jq ".refreshToken" | sed 's/"//g' \` != null ]] \\
+    && [[ \`echo \${accessCheckJson} | jq ".accessToken" | sed 's/"//g' \` == null ]]
     then
         rebuildAuth "\${1}" "\${2}"
     else
-        export ACCESSTOKEN=\`echo \${accessCheckJson} | jq '.accessToken' | sed 's/"//g' \`
+        export ACCESSTOKEN="\`echo \${accessCheckJson} | jq '.accessToken' | sed 's/"//g' \`"
+        export REFRESHTOKEN="\`echo \${accessCheckJson} | jq '.refreshToken' | sed 's/"//g' \`"
     fi
 
 }
@@ -1136,8 +1138,8 @@ fuzzExSavedScopes() {
     --header="# \${1} #" \\
     --color=dark \\
     --black \\
-    | xargs -ri jq -c ".authScopes[] | select(.scopeUrl == \"{}\")" <(cat \${2} )
-   
+    | xargs -ri echo {} \\
+    | sed 's/"//g'
 }
 
 fuzzExCreateScopes() {
@@ -1190,17 +1192,30 @@ histGenRequest() {
 }
 
 histListBuild() {
-    jq "\${1}=[\${1}[],\"\${2}\"]"
+    jq -c "\${1}=[\${1}[],\${2}]" \\
+    | read -r requestPayload
+
+    export requestPayload
 }
 
 histNewEntry() {
-    if ! [[ \`find  \${2} -type f\` ]]
+    if ! [[ -f \${2}\${3} ]]
     then 
-        echo "[\${1}]" > \${2}/\${3}
+        echo "[\${1}]" > \${2}\${3}
     else
-        cat \${2}/\${3} \\
-        | histListBuild "." "\${1}" \\
-        > \${2}/\${3}
+        cat \${2}\${3} \\
+        | jq -c \\
+        | read -r savedPayload
+
+        echo \${savedPayload} \\
+        | histListBuild "." "\${1}"
+        
+        if [[ \`echo \${requestPayload} | jq \` ]]
+        then
+            echo \${requestPayload} \\
+            | jq \\
+            > \${2}\${3}
+        fi
     fi
 }
 
@@ -1806,7 +1821,7 @@ EOF
         do
             cat << EOF >> ${outputLibWiz}
         echo \${requestPayload} \\
-        | histListBuild ".request.headers" "${curHeaderSet[$k]}"
+        | histListBuild ".request.headers" "\"${curHeaderSet[$k]}\""
 EOF
         done
 

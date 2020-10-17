@@ -181,8 +181,8 @@ fuzzExSavedScopes() {
     --header="# ${1} #" \
     --color=dark \
     --black \
-    | xargs -ri jq -c ".authScopes[] | select(.scopeUrl == \"{}\")" <(cat ${2} )
-   
+    | xargs -ri echo {} \
+    | sed 's/"//g'
 }
 
 fuzzExCreateScopes() {

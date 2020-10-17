@@ -88,9 +88,9 @@ asps_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ASPS_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -181,9 +181,9 @@ asps_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ASPS_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -254,9 +254,9 @@ asps_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ASPS_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -307,11 +307,11 @@ channels_stop() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${CHANNELS_STOP_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -406,11 +406,11 @@ chromeosdevices_action() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${CHROMEOSDEVICES_ACTION_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -560,9 +560,9 @@ chromeosdevices_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${CHROMEOSDEVICES_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -767,9 +767,9 @@ chromeosdevices_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${CHROMEOSDEVICES_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -860,11 +860,11 @@ chromeosdevices_moveDevicesToOu() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1014,11 +1014,11 @@ chromeosdevices_patch() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${CHROMEOSDEVICES_PATCH_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1168,11 +1168,11 @@ chromeosdevices_update() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${CHROMEOSDEVICES_UPDATE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1247,9 +1247,9 @@ customers_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${CUSTOMERS_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1320,11 +1320,11 @@ customers_patch() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${CUSTOMERS_PATCH_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1399,11 +1399,11 @@ customers_update() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${CUSTOMERS_UPDATE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1498,9 +1498,9 @@ domainAliases_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${DOMAINALIASES_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1591,9 +1591,9 @@ domainAliases_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINALIASES_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1664,11 +1664,11 @@ domainAliases_insert() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${DOMAINALIASES_INSERT_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1795,9 +1795,9 @@ domainAliases_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINALIASES_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1888,9 +1888,9 @@ domains_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${DOMAINS_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -1981,9 +1981,9 @@ domains_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINS_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2054,11 +2054,11 @@ domains_insert() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${DOMAINS_INSERT_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2133,9 +2133,9 @@ domains_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINS_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2206,9 +2206,9 @@ groups_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${GROUPS_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2279,9 +2279,9 @@ groups_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${GROUPS_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2332,11 +2332,11 @@ groups_insert() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${GROUPS_INSERT_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2529,9 +2529,9 @@ groups_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${GROUPS_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2602,11 +2602,11 @@ groups_patch() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${GROUPS_PATCH_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2681,11 +2681,11 @@ groups_update() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${GROUPS_UPDATE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2780,9 +2780,9 @@ members_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${MEMBERS_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2873,9 +2873,9 @@ members_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MEMBERS_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -2966,9 +2966,9 @@ members_hasMember() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MEMBERS_HASMEMBER_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -3039,11 +3039,11 @@ members_insert() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${MEMBERS_INSERT_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -3185,9 +3185,9 @@ members_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MEMBERS_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -3278,11 +3278,11 @@ members_patch() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${MEMBERS_PATCH_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -3377,11 +3377,11 @@ members_update() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${MEMBERS_UPDATE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -3476,11 +3476,11 @@ mobiledevices_action() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${MOBILEDEVICES_ACTION_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -3575,9 +3575,9 @@ mobiledevices_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${MOBILEDEVICES_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -3723,9 +3723,9 @@ mobiledevices_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MOBILEDEVICES_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -3925,9 +3925,9 @@ mobiledevices_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MOBILEDEVICES_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -4018,9 +4018,9 @@ orgunits_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ORGUNITS_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -4111,9 +4111,9 @@ orgunits_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ORGUNITS_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -4184,11 +4184,11 @@ orgunits_insert() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${ORGUNITS_INSERT_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -4370,9 +4370,9 @@ orgunits_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ORGUNITS_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -4463,11 +4463,11 @@ orgunits_patch() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${ORGUNITS_PATCH_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -4562,11 +4562,11 @@ orgunits_update() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${ORGUNITS_UPDATE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -4641,9 +4641,9 @@ privileges_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${PRIVILEGES_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -4734,9 +4734,9 @@ roleAssignments_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ROLEASSIGNMENTS_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -4827,9 +4827,9 @@ roleAssignments_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLEASSIGNMENTS_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -4900,11 +4900,11 @@ roleAssignments_insert() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${ROLEASSIGNMENTS_INSERT_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5046,9 +5046,9 @@ roleAssignments_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLEASSIGNMENTS_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5139,9 +5139,9 @@ roles_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ROLES_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5232,9 +5232,9 @@ roles_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLES_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5305,11 +5305,11 @@ roles_insert() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${ROLES_INSERT_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5441,9 +5441,9 @@ roles_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLES_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5534,11 +5534,11 @@ roles_patch() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${ROLES_PATCH_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5633,11 +5633,11 @@ roles_update() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${ROLES_UPDATE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5732,9 +5732,9 @@ schemas_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${SCHEMAS_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5825,9 +5825,9 @@ schemas_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${SCHEMAS_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5898,11 +5898,11 @@ schemas_insert() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${SCHEMAS_INSERT_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -5977,9 +5977,9 @@ schemas_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${SCHEMAS_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -6070,11 +6070,11 @@ schemas_patch() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${SCHEMAS_PATCH_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -6169,11 +6169,11 @@ schemas_update() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${SCHEMAS_UPDATE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -6268,9 +6268,9 @@ tokens_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${TOKENS_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -6361,9 +6361,9 @@ tokens_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${TOKENS_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -6434,9 +6434,9 @@ tokens_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${TOKENS_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -6507,11 +6507,11 @@ twoStepVerification_turnOff() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${TWOSTEPVERIFICATION_TURNOFF_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -6586,9 +6586,9 @@ users_delete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${USERS_DELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -6772,9 +6772,9 @@ users_get() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${USERS_GET_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -6825,11 +6825,11 @@ users_insert() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_INSERT_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -7039,9 +7039,9 @@ users_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${USERS_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -7112,11 +7112,11 @@ users_makeAdmin() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_MAKEADMIN_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -7191,11 +7191,11 @@ users_patch() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${USERS_PATCH_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -7270,11 +7270,11 @@ users_signOut() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_SIGNOUT_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -7349,11 +7349,11 @@ users_undelete() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_UNDELETE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -7428,11 +7428,11 @@ users_update() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${USERS_UPDATE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -7648,11 +7648,11 @@ users_watch() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_WATCH_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -7727,11 +7727,11 @@ verificationCodes_generate() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${VERIFICATIONCODES_GENERATE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -7806,11 +7806,11 @@ verificationCodes_invalidate() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${VERIFICATIONCODES_INVALIDATE_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Content-Type: application/json"
+        | histListBuild ".request.headers" "\"Content-Type: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \
@@ -7885,9 +7885,9 @@ verificationCodes_list() {
         histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${VERIFICATIONCODES_LIST_URL}"
 
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Authorization: Bearer ${ACCESSTOKEN}"
+        | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
         echo ${requestPayload} \
-        | histListBuild ".request.headers" "Accept: application/json"
+        | histListBuild ".request.headers" "\"Accept: application/json\""
         histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
     
         curl -s \

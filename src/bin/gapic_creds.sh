@@ -231,17 +231,18 @@ checkScopeAccess() {
     | jq -c ".authScopes[${1}]" \
     | read -r accessCheckJson
 
-    if [[ `echo ${accessCheckJson} | jq ".refreshToken" ` == null ]] \
-    && [[ `echo ${accessCheckJson} | jq ".accessToken" ` == null ]]
+    if [[ `echo ${accessCheckJson} | jq ".refreshToken"| sed 's/"//g' ` == null ]] \
+    && [[ `echo ${accessCheckJson} | jq ".accessToken" | sed 's/"//g' ` == null ]]
     then
         buildAuth "${1}" "${2}"
 
-    elif [[ `echo ${accessCheckJson} | jq ".refreshToken" ` != null ]] \
-    && [[ `echo ${accessCheckJson} | jq ".accessToken" ` == null ]]
+    elif [[ `echo ${accessCheckJson} | jq ".refreshToken" | sed 's/"//g' ` != null ]] \
+    && [[ `echo ${accessCheckJson} | jq ".accessToken" | sed 's/"//g' ` == null ]]
     then
         rebuildAuth "${1}" "${2}"
     else
-        export ACCESSTOKEN=`echo ${accessCheckJson} | jq '.accessToken' | sed 's/"//g' `
+        export ACCESSTOKEN="`echo ${accessCheckJson} | jq '.accessToken' | sed 's/"//g' `"
+        export REFRESHTOKEN="`echo ${accessCheckJson} | jq '.refreshToken' | sed 's/"//g' `"
     fi
 
 }

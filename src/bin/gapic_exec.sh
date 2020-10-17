@@ -23,6 +23,7 @@
     gapicCredsDir=${gapicBinDir//bin/data\/.creds}
     gapicSchemaDir=${gapicBinDir//bin/schema}
     gapicLogDir=${gapicBinDir//bin/log}
+    gapicReqLog=requests.json
     schemaFile=${gapicSchemaDir}gapic_AdminSDK_Directory.json
     schemaRef=`cat ${schemaFile} | jq '. | "\(.title) \(.version)"'`
 
