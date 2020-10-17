@@ -1235,7 +1235,7 @@ histGenRequest() {
     --arg met \${5} \\
     --arg hmt \${6} \\
     --arg url \${7} \\
-    '{ requestId: \$rid, timestamp: \$ts, auth: { clientId: \$cid, accessToken: \$atk, refreshToken: \$rtk, curl: null, response: null}, request: { resource: \$res, method: \$met, httpMethod: \$hmt, url: \$url, headers: [] }, response: null}' \\
+    '{ requestId: \$rid, timestamp: \$ts, auth: { clientId: \$cid, accessToken: \$atk, refreshToken: \$rtk, curl: null, response: null}, request: { resource: \$res, method: \$met, httpMethod: \$hmt, url: \$url, headers: [], curl: null }, response: null}' \\
     | read requestPayload
 
     export requestPayload
@@ -1943,6 +1943,7 @@ EOF
             histUpdateJson "\"\${requestId}\"" ".auth.response" "\${authPayload}"          
         fi
 
+
         curl -s \\
             --request ${curMethod} \\
             \${${curPrefix}URL} \\
@@ -1967,6 +1968,8 @@ EOF
 
         histUpdateJson "\"\${requestId}\"" ".response" "\${outputJson}"          
 
+        execCurl="curl -s --request ${curMethod} \${${curPrefix}URL} "
+
 
         echo -e "# Request issued:\n\n"
         echo -e "#########################\n"
@@ -1979,7 +1982,9 @@ EOIF
 EOF
         for (( k = 1 ; k <= ${#curHeaderSet[@]} ; k++ ))
         do
+            
             cat << EOF >> ${outputLibWiz}
+        execCurl+="--header \"${curHeaderSet[$k]} "
         cat << EOIF
         --header "${curHeaderSet[$k]}" \\\ 
 EOIF
@@ -1990,9 +1995,13 @@ EOF
         cat << EOIF
         --compressed
 EOIF
-
         echo -e "\n\n"
         echo -e "#########################\n"
+
+        execCurl+="--compressed"
+        histUpdateToken "\"\${requestId}\"" ".request.curl" "\${execCurl}"          
+        unset execCurl
+
     }
     execRequest
 EOF

@@ -32,7 +32,7 @@ histGenRequest() {
     --arg met ${5} \
     --arg hmt ${6} \
     --arg url ${7} \
-    '{ requestId: $rid, timestamp: $ts, auth: { clientId: $cid, accessToken: $atk, refreshToken: $rtk, curl: null, response: null}, request: { resource: $res, method: $met, httpMethod: $hmt, url: $url, headers: [] }, response: null}' \
+    '{ requestId: $rid, timestamp: $ts, auth: { clientId: $cid, accessToken: $atk, refreshToken: $rtk, curl: null, response: null}, request: { resource: $res, method: $met, httpMethod: $hmt, url: $url, headers: [], curl: null }, response: null}' \
     | read requestPayload
 
     export requestPayload
