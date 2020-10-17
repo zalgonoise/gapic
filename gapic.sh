@@ -1508,10 +1508,10 @@ fi
 
 ### Retrieve all available APIs
 ##### Current exceptions:
-##### "resources" - complex tree (.resources.resources.resources.methods), creating exceptions later
+##### "resources"; "customer" - complex tree (.resources.resources.resources.methods), creating exceptions later
 
-
-apiSets=(`echo ${inputJson} | jq -c '.resources | keys[]' | grep -v "resources" | tr '"' ' '`)
+apiExceptions='"resources"\|"customer"'
+apiSets=(`echo ${inputJson} | jq -c '.resources | keys[]' | grep -v ${apiExceptions} | tr '"' ' '`)
 
 #Log message
 gapicLogger "API" "RESOURCES" '\t' "INFO" "Collected ${#apiSets[@]} resources."
