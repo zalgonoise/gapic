@@ -236,6 +236,7 @@ gapicPostExec() {
             exit 1
         fi
     else
+        unset requestId
         echo -e "# Execution complete!\n\n"
         echo -e "#########################\n"
         echo "${outputJson}" | jq '.'

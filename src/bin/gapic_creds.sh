@@ -127,6 +127,8 @@ buildAuth() {
     -d grant_type=authorization_code \
     | jq -c '.' | read -r authPayload
 
+    tmp=`mktemp`
+
     
     if ! [[ `echo ${authPayload} | jq '.refresh_token' | sed 's/"//g' ` == "null" ]] \
     && ! [[ `echo ${authPayload} | jq '.access_token' | sed 's/"//g' ` == "null" ]]
@@ -137,7 +139,6 @@ buildAuth() {
         export ACCESSTOKEN=${authAccessToken}
         export REFRESHTOKEN=${authRefreshToken}
 
-        tmp=`mktemp`
 
         cat ${2} \
         | jq ".authScopes[${1}].refreshToken=\"${authRefreshToken}\" | .authScopes[${1}].accessToken=\"${authAccessToken}\"" \
@@ -153,12 +154,31 @@ buildAuth() {
         echo "${authPayload}" | jq '.'
         echo -e "\n\n"
         echo -e "#########################\n"
+    elif [[ `echo ${authPayload} | jq '.error' | sed  's/"//g' ` == "invalid_grant" ]]
+    then
+        cat ${2} \
+        | jq ".authScopes[${1}].refreshToken=null " \
+        > ${tmp}
+
+        if [[ `cat ${tmp} | jq ` ]]
+        then 
+            mv ${tmp} ${2}
+        fi
+
+        echo -e "# Invalid Refresh Token! Relaunch the tool.\n\n"
+        echo -e "#########################\n"
+        echo "${authPayload}" | jq '.'
+        echo -e "\n\n"
+        echo -e "#########################\n"
+        exit 1
+
     else
         echo -e "# Error in the authentication!\n\n"
         echo -e "#########################\n"
         echo "${authPayload}" | jq '.'
         echo -e "\n\n"
         echo -e "#########################\n"
+        rm ${tmp}
         exit 1
     fi
 }
@@ -172,7 +192,7 @@ rebuildAuth() {
     requestRefreshToken=`cat ${2} | jq -c ".authScopes[${1}].refreshToken" | sed 's/"//g' `
 
     export CLIENTID=${requestClientID}
-    export REFRESHTOKEN=${authRefreshToken}
+    export REFRESHTOKEN=${requestRefreshToken}
 
 
     sentRequest="curl -s \ \n    --request POST \ \n    -d client_id=${requestClientID} \ \n    -d client_secret=${requestClientSecret} \ \n    -d refresh_token=${requestRefreshToken} \ \n    -d grant_type=refresh_token \ \n    \"https://accounts.google.com/o/oauth2/token\""
@@ -193,6 +213,8 @@ rebuildAuth() {
     "https://accounts.google.com/o/oauth2/token" \
         | jq -c '.' \
         | read -r authPayload
+
+    tmp=`mktemp`
 
     if ! [[ `echo ${authPayload} | jq '.access_token'` == "null" ]]
     then 
@@ -215,12 +237,30 @@ rebuildAuth() {
         echo "${authPayload}" | jq '.'
         echo -e "\n\n"
         echo -e "#########################\n"
+    elif [[ `echo ${authPayload} | jq '.error' | sed  's/"//g' ` == "invalid_grant" ]]
+    then
+        cat ${2} \
+        | jq ".authScopes[${1}].refreshToken=null " \
+        > ${tmp}
+
+        if [[ `cat ${tmp} | jq ` ]]
+        then 
+            mv ${tmp} ${2}
+        fi
+
+        echo -e "# Invalid Refresh Token! Relaunch the tool.\n\n"
+        echo -e "#########################\n"
+        echo "${authPayload}" | jq '.'
+        echo -e "\n\n"
+        echo -e "#########################\n"
+        exit 1
     else
         echo -e "# Error in the authentication!\n\n"
         echo -e "#########################\n"
         echo "${authPayload}" | jq '.'
         echo -e "\n\n"
         echo -e "#########################\n"
+        rm ${tmp}
         exit 1
     fi
 

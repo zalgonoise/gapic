@@ -18,8 +18,12 @@
 
 histGenRequest() {
     local currentTimestamp=`date +%s`$((`date +%N`/1000000))
+    export requestId=`echo -n ${currentTimestamp} \
+    | sha1sum \
+    | awk '{print $1}'`
 
     jq -cn  \
+    --arg rid ${requestId} \
     --arg ts ${currentTimestamp} \
     --arg cid ${1} \
     --arg atk ${2} \
@@ -28,7 +32,7 @@ histGenRequest() {
     --arg met ${5} \
     --arg hmt ${6} \
     --arg url ${7} \
-    '{timestamp: $ts, auth: { clientId: $cid, accessToken: $atk, refreshToken: $rtk }, request: { resource: $res, method: $met, httpMethod: $hmt, url: $url, headers: [] }}' \
+    '{ requestId: $rid, timestamp: $ts, auth: { clientId: $cid, accessToken: $atk, refreshToken: $rtk }, request: { resource: $res, method: $met, httpMethod: $hmt, url: $url, headers: [] }}' \
     | read requestPayload
 
     export requestPayload
@@ -44,7 +48,9 @@ histListBuild() {
 histNewEntry() {
     if ! [[ -f ${2}${3} ]]
     then 
-        echo "[${1}]" > ${2}${3}
+        echo "[${1}]" \
+        | jq \
+        > ${2}${3}
     else
         cat ${2}${3} \
         | jq -c \
@@ -61,4 +67,21 @@ histNewEntry() {
         fi
     fi
 }
+
+histUpdateToken() {
+    cat ${gapicLogDir}${gapicReqLog} \
+    | jq -c "map((select(.requestId == \"${1}\") | ${2}) |=  \"${3}\")" \
+    | read -r newPayload
+
+    if [[ `echo ${newPayload} | jq ` ]]
+    then
+        echo ${newPayload} \
+        | jq \
+        > ${gapicLogDir}${gapicReqLog}
+    fi
+
+    unset newPayload
+
+}
+
 
