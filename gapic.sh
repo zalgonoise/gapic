@@ -1327,7 +1327,7 @@ histListBuild() {
 }
 
 histUpdatePayload() {
-    jq -c "\${1}=\${2}" \
+    jq -c "\${1}=\${2}" \\
     | read -r requestPayload
 
     export requestPayload
