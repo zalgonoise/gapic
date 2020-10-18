@@ -1388,6 +1388,41 @@ histUpdateJson() {
     unset newPayload
 
 }
+
+
+histReplayRequest() {
+    export ACCESSTOKEN=\`echo \${1} | jq -r '.auth.accessToken'\`
+    export REFRESHTOKEN=\`echo \${1} | jq -r '.auth.refreshToken'\`
+    export requestScope=\`echo \${1} | jq -r '.auth.scope'\`
+
+    local met=\`echo \${1} | jq -r '.request.httpMethod'\`
+    local url=\`echo \${1} | jq -r '.request.url'\`
+    local atk=\${ACCESSTOKEN}
+
+    local headers=( \`echo \${1} | jq '.request.headers[]'\` )
+
+    if [[ \${#headers[@]} -eq 2 ]] \\
+    && [[ "\${headers[1]}" =~ "Authorization: Bearer " ]] \\
+    && [[ "\${headers[2]}" == '"Accept: application/json"' ]]
+    then
+        curl -s \\
+        --request \${met} \\
+        \${(Q)url} \\
+        --header "Authorization: Bearer \${atk}" \\
+        --header "Accept: application/json" \\
+        --compressed \\
+        | jq -c '.' \\
+        | read -r outputJson
+
+        if ! [[ -z \${outputJson} ]]
+        then
+            gapicPostExec
+        else
+            echo -e "# No JSON output, please debug.\\n\\n"
+        fi
+
+    fi
+}
 EOF
 
 
