@@ -50,7 +50,6 @@ scopeCreate() {
         activeScopesArr=( `cat ${4} | jq -c ".authScopes[]" ` )
         activeIndex=${#activeScopesArr}
 
-        activeScopesString=`echo ${activeScopesArr} | sed 's/ /,/g'`
 
         jq -cn \
         --arg scp ${requestScope} \
@@ -59,17 +58,11 @@ scopeCreate() {
         '{scopeUrl: $scp, refreshToken: $rt, accessToken: $at}' \
         | read -r newScope
 
-        if ! [[ -z ${activeScopesString} ]]
-        then
-            activeScopesString=${activeScopesString},${newScope}
-        else
-            activeScopesString=${newScope}
-        fi
 
         tmp=`mktemp`
 
         cat ${4} \
-        | jq ".authScopes=[${activeScopesString}]" \
+        | jq ".authScopes=[.authScopes[],${newScope}]" \
         > ${tmp}
 
         if [[ `cat ${tmp} | jq` ]]
@@ -90,18 +83,23 @@ buildAuth() {
     echo -en "# Please visit the URL below to generate an access code. Once authenticated you will be provided a code - paste it below: \n\n "
 
 
-    requestClientID=`cat ${2} | jq -c '.clientId' | sed 's/"//g' `
-    requestClientSecret=`cat ${2} | jq -c '.clientSecret' | sed 's/"//g'`
-    requestScope=`cat ${2} | jq -c ".authScopes[${1}].scopeUrl" | sed 's/"//g' `
-    requestScope=${requestScope//:/%3A}
-    requestScope=${requestScope//\//%2F}
+    requestClientID=`cat ${2} | jq -r '.clientId'  `
+    requestClientSecret=`cat ${2} | jq -r '.clientSecret' `
+
+    if [[ -z ${requestScope} ]]
+    then
+        export requestScope=`cat ${2} | jq -r ".authScopes[${1}].scopeUrl" `
+    fi
+
+    requestScopeCode=${requestScope//:/%3A}
+    requestScopeCode=${requestScopeCode//\//%2F}
 
     export CLIENTID=${requestClientID}
 
     urlString1='https://accounts.google.com/o/oauth2/auth?client_id='
     urlString2='&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&access_type=offline&prompt=consent&scope='
 
-    urlGen=${urlString1}${requestClientID}${urlString2}${requestScope}
+    urlGen=${urlString1}${requestClientID}${urlString2}${requestScopeCode}
 
     echo ${urlGen}
 
@@ -133,40 +131,29 @@ buildAuth() {
     tmp=`mktemp`
 
     
-    if ! [[ `echo ${authPayload} | jq '.refresh_token' | sed 's/"//g' ` == "null" ]] \
-    && ! [[ `echo ${authPayload} | jq '.access_token' | sed 's/"//g' ` == "null" ]]
+    if ! [[ `echo ${authPayload} | jq -r '.refresh_token' ` == "null" ]] \
+    && ! [[ `echo ${authPayload} | jq -r '.access_token' ` == "null" ]]
     then 
-        authRefreshToken=`echo ${authPayload} | jq '.refresh_token' | sed 's/"//g' `
-        authAccessToken=`echo ${authPayload} | jq '.access_token' | sed 's/"//g' `
+        authRefreshToken=`echo ${authPayload} | jq -r '.refresh_token' `
+        authAccessToken=`echo ${authPayload} | jq  -r '.access_token' `
 
         export ACCESSTOKEN=${authAccessToken}
         export REFRESHTOKEN=${authRefreshToken}
 
+        mvCreds "${1}" "scopeUrl" "${requestScope}" "refreshToken" "\"${REFRESHTOKEN}\"" 
+        mvCreds "${1}" "scopeUrl" "${requestScope}" "accessToken" "\"${ACCESSTOKEN}\"" 
 
-        cat ${2} \
-        | jq ".authScopes[${1}].refreshToken=\"${authRefreshToken}\" | .authScopes[${1}].accessToken=\"${authAccessToken}\"" \
-        > ${tmp}
 
-        if [[ `cat ${tmp} | jq ` ]]
-        then 
-            mv ${tmp} ${2}
-        fi
 
         echo -e "# Execution complete!\n\n"
         echo -e "#########################\n"
         echo "${authPayload}" | jq '.'
         echo -e "\n\n"
         echo -e "#########################\n"
-    elif [[ `echo ${authPayload} | jq '.error' | sed  's/"//g' ` == "invalid_grant" ]]
+    elif [[ `echo ${authPayload} | jq  -r '.error'  ` == "invalid_grant" ]]
     then
-        cat ${2} \
-        | jq ".authScopes[${1}].refreshToken=null " \
-        > ${tmp}
 
-        if [[ `cat ${tmp} | jq ` ]]
-        then 
-            mv ${tmp} ${2}
-        fi
+        mvCreds "${1}" "scopeUrl" "${requestScope}" "refreshToken" "null" 
 
         echo -e "# Invalid Refresh Token! Relaunch the tool.\n\n"
         echo -e "#########################\n"
@@ -190,28 +177,36 @@ rebuildAuth() {
     # get a new Access Token with Refresh Token
     # https://developers.google.com/identity/protocols/oauth2/web-server#httprest_7
      
-    requestClientID=`cat ${2} | jq -c '.clientId' | sed 's/"//g' `
-    requestClientSecret=`cat ${2} | jq -c '.clientSecret' | sed 's/"//g' `
-    requestRefreshToken=`cat ${2} | jq -c ".authScopes[${1}].refreshToken" | sed 's/"//g' `
+    requestClientID=`cat ${1} | jq -r '.clientId' `
+    requestClientSecret=`cat ${1} | jq -r '.clientSecret' `
+
+    if [[ -z ${REFRESHTOKEN} ]]
+    then
+        requestRefreshToken=`cat ${1} | jq -r ".authScopes[${2}].refreshToken" `
+        export REFRESHTOKEN=${requestRefreshToken}
+    fi
+
+    if [[ -z ${requestScope} ]]
+    then
+        export requestScope=`cat ${1} | jq -r ".authScopes[${2}].scopeUrl"  `
+    fi
 
     export CLIENTID=${requestClientID}
-    export REFRESHTOKEN=${requestRefreshToken}
 
-
-    export sentAuthRequest="curl -s \ \n    --request POST \ \n    -d client_id=${requestClientID} \ \n    -d client_secret=${requestClientSecret} \ \n    -d refresh_token=${requestRefreshToken} \ \n    -d grant_type=refresh_token \ \n    \"https://accounts.google.com/o/oauth2/token\""
+    export sentAuthRequest="curl -s \ \n    --request POST \ \n    -d client_id=${requestClientID} \ \n    -d client_secret=${requestClientSecret} \ \n    -d refresh_token=${REFRESHTOKEN} \ \n    -d grant_type=refresh_token \ \n    \"https://accounts.google.com/o/oauth2/token\""
 
     echo -e "# Request sent:\n\n"
     echo -e "#########################\n"
     echo "${sentAuthRequest}"
     echo -e "\n\n"
     echo -e "#########################\n"
-    export sentAuthRequest="curl -s --request POST -d client_id=${requestClientID} -d client_secret=${requestClientSecret} -d refresh_token=${requestRefreshToken} -d grant_type=refresh_token https://accounts.google.com/o/oauth2/token"
+    export sentAuthRequest="curl -s --request POST -d client_id=${requestClientID} -d client_secret=${requestClientSecret} -d refresh_token=${REFRESHTOKEN} -d grant_type=refresh_token https://accounts.google.com/o/oauth2/token"
 
     curl -s \
     --request POST \
     -d client_id=${requestClientID} \
     -d client_secret=${requestClientSecret} \
-    -d refresh_token=${requestRefreshToken} \
+    -d refresh_token=${REFRESHTOKEN} \
     -d grant_type=refresh_token \
     "https://accounts.google.com/o/oauth2/token" \
         | jq -c '.' \
@@ -223,35 +218,23 @@ rebuildAuth() {
 
     if ! [[ `echo ${authPayload} | jq '.access_token'` == "null" ]]
     then 
-        authAccessToken=`echo ${authPayload} | jq '.access_token' | sed 's/"//g'`
+        authAccessToken=`echo ${authPayload} | jq -r '.access_token' `
 
         export ACCESSTOKEN=${authAccessToken}
 
+        mvCreds "${1}" "scopeUrl" "${requestScope}" "accessToken" "\"${ACCESSTOKEN}\"" 
 
-        cat ${2} \
-        | jq ".authScopes[${1}].accessToken=\"${authAccessToken}\"" \
-        > ${tmp}
-
-        if [[ `cat ${tmp} | jq` ]]
-        then 
-            mv ${tmp} ${2}
-        fi
 
         echo -e "# Execution complete!\n\n"
         echo -e "#########################\n"
         echo "${authPayload}" | jq '.'
         echo -e "\n\n"
         echo -e "#########################\n"
-    elif [[ `echo ${authPayload} | jq '.error' | sed  's/"//g' ` == "invalid_grant" ]]
+    elif [[ `echo ${authPayload} | jq -r '.error'  ` == "invalid_grant" ]]
     then
-        cat ${2} \
-        | jq ".authScopes[${1}].refreshToken=null " \
-        > ${tmp}
 
-        if [[ `cat ${tmp} | jq ` ]]
-        then 
-            mv ${tmp} ${2}
-        fi
+        mvCreds "${1}" "scopeUrl" "${requestScope}" "refreshToken" "null"
+
 
         echo -e "# Invalid Refresh Token! Relaunch the tool.\n\n"
         echo -e "#########################\n"
@@ -284,10 +267,12 @@ checkScopeAccess() {
     elif [[ `echo ${accessCheckJson} | jq ".refreshToken" | sed 's/"//g' ` != null ]] \
     && [[ `echo ${accessCheckJson} | jq ".accessToken" | sed 's/"//g' ` == null ]]
     then
-        rebuildAuth "${1}" "${2}"
+        rebuildAuth  "${2}" "${1}"
     else
         export ACCESSTOKEN="`echo ${accessCheckJson} | jq '.accessToken' | sed 's/"//g' `"
         export REFRESHTOKEN="`echo ${accessCheckJson} | jq '.refreshToken' | sed 's/"//g' `"
+        export requestScope="`echo ${accessCheckJson} | jq '.scopeUrl' | sed 's/"//g' `"
+
     fi
 
 }
@@ -373,12 +358,16 @@ checkCreds() {
     export clientJson
 }
 
-
+##  rmCreds(): Deprecated ~ test and remove
 rmCreds() {
     tmp=`mktemp`
 
     cat ${1} \
-    | jq ".authScopes[${2}].${3}=null" \
+    | jq -c ".authScopes | map(select(.${2} == \"${3}\").${2} |= null" \
+    | read -r newAuthScopes
+
+    cat ${1} \
+    | jq ".authScopes=${newAuthScopes}" \
     > ${tmp}
 
     if [[ `cat ${tmp} | jq` ]]
@@ -386,7 +375,25 @@ rmCreds() {
         mv ${tmp} ${1}
     fi
 }
+####
 
+
+mvCreds() {
+    tmp=`mktemp`
+
+    cat ${1} \
+    | jq -c ".authScopes | map(select(.${2} == \"${3}\").${4} |= ${5})" \
+    | read -r newAuthScopes
+
+    cat ${1} \
+    | jq ".authScopes=${newAuthScopes}" \
+    > ${tmp}
+
+    if [[ `cat ${tmp} | jq -c ` ]]
+    then
+        mv ${tmp} ${1}
+    fi
+}
 
 scopeLookup() {
     for (( i = 1 ; i <= ${(P)#1[@]} ; i++ ))

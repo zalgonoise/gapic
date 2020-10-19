@@ -114,28 +114,42 @@ histUpdateJson() {
 
 
 histReplayRequest() {
+    export requestId=`echo ${1} | jq -r '.requestId'`
+    export CLIENTID=`echo ${1} | jq -r '.auth.clientId' `
+    export fileRef=`echo ${CLIENTID//-/ } | awk '{print $1}'`
+    export CLIENTSECRET=`cat ${credPath}/${fileRef} | jq -r '.clientSecret'`
     export ACCESSTOKEN=`echo ${1} | jq -r '.auth.accessToken'`
     export REFRESHTOKEN=`echo ${1} | jq -r '.auth.refreshToken'`
-    export requestScope=`echo ${1} | jq -r '.auth.scope'`
+    
+    if [[ `echo ${1} | jq -r '.auth.response.scope'` == 'null'  ]]
+    then
+        export requestScope=`cat ${credPath}/${fileRef} | jq -r ".authScopes[] | select(.refreshToken == \"${REFRESHTOKEN}\") | .scopeUrl" `
+    else
+        export requestScope=`echo ${1} | jq -r '.auth.response.scope'`
+    fi
 
     local met=`echo ${1} | jq -r '.request.httpMethod'`
     local url=`echo ${1} | jq -r '.request.url'`
     local atk=${ACCESSTOKEN}
 
-    local headers=( `echo ${1} | jq '.request.headers[]'` )
+    local headersCounter=( `echo ${1} | jq '.request.headers | keys[] ' ` )
 
-    if [[ ${#headers[@]} -eq 2 ]] \
-    && [[ "${headers[1]}" =~ "Authorization: Bearer " ]] \
-    && [[ "${headers[2]}" == '"Accept: application/json"' ]]
+    if [[ ${#headersCounter[@]} -eq 2 ]] \
+    && [[ `echo ${1} | jq ".request.headers[${headersCounter[1]}]"` =~ "Authorization: Bearer " ]] \
+    && [[ `echo ${1} | jq ".request.headers[${headersCounter[2]}]"` == '"Accept: application/json"' ]]
     then
-        curl -s \
-        --request ${met} \
-        ${(Q)url} \
-        --header "Authorization: Bearer ${atk}" \
-        --header "Accept: application/json" \
-        --compressed \
-        | jq -c '.' \
-        | read -r outputJson
+        execRequest() {
+            curl -s \
+            --request ${met} \
+            ${(Q)url} \
+            --header "Authorization: Bearer ${atk}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+        }
+
+        execRequest
 
         if ! [[ -z ${outputJson} ]]
         then
@@ -143,6 +157,7 @@ histReplayRequest() {
         else
             echo -e "# No JSON output, please debug.\n\n"
         fi
+        
 
     fi
 }

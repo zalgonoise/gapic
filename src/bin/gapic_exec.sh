@@ -52,10 +52,12 @@ gapicMenu() {
         | gapicFuzzyHistory ${gapicLogDir}${gapicReqLog} \
         | read -r histPayload
 
+        if [[ `echo ${histPayload} | jq ` ]]
+        then
+            histReplayRequest "${histPayload}"
+            exit 0
+        fi
 
-        ### DEBUG
-        exit 1
-        ###
     else
         schemaFile=${gapicSchemaDir}${gapicMenuOpt}.json
         schemaRef=`cat ${schemaFile} | jq '. | "\(.title) \(.version)"'`
@@ -211,12 +213,12 @@ gapicPostExec() {
         if [[ `echo ${outputJson} | jq '.error.code'` =~ "401" ]] \
         && [[ `echo ${outputJson} | jq '.error.errors[].message'` =~ "Invalid Credentials" ]]
         then
-            if ! [[ `cat "${credPath}/${fileRef}" | jq ".authScopes[${activeIndex}].accessToken"` == null ]]
+            if ! [[ `cat "${credPath}/${fileRef}" | jq -r ".authScopes |  map(select(.scopeUrl == \"${requestScope}\").accessToken) | .[]"` == "null" ]]
             then
                 echo -e "# Invalid Credentials error.\n\n# Removing Access Token to generate a new one:\n\n"
                 
-                rmCreds "${credPath}/${fileRef}" "${activeIndex}" "accessToken" 
-                rebuildAuth "${activeIndex}" "${credPath}/${fileRef}"
+                mvCreds "${credPath}/${fileRef}"  "scopeUrl" "${requestScope}" "accessToken" "null"
+                rebuildAuth "${credPath}/${fileRef}" 
 
                 echo -e "# Repeating previously configured request:\n\n"
                 execRequest
@@ -230,13 +232,13 @@ gapicPostExec() {
                     exit 1
                 fi
 
-            elif [[ `cat "${credPath}/${fileRef}" | jq ".authScopes[${activeIndex}].accessToken"` == null ]] \
-            && ! [[ `cat "${credPath}/${fileRef}" | jq ".authScopes[${activeIndex}].refreshToken"` == null ]]
+            elif [[ `cat "${credPath}/${fileRef}" | jq -r ".authScopes |  map(select(.scopeUrl == \"${requestScope}\").accessToken) | .[]"` == "null" ]] \
+            && ! [[ `cat "${credPath}/${fileRef}" | jq -r ".authScopes |  map(select(.scopeUrl == \"${requestScope}\").refresh) | .[]"` == "null" ]]
             then
                 echo -e "# Invalid Credentials error.\n\n# Removing Refresh Token and generating a new one:\n\n"
 
-                rmCreds "${credPath}/${fileRef}" "${activeIndex}" "refreshToken" 
-                buildAuth "${activeIndex}" "${credPath}/${fileRef}"
+                mvCreds "${credPath}/${fileRef}"  "scopeUrl" "${requestScope}" "refreshToken" "null"
+                buildAuth "${credPath}/${fileRef}"
                 
                 echo -e "# Repeating previously configured request:\n\n"
                 execRequest
