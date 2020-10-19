@@ -178,7 +178,7 @@ gapicMenu() {
         | gapicFuzzyHistory \${gapicLogDir}\${gapicReqLog} \\
         | read -r histPayload
 
-        if [[ \`echo \${histPayload} | jq \` ]]
+        if [[ \`echo \${histPayload} | jq -c \` ]]
         then
             histReplayRequest "\${histPayload}"
             exit 0
@@ -482,7 +482,7 @@ scopeCreate() {
         | jq ".authScopes=[.authScopes[],\${newScope}]" \\
         > \${tmp}
 
-        if [[ \`cat \${tmp} | jq\` ]]
+        if [[ \`cat \${tmp} | jq -c \` ]]
         then
             mv \${tmp} \${4}
         fi
@@ -787,7 +787,7 @@ rmCreds() {
     | jq ".authScopes=\${newAuthScopes}" \\
     > \${tmp}
 
-    if [[ \`cat \${tmp} | jq\` ]]
+    if [[ \`cat \${tmp} | jq -c \` ]]
     then
         mv \${tmp} \${1}
     fi
