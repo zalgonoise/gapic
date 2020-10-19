@@ -1416,7 +1416,6 @@ histReplayRequest() {
 
     local met=\`echo \${1} | jq -r '.request.httpMethod'\`
     local url=\`echo \${1} | jq -r '.request.url'\`
-    local atk=\${ACCESSTOKEN}
 
     local headersCounter=( \`echo \${1} | jq '.request.headers | keys[] ' \` )
 
@@ -1428,7 +1427,7 @@ histReplayRequest() {
             curl -s \\
             --request \${met} \\
             \${(Q)url} \\
-            --header "Authorization: Bearer \${atk}" \\
+            --header "Authorization: Bearer \${ACCESSTOKEN}" \\
             --header "Accept: application/json" \\
             --compressed \\
             | jq -c '.' \\

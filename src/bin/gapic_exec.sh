@@ -52,7 +52,7 @@ gapicMenu() {
         | gapicFuzzyHistory ${gapicLogDir}${gapicReqLog} \
         | read -r histPayload
 
-        if [[ `echo ${histPayload} | jq ` ]]
+        if [[ `echo ${histPayload} | jq -c ` ]]
         then
             histReplayRequest "${histPayload}"
             exit 0

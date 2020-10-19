@@ -65,7 +65,7 @@ scopeCreate() {
         | jq ".authScopes=[.authScopes[],${newScope}]" \
         > ${tmp}
 
-        if [[ `cat ${tmp} | jq` ]]
+        if [[ `cat ${tmp} | jq -c ` ]]
         then
             mv ${tmp} ${4}
         fi
@@ -370,7 +370,7 @@ rmCreds() {
     | jq ".authScopes=${newAuthScopes}" \
     > ${tmp}
 
-    if [[ `cat ${tmp} | jq` ]]
+    if [[ `cat ${tmp} | jq -c ` ]]
     then
         mv ${tmp} ${1}
     fi
