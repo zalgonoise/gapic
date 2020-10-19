@@ -1400,12 +1400,21 @@ histUpdateJson() {
 
 
 histReplayRequest() {
-    export requestId=\`echo \${1} | jq -r '.requestId'\`
+    if [[ \`echo \${1} | jq -r '.tags'\` != "null" ]] \\
+    && [[ \`echo \${1} | jq -r '.tags.replay'\` == "true" ]]
+    then
+        export origReqId=\`echo \${1} | jq -r '.tags.origin'\`
+    else
+        export origReqId=\`echo \${1} | jq -r '.requestId'\`
+
+    fi
+
     export CLIENTID=\`echo \${1} | jq -r '.auth.clientId' \`
     export fileRef=\`echo \${CLIENTID//-/ } | awk '{print \$1}'\`
     export CLIENTSECRET=\`cat \${credPath}/\${fileRef} | jq -r '.clientSecret'\`
     export ACCESSTOKEN=\`echo \${1} | jq -r '.auth.accessToken'\`
     export REFRESHTOKEN=\`echo \${1} | jq -r '.auth.refreshToken'\`
+
     
     if [[ \`echo \${1} | jq -r '.auth.response.scope'\` == 'null'  ]]
     then
@@ -1414,6 +1423,8 @@ histReplayRequest() {
         export requestScope=\`echo \${1} | jq -r '.auth.response.scope'\`
     fi
 
+    local reqResource=\`echo \${1} | jq -r '.request.resource'\`
+    local reqMethod=\`echo \${1} | jq -r '.request.method'\`
     local met=\`echo \${1} | jq -r '.request.httpMethod'\`
     local url=\`echo \${1} | jq -r '.request.url'\`
 
@@ -1423,7 +1434,37 @@ histReplayRequest() {
     && [[ \`echo \${1} | jq ".request.headers[\${headersCounter[1]}]"\` =~ "Authorization: Bearer " ]] \\
     && [[ \`echo \${1} | jq ".request.headers[\${headersCounter[2]}]"\` == '"Accept: application/json"' ]]
     then
+
         execRequest() {
+            if [[ -z \${requestId} ]]
+            then 
+                histGenRequest "\${CLIENTID}" "\${ACCESSTOKEN}" "\${REFRESHTOKEN}" "\${reqResource}" "\${reqMethod}" "\${met}" "\${url}"
+
+                if ! [[ -z \${sentAuthRequest} ]] \\
+                && ! [[ -z \${authPayload} ]]
+                then 
+                    echo \${requestPayload} \\
+                    | histUpdatePayload ".auth.curl" "\${sentAuthRequest}"
+
+                    echo ${requestPayload} \\
+                    | histUpdatePayload ".auth.response" "\${authPayload}"
+                fi
+    
+                echo \${requestPayload} \\
+                | histListBuild ".request.headers" "\"Authorization: Bearer \${ACCESSTOKEN}\""
+                
+                echo \${requestPayload} \\
+                | histListBuild ".request.headers" "\"Accept: application/json\""
+
+                histNewEntry "\${requestPayload}" "\${gapicLogDir}" "requests.json"
+            else
+                histUpdateToken "\"\${requestId}\"" ".auth.refreshToken" "\${REFRESHTOKEN}"
+                histUpdateToken "\"\${requestId}\"" ".auth.accessToken" "\${ACCESSTOKEN}"        
+                histUpdateToken "\"\${requestId}\"" ".auth.curl" "\${sentAuthRequest}"            
+                histUpdateJson "\"\${requestId}\"" ".auth.response" "\${authPayload}"          
+            fi
+
+
             curl -s \\
             --request \${met} \\
             \${(Q)url} \\
@@ -1432,6 +1473,12 @@ histReplayRequest() {
             --compressed \\
             | jq -c '.' \\
             | read -r outputJson
+            export outputJson
+
+            histUpdateJson "\"\${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"\${origReqId}\"}"          
+            histUpdateJson "\"\${requestId}\"" ".response" "\${outputJson}"          
+            histUpdateToken "\"\${requestId}\"" ".request.curl" "curl -s --request \${met} \${(Q)url} --header 'Authorization: Bearer \${ACCESSTOKEN}' --header 'Accept: application/json' --compressed"          
+
         }
 
         execRequest
@@ -1446,6 +1493,7 @@ histReplayRequest() {
 
     fi
 }
+
 EOF
 
 
