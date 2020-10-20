@@ -510,12 +510,13 @@ buildAuth() {
     echo -en "# Please visit the URL below to generate an access code. Once authenticated you will be provided a code - paste it below: \n\n "
 
 
-    requestClientID=\`cat \${2} | jq -r '.clientId'  \`
-    requestClientSecret=\`cat \${2} | jq -r '.clientSecret' \`
+    requestClientID=\`cat \${1} | jq -r '.clientId'  \`
+    requestClientSecret=\`cat \${1} | jq -r '.clientSecret' \`
 
-    if [[ -z \${requestScope} ]]
+    if [[ -z \${requestScope} ]] \\
+    && ! [[ -z \${2} ]]
     then
-        export requestScope=\`cat \${2} | jq -r ".authScopes[\${1}].scopeUrl" \`
+        export requestScope=\`cat \${1} | jq -r ".authScopes[\${2}].scopeUrl" \`
     fi
 
     requestScopeCode=\${requestScope//:/%3A}
@@ -689,7 +690,7 @@ checkScopeAccess() {
     if [[ \`echo \${accessCheckJson} | jq ".refreshToken"| sed 's/"//g' \` == null ]] \\
     && [[ \`echo \${accessCheckJson} | jq ".accessToken" | sed 's/"//g' \` == null ]]
     then
-        buildAuth "\${1}" "\${2}"
+        buildAuth "\${2}" "\${1}" 
 
     elif [[ \`echo \${accessCheckJson} | jq ".refreshToken" | sed 's/"//g' \` != null ]] \\
     && [[ \`echo \${accessCheckJson} | jq ".accessToken" | sed 's/"//g' \` == null ]]
