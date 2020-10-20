@@ -92,9 +92,9 @@ asps_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -217,9 +217,9 @@ asps_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -322,9 +322,9 @@ asps_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -407,9 +407,9 @@ channels_stop() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -540,9 +540,9 @@ chromeosdevices_action() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -728,9 +728,9 @@ chromeosdevices_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -967,9 +967,9 @@ chromeosdevices_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -1092,9 +1092,9 @@ chromeosdevices_moveDevicesToOu() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -1280,9 +1280,9 @@ chromeosdevices_patch() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -1468,9 +1468,9 @@ chromeosdevices_update() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -1581,9 +1581,9 @@ customers_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -1686,9 +1686,9 @@ customers_patch() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -1799,9 +1799,9 @@ customers_update() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -1932,9 +1932,9 @@ domainAliases_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -2057,9 +2057,9 @@ domainAliases_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -2162,9 +2162,9 @@ domainAliases_insert() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -2327,9 +2327,9 @@ domainAliases_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -2452,9 +2452,9 @@ domains_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -2577,9 +2577,9 @@ domains_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -2682,9 +2682,9 @@ domains_insert() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -2795,9 +2795,9 @@ domains_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -2900,9 +2900,9 @@ groups_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -3005,9 +3005,9 @@ groups_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -3090,9 +3090,9 @@ groups_insert() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -3321,9 +3321,9 @@ groups_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -3426,9 +3426,9 @@ groups_patch() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -3539,9 +3539,9 @@ groups_update() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -3672,9 +3672,9 @@ members_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -3797,9 +3797,9 @@ members_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -3922,9 +3922,9 @@ members_hasMember() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -4027,9 +4027,9 @@ members_insert() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -4207,9 +4207,9 @@ members_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -4332,9 +4332,9 @@ members_patch() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -4465,9 +4465,9 @@ members_update() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -4598,9 +4598,9 @@ mobiledevices_action() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -4731,9 +4731,9 @@ mobiledevices_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -4911,9 +4911,9 @@ mobiledevices_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -5145,9 +5145,9 @@ mobiledevices_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -5270,9 +5270,9 @@ orgunits_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -5395,9 +5395,9 @@ orgunits_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -5500,9 +5500,9 @@ orgunits_insert() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -5720,9 +5720,9 @@ orgunits_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -5845,9 +5845,9 @@ orgunits_patch() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -5978,9 +5978,9 @@ orgunits_update() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -6091,9 +6091,9 @@ privileges_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -6216,9 +6216,9 @@ roleAssignments_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -6341,9 +6341,9 @@ roleAssignments_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -6446,9 +6446,9 @@ roleAssignments_insert() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -6626,9 +6626,9 @@ roleAssignments_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -6751,9 +6751,9 @@ roles_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -6876,9 +6876,9 @@ roles_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -6981,9 +6981,9 @@ roles_insert() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -7151,9 +7151,9 @@ roles_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -7276,9 +7276,9 @@ roles_patch() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -7409,9 +7409,9 @@ roles_update() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -7542,9 +7542,9 @@ schemas_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -7667,9 +7667,9 @@ schemas_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -7772,9 +7772,9 @@ schemas_insert() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -7885,9 +7885,9 @@ schemas_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -8010,9 +8010,9 @@ schemas_patch() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -8143,9 +8143,9 @@ schemas_update() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -8276,9 +8276,9 @@ tokens_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -8401,9 +8401,9 @@ tokens_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -8506,9 +8506,9 @@ tokens_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -8611,9 +8611,9 @@ twoStepVerification_turnOff() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -8724,9 +8724,9 @@ users_delete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -8942,9 +8942,9 @@ users_get() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -9027,9 +9027,9 @@ users_insert() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -9275,9 +9275,9 @@ users_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -9380,9 +9380,9 @@ users_makeAdmin() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -9493,9 +9493,9 @@ users_patch() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -9606,9 +9606,9 @@ users_signOut() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -9719,9 +9719,9 @@ users_undelete() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -9832,9 +9832,9 @@ users_update() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -10086,9 +10086,9 @@ users_watch() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -10199,9 +10199,9 @@ verificationCodes_generate() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -10312,9 +10312,9 @@ verificationCodes_invalidate() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 
@@ -10425,9 +10425,9 @@ verificationCodes_list() {
             && ! [[ -z ${authPayload} ]]
             then 
                 echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                echo  \
+                echo ${requestPayload} \
                 | histUpdatePayload ".auth.response" "${authPayload}"
             fi
 

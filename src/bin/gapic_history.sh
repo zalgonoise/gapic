@@ -158,10 +158,10 @@ histReplayRequest() {
                 && ! [[ -z ${authPayload} ]]
                 then 
                     echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "${sentAuthRequest}"
+                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
                     echo  \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
+                    | histUpdatePayload ".auth.response" "\"${authPayload}\""
                 fi
     
                 echo ${requestPayload} \
