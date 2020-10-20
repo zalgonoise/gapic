@@ -86,6 +86,11 @@ then
     mkdir -p ${outputDataDir}
 fi
 
+if ! [ -d ${outputLogDir} ]
+then
+    mkdir -p ${outputLogDir}
+fi
+
 if ! [ -d ${outputSchemaDir} ]
 then
     mkdir -p ${outputSchemaDir}
@@ -109,10 +114,15 @@ then
     touch ${outputCredsWiz} ${outputLibWiz} ${outputExecWiz} ${outputParamStoreWiz} ${outputFuzzWiz} ${outputHistWiz}
 fi
 
+if ! [ -f ${outputLogDir}/requests.json ]
+then
+    echo "[]" > ${outputLogDir}/requests.json
+fi
+
 apacheLicense() {
     cat << EOF
 #!/bin/zsh
-#   Copyright 2020 ZalgoNoise
+#   Copyright `date +%Y` ZalgoNoise
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
