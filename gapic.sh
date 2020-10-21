@@ -1458,6 +1458,13 @@ histListBuild() {
     export requestPayload
 }
 
+histRevListBuild() {
+    jq -c "\${1}=[\${2},\${1}[]]" \\
+    | read -r requestPayload
+
+    export requestPayload
+}
+
 histUpdatePayload() {
     jq -c "\${1}=\${2}" \\
     | read -r requestPayload
@@ -1478,7 +1485,7 @@ histNewEntry() {
         | read -r savedPayload
 
         echo \${savedPayload} \\
-        | histListBuild "." "\${1}"
+        | histRevListBuild "." "\${1}"
         
         if [[ \`echo \${requestPayload} | jq -c \` ]]
         then
