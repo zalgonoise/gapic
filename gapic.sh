@@ -2354,5 +2354,61 @@ buildLogUpdate ".buildLog.status" "\"OK\""
 gapicLogger "ENGINE" "COMPLETE" '\t' " OK " "Build completed in ${elapsedMins}m ${elapsedSecs}s"
 buildLogUpdate ".buildLog.endTimestamp" "${endTimestamp}"
 buildLogUpdate ".buildLog.buildTime" "${diffTimestamp}"
+
+# Zsh Lint
+lintExecWiz=`zsh -n ${outputExecWiz} 2>&1`
+if ! [[ -z ${lintExecWiz} ]]
+then
+    gapicLogger "LINT" "EXEC" '\t\t' "ERROR" "Exec zsh lint failed with errors: ${lintExecWiz}" "Exec zsh lint failed with errors." "CRITICAL:zsh-lint" "${outputExecWiz}: ${lintExecWiz}"
+
+else
+    gapicLogger "LINT" "EXEC" '\t\t' " OK " "Exec zsh lint passed with no errors"
+fi
+
+lintLibWiz=`zsh -n ${outputLibWiz} 2>&1`
+if ! [[ -z ${lintLibWiz} ]]
+then
+    gapicLogger "LINT" "LIB" '\t\t' "ERROR" "Lib zsh lint failed with errors: ${lintLibWiz}" "Lib zsh lint failed with errors." "CRITICAL:zsh-lint" "${outputLibWiz}: ${lintLibWiz}"
+
+else
+    gapicLogger "LINT" "LIB" '\t\t' " OK " "Lib zsh lint passed with no errors"
+fi
+
+lintCredsWiz=`zsh -n ${outputCredsWiz} 2>&1`
+if ! [[ -z ${lintCredsWiz} ]]
+then
+    gapicLogger "LINT" "CREDS" '\t\t' "ERROR" "Creds zsh lint failed with errors: ${lintCredsWiz}" "Creds zsh lint failed with errors." "CRITICAL:zsh-lint" "${outputCredsWiz}: ${lintCredsWiz}"
+
+else
+    gapicLogger "LINT" "CREDS" '\t\t' " OK " "Creds zsh lint passed with no errors"
+fi
+
+lintParamStoreWiz=`zsh -n ${outputParamStoreWiz} 2>&1`
+if ! [[ -z ${lintParamStoreWiz} ]]
+then
+    gapicLogger "LINT" "PARAM" '\t\t' "ERROR" "Param Store zsh lint failed with errors: ${lintParamStoreWiz}" "Param Store zsh lint failed with errors." "CRITICAL:zsh-lint" "${outputParamStoreWiz}: ${lintParamStoreWiz}"
+
+else
+    gapicLogger "LINT" "PARAM" '\t\t' " OK " "Param Store zsh lint passed with no errors"
+fi
+
+lintFuzzWiz=`zsh -n ${outputFuzzWiz} 2>&1`
+if ! [[ -z ${lintFuzzWiz} ]]
+then
+    gapicLogger "LINT" "FUZZ" '\t\t' "ERROR" "FuzzEx zsh lint failed with errors: ${lintFuzzWiz}" "FuzzEx zsh lint failed with errors." "CRITICAL:zsh-lint" "${outputFuzzWiz}: ${lintFuzzWiz}"
+
+else
+    gapicLogger "LINT" "FUZZ" '\t\t' " OK " "FuzzEx zsh lint passed with no errors"
+fi
+
+lintHistWiz=`zsh -n ${outputHistWiz} 2>&1`
+if ! [[ -z ${lintHistWiz} ]]
+then
+    gapicLogger "LINT" "HIST" '\t\t' "ERROR" "History zsh lint failed with errors: ${lintHistWiz}" "History zsh lint failed with errors." "CRITICAL:zsh-lint" "${outputHistWiz}: ${lintHistWiz}"
+
+else
+    gapicLogger "LINT" "HIST" '\t\t' " OK " "History zsh lint passed with no errors"
+fi
+
 gapicLogger "ENGINE" "COMPLETE" '\t' " OK " "# # gapic exit # # #" "Build completed."
 buildLogPush
