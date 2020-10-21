@@ -64,7 +64,7 @@ gapicLogger() {
     echo -e "[`date +%y-%m-%d`][`date +%H-%M-%S`.`printf "%03d" "$(($(date +%N)/1000000))"`][${logGroup}][$logSet]${logSep}[${logStatus}] # ${logMessage}" 
 
     jq -cn \
-    --arg ts ${logTimestamp} \
+    --argjson ts ${logTimestamp} \
     --arg loggroup ${1} \
     --arg logset ${2} \
     --arg logstatus ${4// /} \
@@ -119,7 +119,7 @@ buildLogPush() {
     if ! [[ -f ${outputLogDir}/buildLog.json ]]
     then 
         echo ${buildLogPayload} \
-        | jq \
+        | jq '.=[.]' \
         > ${outputLogDir}/buildLog.json
     else
         if [[ `cat ${outputLogDir}/buildLog.json | jq -c ` ]]
@@ -136,7 +136,7 @@ buildLogPush() {
             fi
         else            
             echo ${buildLogPayload} \
-            | jq \
+            | jq '.=[.]' \
             > ${outputLogDir}/buildLog.json
         fi            
     fi
@@ -1775,7 +1775,7 @@ apiSets=(`echo ${inputJson} | jq -c '.resources | keys[]' | grep -v ${apiExcepti
 
 #Log message
 gapicLogger "API" "RESOURCES" '\t' "INFO" "Collected ${#apiSets[@]} resources."
-gapicLogger "API" "RESOURCES" '\t' "INFO" "Iterating through each resource to collect data."
+#gapicLogger "API" "RESOURCES" '\t' "INFO" "Iterating through each resource to collect data."
 
 
 for (( a = 1 ; a <= ${#apiSets[@]} ; a++ ))
@@ -1794,7 +1794,7 @@ do
     do
 
         #Log message
-        gapicLogger "API" "METHODS" '\t\t' "INFO" "[${(U)apiSets[$a]}][${(U)localMethods[$b]}] - Collecting metadata."
+        #gapicLogger "API" "METHODS" '\t\t' "INFO" "[${(U)apiSets[$a]}][${(U)localMethods[$b]}] - Collecting metadata."
 
         ### Iterate through each method, prefix the resource to it (for function names)
         ### Also initialize those values as arrays (nesting them) to define query structure naming,
@@ -1831,7 +1831,7 @@ done
 
 #Log message
 gapicLogger "ENGINE" "EXEC" '\t\t' "INFO" "Creating gapic API library wizard under: ${outputLibWiz}."
-gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "Preparing array with resources."
+#gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "Preparing array with resources."
 
 
 
@@ -1854,7 +1854,7 @@ do
     # define local sets, similar to ${apiSets}
 
     #Log message
-    gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(U)apiSets[$a]}] - Preparing nested arrays for methods."
+    #gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(U)apiSets[$a]}] - Preparing nested arrays for methods."
 
      
     cat << EOF >> ${outputLibWiz}
@@ -1875,7 +1875,7 @@ for (( c = 1 ; c <= ${#apiSets[@]} ; c++ ))
 do
 
     #Log message
-    gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(U)apiSets[$c]}] - Initializing."
+    #gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(U)apiSets[$c]}] - Initializing."
 
 
     # loop through all methods within each resource
@@ -1884,7 +1884,7 @@ do
     do
 
         #Log message
-        gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Preparing needed metadata."
+        gapicLogger "ENGINE" "BUILD" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Building function."
 
         # define variable prefix for this method
 
@@ -1906,7 +1906,7 @@ do
         # fetch all available query parameters (not the post data)
 
         #Log message
-        gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Preparing parameters."
+        #gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Preparing parameters."
 
 
         curParams=(`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".parameters | keys[]"`)
@@ -1972,7 +1972,7 @@ do
 
         
         #Log message
-        gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Preparing request headers."
+        #gapicLogger "ENGINE" "LIB" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Preparing request headers."
 
         # define default cURL-compatible headers
         curHeaderSet=(
@@ -1998,7 +1998,7 @@ do
         # Function headers
 
         #Log message
-        gapicLogger "ENGINE" "BUILD" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Creating function."
+        #gapicLogger "ENGINE" "BUILD" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Creating function."
 
 
         cat << EOF >> ${outputLibWiz}
