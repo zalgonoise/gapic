@@ -18,7 +18,39 @@
 # doublecheck parameter parsing
 # handling post requests (w/ presets & jq)
 
+gapicVersion="0.5-beta"
+
 startTimestamp=`date +%s`
+
+gapicBuildLogEntry() {
+    buildLogGithubUrl="https://github.com/ZalgoNoise/gapic/"
+    buildLogLatestCommit=`git rev-parse --verify HEAD`
+    buildLogBranch=`git branch --show-current`
+    buildLogUser=`git config user.name`
+
+    jq -cn \
+    --arg ghcid ${buildLogLatestCommit} \
+    --arg ghurl "${buildLogGithubUrl}commit/${buildLogLatestCommit}" \
+    --arg ghb ${buildLogBranch} \
+    --arg ts ${startTimestamp} \
+    --arg gvs ${gapicVersion} \
+    '{timestamp: $ts, version: $gvs, github:{latestCommit: $ghcid, commitUrl: $ghurl, currentBranch: $ghb}, buildLog:{status: null, beginTimestamp: $ts, endTimestamp:null, buildTime:null, entries:[]}}' \
+    | read -r buildLogPayload
+
+    if [[ -z ${buildLogUser} ]]
+    then 
+        echo ${buildLogPayload} \
+        | jq -c '.github.user=null' \
+        | read -r buildLogPayload
+    else
+        echo ${buildLogPayload} \
+        | jq -c ".github.user=\"${buildLogUser}\"" \
+        | read -r buildLogPayload
+    fi
+
+    export buildLogPayload
+
+}
 
 gapicLogger() {
     logGroup="${1}"
@@ -27,8 +59,92 @@ gapicLogger() {
     logStatus="${4}"
     logMessage="${5}"
 
-    echo -e "[`date +%y-%m-%d`][`date +%H-%M-%S`.`printf "%03d" "$(($(date +%N)/1000000))"`][${logGroup}][$logSet]${logSep}[${logStatus}] # ${logMessage}" | tee -a ${outputLogDir:-.}/gapic_build.log
+    logTimestamp=`date +%s`
+
+    echo -e "[`date +%y-%m-%d`][`date +%H-%M-%S`.`printf "%03d" "$(($(date +%N)/1000000))"`][${logGroup}][$logSet]${logSep}[${logStatus}] # ${logMessage}" 
+
+    jq -cn \
+    --arg ts ${logTimestamp} \
+    --arg loggroup ${1} \
+    --arg logset ${2} \
+    --arg logstatus ${4// /} \
+    --arg logmsg ${6:-${5}} \
+    '{timestamp: $ts, status: $logstatus, info:{group: $loggroup, set: $logset, description: $logmsg}, error:null}' \
+    | read -r logEntryPayload
+
+    if ! [[ -z ${7} ]] \
+    && ! [[ -z ${8} ]]
+    then
+        jq -cn \
+        --arg err ${7} \
+        --arg errmsg ${8} \
+        '{error:null,errorMessage:null}' \
+        | read -r errorPayload
+
+        echo ${logEntryPayload} \
+        | jq -c ".error=${errorPayload}" \
+        | read -r newLogEntryPayload
+
+        if [[ `echo ${newLogEntryPayload} | jq -c ` ]]
+        then 
+            logEntryPayload=${newLogEntryPayload}
+        fi
+
+    fi
+
+    echo ${buildLogPayload} \
+    | jq -c ".buildLog.entries=[.buildLog.entries[],${logEntryPayload}]" \
+    | read -r newBuildPayload
+
+    if [[ `echo ${newBuildPayload} | jq -c `  ]]
+    then
+        buildLogPayload=${newBuildPayload}
+    fi
+
+
 }
+
+buildLogUpdate() {
+    echo ${buildLogPayload} \
+    | jq -c "${1}=${2}" \
+    | read -r newBuildPayload
+
+    if [[ `echo ${newBuildPayload} | jq -c `  ]]
+    then
+        buildLogPayload=${newBuildPayload}
+    fi
+}
+
+buildLogPush() {
+    if ! [[ -f ${outputLogDir}/buildLog.json ]]
+    then 
+        echo ${buildLogPayload} \
+        | jq \
+        > ${outputLogDir}/buildLog.json
+    else
+        if [[ `cat ${outputLogDir}/buildLog.json | jq -c ` ]]
+        then 
+            cat ${outputLogDir}/buildLog.json \
+            | jq -c ".=[.[],${buildLogPayload}]"\
+            | read -r buildHistoryPayload
+
+            if [[ `echo ${buildHistoryPayload} | jq -c ` ]]
+            then 
+                echo ${buildHistoryPayload} \
+                | jq \
+                > ${outputLogDir}/buildLog.json
+            fi
+        else            
+            echo ${buildLogPayload} \
+            | jq \
+            > ${outputLogDir}/buildLog.json
+        fi            
+    fi
+
+}
+
+# Build log entry
+gapicBuildLogEntry
 
 if ! [[ -z ${1} ]]
 then
@@ -52,7 +168,7 @@ then
 fi
 
 #Log message
-gapicLogger "ENGINE" "INIT" '\t\t' " OK " "# # gapic init # # #"
+gapicLogger "ENGINE" "INIT" '\t\t' " OK " "# # gapic init # # #" "Build started."
 gapicLogger "ENGINE" "VARIABLES" '\t' "INFO" "Preparing variables."
 
 
@@ -1607,7 +1723,7 @@ then
             rm ${newSchemaName}
         else
             #Log message
-            gapicLogger "SCHEMA" "DIFF" '\t\t' "WARNING" "Found differences in the schema. Keeping both files."
+            gapicLogger "SCHEMA" "DIFF" '\t\t' "WARNING" "Found differences in the schema. Keeping both files." "Found differences in the schema. Keeping both files" "WARNING:schema-diff" "Difference in schemas: ${checkDiff}"
 
             echo -e ":\n\n"
             echo ${checkDiff}
@@ -1630,7 +1746,7 @@ fi
 if ! [[ -f ${inputFile} ]]
 then
     #Log message
-    gapicLogger "SCHEMA" "FILECHECK" '\t\t' "ERROR" "Invalid input file, please make sure you enter the path to a valid file. Exiting."
+    gapicLogger "SCHEMA" "FILECHECK" '\t\t' "ERROR" "Invalid input file, please make sure you enter the path to a valid file. Exiting." "Invalid input file, please make sure you enter the path to a valid file. Exiting." "ERROR:invalid-file" "Not a file: ${inputFile} - [[ -f ${inputFile} ]]"
     exit 1
 fi
 
@@ -1645,7 +1761,7 @@ cat "${inputFile}" \
 if [[ ${inputJson} =~ "parse error" ]]
 then
     #Log message
-    gapicLogger "SCHEMA" "JSONCHECK" '\t\t' "ERROR" "Invalid JSON, please check your input file and verify it using \`jq\`. Error details:\n\n${inputJson}\n\n"
+    gapicLogger "SCHEMA" "JSONCHECK" '\t\t' "ERROR" "Invalid JSON, please check your input file and verify it using \`jq\`." "Invalid JSON, please check your input file and verify it using \`jq\`." "ERROR:invalid-json" "jq error: ${inputJson}"
     exit 1
 fi
 
@@ -2227,5 +2343,9 @@ elapsedSecs=`printf "%02d" $((${diffTimestamp}%60))`
 
 #Log message
 gapicLogger "ENGINE" "EXEC" '\t\t' " OK " "Executable set up. Run with \`$ ${outputExecWiz}\`"
+buildLogUpdate ".buildLog.status" "\"OK\""
 gapicLogger "ENGINE" "COMPLETE" '\t' " OK " "Build completed in ${elapsedMins}m ${elapsedSecs}s"
-gapicLogger "ENGINE" "COMPLETE" '\t' " OK " "# # gapic exit # # #"
+buildLogUpdate ".buildLog.endTimestamp" "${endTimestamp}"
+buildLogUpdate ".buildLog.buildTime" "${diffTimestamp}"
+gapicLogger "ENGINE" "COMPLETE" '\t' " OK " "# # gapic exit # # #" "Build completed."
+buildLogPush
