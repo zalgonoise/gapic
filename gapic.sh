@@ -125,7 +125,7 @@ buildLogPush() {
         if [[ `cat ${outputLogDir}/buildLog.json | jq -c ` ]]
         then 
             cat ${outputLogDir}/buildLog.json \
-            | jq -c ".=[.[],${buildLogPayload}]"\
+            | jq -c ".=[${buildLogPayload},.[]]"\
             | read -r buildHistoryPayload
 
             if [[ `echo ${buildHistoryPayload} | jq -c ` ]]
