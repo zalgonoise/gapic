@@ -1034,6 +1034,96 @@ apacheLicense > ${outputParamStoreWiz}
 
 cat << EOF >> ${outputParamStoreWiz}
 
+# param-store v2 (json)
+
+### must validate whether object already exists
+### to either call getParams() or checkParams()
+
+paramsRevListBuild() {
+    jq -c "\${1}=[\${2},\${1}[]]" \\
+    | read -r requestPayload
+
+    export requestPayload
+}
+
+
+getParams() {
+    local sourceRef=\${1}
+    local tempPar=\${2}
+    local urlVar=\${3}
+    local apiRef=(\`echo \${sourceRef//_/ }\` )
+
+    jq -cn \\
+    "{\${tempPar}:[]}" \\
+    | read -r paramPayload
+
+    if [[ -z \${(P)\${tempMeta}[3]} ]]
+    then
+        echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempMeta}[1]}).\n#\n# Desc: \${(P)\${tempMeta}[2]}\n~> "
+        read -r getOption
+        declare -g "tempVal=\${getOption}"
+        unset getOption 
+        clear
+
+    else
+        tempOpts=(\`echo \${(P)\${tempMeta}[3]} | jq -r ".[]"\`)
+        echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempMeta}[1]}).\n#\n# Desc: \${(P)\${tempMeta}[2]}\n~> "
+        
+        echo "\${tempOpts}" \\
+        | fuzzExOptParameters "\${apiRef[1]}" "\${apiRef[2]}" "\${tempPar}" \\
+        | read -r getOption
+
+        if [[ -n \${getOption} ]]
+        then
+            declare -g "tempVal=\${getOption}"
+            clear
+        fi
+        unset getOption 
+    fi
+    unset tempParMeta
+
+    if ! [[ -z "\${tempVal}" ]]
+    then
+
+        declare -g "\${tempPar}=\${tempVal}"
+        if [[ "\${urlVar}" =~ "true" ]]
+        then
+            declare -g "tempUrlPar=&\${tempPar}=\${(P)\${tempPar}}"
+        fi
+
+        paramContentArray=( \`cat \${credPath}/\${fileRef} | jq ".param | select(\${tempPar})[] | .[]" \` )
+
+        if [[ -z \${paramContentArray} ]]
+        then
+            echo \${paramPayload} \\
+            | paramsRevListBuild "\${tempPar}" "\${tempVal}" \\
+            | read -r paramNewEntry
+
+            cat \${credPath}/\${fileRef} \\
+            | jq -c ".param=[.param,\${paramNewEntry}]" \\
+            | read -r newParamPayload
+
+            if [[ \`echo \${newParamPayload} | jq -c \` ]]
+            then 
+                echo \${newParamPayload} \\
+                | jq \\
+                > \${credPath}/\${fileRef}
+            fi
+        else
+        
+            ### check if it's better to add verification to keys, first
+            ### check if it will scale well (with many inputs)
+            ### tbc
+
+        fi
+
+    fi
+    unset tempPar tempCarrier tempVal
+
+}
+
+
+
 
 # handle storing parameters
 
@@ -1119,7 +1209,7 @@ checkParams() {
     local apiRef=(\`echo \${sourceRef//_/ }\` )
 
     tempCarrier=PARAM_\${tempPar}
-    echo -en "# You have saved values for the \${tempPar} parameter. Do you want to use one?\n\n"
+    #echo -en "# You have saved values for the \${tempPar} parameter. Do you want to use one?\n\n"
     
     echo "\${(P)\${tempCarrier}} [none]" \\
     | fuzzExSimpleParameters "\${apiRef[1]}" "\${apiRef[2]}" "\${tempPar}" \\
