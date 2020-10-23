@@ -1040,11 +1040,57 @@ cat << EOF >> ${outputParamStoreWiz}
 ### to either call getParams() or checkParams()
 
 paramsRevListBuild() {
-    jq -c "\${1}=[\${2},\${1}[]]" \\
+    jq -c ".\${1}=[\${2},.\${1}[]]" \\
     | read -r requestPayload
 
     export requestPayload
 }
+
+paramBuild() {
+    echo \${3} \\
+    | paramsRevListBuild "\${1}" "\"\${2}\"" \\
+    | read -r paramNewEntry
+
+    cat \${credPath}/\${fileRef} \\
+    | jq -c ".param=[.param,\${paramNewEntry}]" \\
+    | read -r newParamPayload
+
+    if [[ \`echo \${newParamPayload} | jq -c \` ]]
+    then 
+        echo \${newParamPayload} \\
+        | jq \\
+        > \${credPath}/\${fileRef}
+    fi
+
+}
+
+# Handle parameter removal
+
+rmParams() {
+    modParams=( \`cat \${3} | jq ".param.\${1}[]" | grep -v "\${2}"\` )
+
+    newList="[]"
+
+    for (( par = 1 ; par <= \${#modParams[@]} ; par++ ))
+    do 
+        echo \${newList} \\
+        | jq -c ".=[.[],\"\${modParams[\${par}]}\"]" \\
+        | read -r newList
+    done
+
+    cat \${3} \\
+    | jq -c ".param.\${1}=\${newList}" \\
+    | read -r newParamPayload
+    
+    if [[ \`echo \${newParamPayload} | jq -c \` ]]
+    then 
+        echo \${newParamPayload} \\
+        | jq \\
+        > \${3}
+    fi
+
+}
+
 
 
 getParams() {
@@ -1091,115 +1137,14 @@ getParams() {
             declare -g "tempUrlPar=&\${tempPar}=\${(P)\${tempPar}}"
         fi
 
-        paramContentArray=( \`cat \${credPath}/\${fileRef} | jq ".param | select(\${tempPar})[] | .[]" \` )
-
-        if [[ -z \${paramContentArray} ]]
-        then
-            echo \${paramPayload} \\
-            | paramsRevListBuild "\${tempPar}" "\${tempVal}" \\
-            | read -r paramNewEntry
-
-            cat \${credPath}/\${fileRef} \\
-            | jq -c ".param=[.param,\${paramNewEntry}]" \\
-            | read -r newParamPayload
-
-            if [[ \`echo \${newParamPayload} | jq -c \` ]]
-            then 
-                echo \${newParamPayload} \\
-                | jq \\
-                > \${credPath}/\${fileRef}
-            fi
-        else
-        
-            ### check if it's better to add verification to keys, first
-            ### check if it will scale well (with many inputs)
-            ### tbc
-
-        fi
+        paramBuild "\${tempPar}" "\${tempVal}" "\${paramPayload}"
 
     fi
     unset tempPar tempCarrier tempVal
 
 }
 
-
-
-
-# handle storing parameters
-
-getParams() {
-    local sourceRef=\${1}
-    local tempPar=\${2}
-    local urlVar=\${3}
-
-    local apiRef=(\`echo \${sourceRef//_/ }\` )
-
-
-    local tempCarrier=PARAM_\${tempPar}
-    local tempMeta=\${tempPar}Meta
-    local tempVal="\${(P)tempPar}"
-
-    if [[ -z \${(P)\${tempMeta}[3]} ]]
-    then
-        echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempMeta}[1]}).\n#\n# Desc: \${(P)\${tempMeta}[2]}\n~> "
-        read -r getOption
-        declare -g "tempVal=\${getOption}"
-        unset getOption 
-        clear
-
-    else
-        tempOpts=(\`echo \${(P)\${tempMeta}[3]} | jq -r ".[]"\`)
-        echo -en "# Please supply a value for the \${tempPar} parameter (\${(P)\${tempMeta}[1]}).\n#\n# Desc: \${(P)\${tempMeta}[2]}\n~> "
-        
-        echo "\${tempOpts}" \\
-        | fuzzExOptParameters "\${apiRef[1]}" "\${apiRef[2]}" "\${tempPar}" \\
-        | read -r getOption
-
-        if [[ -n \${getOption} ]]
-        then
-            declare -g "tempVal=\${getOption}"
-            clear
-        fi
-        unset getOption 
-    fi
-    unset tempParMeta
-
-    if ! [[ -z "\${tempVal}" ]]
-    then
-
-        declare -g "\${tempPar}=\${tempVal}"
-        if [[ "\${urlVar}" =~ "true" ]]
-        then
-            declare -g "tempUrlPar=&\${tempPar}=\${(P)\${tempPar}}"
-        fi
-
-
-        if [[ -f \${credFileParams} ]]
-        then
-            if ! [[ \`grep "\${tempCarrier}" \${credFileParams}\` ]]
-            then 
-                cat << EOIF >> \${credFileParams}
-\${tempCarrier}=( \${(P)\${tempPar}} )
-EOIF
-            else 
-                if ! [[ \`egrep "\\<\${tempCarrier}\\>.*\\<\${(P)\${tempPar}}\\>" \${credFileParams}\` ]]
-                then
-                    cat << EOIF >> \${credFileParams}
-\${tempCarrier}+=( \${(P)\${tempPar}} )
-EOIF
-                fi
-            fi
-        else
-            touch \${credFileParams}
-            cat << EOIF >> \${credFileParams}
-\${tempCarrier}=( \${(P)\${tempPar}} )
-EOIF
-        fi
-    fi
-    unset tempPar tempCarrier tempVal
-}
-
-# Handle saved parameters
+# Handle saved parameters - v2 (json)
 
 checkParams() {
     local sourceRef=\${1}
@@ -1209,55 +1154,45 @@ checkParams() {
     local apiRef=(\`echo \${sourceRef//_/ }\` )
 
     tempCarrier=PARAM_\${tempPar}
-    #echo -en "# You have saved values for the \${tempPar} parameter. Do you want to use one?\n\n"
-    
-    echo "\${(P)\${tempCarrier}} [none]" \\
-    | fuzzExSimpleParameters "\${apiRef[1]}" "\${apiRef[2]}" "\${tempPar}" \\
-    | read -r checkOption
-   
-    if [[ -n \${checkOption} ]]
-    then
-        if [[ \${checkOption} == "[none]" ]]
+    echo -en "# You have saved values for the \${tempPar} parameter. Do you want to use one?\n\n"
+
+    savedParams=( \`cat \${credPath}/\${fileRef} | jq -c ".param.\${tempPar}[]"\` )
+
+    if ! [[ -z \${savedParams} ]]
+    then 
+        echo "\${savedParams[@]} [none]" \\
+        | fuzzExSimpleParameters "\${apiRef[1]}" "\${apiRef[2]}" "\${tempPar}" \\
+        | read -r checkOption
+        
+        if [[ -n \${checkOption} ]]
         then
-            clear
-            getParams \${sourceRef} \${tempPar} \${urlVar}
-        else
-            clear
-            declare -g "\${tempPar}=\${checkOption}"
-            if [[ "\${urlVar}" == "true" ]]
+            if [[ \${checkOption} == "[none]" ]]
             then
-                declare -g "tempUrlPar=&\${tempPar}=\${(P)\${tempPar}}"
+                clear
+                unset checkOption
+                getParams \${1} \${2} \${3}
+            else
+                clear
+                declare -g "\${tempPar}=\${checkOption}"
+                if [[ "\${urlVar}" == "true" ]]
+                then
+                    declare -g "tempUrlPar=&\${tempPar}=\${(P)\${tempPar}}"
+                fi
+                
+                unset checkOption
             fi
-            
-            unset checkOption
+        else
+            getParams \${1} \${2} \${3}
         fi
     else
-        clear
-        getParams \${sourceRef} \${tempPar} \${urlVar}
+        getParams \${1} \${2} \${3}
     fi
-
 
     if [[ -z "\${(P)\${tempPar}}" ]]
     then
         getParams \${sourceRef} \${tempPar} \${urlVar}
     fi
     unset tempPar reuseParOpt tempCarrier
-}
-
-
-
-# Handle parameter removal
-
-rmParams() {
-    local paramRef=\${1}
-    local paramToRemove=\${2}
-    local paramFile=\${3}
-
-    lineToRemove=\`egrep -n "\\<PARAM_\${paramRef}\\>.*\\<\${paramToRemove}\\>" \${paramFile} | tr ':' ' ' | awk '{print \$1}' \`
-    if ! [[ -z \${lineToRemove} ]]
-    then
-        sed -i "\${lineToRemove}d" \${paramFile}
-    fi
 }
 
 EOF
@@ -1395,7 +1330,7 @@ fuzzExSimpleParameters() {
     --bind "tab:replace-query" \\
     --bind "change:top" \\
     --layout=reverse-list \\
-    --bind "ctrl-r:execute% source \${gapicParamWiz} && rmParams \${tempPar} {} \${gapicSavedPar} %+preview(cat <(echo -e \# Removed {}))" \\
+    --bind "ctrl-r:execute% source \${gapicParamWiz} && rmParams \${tempPar} {} \${credPath}/\${fileRef} %+preview(cat <(echo -e \# Removed {}))" \\
     --preview "cat <(echo -e \"# Ctrl-r: Remove entry #\n\n\") <( cat \${schemaFile} | jq --sort-keys -C  .resources.\${1}.methods.\${2}.parameters.\${3})" \\
     --prompt="~ " \\
     --pointer="~ " \\
