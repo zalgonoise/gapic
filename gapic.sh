@@ -2188,7 +2188,7 @@ EOF
             fi
         done
     fi
-    
+
 EOF
         fi
 
@@ -2240,18 +2240,34 @@ EOF
                     break 
                 else
                     clear
-                    local optParam=PARAM_\${option}
-                    if ! [[ -z "\${(P)\${optParam}}" ]]
-                    then 
-                        checkParams ${(P)${apiSets[$c]}[$d]} \${option} "true"
-                        if ! [[ \${addedParams} =~ \${option} ]]
+
+                    if ! [[ \` cat \${credPath}/\${fileRef} | jq -r '.param' \` == "null" ]]
+                    then
+                        if ! [[ \` cat \${credPath}/\${fileRef} | jq -r ".param[].\${option}" \` == "null" ]]
                         then
-                            ${curPrefix}URL+="\${tempUrlPar}"
-                            addedParams+=( "\${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -r ".param[].\${option}[]" \` ]]
+                            then
+                                checkParams ${(P)${apiSets[$c]}[$d]} \${option} "true"
+                                if ! [[ \${addedParams} =~ \${option} ]]
+                                then
+                                    ${curPrefix}URL+="\${tempUrlPar}"
+                                    addedParams+=( "\${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
+                                ${curPrefix}URL+="\${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
+                            ${curPrefix}URL+="\${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
                         getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
                         ${curPrefix}URL+="\${tempUrlPar}"
