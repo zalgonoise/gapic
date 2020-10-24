@@ -1140,7 +1140,7 @@ getParams() {
         paramBuild "\${tempPar}" "\${tempVal}" "\${paramPayload}"
 
     fi
-    unset tempPar tempCarrier tempVal
+    unset tempPar tempVal
 
 }
 
@@ -1153,7 +1153,6 @@ checkParams() {
 
     local apiRef=(\`echo \${sourceRef//_/ }\` )
 
-    tempCarrier=PARAM_\${tempPar}
     echo -en "# You have saved values for the \${tempPar} parameter. Do you want to use one?\n\n"
 
     savedParams=( \`cat \${credPath}/\${fileRef} | jq -c ".param.\${tempPar}[]"\` )
@@ -1192,7 +1191,7 @@ checkParams() {
     then
         getParams \${sourceRef} \${tempPar} \${urlVar}
     fi
-    unset tempPar reuseParOpt tempCarrier
+    unset tempPar reuseParOpt 
 }
 
 EOF
@@ -2068,18 +2067,25 @@ EOF
     
                 cat << EOF >> "${outputLibWiz}"
 
-    if [[ -z "\${${curPrefix}${curReqParams[$h]}}" ]]
+    if ! [[ \` cat \${credPath}/\${fileRef} | jq -r '.param' \` == "null" ]]
     then
-        if ! [[ -z "\${PARAM_${curReqParams[$h]}}" ]]
-        then 
-            checkParams ${(P)${apiSets[$c]}[$d]} ${curReqParams[$h]} "false"
-            
+        if ! [[ \` cat \${credPath}/\${fileRef} | jq -r '.param[].${curReqParams[$h]}' \` == "null" ]]
+        then
+            if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -r '.param[].${curReqParams[$h]}[]' \` ]]
+            then
+                checkParams ${(P)${apiSets[$c]}[$d]} ${curReqParams[$h]} "false"
+            else
+                getParams "${(P)${apiSets[$c]}[$d]}" "${curReqParams[$h]}"
+            fi
         else
             getParams "${(P)${apiSets[$c]}[$d]}" "${curReqParams[$h]}"
         fi
-        declare -g "${curPrefix}${curReqParams[$h]}=\${${curReqParams[$h]}}"
-
+    else
+        getParams "${(P)${apiSets[$c]}[$d]}" "${curReqParams[$h]}"
     fi
+
+    #    declare -g "${curPrefix}${curReqParams[$h]}=\${${curReqParams[$h]}}"
+
 
     
 EOF
