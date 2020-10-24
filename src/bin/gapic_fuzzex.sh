@@ -136,7 +136,7 @@ fuzzExSimpleParameters() {
     --bind "tab:replace-query" \
     --bind "change:top" \
     --layout=reverse-list \
-    --bind "ctrl-r:execute% source ${gapicParamWiz} && rmParams ${tempPar} {} ${gapicSavedPar} %+preview(cat <(echo -e \# Removed {}))" \
+    --bind "ctrl-r:execute% source ${gapicParamWiz} && rmParams ${tempPar} {} ${credPath}/${fileRef} %+preview(cat <(echo -e \# Removed {}))" \
     --preview "cat <(echo -e \"# Ctrl-r: Remove entry #\n\n\") <( cat ${schemaFile} | jq --sort-keys -C  .resources.${1}.methods.${2}.parameters.${3})" \
     --prompt="~ " \
     --pointer="~ " \

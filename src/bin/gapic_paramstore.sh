@@ -14,20 +14,88 @@
 #   limitations under the License.
 
 
+# param-store v2 (json)
 
-# handle storing parameters
+### must validate whether object already exists
+### to either call getParams() or checkParams()
+
+genParamConfig() {
+    cat ${credPath}/${fileRef} \
+    | jq -c '.param=[]' \
+    | read -r newPayload
+
+    if [[ `echo ${newPayload} | jq -c ` ]]
+    then 
+        echo ${newPayload} \
+        | jq \
+        > ${credPath}/${fileRef}
+    fi
+}
+
+paramsRevListBuild() {
+    jq -c ".${1}=[${2},.${1}[]]" \
+    | read -r requestPayload
+
+    export requestPayload
+}
+
+paramBuild() {
+    echo ${3} \
+    | paramsRevListBuild "${1}" "\"${2}\"" \
+    | read -r paramNewEntry
+
+    cat ${credPath}/${fileRef} \
+    | jq -c ".param=[.param,${paramNewEntry}]" \
+    | read -r newParamPayload
+
+    if [[ `echo ${newParamPayload} | jq -c ` ]]
+    then 
+        echo ${newParamPayload} \
+        | jq \
+        > ${credPath}/${fileRef}
+    fi
+
+}
+
+# Handle parameter removal
+
+rmParams() {
+    modParams=( `cat ${3} | jq ".param.${1}[]" | grep -v "${2}"` )
+
+    newList="[]"
+
+    for (( par = 1 ; par <= ${#modParams[@]} ; par++ ))
+    do 
+        echo ${newList} \
+        | jq -c ".=[.[],\"${modParams[${par}]}\"]" \
+        | read -r newList
+    done
+
+    cat ${3} \
+    | jq -c ".param.${1}=${newList}" \
+    | read -r newParamPayload
+    
+    if [[ `echo ${newParamPayload} | jq -c ` ]]
+    then 
+        echo ${newParamPayload} \
+        | jq \
+        > ${3}
+    fi
+
+}
+
+
 
 getParams() {
     local sourceRef=${1}
     local tempPar=${2}
     local urlVar=${3}
-
     local apiRef=(`echo ${sourceRef//_/ }` )
+    local tempMeta="${2}Meta"
 
-
-    local tempCarrier=PARAM_${tempPar}
-    local tempMeta=${tempPar}Meta
-    local tempVal="${(P)tempPar}"
+    jq -cn \
+    "{${tempPar}:[]}" \
+    | read -r paramPayload
 
     if [[ -z ${(P)${tempMeta}[3]} ]]
     then
@@ -63,33 +131,14 @@ getParams() {
             declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
         fi
 
+        paramBuild "${tempPar}" "${tempVal}" "${paramPayload}"
 
-        if [[ -f ${credFileParams} ]]
-        then
-            if ! [[ `grep "${tempCarrier}" ${credFileParams}` ]]
-            then 
-                cat << EOIF >> ${credFileParams}
-${tempCarrier}=( ${(P)${tempPar}} )
-EOIF
-            else 
-                if ! [[ `egrep "\<${tempCarrier}\>.*\<${(P)${tempPar}}\>" ${credFileParams}` ]]
-                then
-                    cat << EOIF >> ${credFileParams}
-${tempCarrier}+=( ${(P)${tempPar}} )
-EOIF
-                fi
-            fi
-        else
-            touch ${credFileParams}
-            cat << EOIF >> ${credFileParams}
-${tempCarrier}=( ${(P)${tempPar}} )
-EOIF
-        fi
     fi
-    unset tempPar tempCarrier tempVal
+    unset tempPar tempVal
+
 }
 
-# Handle saved parameters
+# Handle saved parameters - v2 (json)
 
 checkParams() {
     local sourceRef=${1}
@@ -98,55 +147,44 @@ checkParams() {
 
     local apiRef=(`echo ${sourceRef//_/ }` )
 
-    tempCarrier=PARAM_${tempPar}
     echo -en "# You have saved values for the ${tempPar} parameter. Do you want to use one?\n\n"
-    
-    echo "${(P)${tempCarrier}} [none]" \
-    | fuzzExSimpleParameters "${apiRef[1]}" "${apiRef[2]}" "${tempPar}" \
-    | read -r checkOption
-   
-    if [[ -n ${checkOption} ]]
-    then
-        if [[ ${checkOption} == "[none]" ]]
+
+    savedParams=( `cat ${credPath}/${fileRef} | jq -c ".param.${tempPar}[]"` )
+
+    if ! [[ -z ${savedParams} ]]
+    then 
+        echo "${savedParams[@]} [none]" \
+        | fuzzExSimpleParameters "${apiRef[1]}" "${apiRef[2]}" "${tempPar}" \
+        | read -r checkOption
+        
+        if [[ -n ${checkOption} ]]
         then
-            clear
-            getParams ${sourceRef} ${tempPar} ${urlVar}
-        else
-            clear
-            declare -g "${tempPar}=${checkOption}"
-            if [[ "${urlVar}" == "true" ]]
+            if [[ ${checkOption} == "[none]" ]]
             then
-                declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
+                clear
+                unset checkOption
+                getParams ${1} ${2} ${3}
+            else
+                clear
+                declare -g "${tempPar}=${checkOption}"
+                if [[ "${urlVar}" == "true" ]]
+                then
+                    declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
+                fi
+                
+                unset checkOption
             fi
-            
-            unset checkOption
+        else
+            getParams ${1} ${2} ${3}
         fi
     else
-        clear
-        getParams ${sourceRef} ${tempPar} ${urlVar}
+        getParams ${1} ${2} ${3}
     fi
-
 
     if [[ -z "${(P)${tempPar}}" ]]
     then
         getParams ${sourceRef} ${tempPar} ${urlVar}
     fi
-    unset tempPar reuseParOpt tempCarrier
-}
-
-
-
-# Handle parameter removal
-
-rmParams() {
-    local paramRef=${1}
-    local paramToRemove=${2}
-    local paramFile=${3}
-
-    lineToRemove=`egrep -n "\<PARAM_${paramRef}\>.*\<${paramToRemove}\>" ${paramFile} | tr ':' ' ' | awk '{print $1}' `
-    if ! [[ -z ${lineToRemove} ]]
-    then
-        sed -i "${lineToRemove}d" ${paramFile}
-    fi
+    unset tempPar reuseParOpt 
 }
 

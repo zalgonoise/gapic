@@ -1039,6 +1039,19 @@ cat << EOF >> ${outputParamStoreWiz}
 ### must validate whether object already exists
 ### to either call getParams() or checkParams()
 
+genParamConfig() {
+    cat \${credPath}/\${fileRef} \\
+    | jq -c '.param=[]' \\
+    | read -r newPayload
+
+    if [[ \`echo \${newPayload} | jq -c \` ]]
+    then 
+        echo \${newPayload} \\
+        | jq \\
+        > \${credPath}/\${fileRef}
+    fi
+}
+
 paramsRevListBuild() {
     jq -c ".\${1}=[\${2},.\${1}[]]" \\
     | read -r requestPayload
@@ -1098,6 +1111,7 @@ getParams() {
     local tempPar=\${2}
     local urlVar=\${3}
     local apiRef=(\`echo \${sourceRef//_/ }\` )
+    local tempMeta="\${2}Meta"
 
     jq -cn \\
     "{\${tempPar}:[]}" \\
@@ -2081,6 +2095,7 @@ EOF
             getParams "${(P)${apiSets[$c]}[$d]}" "${curReqParams[$h]}"
         fi
     else
+        genParamConfig
         getParams "${(P)${apiSets[$c]}[$d]}" "${curReqParams[$h]}"
     fi
 
@@ -2179,6 +2194,7 @@ EOF
                         fi
                         unset optParam
                     else
+                        genParamConfig
                         getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
                         ${curPrefix}URL+="\${tempUrlPar}"
                         unset tempUrlPar
@@ -2269,6 +2285,7 @@ EOF
                         fi
                         unset optParam
                     else
+                        genParamConfig
                         getParams "${(P)${apiSets[$c]}[$d]}" "\${option}" "true"
                         ${curPrefix}URL+="\${tempUrlPar}"
                         unset tempUrlPar

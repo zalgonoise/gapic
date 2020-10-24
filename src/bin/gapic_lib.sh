@@ -46,18 +46,26 @@ asps_delete() {
     )
 
 
-    if [[ -z "${ASPS_DELETE_codeId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_codeId}" ]]
-        then 
-            checkParams asps_delete codeId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].codeId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].codeId[]' ` ]]
+            then
+                checkParams asps_delete codeId "false"
+            else
+                getParams "asps_delete" "codeId"
+            fi
         else
             getParams "asps_delete" "codeId"
         fi
-        declare -g "ASPS_DELETE_codeId=${codeId}"
-
+    else
+        genParamConfig
+        getParams "asps_delete" "codeId"
     fi
+
+    #    declare -g "ASPS_DELETE_codeId=${codeId}"
+
 
     
     userKeyMeta=( 
@@ -66,18 +74,26 @@ asps_delete() {
     )
 
 
-    if [[ -z "${ASPS_DELETE_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams asps_delete userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams asps_delete userKey "false"
+            else
+                getParams "asps_delete" "userKey"
+            fi
         else
             getParams "asps_delete" "userKey"
         fi
-        declare -g "ASPS_DELETE_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "asps_delete" "userKey"
     fi
+
+    #    declare -g "ASPS_DELETE_userKey=${userKey}"
+
 
     
 
@@ -171,18 +187,26 @@ asps_get() {
     )
 
 
-    if [[ -z "${ASPS_GET_codeId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_codeId}" ]]
-        then 
-            checkParams asps_get codeId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].codeId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].codeId[]' ` ]]
+            then
+                checkParams asps_get codeId "false"
+            else
+                getParams "asps_get" "codeId"
+            fi
         else
             getParams "asps_get" "codeId"
         fi
-        declare -g "ASPS_GET_codeId=${codeId}"
-
+    else
+        genParamConfig
+        getParams "asps_get" "codeId"
     fi
+
+    #    declare -g "ASPS_GET_codeId=${codeId}"
+
 
     
     userKeyMeta=( 
@@ -191,18 +215,26 @@ asps_get() {
     )
 
 
-    if [[ -z "${ASPS_GET_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams asps_get userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams asps_get userKey "false"
+            else
+                getParams "asps_get" "userKey"
+            fi
         else
             getParams "asps_get" "userKey"
         fi
-        declare -g "ASPS_GET_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "asps_get" "userKey"
     fi
+
+    #    declare -g "ASPS_GET_userKey=${userKey}"
+
 
     
 
@@ -296,18 +328,26 @@ asps_list() {
     )
 
 
-    if [[ -z "${ASPS_LIST_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams asps_list userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams asps_list userKey "false"
+            else
+                getParams "asps_list" "userKey"
+            fi
         else
             getParams "asps_list" "userKey"
         fi
-        declare -g "ASPS_LIST_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "asps_list" "userKey"
     fi
+
+    #    declare -g "ASPS_LIST_userKey=${userKey}"
+
 
     
 
@@ -494,18 +534,26 @@ chromeosdevices_action() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_ACTION_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams chromeosdevices_action customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams chromeosdevices_action customerId "false"
+            else
+                getParams "chromeosdevices_action" "customerId"
+            fi
         else
             getParams "chromeosdevices_action" "customerId"
         fi
-        declare -g "CHROMEOSDEVICES_ACTION_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_action" "customerId"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_ACTION_customerId=${customerId}"
+
 
     
     resourceIdMeta=( 
@@ -514,18 +562,26 @@ chromeosdevices_action() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_ACTION_resourceId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_resourceId}" ]]
-        then 
-            checkParams chromeosdevices_action resourceId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId[]' ` ]]
+            then
+                checkParams chromeosdevices_action resourceId "false"
+            else
+                getParams "chromeosdevices_action" "resourceId"
+            fi
         else
             getParams "chromeosdevices_action" "resourceId"
         fi
-        declare -g "CHROMEOSDEVICES_ACTION_resourceId=${resourceId}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_action" "resourceId"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_ACTION_resourceId=${resourceId}"
+
 
     
 
@@ -627,18 +683,26 @@ chromeosdevices_get() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_GET_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams chromeosdevices_get customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams chromeosdevices_get customerId "false"
+            else
+                getParams "chromeosdevices_get" "customerId"
+            fi
         else
             getParams "chromeosdevices_get" "customerId"
         fi
-        declare -g "CHROMEOSDEVICES_GET_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_get" "customerId"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_GET_customerId=${customerId}"
+
 
     
     deviceIdMeta=( 
@@ -647,18 +711,26 @@ chromeosdevices_get() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_GET_deviceId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_deviceId}" ]]
-        then 
-            checkParams chromeosdevices_get deviceId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId[]' ` ]]
+            then
+                checkParams chromeosdevices_get deviceId "false"
+            else
+                getParams "chromeosdevices_get" "deviceId"
+            fi
         else
             getParams "chromeosdevices_get" "deviceId"
         fi
-        declare -g "CHROMEOSDEVICES_GET_deviceId=${deviceId}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_get" "deviceId"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_GET_deviceId=${deviceId}"
+
 
     
 
@@ -696,29 +768,45 @@ chromeosdevices_get() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams chromeosdevices_get ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams chromeosdevices_get ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "chromeosdevices_get" "${option}" "true"
+                                CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "chromeosdevices_get" "${option}" "true"
+                            CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "chromeosdevices_get" "${option}" "true"
                         CHROMEOSDEVICES_GET_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -807,18 +895,26 @@ chromeosdevices_list() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_LIST_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams chromeosdevices_list customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams chromeosdevices_list customerId "false"
+            else
+                getParams "chromeosdevices_list" "customerId"
+            fi
         else
             getParams "chromeosdevices_list" "customerId"
         fi
-        declare -g "CHROMEOSDEVICES_LIST_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_list" "customerId"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_LIST_customerId=${customerId}"
+
 
     
 
@@ -868,29 +964,45 @@ chromeosdevices_list() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams chromeosdevices_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams chromeosdevices_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "chromeosdevices_list" "${option}" "true"
+                                CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "chromeosdevices_list" "${option}" "true"
+                            CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "chromeosdevices_list" "${option}" "true"
                         CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     inpParams=( maxResults orgUnitPath pageToken query )
 
     maxResultsMeta=(
@@ -936,19 +1048,36 @@ chromeosdevices_list() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams chromeosdevices_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams chromeosdevices_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "chromeosdevices_list" "${option}" "true"
+                                CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "chromeosdevices_list" "${option}" "true"
+                            CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "chromeosdevices_list" "${option}" "true"
                         CHROMEOSDEVICES_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -1046,18 +1175,26 @@ chromeosdevices_moveDevicesToOu() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_MOVEDEVICESTOOU_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams chromeosdevices_moveDevicesToOu customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams chromeosdevices_moveDevicesToOu customerId "false"
+            else
+                getParams "chromeosdevices_moveDevicesToOu" "customerId"
+            fi
         else
             getParams "chromeosdevices_moveDevicesToOu" "customerId"
         fi
-        declare -g "CHROMEOSDEVICES_MOVEDEVICESTOOU_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_moveDevicesToOu" "customerId"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_MOVEDEVICESTOOU_customerId=${customerId}"
+
 
     
     orgUnitPathMeta=( 
@@ -1066,18 +1203,26 @@ chromeosdevices_moveDevicesToOu() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_MOVEDEVICESTOOU_orgUnitPath}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_orgUnitPath}" ]]
-        then 
-            checkParams chromeosdevices_moveDevicesToOu orgUnitPath "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath[]' ` ]]
+            then
+                checkParams chromeosdevices_moveDevicesToOu orgUnitPath "false"
+            else
+                getParams "chromeosdevices_moveDevicesToOu" "orgUnitPath"
+            fi
         else
             getParams "chromeosdevices_moveDevicesToOu" "orgUnitPath"
         fi
-        declare -g "CHROMEOSDEVICES_MOVEDEVICESTOOU_orgUnitPath=${orgUnitPath}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_moveDevicesToOu" "orgUnitPath"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_MOVEDEVICESTOOU_orgUnitPath=${orgUnitPath}"
+
 
     
 
@@ -1179,18 +1324,26 @@ chromeosdevices_patch() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_PATCH_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams chromeosdevices_patch customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams chromeosdevices_patch customerId "false"
+            else
+                getParams "chromeosdevices_patch" "customerId"
+            fi
         else
             getParams "chromeosdevices_patch" "customerId"
         fi
-        declare -g "CHROMEOSDEVICES_PATCH_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_patch" "customerId"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_PATCH_customerId=${customerId}"
+
 
     
     deviceIdMeta=( 
@@ -1199,18 +1352,26 @@ chromeosdevices_patch() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_PATCH_deviceId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_deviceId}" ]]
-        then 
-            checkParams chromeosdevices_patch deviceId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId[]' ` ]]
+            then
+                checkParams chromeosdevices_patch deviceId "false"
+            else
+                getParams "chromeosdevices_patch" "deviceId"
+            fi
         else
             getParams "chromeosdevices_patch" "deviceId"
         fi
-        declare -g "CHROMEOSDEVICES_PATCH_deviceId=${deviceId}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_patch" "deviceId"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_PATCH_deviceId=${deviceId}"
+
 
     
 
@@ -1248,29 +1409,45 @@ chromeosdevices_patch() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams chromeosdevices_patch ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams chromeosdevices_patch ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "chromeosdevices_patch" "${option}" "true"
+                                CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "chromeosdevices_patch" "${option}" "true"
+                            CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "chromeosdevices_patch" "${option}" "true"
                         CHROMEOSDEVICES_PATCH_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -1367,18 +1544,26 @@ chromeosdevices_update() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_UPDATE_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams chromeosdevices_update customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams chromeosdevices_update customerId "false"
+            else
+                getParams "chromeosdevices_update" "customerId"
+            fi
         else
             getParams "chromeosdevices_update" "customerId"
         fi
-        declare -g "CHROMEOSDEVICES_UPDATE_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_update" "customerId"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_UPDATE_customerId=${customerId}"
+
 
     
     deviceIdMeta=( 
@@ -1387,18 +1572,26 @@ chromeosdevices_update() {
     )
 
 
-    if [[ -z "${CHROMEOSDEVICES_UPDATE_deviceId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_deviceId}" ]]
-        then 
-            checkParams chromeosdevices_update deviceId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId[]' ` ]]
+            then
+                checkParams chromeosdevices_update deviceId "false"
+            else
+                getParams "chromeosdevices_update" "deviceId"
+            fi
         else
             getParams "chromeosdevices_update" "deviceId"
         fi
-        declare -g "CHROMEOSDEVICES_UPDATE_deviceId=${deviceId}"
-
+    else
+        genParamConfig
+        getParams "chromeosdevices_update" "deviceId"
     fi
+
+    #    declare -g "CHROMEOSDEVICES_UPDATE_deviceId=${deviceId}"
+
 
     
 
@@ -1436,29 +1629,45 @@ chromeosdevices_update() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams chromeosdevices_update ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams chromeosdevices_update ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "chromeosdevices_update" "${option}" "true"
+                                CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "chromeosdevices_update" "${option}" "true"
+                            CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "chromeosdevices_update" "${option}" "true"
                         CHROMEOSDEVICES_UPDATE_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -1555,18 +1764,26 @@ customers_get() {
     )
 
 
-    if [[ -z "${CUSTOMERS_GET_customerKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerKey}" ]]
-        then 
-            checkParams customers_get customerKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey[]' ` ]]
+            then
+                checkParams customers_get customerKey "false"
+            else
+                getParams "customers_get" "customerKey"
+            fi
         else
             getParams "customers_get" "customerKey"
         fi
-        declare -g "CUSTOMERS_GET_customerKey=${customerKey}"
-
+    else
+        genParamConfig
+        getParams "customers_get" "customerKey"
     fi
+
+    #    declare -g "CUSTOMERS_GET_customerKey=${customerKey}"
+
 
     
 
@@ -1660,18 +1877,26 @@ customers_patch() {
     )
 
 
-    if [[ -z "${CUSTOMERS_PATCH_customerKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerKey}" ]]
-        then 
-            checkParams customers_patch customerKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey[]' ` ]]
+            then
+                checkParams customers_patch customerKey "false"
+            else
+                getParams "customers_patch" "customerKey"
+            fi
         else
             getParams "customers_patch" "customerKey"
         fi
-        declare -g "CUSTOMERS_PATCH_customerKey=${customerKey}"
-
+    else
+        genParamConfig
+        getParams "customers_patch" "customerKey"
     fi
+
+    #    declare -g "CUSTOMERS_PATCH_customerKey=${customerKey}"
+
 
     
 
@@ -1773,18 +1998,26 @@ customers_update() {
     )
 
 
-    if [[ -z "${CUSTOMERS_UPDATE_customerKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerKey}" ]]
-        then 
-            checkParams customers_update customerKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey[]' ` ]]
+            then
+                checkParams customers_update customerKey "false"
+            else
+                getParams "customers_update" "customerKey"
+            fi
         else
             getParams "customers_update" "customerKey"
         fi
-        declare -g "CUSTOMERS_UPDATE_customerKey=${customerKey}"
-
+    else
+        genParamConfig
+        getParams "customers_update" "customerKey"
     fi
+
+    #    declare -g "CUSTOMERS_UPDATE_customerKey=${customerKey}"
+
 
     
 
@@ -1886,18 +2119,26 @@ domainAliases_delete() {
     )
 
 
-    if [[ -z "${DOMAINALIASES_DELETE_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams domainAliases_delete customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams domainAliases_delete customer "false"
+            else
+                getParams "domainAliases_delete" "customer"
+            fi
         else
             getParams "domainAliases_delete" "customer"
         fi
-        declare -g "DOMAINALIASES_DELETE_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "domainAliases_delete" "customer"
     fi
+
+    #    declare -g "DOMAINALIASES_DELETE_customer=${customer}"
+
 
     
     domainAliasNameMeta=( 
@@ -1906,18 +2147,26 @@ domainAliases_delete() {
     )
 
 
-    if [[ -z "${DOMAINALIASES_DELETE_domainAliasName}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_domainAliasName}" ]]
-        then 
-            checkParams domainAliases_delete domainAliasName "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].domainAliasName' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].domainAliasName[]' ` ]]
+            then
+                checkParams domainAliases_delete domainAliasName "false"
+            else
+                getParams "domainAliases_delete" "domainAliasName"
+            fi
         else
             getParams "domainAliases_delete" "domainAliasName"
         fi
-        declare -g "DOMAINALIASES_DELETE_domainAliasName=${domainAliasName}"
-
+    else
+        genParamConfig
+        getParams "domainAliases_delete" "domainAliasName"
     fi
+
+    #    declare -g "DOMAINALIASES_DELETE_domainAliasName=${domainAliasName}"
+
 
     
 
@@ -2011,18 +2260,26 @@ domainAliases_get() {
     )
 
 
-    if [[ -z "${DOMAINALIASES_GET_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams domainAliases_get customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams domainAliases_get customer "false"
+            else
+                getParams "domainAliases_get" "customer"
+            fi
         else
             getParams "domainAliases_get" "customer"
         fi
-        declare -g "DOMAINALIASES_GET_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "domainAliases_get" "customer"
     fi
+
+    #    declare -g "DOMAINALIASES_GET_customer=${customer}"
+
 
     
     domainAliasNameMeta=( 
@@ -2031,18 +2288,26 @@ domainAliases_get() {
     )
 
 
-    if [[ -z "${DOMAINALIASES_GET_domainAliasName}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_domainAliasName}" ]]
-        then 
-            checkParams domainAliases_get domainAliasName "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].domainAliasName' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].domainAliasName[]' ` ]]
+            then
+                checkParams domainAliases_get domainAliasName "false"
+            else
+                getParams "domainAliases_get" "domainAliasName"
+            fi
         else
             getParams "domainAliases_get" "domainAliasName"
         fi
-        declare -g "DOMAINALIASES_GET_domainAliasName=${domainAliasName}"
-
+    else
+        genParamConfig
+        getParams "domainAliases_get" "domainAliasName"
     fi
+
+    #    declare -g "DOMAINALIASES_GET_domainAliasName=${domainAliasName}"
+
 
     
 
@@ -2136,18 +2401,26 @@ domainAliases_insert() {
     )
 
 
-    if [[ -z "${DOMAINALIASES_INSERT_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams domainAliases_insert customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams domainAliases_insert customer "false"
+            else
+                getParams "domainAliases_insert" "customer"
+            fi
         else
             getParams "domainAliases_insert" "customer"
         fi
-        declare -g "DOMAINALIASES_INSERT_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "domainAliases_insert" "customer"
     fi
+
+    #    declare -g "DOMAINALIASES_INSERT_customer=${customer}"
+
 
     
 
@@ -2249,18 +2522,26 @@ domainAliases_list() {
     )
 
 
-    if [[ -z "${DOMAINALIASES_LIST_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams domainAliases_list customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams domainAliases_list customer "false"
+            else
+                getParams "domainAliases_list" "customer"
+            fi
         else
             getParams "domainAliases_list" "customer"
         fi
-        declare -g "DOMAINALIASES_LIST_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "domainAliases_list" "customer"
     fi
+
+    #    declare -g "DOMAINALIASES_LIST_customer=${customer}"
+
 
     
 
@@ -2296,19 +2577,36 @@ domainAliases_list() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams domainAliases_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            DOMAINALIASES_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams domainAliases_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    DOMAINALIASES_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "domainAliases_list" "${option}" "true"
+                                DOMAINALIASES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "domainAliases_list" "${option}" "true"
+                            DOMAINALIASES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "domainAliases_list" "${option}" "true"
                         DOMAINALIASES_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -2406,18 +2704,26 @@ domains_delete() {
     )
 
 
-    if [[ -z "${DOMAINS_DELETE_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams domains_delete customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams domains_delete customer "false"
+            else
+                getParams "domains_delete" "customer"
+            fi
         else
             getParams "domains_delete" "customer"
         fi
-        declare -g "DOMAINS_DELETE_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "domains_delete" "customer"
     fi
+
+    #    declare -g "DOMAINS_DELETE_customer=${customer}"
+
 
     
     domainNameMeta=( 
@@ -2426,18 +2732,26 @@ domains_delete() {
     )
 
 
-    if [[ -z "${DOMAINS_DELETE_domainName}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_domainName}" ]]
-        then 
-            checkParams domains_delete domainName "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].domainName' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].domainName[]' ` ]]
+            then
+                checkParams domains_delete domainName "false"
+            else
+                getParams "domains_delete" "domainName"
+            fi
         else
             getParams "domains_delete" "domainName"
         fi
-        declare -g "DOMAINS_DELETE_domainName=${domainName}"
-
+    else
+        genParamConfig
+        getParams "domains_delete" "domainName"
     fi
+
+    #    declare -g "DOMAINS_DELETE_domainName=${domainName}"
+
 
     
 
@@ -2531,18 +2845,26 @@ domains_get() {
     )
 
 
-    if [[ -z "${DOMAINS_GET_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams domains_get customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams domains_get customer "false"
+            else
+                getParams "domains_get" "customer"
+            fi
         else
             getParams "domains_get" "customer"
         fi
-        declare -g "DOMAINS_GET_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "domains_get" "customer"
     fi
+
+    #    declare -g "DOMAINS_GET_customer=${customer}"
+
 
     
     domainNameMeta=( 
@@ -2551,18 +2873,26 @@ domains_get() {
     )
 
 
-    if [[ -z "${DOMAINS_GET_domainName}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_domainName}" ]]
-        then 
-            checkParams domains_get domainName "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].domainName' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].domainName[]' ` ]]
+            then
+                checkParams domains_get domainName "false"
+            else
+                getParams "domains_get" "domainName"
+            fi
         else
             getParams "domains_get" "domainName"
         fi
-        declare -g "DOMAINS_GET_domainName=${domainName}"
-
+    else
+        genParamConfig
+        getParams "domains_get" "domainName"
     fi
+
+    #    declare -g "DOMAINS_GET_domainName=${domainName}"
+
 
     
 
@@ -2656,18 +2986,26 @@ domains_insert() {
     )
 
 
-    if [[ -z "${DOMAINS_INSERT_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams domains_insert customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams domains_insert customer "false"
+            else
+                getParams "domains_insert" "customer"
+            fi
         else
             getParams "domains_insert" "customer"
         fi
-        declare -g "DOMAINS_INSERT_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "domains_insert" "customer"
     fi
+
+    #    declare -g "DOMAINS_INSERT_customer=${customer}"
+
 
     
 
@@ -2769,18 +3107,26 @@ domains_list() {
     )
 
 
-    if [[ -z "${DOMAINS_LIST_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams domains_list customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams domains_list customer "false"
+            else
+                getParams "domains_list" "customer"
+            fi
         else
             getParams "domains_list" "customer"
         fi
-        declare -g "DOMAINS_LIST_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "domains_list" "customer"
     fi
+
+    #    declare -g "DOMAINS_LIST_customer=${customer}"
+
 
     
 
@@ -2874,18 +3220,26 @@ groups_delete() {
     )
 
 
-    if [[ -z "${GROUPS_DELETE_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams groups_delete groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams groups_delete groupKey "false"
+            else
+                getParams "groups_delete" "groupKey"
+            fi
         else
             getParams "groups_delete" "groupKey"
         fi
-        declare -g "GROUPS_DELETE_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "groups_delete" "groupKey"
     fi
+
+    #    declare -g "GROUPS_DELETE_groupKey=${groupKey}"
+
 
     
 
@@ -2979,18 +3333,26 @@ groups_get() {
     )
 
 
-    if [[ -z "${GROUPS_GET_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams groups_get groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams groups_get groupKey "false"
+            else
+                getParams "groups_get" "groupKey"
+            fi
         else
             getParams "groups_get" "groupKey"
         fi
-        declare -g "GROUPS_GET_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "groups_get" "groupKey"
     fi
+
+    #    declare -g "GROUPS_GET_groupKey=${groupKey}"
+
 
     
 
@@ -3212,29 +3574,45 @@ groups_list() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams groups_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            GROUPS_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams groups_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    GROUPS_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "groups_list" "${option}" "true"
+                                GROUPS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "groups_list" "${option}" "true"
+                            GROUPS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "groups_list" "${option}" "true"
                         GROUPS_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     inpParams=( customer domain maxResults pageToken query userKey )
 
     customerMeta=(
@@ -3290,19 +3668,36 @@ groups_list() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams groups_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            GROUPS_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams groups_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    GROUPS_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "groups_list" "${option}" "true"
+                                GROUPS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "groups_list" "${option}" "true"
+                            GROUPS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "groups_list" "${option}" "true"
                         GROUPS_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -3400,18 +3795,26 @@ groups_patch() {
     )
 
 
-    if [[ -z "${GROUPS_PATCH_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams groups_patch groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams groups_patch groupKey "false"
+            else
+                getParams "groups_patch" "groupKey"
+            fi
         else
             getParams "groups_patch" "groupKey"
         fi
-        declare -g "GROUPS_PATCH_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "groups_patch" "groupKey"
     fi
+
+    #    declare -g "GROUPS_PATCH_groupKey=${groupKey}"
+
 
     
 
@@ -3513,18 +3916,26 @@ groups_update() {
     )
 
 
-    if [[ -z "${GROUPS_UPDATE_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams groups_update groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams groups_update groupKey "false"
+            else
+                getParams "groups_update" "groupKey"
+            fi
         else
             getParams "groups_update" "groupKey"
         fi
-        declare -g "GROUPS_UPDATE_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "groups_update" "groupKey"
     fi
+
+    #    declare -g "GROUPS_UPDATE_groupKey=${groupKey}"
+
 
     
 
@@ -3626,18 +4037,26 @@ members_delete() {
     )
 
 
-    if [[ -z "${MEMBERS_DELETE_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams members_delete groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams members_delete groupKey "false"
+            else
+                getParams "members_delete" "groupKey"
+            fi
         else
             getParams "members_delete" "groupKey"
         fi
-        declare -g "MEMBERS_DELETE_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "members_delete" "groupKey"
     fi
+
+    #    declare -g "MEMBERS_DELETE_groupKey=${groupKey}"
+
 
     
     memberKeyMeta=( 
@@ -3646,18 +4065,26 @@ members_delete() {
     )
 
 
-    if [[ -z "${MEMBERS_DELETE_memberKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_memberKey}" ]]
-        then 
-            checkParams members_delete memberKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey[]' ` ]]
+            then
+                checkParams members_delete memberKey "false"
+            else
+                getParams "members_delete" "memberKey"
+            fi
         else
             getParams "members_delete" "memberKey"
         fi
-        declare -g "MEMBERS_DELETE_memberKey=${memberKey}"
-
+    else
+        genParamConfig
+        getParams "members_delete" "memberKey"
     fi
+
+    #    declare -g "MEMBERS_DELETE_memberKey=${memberKey}"
+
 
     
 
@@ -3751,18 +4178,26 @@ members_get() {
     )
 
 
-    if [[ -z "${MEMBERS_GET_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams members_get groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams members_get groupKey "false"
+            else
+                getParams "members_get" "groupKey"
+            fi
         else
             getParams "members_get" "groupKey"
         fi
-        declare -g "MEMBERS_GET_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "members_get" "groupKey"
     fi
+
+    #    declare -g "MEMBERS_GET_groupKey=${groupKey}"
+
 
     
     memberKeyMeta=( 
@@ -3771,18 +4206,26 @@ members_get() {
     )
 
 
-    if [[ -z "${MEMBERS_GET_memberKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_memberKey}" ]]
-        then 
-            checkParams members_get memberKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey[]' ` ]]
+            then
+                checkParams members_get memberKey "false"
+            else
+                getParams "members_get" "memberKey"
+            fi
         else
             getParams "members_get" "memberKey"
         fi
-        declare -g "MEMBERS_GET_memberKey=${memberKey}"
-
+    else
+        genParamConfig
+        getParams "members_get" "memberKey"
     fi
+
+    #    declare -g "MEMBERS_GET_memberKey=${memberKey}"
+
 
     
 
@@ -3876,18 +4319,26 @@ members_hasMember() {
     )
 
 
-    if [[ -z "${MEMBERS_HASMEMBER_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams members_hasMember groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams members_hasMember groupKey "false"
+            else
+                getParams "members_hasMember" "groupKey"
+            fi
         else
             getParams "members_hasMember" "groupKey"
         fi
-        declare -g "MEMBERS_HASMEMBER_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "members_hasMember" "groupKey"
     fi
+
+    #    declare -g "MEMBERS_HASMEMBER_groupKey=${groupKey}"
+
 
     
     memberKeyMeta=( 
@@ -3896,18 +4347,26 @@ members_hasMember() {
     )
 
 
-    if [[ -z "${MEMBERS_HASMEMBER_memberKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_memberKey}" ]]
-        then 
-            checkParams members_hasMember memberKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey[]' ` ]]
+            then
+                checkParams members_hasMember memberKey "false"
+            else
+                getParams "members_hasMember" "memberKey"
+            fi
         else
             getParams "members_hasMember" "memberKey"
         fi
-        declare -g "MEMBERS_HASMEMBER_memberKey=${memberKey}"
-
+    else
+        genParamConfig
+        getParams "members_hasMember" "memberKey"
     fi
+
+    #    declare -g "MEMBERS_HASMEMBER_memberKey=${memberKey}"
+
 
     
 
@@ -4001,18 +4460,26 @@ members_insert() {
     )
 
 
-    if [[ -z "${MEMBERS_INSERT_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams members_insert groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams members_insert groupKey "false"
+            else
+                getParams "members_insert" "groupKey"
+            fi
         else
             getParams "members_insert" "groupKey"
         fi
-        declare -g "MEMBERS_INSERT_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "members_insert" "groupKey"
     fi
+
+    #    declare -g "MEMBERS_INSERT_groupKey=${groupKey}"
+
 
     
 
@@ -4114,18 +4581,26 @@ members_list() {
     )
 
 
-    if [[ -z "${MEMBERS_LIST_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams members_list groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams members_list groupKey "false"
+            else
+                getParams "members_list" "groupKey"
+            fi
         else
             getParams "members_list" "groupKey"
         fi
-        declare -g "MEMBERS_LIST_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "members_list" "groupKey"
     fi
+
+    #    declare -g "MEMBERS_LIST_groupKey=${groupKey}"
+
 
     
 
@@ -4176,19 +4651,36 @@ members_list() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams members_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            MEMBERS_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams members_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    MEMBERS_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "members_list" "${option}" "true"
+                                MEMBERS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "members_list" "${option}" "true"
+                            MEMBERS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "members_list" "${option}" "true"
                         MEMBERS_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -4286,18 +4778,26 @@ members_patch() {
     )
 
 
-    if [[ -z "${MEMBERS_PATCH_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams members_patch groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams members_patch groupKey "false"
+            else
+                getParams "members_patch" "groupKey"
+            fi
         else
             getParams "members_patch" "groupKey"
         fi
-        declare -g "MEMBERS_PATCH_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "members_patch" "groupKey"
     fi
+
+    #    declare -g "MEMBERS_PATCH_groupKey=${groupKey}"
+
 
     
     memberKeyMeta=( 
@@ -4306,18 +4806,26 @@ members_patch() {
     )
 
 
-    if [[ -z "${MEMBERS_PATCH_memberKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_memberKey}" ]]
-        then 
-            checkParams members_patch memberKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey[]' ` ]]
+            then
+                checkParams members_patch memberKey "false"
+            else
+                getParams "members_patch" "memberKey"
+            fi
         else
             getParams "members_patch" "memberKey"
         fi
-        declare -g "MEMBERS_PATCH_memberKey=${memberKey}"
-
+    else
+        genParamConfig
+        getParams "members_patch" "memberKey"
     fi
+
+    #    declare -g "MEMBERS_PATCH_memberKey=${memberKey}"
+
 
     
 
@@ -4419,18 +4927,26 @@ members_update() {
     )
 
 
-    if [[ -z "${MEMBERS_UPDATE_groupKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_groupKey}" ]]
-        then 
-            checkParams members_update groupKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            then
+                checkParams members_update groupKey "false"
+            else
+                getParams "members_update" "groupKey"
+            fi
         else
             getParams "members_update" "groupKey"
         fi
-        declare -g "MEMBERS_UPDATE_groupKey=${groupKey}"
-
+    else
+        genParamConfig
+        getParams "members_update" "groupKey"
     fi
+
+    #    declare -g "MEMBERS_UPDATE_groupKey=${groupKey}"
+
 
     
     memberKeyMeta=( 
@@ -4439,18 +4955,26 @@ members_update() {
     )
 
 
-    if [[ -z "${MEMBERS_UPDATE_memberKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_memberKey}" ]]
-        then 
-            checkParams members_update memberKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey[]' ` ]]
+            then
+                checkParams members_update memberKey "false"
+            else
+                getParams "members_update" "memberKey"
+            fi
         else
             getParams "members_update" "memberKey"
         fi
-        declare -g "MEMBERS_UPDATE_memberKey=${memberKey}"
-
+    else
+        genParamConfig
+        getParams "members_update" "memberKey"
     fi
+
+    #    declare -g "MEMBERS_UPDATE_memberKey=${memberKey}"
+
 
     
 
@@ -4552,18 +5076,26 @@ mobiledevices_action() {
     )
 
 
-    if [[ -z "${MOBILEDEVICES_ACTION_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams mobiledevices_action customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams mobiledevices_action customerId "false"
+            else
+                getParams "mobiledevices_action" "customerId"
+            fi
         else
             getParams "mobiledevices_action" "customerId"
         fi
-        declare -g "MOBILEDEVICES_ACTION_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "mobiledevices_action" "customerId"
     fi
+
+    #    declare -g "MOBILEDEVICES_ACTION_customerId=${customerId}"
+
 
     
     resourceIdMeta=( 
@@ -4572,18 +5104,26 @@ mobiledevices_action() {
     )
 
 
-    if [[ -z "${MOBILEDEVICES_ACTION_resourceId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_resourceId}" ]]
-        then 
-            checkParams mobiledevices_action resourceId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId[]' ` ]]
+            then
+                checkParams mobiledevices_action resourceId "false"
+            else
+                getParams "mobiledevices_action" "resourceId"
+            fi
         else
             getParams "mobiledevices_action" "resourceId"
         fi
-        declare -g "MOBILEDEVICES_ACTION_resourceId=${resourceId}"
-
+    else
+        genParamConfig
+        getParams "mobiledevices_action" "resourceId"
     fi
+
+    #    declare -g "MOBILEDEVICES_ACTION_resourceId=${resourceId}"
+
 
     
 
@@ -4685,18 +5225,26 @@ mobiledevices_delete() {
     )
 
 
-    if [[ -z "${MOBILEDEVICES_DELETE_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams mobiledevices_delete customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams mobiledevices_delete customerId "false"
+            else
+                getParams "mobiledevices_delete" "customerId"
+            fi
         else
             getParams "mobiledevices_delete" "customerId"
         fi
-        declare -g "MOBILEDEVICES_DELETE_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "mobiledevices_delete" "customerId"
     fi
+
+    #    declare -g "MOBILEDEVICES_DELETE_customerId=${customerId}"
+
 
     
     resourceIdMeta=( 
@@ -4705,18 +5253,26 @@ mobiledevices_delete() {
     )
 
 
-    if [[ -z "${MOBILEDEVICES_DELETE_resourceId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_resourceId}" ]]
-        then 
-            checkParams mobiledevices_delete resourceId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId[]' ` ]]
+            then
+                checkParams mobiledevices_delete resourceId "false"
+            else
+                getParams "mobiledevices_delete" "resourceId"
+            fi
         else
             getParams "mobiledevices_delete" "resourceId"
         fi
-        declare -g "MOBILEDEVICES_DELETE_resourceId=${resourceId}"
-
+    else
+        genParamConfig
+        getParams "mobiledevices_delete" "resourceId"
     fi
+
+    #    declare -g "MOBILEDEVICES_DELETE_resourceId=${resourceId}"
+
 
     
 
@@ -4810,18 +5366,26 @@ mobiledevices_get() {
     )
 
 
-    if [[ -z "${MOBILEDEVICES_GET_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams mobiledevices_get customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams mobiledevices_get customerId "false"
+            else
+                getParams "mobiledevices_get" "customerId"
+            fi
         else
             getParams "mobiledevices_get" "customerId"
         fi
-        declare -g "MOBILEDEVICES_GET_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "mobiledevices_get" "customerId"
     fi
+
+    #    declare -g "MOBILEDEVICES_GET_customerId=${customerId}"
+
 
     
     resourceIdMeta=( 
@@ -4830,18 +5394,26 @@ mobiledevices_get() {
     )
 
 
-    if [[ -z "${MOBILEDEVICES_GET_resourceId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_resourceId}" ]]
-        then 
-            checkParams mobiledevices_get resourceId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId[]' ` ]]
+            then
+                checkParams mobiledevices_get resourceId "false"
+            else
+                getParams "mobiledevices_get" "resourceId"
+            fi
         else
             getParams "mobiledevices_get" "resourceId"
         fi
-        declare -g "MOBILEDEVICES_GET_resourceId=${resourceId}"
-
+    else
+        genParamConfig
+        getParams "mobiledevices_get" "resourceId"
     fi
+
+    #    declare -g "MOBILEDEVICES_GET_resourceId=${resourceId}"
+
 
     
 
@@ -4879,29 +5451,45 @@ mobiledevices_get() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams mobiledevices_get ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            MOBILEDEVICES_GET_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams mobiledevices_get ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    MOBILEDEVICES_GET_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "mobiledevices_get" "${option}" "true"
+                                MOBILEDEVICES_GET_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "mobiledevices_get" "${option}" "true"
+                            MOBILEDEVICES_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "mobiledevices_get" "${option}" "true"
                         MOBILEDEVICES_GET_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -4990,18 +5578,26 @@ mobiledevices_list() {
     )
 
 
-    if [[ -z "${MOBILEDEVICES_LIST_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams mobiledevices_list customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams mobiledevices_list customerId "false"
+            else
+                getParams "mobiledevices_list" "customerId"
+            fi
         else
             getParams "mobiledevices_list" "customerId"
         fi
-        declare -g "MOBILEDEVICES_LIST_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "mobiledevices_list" "customerId"
     fi
+
+    #    declare -g "MOBILEDEVICES_LIST_customerId=${customerId}"
+
 
     
 
@@ -5051,29 +5647,45 @@ mobiledevices_list() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams mobiledevices_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams mobiledevices_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "mobiledevices_list" "${option}" "true"
+                                MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "mobiledevices_list" "${option}" "true"
+                            MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "mobiledevices_list" "${option}" "true"
                         MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     inpParams=( maxResults pageToken query )
 
     maxResultsMeta=(
@@ -5114,19 +5726,36 @@ mobiledevices_list() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams mobiledevices_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams mobiledevices_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "mobiledevices_list" "${option}" "true"
+                                MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "mobiledevices_list" "${option}" "true"
+                            MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "mobiledevices_list" "${option}" "true"
                         MOBILEDEVICES_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -5224,18 +5853,26 @@ orgunits_delete() {
     )
 
 
-    if [[ -z "${ORGUNITS_DELETE_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams orgunits_delete customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams orgunits_delete customerId "false"
+            else
+                getParams "orgunits_delete" "customerId"
+            fi
         else
             getParams "orgunits_delete" "customerId"
         fi
-        declare -g "ORGUNITS_DELETE_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "orgunits_delete" "customerId"
     fi
+
+    #    declare -g "ORGUNITS_DELETE_customerId=${customerId}"
+
 
     
     orgUnitPathMeta=( 
@@ -5244,18 +5881,26 @@ orgunits_delete() {
     )
 
 
-    if [[ -z "${ORGUNITS_DELETE_orgUnitPath}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_orgUnitPath}" ]]
-        then 
-            checkParams orgunits_delete orgUnitPath "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath[]' ` ]]
+            then
+                checkParams orgunits_delete orgUnitPath "false"
+            else
+                getParams "orgunits_delete" "orgUnitPath"
+            fi
         else
             getParams "orgunits_delete" "orgUnitPath"
         fi
-        declare -g "ORGUNITS_DELETE_orgUnitPath=${orgUnitPath}"
-
+    else
+        genParamConfig
+        getParams "orgunits_delete" "orgUnitPath"
     fi
+
+    #    declare -g "ORGUNITS_DELETE_orgUnitPath=${orgUnitPath}"
+
 
     
 
@@ -5349,18 +5994,26 @@ orgunits_get() {
     )
 
 
-    if [[ -z "${ORGUNITS_GET_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams orgunits_get customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams orgunits_get customerId "false"
+            else
+                getParams "orgunits_get" "customerId"
+            fi
         else
             getParams "orgunits_get" "customerId"
         fi
-        declare -g "ORGUNITS_GET_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "orgunits_get" "customerId"
     fi
+
+    #    declare -g "ORGUNITS_GET_customerId=${customerId}"
+
 
     
     orgUnitPathMeta=( 
@@ -5369,18 +6022,26 @@ orgunits_get() {
     )
 
 
-    if [[ -z "${ORGUNITS_GET_orgUnitPath}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_orgUnitPath}" ]]
-        then 
-            checkParams orgunits_get orgUnitPath "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath[]' ` ]]
+            then
+                checkParams orgunits_get orgUnitPath "false"
+            else
+                getParams "orgunits_get" "orgUnitPath"
+            fi
         else
             getParams "orgunits_get" "orgUnitPath"
         fi
-        declare -g "ORGUNITS_GET_orgUnitPath=${orgUnitPath}"
-
+    else
+        genParamConfig
+        getParams "orgunits_get" "orgUnitPath"
     fi
+
+    #    declare -g "ORGUNITS_GET_orgUnitPath=${orgUnitPath}"
+
 
     
 
@@ -5474,18 +6135,26 @@ orgunits_insert() {
     )
 
 
-    if [[ -z "${ORGUNITS_INSERT_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams orgunits_insert customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams orgunits_insert customerId "false"
+            else
+                getParams "orgunits_insert" "customerId"
+            fi
         else
             getParams "orgunits_insert" "customerId"
         fi
-        declare -g "ORGUNITS_INSERT_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "orgunits_insert" "customerId"
     fi
+
+    #    declare -g "ORGUNITS_INSERT_customerId=${customerId}"
+
 
     
 
@@ -5587,18 +6256,26 @@ orgunits_list() {
     )
 
 
-    if [[ -z "${ORGUNITS_LIST_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams orgunits_list customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams orgunits_list customerId "false"
+            else
+                getParams "orgunits_list" "customerId"
+            fi
         else
             getParams "orgunits_list" "customerId"
         fi
-        declare -g "ORGUNITS_LIST_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "orgunits_list" "customerId"
     fi
+
+    #    declare -g "ORGUNITS_LIST_customerId=${customerId}"
+
 
     
 
@@ -5636,29 +6313,45 @@ orgunits_list() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams orgunits_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            ORGUNITS_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams orgunits_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    ORGUNITS_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "orgunits_list" "${option}" "true"
+                                ORGUNITS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "orgunits_list" "${option}" "true"
+                            ORGUNITS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "orgunits_list" "${option}" "true"
                         ORGUNITS_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     inpParams=( orgUnitPath )
 
     orgUnitPathMeta=(
@@ -5689,19 +6382,36 @@ orgunits_list() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams orgunits_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            ORGUNITS_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams orgunits_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    ORGUNITS_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "orgunits_list" "${option}" "true"
+                                ORGUNITS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "orgunits_list" "${option}" "true"
+                            ORGUNITS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "orgunits_list" "${option}" "true"
                         ORGUNITS_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -5799,18 +6509,26 @@ orgunits_patch() {
     )
 
 
-    if [[ -z "${ORGUNITS_PATCH_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams orgunits_patch customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams orgunits_patch customerId "false"
+            else
+                getParams "orgunits_patch" "customerId"
+            fi
         else
             getParams "orgunits_patch" "customerId"
         fi
-        declare -g "ORGUNITS_PATCH_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "orgunits_patch" "customerId"
     fi
+
+    #    declare -g "ORGUNITS_PATCH_customerId=${customerId}"
+
 
     
     orgUnitPathMeta=( 
@@ -5819,18 +6537,26 @@ orgunits_patch() {
     )
 
 
-    if [[ -z "${ORGUNITS_PATCH_orgUnitPath}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_orgUnitPath}" ]]
-        then 
-            checkParams orgunits_patch orgUnitPath "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath[]' ` ]]
+            then
+                checkParams orgunits_patch orgUnitPath "false"
+            else
+                getParams "orgunits_patch" "orgUnitPath"
+            fi
         else
             getParams "orgunits_patch" "orgUnitPath"
         fi
-        declare -g "ORGUNITS_PATCH_orgUnitPath=${orgUnitPath}"
-
+    else
+        genParamConfig
+        getParams "orgunits_patch" "orgUnitPath"
     fi
+
+    #    declare -g "ORGUNITS_PATCH_orgUnitPath=${orgUnitPath}"
+
 
     
 
@@ -5932,18 +6658,26 @@ orgunits_update() {
     )
 
 
-    if [[ -z "${ORGUNITS_UPDATE_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams orgunits_update customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams orgunits_update customerId "false"
+            else
+                getParams "orgunits_update" "customerId"
+            fi
         else
             getParams "orgunits_update" "customerId"
         fi
-        declare -g "ORGUNITS_UPDATE_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "orgunits_update" "customerId"
     fi
+
+    #    declare -g "ORGUNITS_UPDATE_customerId=${customerId}"
+
 
     
     orgUnitPathMeta=( 
@@ -5952,18 +6686,26 @@ orgunits_update() {
     )
 
 
-    if [[ -z "${ORGUNITS_UPDATE_orgUnitPath}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_orgUnitPath}" ]]
-        then 
-            checkParams orgunits_update orgUnitPath "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath[]' ` ]]
+            then
+                checkParams orgunits_update orgUnitPath "false"
+            else
+                getParams "orgunits_update" "orgUnitPath"
+            fi
         else
             getParams "orgunits_update" "orgUnitPath"
         fi
-        declare -g "ORGUNITS_UPDATE_orgUnitPath=${orgUnitPath}"
-
+    else
+        genParamConfig
+        getParams "orgunits_update" "orgUnitPath"
     fi
+
+    #    declare -g "ORGUNITS_UPDATE_orgUnitPath=${orgUnitPath}"
+
 
     
 
@@ -6065,18 +6807,26 @@ privileges_list() {
     )
 
 
-    if [[ -z "${PRIVILEGES_LIST_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams privileges_list customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams privileges_list customer "false"
+            else
+                getParams "privileges_list" "customer"
+            fi
         else
             getParams "privileges_list" "customer"
         fi
-        declare -g "PRIVILEGES_LIST_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "privileges_list" "customer"
     fi
+
+    #    declare -g "PRIVILEGES_LIST_customer=${customer}"
+
 
     
 
@@ -6170,18 +6920,26 @@ roleAssignments_delete() {
     )
 
 
-    if [[ -z "${ROLEASSIGNMENTS_DELETE_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams roleAssignments_delete customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams roleAssignments_delete customer "false"
+            else
+                getParams "roleAssignments_delete" "customer"
+            fi
         else
             getParams "roleAssignments_delete" "customer"
         fi
-        declare -g "ROLEASSIGNMENTS_DELETE_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "roleAssignments_delete" "customer"
     fi
+
+    #    declare -g "ROLEASSIGNMENTS_DELETE_customer=${customer}"
+
 
     
     roleAssignmentIdMeta=( 
@@ -6190,18 +6948,26 @@ roleAssignments_delete() {
     )
 
 
-    if [[ -z "${ROLEASSIGNMENTS_DELETE_roleAssignmentId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_roleAssignmentId}" ]]
-        then 
-            checkParams roleAssignments_delete roleAssignmentId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleAssignmentId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleAssignmentId[]' ` ]]
+            then
+                checkParams roleAssignments_delete roleAssignmentId "false"
+            else
+                getParams "roleAssignments_delete" "roleAssignmentId"
+            fi
         else
             getParams "roleAssignments_delete" "roleAssignmentId"
         fi
-        declare -g "ROLEASSIGNMENTS_DELETE_roleAssignmentId=${roleAssignmentId}"
-
+    else
+        genParamConfig
+        getParams "roleAssignments_delete" "roleAssignmentId"
     fi
+
+    #    declare -g "ROLEASSIGNMENTS_DELETE_roleAssignmentId=${roleAssignmentId}"
+
 
     
 
@@ -6295,18 +7061,26 @@ roleAssignments_get() {
     )
 
 
-    if [[ -z "${ROLEASSIGNMENTS_GET_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams roleAssignments_get customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams roleAssignments_get customer "false"
+            else
+                getParams "roleAssignments_get" "customer"
+            fi
         else
             getParams "roleAssignments_get" "customer"
         fi
-        declare -g "ROLEASSIGNMENTS_GET_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "roleAssignments_get" "customer"
     fi
+
+    #    declare -g "ROLEASSIGNMENTS_GET_customer=${customer}"
+
 
     
     roleAssignmentIdMeta=( 
@@ -6315,18 +7089,26 @@ roleAssignments_get() {
     )
 
 
-    if [[ -z "${ROLEASSIGNMENTS_GET_roleAssignmentId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_roleAssignmentId}" ]]
-        then 
-            checkParams roleAssignments_get roleAssignmentId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleAssignmentId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleAssignmentId[]' ` ]]
+            then
+                checkParams roleAssignments_get roleAssignmentId "false"
+            else
+                getParams "roleAssignments_get" "roleAssignmentId"
+            fi
         else
             getParams "roleAssignments_get" "roleAssignmentId"
         fi
-        declare -g "ROLEASSIGNMENTS_GET_roleAssignmentId=${roleAssignmentId}"
-
+    else
+        genParamConfig
+        getParams "roleAssignments_get" "roleAssignmentId"
     fi
+
+    #    declare -g "ROLEASSIGNMENTS_GET_roleAssignmentId=${roleAssignmentId}"
+
 
     
 
@@ -6420,18 +7202,26 @@ roleAssignments_insert() {
     )
 
 
-    if [[ -z "${ROLEASSIGNMENTS_INSERT_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams roleAssignments_insert customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams roleAssignments_insert customer "false"
+            else
+                getParams "roleAssignments_insert" "customer"
+            fi
         else
             getParams "roleAssignments_insert" "customer"
         fi
-        declare -g "ROLEASSIGNMENTS_INSERT_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "roleAssignments_insert" "customer"
     fi
+
+    #    declare -g "ROLEASSIGNMENTS_INSERT_customer=${customer}"
+
 
     
 
@@ -6533,18 +7323,26 @@ roleAssignments_list() {
     )
 
 
-    if [[ -z "${ROLEASSIGNMENTS_LIST_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams roleAssignments_list customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams roleAssignments_list customer "false"
+            else
+                getParams "roleAssignments_list" "customer"
+            fi
         else
             getParams "roleAssignments_list" "customer"
         fi
-        declare -g "ROLEASSIGNMENTS_LIST_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "roleAssignments_list" "customer"
     fi
+
+    #    declare -g "ROLEASSIGNMENTS_LIST_customer=${customer}"
+
 
     
 
@@ -6595,19 +7393,36 @@ roleAssignments_list() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams roleAssignments_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            ROLEASSIGNMENTS_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams roleAssignments_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    ROLEASSIGNMENTS_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "roleAssignments_list" "${option}" "true"
+                                ROLEASSIGNMENTS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "roleAssignments_list" "${option}" "true"
+                            ROLEASSIGNMENTS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "roleAssignments_list" "${option}" "true"
                         ROLEASSIGNMENTS_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -6705,18 +7520,26 @@ roles_delete() {
     )
 
 
-    if [[ -z "${ROLES_DELETE_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams roles_delete customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams roles_delete customer "false"
+            else
+                getParams "roles_delete" "customer"
+            fi
         else
             getParams "roles_delete" "customer"
         fi
-        declare -g "ROLES_DELETE_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "roles_delete" "customer"
     fi
+
+    #    declare -g "ROLES_DELETE_customer=${customer}"
+
 
     
     roleIdMeta=( 
@@ -6725,18 +7548,26 @@ roles_delete() {
     )
 
 
-    if [[ -z "${ROLES_DELETE_roleId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_roleId}" ]]
-        then 
-            checkParams roles_delete roleId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId[]' ` ]]
+            then
+                checkParams roles_delete roleId "false"
+            else
+                getParams "roles_delete" "roleId"
+            fi
         else
             getParams "roles_delete" "roleId"
         fi
-        declare -g "ROLES_DELETE_roleId=${roleId}"
-
+    else
+        genParamConfig
+        getParams "roles_delete" "roleId"
     fi
+
+    #    declare -g "ROLES_DELETE_roleId=${roleId}"
+
 
     
 
@@ -6830,18 +7661,26 @@ roles_get() {
     )
 
 
-    if [[ -z "${ROLES_GET_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams roles_get customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams roles_get customer "false"
+            else
+                getParams "roles_get" "customer"
+            fi
         else
             getParams "roles_get" "customer"
         fi
-        declare -g "ROLES_GET_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "roles_get" "customer"
     fi
+
+    #    declare -g "ROLES_GET_customer=${customer}"
+
 
     
     roleIdMeta=( 
@@ -6850,18 +7689,26 @@ roles_get() {
     )
 
 
-    if [[ -z "${ROLES_GET_roleId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_roleId}" ]]
-        then 
-            checkParams roles_get roleId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId[]' ` ]]
+            then
+                checkParams roles_get roleId "false"
+            else
+                getParams "roles_get" "roleId"
+            fi
         else
             getParams "roles_get" "roleId"
         fi
-        declare -g "ROLES_GET_roleId=${roleId}"
-
+    else
+        genParamConfig
+        getParams "roles_get" "roleId"
     fi
+
+    #    declare -g "ROLES_GET_roleId=${roleId}"
+
 
     
 
@@ -6955,18 +7802,26 @@ roles_insert() {
     )
 
 
-    if [[ -z "${ROLES_INSERT_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams roles_insert customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams roles_insert customer "false"
+            else
+                getParams "roles_insert" "customer"
+            fi
         else
             getParams "roles_insert" "customer"
         fi
-        declare -g "ROLES_INSERT_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "roles_insert" "customer"
     fi
+
+    #    declare -g "ROLES_INSERT_customer=${customer}"
+
 
     
 
@@ -7068,18 +7923,26 @@ roles_list() {
     )
 
 
-    if [[ -z "${ROLES_LIST_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams roles_list customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams roles_list customer "false"
+            else
+                getParams "roles_list" "customer"
+            fi
         else
             getParams "roles_list" "customer"
         fi
-        declare -g "ROLES_LIST_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "roles_list" "customer"
     fi
+
+    #    declare -g "ROLES_LIST_customer=${customer}"
+
 
     
 
@@ -7120,19 +7983,36 @@ roles_list() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams roles_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            ROLES_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams roles_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    ROLES_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "roles_list" "${option}" "true"
+                                ROLES_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "roles_list" "${option}" "true"
+                            ROLES_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "roles_list" "${option}" "true"
                         ROLES_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -7230,18 +8110,26 @@ roles_patch() {
     )
 
 
-    if [[ -z "${ROLES_PATCH_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams roles_patch customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams roles_patch customer "false"
+            else
+                getParams "roles_patch" "customer"
+            fi
         else
             getParams "roles_patch" "customer"
         fi
-        declare -g "ROLES_PATCH_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "roles_patch" "customer"
     fi
+
+    #    declare -g "ROLES_PATCH_customer=${customer}"
+
 
     
     roleIdMeta=( 
@@ -7250,18 +8138,26 @@ roles_patch() {
     )
 
 
-    if [[ -z "${ROLES_PATCH_roleId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_roleId}" ]]
-        then 
-            checkParams roles_patch roleId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId[]' ` ]]
+            then
+                checkParams roles_patch roleId "false"
+            else
+                getParams "roles_patch" "roleId"
+            fi
         else
             getParams "roles_patch" "roleId"
         fi
-        declare -g "ROLES_PATCH_roleId=${roleId}"
-
+    else
+        genParamConfig
+        getParams "roles_patch" "roleId"
     fi
+
+    #    declare -g "ROLES_PATCH_roleId=${roleId}"
+
 
     
 
@@ -7363,18 +8259,26 @@ roles_update() {
     )
 
 
-    if [[ -z "${ROLES_UPDATE_customer}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customer}" ]]
-        then 
-            checkParams roles_update customer "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            then
+                checkParams roles_update customer "false"
+            else
+                getParams "roles_update" "customer"
+            fi
         else
             getParams "roles_update" "customer"
         fi
-        declare -g "ROLES_UPDATE_customer=${customer}"
-
+    else
+        genParamConfig
+        getParams "roles_update" "customer"
     fi
+
+    #    declare -g "ROLES_UPDATE_customer=${customer}"
+
 
     
     roleIdMeta=( 
@@ -7383,18 +8287,26 @@ roles_update() {
     )
 
 
-    if [[ -z "${ROLES_UPDATE_roleId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_roleId}" ]]
-        then 
-            checkParams roles_update roleId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId[]' ` ]]
+            then
+                checkParams roles_update roleId "false"
+            else
+                getParams "roles_update" "roleId"
+            fi
         else
             getParams "roles_update" "roleId"
         fi
-        declare -g "ROLES_UPDATE_roleId=${roleId}"
-
+    else
+        genParamConfig
+        getParams "roles_update" "roleId"
     fi
+
+    #    declare -g "ROLES_UPDATE_roleId=${roleId}"
+
 
     
 
@@ -7496,18 +8408,26 @@ schemas_delete() {
     )
 
 
-    if [[ -z "${SCHEMAS_DELETE_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams schemas_delete customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams schemas_delete customerId "false"
+            else
+                getParams "schemas_delete" "customerId"
+            fi
         else
             getParams "schemas_delete" "customerId"
         fi
-        declare -g "SCHEMAS_DELETE_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "schemas_delete" "customerId"
     fi
+
+    #    declare -g "SCHEMAS_DELETE_customerId=${customerId}"
+
 
     
     schemaKeyMeta=( 
@@ -7516,18 +8436,26 @@ schemas_delete() {
     )
 
 
-    if [[ -z "${SCHEMAS_DELETE_schemaKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_schemaKey}" ]]
-        then 
-            checkParams schemas_delete schemaKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey[]' ` ]]
+            then
+                checkParams schemas_delete schemaKey "false"
+            else
+                getParams "schemas_delete" "schemaKey"
+            fi
         else
             getParams "schemas_delete" "schemaKey"
         fi
-        declare -g "SCHEMAS_DELETE_schemaKey=${schemaKey}"
-
+    else
+        genParamConfig
+        getParams "schemas_delete" "schemaKey"
     fi
+
+    #    declare -g "SCHEMAS_DELETE_schemaKey=${schemaKey}"
+
 
     
 
@@ -7621,18 +8549,26 @@ schemas_get() {
     )
 
 
-    if [[ -z "${SCHEMAS_GET_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams schemas_get customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams schemas_get customerId "false"
+            else
+                getParams "schemas_get" "customerId"
+            fi
         else
             getParams "schemas_get" "customerId"
         fi
-        declare -g "SCHEMAS_GET_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "schemas_get" "customerId"
     fi
+
+    #    declare -g "SCHEMAS_GET_customerId=${customerId}"
+
 
     
     schemaKeyMeta=( 
@@ -7641,18 +8577,26 @@ schemas_get() {
     )
 
 
-    if [[ -z "${SCHEMAS_GET_schemaKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_schemaKey}" ]]
-        then 
-            checkParams schemas_get schemaKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey[]' ` ]]
+            then
+                checkParams schemas_get schemaKey "false"
+            else
+                getParams "schemas_get" "schemaKey"
+            fi
         else
             getParams "schemas_get" "schemaKey"
         fi
-        declare -g "SCHEMAS_GET_schemaKey=${schemaKey}"
-
+    else
+        genParamConfig
+        getParams "schemas_get" "schemaKey"
     fi
+
+    #    declare -g "SCHEMAS_GET_schemaKey=${schemaKey}"
+
 
     
 
@@ -7746,18 +8690,26 @@ schemas_insert() {
     )
 
 
-    if [[ -z "${SCHEMAS_INSERT_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams schemas_insert customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams schemas_insert customerId "false"
+            else
+                getParams "schemas_insert" "customerId"
+            fi
         else
             getParams "schemas_insert" "customerId"
         fi
-        declare -g "SCHEMAS_INSERT_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "schemas_insert" "customerId"
     fi
+
+    #    declare -g "SCHEMAS_INSERT_customerId=${customerId}"
+
 
     
 
@@ -7859,18 +8811,26 @@ schemas_list() {
     )
 
 
-    if [[ -z "${SCHEMAS_LIST_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams schemas_list customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams schemas_list customerId "false"
+            else
+                getParams "schemas_list" "customerId"
+            fi
         else
             getParams "schemas_list" "customerId"
         fi
-        declare -g "SCHEMAS_LIST_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "schemas_list" "customerId"
     fi
+
+    #    declare -g "SCHEMAS_LIST_customerId=${customerId}"
+
 
     
 
@@ -7964,18 +8924,26 @@ schemas_patch() {
     )
 
 
-    if [[ -z "${SCHEMAS_PATCH_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams schemas_patch customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams schemas_patch customerId "false"
+            else
+                getParams "schemas_patch" "customerId"
+            fi
         else
             getParams "schemas_patch" "customerId"
         fi
-        declare -g "SCHEMAS_PATCH_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "schemas_patch" "customerId"
     fi
+
+    #    declare -g "SCHEMAS_PATCH_customerId=${customerId}"
+
 
     
     schemaKeyMeta=( 
@@ -7984,18 +8952,26 @@ schemas_patch() {
     )
 
 
-    if [[ -z "${SCHEMAS_PATCH_schemaKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_schemaKey}" ]]
-        then 
-            checkParams schemas_patch schemaKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey[]' ` ]]
+            then
+                checkParams schemas_patch schemaKey "false"
+            else
+                getParams "schemas_patch" "schemaKey"
+            fi
         else
             getParams "schemas_patch" "schemaKey"
         fi
-        declare -g "SCHEMAS_PATCH_schemaKey=${schemaKey}"
-
+    else
+        genParamConfig
+        getParams "schemas_patch" "schemaKey"
     fi
+
+    #    declare -g "SCHEMAS_PATCH_schemaKey=${schemaKey}"
+
 
     
 
@@ -8097,18 +9073,26 @@ schemas_update() {
     )
 
 
-    if [[ -z "${SCHEMAS_UPDATE_customerId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_customerId}" ]]
-        then 
-            checkParams schemas_update customerId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            then
+                checkParams schemas_update customerId "false"
+            else
+                getParams "schemas_update" "customerId"
+            fi
         else
             getParams "schemas_update" "customerId"
         fi
-        declare -g "SCHEMAS_UPDATE_customerId=${customerId}"
-
+    else
+        genParamConfig
+        getParams "schemas_update" "customerId"
     fi
+
+    #    declare -g "SCHEMAS_UPDATE_customerId=${customerId}"
+
 
     
     schemaKeyMeta=( 
@@ -8117,18 +9101,26 @@ schemas_update() {
     )
 
 
-    if [[ -z "${SCHEMAS_UPDATE_schemaKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_schemaKey}" ]]
-        then 
-            checkParams schemas_update schemaKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey[]' ` ]]
+            then
+                checkParams schemas_update schemaKey "false"
+            else
+                getParams "schemas_update" "schemaKey"
+            fi
         else
             getParams "schemas_update" "schemaKey"
         fi
-        declare -g "SCHEMAS_UPDATE_schemaKey=${schemaKey}"
-
+    else
+        genParamConfig
+        getParams "schemas_update" "schemaKey"
     fi
+
+    #    declare -g "SCHEMAS_UPDATE_schemaKey=${schemaKey}"
+
 
     
 
@@ -8230,18 +9222,26 @@ tokens_delete() {
     )
 
 
-    if [[ -z "${TOKENS_DELETE_clientId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_clientId}" ]]
-        then 
-            checkParams tokens_delete clientId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].clientId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].clientId[]' ` ]]
+            then
+                checkParams tokens_delete clientId "false"
+            else
+                getParams "tokens_delete" "clientId"
+            fi
         else
             getParams "tokens_delete" "clientId"
         fi
-        declare -g "TOKENS_DELETE_clientId=${clientId}"
-
+    else
+        genParamConfig
+        getParams "tokens_delete" "clientId"
     fi
+
+    #    declare -g "TOKENS_DELETE_clientId=${clientId}"
+
 
     
     userKeyMeta=( 
@@ -8250,18 +9250,26 @@ tokens_delete() {
     )
 
 
-    if [[ -z "${TOKENS_DELETE_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams tokens_delete userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams tokens_delete userKey "false"
+            else
+                getParams "tokens_delete" "userKey"
+            fi
         else
             getParams "tokens_delete" "userKey"
         fi
-        declare -g "TOKENS_DELETE_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "tokens_delete" "userKey"
     fi
+
+    #    declare -g "TOKENS_DELETE_userKey=${userKey}"
+
 
     
 
@@ -8355,18 +9363,26 @@ tokens_get() {
     )
 
 
-    if [[ -z "${TOKENS_GET_clientId}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_clientId}" ]]
-        then 
-            checkParams tokens_get clientId "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].clientId' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].clientId[]' ` ]]
+            then
+                checkParams tokens_get clientId "false"
+            else
+                getParams "tokens_get" "clientId"
+            fi
         else
             getParams "tokens_get" "clientId"
         fi
-        declare -g "TOKENS_GET_clientId=${clientId}"
-
+    else
+        genParamConfig
+        getParams "tokens_get" "clientId"
     fi
+
+    #    declare -g "TOKENS_GET_clientId=${clientId}"
+
 
     
     userKeyMeta=( 
@@ -8375,18 +9391,26 @@ tokens_get() {
     )
 
 
-    if [[ -z "${TOKENS_GET_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams tokens_get userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams tokens_get userKey "false"
+            else
+                getParams "tokens_get" "userKey"
+            fi
         else
             getParams "tokens_get" "userKey"
         fi
-        declare -g "TOKENS_GET_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "tokens_get" "userKey"
     fi
+
+    #    declare -g "TOKENS_GET_userKey=${userKey}"
+
 
     
 
@@ -8480,18 +9504,26 @@ tokens_list() {
     )
 
 
-    if [[ -z "${TOKENS_LIST_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams tokens_list userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams tokens_list userKey "false"
+            else
+                getParams "tokens_list" "userKey"
+            fi
         else
             getParams "tokens_list" "userKey"
         fi
-        declare -g "TOKENS_LIST_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "tokens_list" "userKey"
     fi
+
+    #    declare -g "TOKENS_LIST_userKey=${userKey}"
+
 
     
 
@@ -8585,18 +9617,26 @@ twoStepVerification_turnOff() {
     )
 
 
-    if [[ -z "${TWOSTEPVERIFICATION_TURNOFF_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams twoStepVerification_turnOff userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams twoStepVerification_turnOff userKey "false"
+            else
+                getParams "twoStepVerification_turnOff" "userKey"
+            fi
         else
             getParams "twoStepVerification_turnOff" "userKey"
         fi
-        declare -g "TWOSTEPVERIFICATION_TURNOFF_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "twoStepVerification_turnOff" "userKey"
     fi
+
+    #    declare -g "TWOSTEPVERIFICATION_TURNOFF_userKey=${userKey}"
+
 
     
 
@@ -8698,18 +9738,26 @@ users_delete() {
     )
 
 
-    if [[ -z "${USERS_DELETE_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams users_delete userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams users_delete userKey "false"
+            else
+                getParams "users_delete" "userKey"
+            fi
         else
             getParams "users_delete" "userKey"
         fi
-        declare -g "USERS_DELETE_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "users_delete" "userKey"
     fi
+
+    #    declare -g "USERS_DELETE_userKey=${userKey}"
+
 
     
 
@@ -8803,18 +9851,26 @@ users_get() {
     )
 
 
-    if [[ -z "${USERS_GET_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams users_get userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams users_get userKey "false"
+            else
+                getParams "users_get" "userKey"
+            fi
         else
             getParams "users_get" "userKey"
         fi
-        declare -g "USERS_GET_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "users_get" "userKey"
     fi
+
+    #    declare -g "USERS_GET_userKey=${userKey}"
+
 
     
 
@@ -8858,29 +9914,45 @@ users_get() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams users_get ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            USERS_GET_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams users_get ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    USERS_GET_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "users_get" "${option}" "true"
+                                USERS_GET_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "users_get" "${option}" "true"
+                            USERS_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "users_get" "${option}" "true"
                         USERS_GET_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     inpParams=( customFieldMask )
 
     customFieldMaskMeta=(
@@ -8911,19 +9983,36 @@ users_get() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams users_get ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            USERS_GET_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams users_get ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    USERS_GET_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "users_get" "${option}" "true"
+                                USERS_GET_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "users_get" "${option}" "true"
+                            USERS_GET_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "users_get" "${option}" "true"
                         USERS_GET_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -9161,29 +10250,45 @@ users_list() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams users_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            USERS_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams users_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    USERS_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "users_list" "${option}" "true"
+                                USERS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "users_list" "${option}" "true"
+                            USERS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "users_list" "${option}" "true"
                         USERS_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     inpParams=( customFieldMask customer domain maxResults pageToken query showDeleted )
 
     customFieldMaskMeta=(
@@ -9244,19 +10349,36 @@ users_list() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams users_list ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            USERS_LIST_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams users_list ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    USERS_LIST_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "users_list" "${option}" "true"
+                                USERS_LIST_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "users_list" "${option}" "true"
+                            USERS_LIST_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "users_list" "${option}" "true"
                         USERS_LIST_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -9354,18 +10476,26 @@ users_makeAdmin() {
     )
 
 
-    if [[ -z "${USERS_MAKEADMIN_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams users_makeAdmin userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams users_makeAdmin userKey "false"
+            else
+                getParams "users_makeAdmin" "userKey"
+            fi
         else
             getParams "users_makeAdmin" "userKey"
         fi
-        declare -g "USERS_MAKEADMIN_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "users_makeAdmin" "userKey"
     fi
+
+    #    declare -g "USERS_MAKEADMIN_userKey=${userKey}"
+
 
     
 
@@ -9467,18 +10597,26 @@ users_patch() {
     )
 
 
-    if [[ -z "${USERS_PATCH_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams users_patch userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams users_patch userKey "false"
+            else
+                getParams "users_patch" "userKey"
+            fi
         else
             getParams "users_patch" "userKey"
         fi
-        declare -g "USERS_PATCH_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "users_patch" "userKey"
     fi
+
+    #    declare -g "USERS_PATCH_userKey=${userKey}"
+
 
     
 
@@ -9580,18 +10718,26 @@ users_signOut() {
     )
 
 
-    if [[ -z "${USERS_SIGNOUT_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams users_signOut userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams users_signOut userKey "false"
+            else
+                getParams "users_signOut" "userKey"
+            fi
         else
             getParams "users_signOut" "userKey"
         fi
-        declare -g "USERS_SIGNOUT_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "users_signOut" "userKey"
     fi
+
+    #    declare -g "USERS_SIGNOUT_userKey=${userKey}"
+
 
     
 
@@ -9693,18 +10839,26 @@ users_undelete() {
     )
 
 
-    if [[ -z "${USERS_UNDELETE_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams users_undelete userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams users_undelete userKey "false"
+            else
+                getParams "users_undelete" "userKey"
+            fi
         else
             getParams "users_undelete" "userKey"
         fi
-        declare -g "USERS_UNDELETE_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "users_undelete" "userKey"
     fi
+
+    #    declare -g "USERS_UNDELETE_userKey=${userKey}"
+
 
     
 
@@ -9806,18 +10960,26 @@ users_update() {
     )
 
 
-    if [[ -z "${USERS_UPDATE_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams users_update userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams users_update userKey "false"
+            else
+                getParams "users_update" "userKey"
+            fi
         else
             getParams "users_update" "userKey"
         fi
-        declare -g "USERS_UPDATE_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "users_update" "userKey"
     fi
+
+    #    declare -g "USERS_UPDATE_userKey=${userKey}"
+
 
     
 
@@ -9972,29 +11134,45 @@ users_watch() {
                 else
                     clear
 
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams users_watch ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            USERS_WATCH_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams users_watch ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    USERS_WATCH_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "users_watch" "${option}" "true"
+                                USERS_WATCH_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "users_watch" "${option}" "true"
+                            USERS_WATCH_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "users_watch" "${option}" "true"
                         USERS_WATCH_URL+="${tempUrlPar}"
                         unset tempUrlPar
                     fi
                     unset optParam
-                        
                 fi
             fi
         done
     fi
+
     inpParams=( customFieldMask customer domain maxResults pageToken query showDeleted )
 
     customFieldMaskMeta=(
@@ -10055,19 +11233,36 @@ users_watch() {
                     break 
                 else
                     clear
-                    local optParam=PARAM_${option}
-                    if ! [[ -z "${(P)${optParam}}" ]]
-                    then 
-                        checkParams users_watch ${option} "true"
-                        if ! [[ ${addedParams} =~ ${option} ]]
+
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    then
+                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
                         then
-                            USERS_WATCH_URL+="${tempUrlPar}"
-                            addedParams+=( "${option}" )
-                            unset tempUrlPar
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            then
+                                checkParams users_watch ${option} "true"
+                                if ! [[ ${addedParams} =~ ${option} ]]
+                                then
+                                    USERS_WATCH_URL+="${tempUrlPar}"
+                                    addedParams+=( "${option}" )
+                                    unset tempUrlPar
+                                else
+                                    echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                                fi
+                            else
+                                getParams "users_watch" "${option}" "true"
+                                USERS_WATCH_URL+="${tempUrlPar}"
+                                unset tempUrlPar
+                            fi
+                            unset optParam
                         else
-                            echo -e "# Error! Parameter already provided before, skipping.\n\n"
+                            getParams "users_watch" "${option}" "true"
+                            USERS_WATCH_URL+="${tempUrlPar}"
+                            unset tempUrlPar
                         fi
+                        unset optParam
                     else
+                        genParamConfig
                         getParams "users_watch" "${option}" "true"
                         USERS_WATCH_URL+="${tempUrlPar}"
                         unset tempUrlPar
@@ -10173,18 +11368,26 @@ verificationCodes_generate() {
     )
 
 
-    if [[ -z "${VERIFICATIONCODES_GENERATE_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams verificationCodes_generate userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams verificationCodes_generate userKey "false"
+            else
+                getParams "verificationCodes_generate" "userKey"
+            fi
         else
             getParams "verificationCodes_generate" "userKey"
         fi
-        declare -g "VERIFICATIONCODES_GENERATE_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "verificationCodes_generate" "userKey"
     fi
+
+    #    declare -g "VERIFICATIONCODES_GENERATE_userKey=${userKey}"
+
 
     
 
@@ -10286,18 +11489,26 @@ verificationCodes_invalidate() {
     )
 
 
-    if [[ -z "${VERIFICATIONCODES_INVALIDATE_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams verificationCodes_invalidate userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams verificationCodes_invalidate userKey "false"
+            else
+                getParams "verificationCodes_invalidate" "userKey"
+            fi
         else
             getParams "verificationCodes_invalidate" "userKey"
         fi
-        declare -g "VERIFICATIONCODES_INVALIDATE_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "verificationCodes_invalidate" "userKey"
     fi
+
+    #    declare -g "VERIFICATIONCODES_INVALIDATE_userKey=${userKey}"
+
 
     
 
@@ -10399,18 +11610,26 @@ verificationCodes_list() {
     )
 
 
-    if [[ -z "${VERIFICATIONCODES_LIST_userKey}" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
     then
-        if ! [[ -z "${PARAM_userKey}" ]]
-        then 
-            checkParams verificationCodes_list userKey "false"
-            
+        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        then
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            then
+                checkParams verificationCodes_list userKey "false"
+            else
+                getParams "verificationCodes_list" "userKey"
+            fi
         else
             getParams "verificationCodes_list" "userKey"
         fi
-        declare -g "VERIFICATIONCODES_LIST_userKey=${userKey}"
-
+    else
+        genParamConfig
+        getParams "verificationCodes_list" "userKey"
     fi
+
+    #    declare -g "VERIFICATIONCODES_LIST_userKey=${userKey}"
+
 
     
 
