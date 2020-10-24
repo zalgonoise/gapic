@@ -46,11 +46,11 @@ asps_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].codeId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.codeId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].codeId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.codeId)[] | .[]' ` ]]
             then
                 checkParams asps_delete codeId "false"
             else
@@ -74,11 +74,11 @@ asps_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams asps_delete userKey "false"
             else
@@ -187,11 +187,11 @@ asps_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].codeId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.codeId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].codeId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.codeId)[] | .[]' ` ]]
             then
                 checkParams asps_get codeId "false"
             else
@@ -215,11 +215,11 @@ asps_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams asps_get userKey "false"
             else
@@ -328,11 +328,11 @@ asps_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams asps_list userKey "false"
             else
@@ -534,11 +534,11 @@ chromeosdevices_action() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_action customerId "false"
             else
@@ -562,11 +562,11 @@ chromeosdevices_action() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.resourceId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.resourceId)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_action resourceId "false"
             else
@@ -683,11 +683,11 @@ chromeosdevices_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_get customerId "false"
             else
@@ -711,11 +711,11 @@ chromeosdevices_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.deviceId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.deviceId)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_get deviceId "false"
             else
@@ -768,11 +768,11 @@ chromeosdevices_get() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams chromeosdevices_get ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -895,11 +895,11 @@ chromeosdevices_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_list customerId "false"
             else
@@ -964,11 +964,11 @@ chromeosdevices_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams chromeosdevices_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -1049,11 +1049,11 @@ chromeosdevices_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams chromeosdevices_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -1175,11 +1175,11 @@ chromeosdevices_moveDevicesToOu() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_moveDevicesToOu customerId "false"
             else
@@ -1203,11 +1203,11 @@ chromeosdevices_moveDevicesToOu() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.orgUnitPath)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.orgUnitPath)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_moveDevicesToOu orgUnitPath "false"
             else
@@ -1324,11 +1324,11 @@ chromeosdevices_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_patch customerId "false"
             else
@@ -1352,11 +1352,11 @@ chromeosdevices_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.deviceId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.deviceId)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_patch deviceId "false"
             else
@@ -1409,11 +1409,11 @@ chromeosdevices_patch() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams chromeosdevices_patch ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -1544,11 +1544,11 @@ chromeosdevices_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_update customerId "false"
             else
@@ -1572,11 +1572,11 @@ chromeosdevices_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.deviceId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].deviceId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.deviceId)[] | .[]' ` ]]
             then
                 checkParams chromeosdevices_update deviceId "false"
             else
@@ -1629,11 +1629,11 @@ chromeosdevices_update() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams chromeosdevices_update ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -1764,11 +1764,11 @@ customers_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerKey)[] | .[]' ` ]]
             then
                 checkParams customers_get customerKey "false"
             else
@@ -1877,11 +1877,11 @@ customers_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerKey)[] | .[]' ` ]]
             then
                 checkParams customers_patch customerKey "false"
             else
@@ -1998,11 +1998,11 @@ customers_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerKey)[] | .[]' ` ]]
             then
                 checkParams customers_update customerKey "false"
             else
@@ -2119,11 +2119,11 @@ domainAliases_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams domainAliases_delete customer "false"
             else
@@ -2147,11 +2147,11 @@ domainAliases_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].domainAliasName' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.domainAliasName)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].domainAliasName[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.domainAliasName)[] | .[]' ` ]]
             then
                 checkParams domainAliases_delete domainAliasName "false"
             else
@@ -2260,11 +2260,11 @@ domainAliases_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams domainAliases_get customer "false"
             else
@@ -2288,11 +2288,11 @@ domainAliases_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].domainAliasName' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.domainAliasName)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].domainAliasName[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.domainAliasName)[] | .[]' ` ]]
             then
                 checkParams domainAliases_get domainAliasName "false"
             else
@@ -2401,11 +2401,11 @@ domainAliases_insert() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams domainAliases_insert customer "false"
             else
@@ -2522,11 +2522,11 @@ domainAliases_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams domainAliases_list customer "false"
             else
@@ -2578,11 +2578,11 @@ domainAliases_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams domainAliases_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -2704,11 +2704,11 @@ domains_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams domains_delete customer "false"
             else
@@ -2732,11 +2732,11 @@ domains_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].domainName' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.domainName)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].domainName[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.domainName)[] | .[]' ` ]]
             then
                 checkParams domains_delete domainName "false"
             else
@@ -2845,11 +2845,11 @@ domains_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams domains_get customer "false"
             else
@@ -2873,11 +2873,11 @@ domains_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].domainName' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.domainName)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].domainName[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.domainName)[] | .[]' ` ]]
             then
                 checkParams domains_get domainName "false"
             else
@@ -2986,11 +2986,11 @@ domains_insert() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams domains_insert customer "false"
             else
@@ -3107,11 +3107,11 @@ domains_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams domains_list customer "false"
             else
@@ -3220,11 +3220,11 @@ groups_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams groups_delete groupKey "false"
             else
@@ -3333,11 +3333,11 @@ groups_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams groups_get groupKey "false"
             else
@@ -3574,11 +3574,11 @@ groups_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams groups_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -3669,11 +3669,11 @@ groups_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams groups_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -3795,11 +3795,11 @@ groups_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams groups_patch groupKey "false"
             else
@@ -3916,11 +3916,11 @@ groups_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams groups_update groupKey "false"
             else
@@ -4037,11 +4037,11 @@ members_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams members_delete groupKey "false"
             else
@@ -4065,11 +4065,11 @@ members_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.memberKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.memberKey)[] | .[]' ` ]]
             then
                 checkParams members_delete memberKey "false"
             else
@@ -4178,11 +4178,11 @@ members_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams members_get groupKey "false"
             else
@@ -4206,11 +4206,11 @@ members_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.memberKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.memberKey)[] | .[]' ` ]]
             then
                 checkParams members_get memberKey "false"
             else
@@ -4319,11 +4319,11 @@ members_hasMember() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams members_hasMember groupKey "false"
             else
@@ -4347,11 +4347,11 @@ members_hasMember() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.memberKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.memberKey)[] | .[]' ` ]]
             then
                 checkParams members_hasMember memberKey "false"
             else
@@ -4460,11 +4460,11 @@ members_insert() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams members_insert groupKey "false"
             else
@@ -4581,11 +4581,11 @@ members_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams members_list groupKey "false"
             else
@@ -4652,11 +4652,11 @@ members_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams members_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -4778,11 +4778,11 @@ members_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams members_patch groupKey "false"
             else
@@ -4806,11 +4806,11 @@ members_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.memberKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.memberKey)[] | .[]' ` ]]
             then
                 checkParams members_patch memberKey "false"
             else
@@ -4927,11 +4927,11 @@ members_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].groupKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.groupKey)[] | .[]' ` ]]
             then
                 checkParams members_update groupKey "false"
             else
@@ -4955,11 +4955,11 @@ members_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.memberKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].memberKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.memberKey)[] | .[]' ` ]]
             then
                 checkParams members_update memberKey "false"
             else
@@ -5076,11 +5076,11 @@ mobiledevices_action() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams mobiledevices_action customerId "false"
             else
@@ -5104,11 +5104,11 @@ mobiledevices_action() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.resourceId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.resourceId)[] | .[]' ` ]]
             then
                 checkParams mobiledevices_action resourceId "false"
             else
@@ -5225,11 +5225,11 @@ mobiledevices_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams mobiledevices_delete customerId "false"
             else
@@ -5253,11 +5253,11 @@ mobiledevices_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.resourceId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.resourceId)[] | .[]' ` ]]
             then
                 checkParams mobiledevices_delete resourceId "false"
             else
@@ -5366,11 +5366,11 @@ mobiledevices_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams mobiledevices_get customerId "false"
             else
@@ -5394,11 +5394,11 @@ mobiledevices_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.resourceId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].resourceId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.resourceId)[] | .[]' ` ]]
             then
                 checkParams mobiledevices_get resourceId "false"
             else
@@ -5451,11 +5451,11 @@ mobiledevices_get() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams mobiledevices_get ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -5578,11 +5578,11 @@ mobiledevices_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams mobiledevices_list customerId "false"
             else
@@ -5647,11 +5647,11 @@ mobiledevices_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams mobiledevices_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -5727,11 +5727,11 @@ mobiledevices_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams mobiledevices_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -5853,11 +5853,11 @@ orgunits_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams orgunits_delete customerId "false"
             else
@@ -5881,11 +5881,11 @@ orgunits_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.orgUnitPath)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.orgUnitPath)[] | .[]' ` ]]
             then
                 checkParams orgunits_delete orgUnitPath "false"
             else
@@ -5994,11 +5994,11 @@ orgunits_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams orgunits_get customerId "false"
             else
@@ -6022,11 +6022,11 @@ orgunits_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.orgUnitPath)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.orgUnitPath)[] | .[]' ` ]]
             then
                 checkParams orgunits_get orgUnitPath "false"
             else
@@ -6135,11 +6135,11 @@ orgunits_insert() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams orgunits_insert customerId "false"
             else
@@ -6256,11 +6256,11 @@ orgunits_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams orgunits_list customerId "false"
             else
@@ -6313,11 +6313,11 @@ orgunits_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams orgunits_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -6383,11 +6383,11 @@ orgunits_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams orgunits_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -6509,11 +6509,11 @@ orgunits_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams orgunits_patch customerId "false"
             else
@@ -6537,11 +6537,11 @@ orgunits_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.orgUnitPath)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.orgUnitPath)[] | .[]' ` ]]
             then
                 checkParams orgunits_patch orgUnitPath "false"
             else
@@ -6658,11 +6658,11 @@ orgunits_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams orgunits_update customerId "false"
             else
@@ -6686,11 +6686,11 @@ orgunits_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.orgUnitPath)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].orgUnitPath[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.orgUnitPath)[] | .[]' ` ]]
             then
                 checkParams orgunits_update orgUnitPath "false"
             else
@@ -6807,11 +6807,11 @@ privileges_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams privileges_list customer "false"
             else
@@ -6920,11 +6920,11 @@ roleAssignments_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams roleAssignments_delete customer "false"
             else
@@ -6948,11 +6948,11 @@ roleAssignments_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleAssignmentId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleAssignmentId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleAssignmentId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleAssignmentId)[] | .[]' ` ]]
             then
                 checkParams roleAssignments_delete roleAssignmentId "false"
             else
@@ -7061,11 +7061,11 @@ roleAssignments_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams roleAssignments_get customer "false"
             else
@@ -7089,11 +7089,11 @@ roleAssignments_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleAssignmentId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleAssignmentId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleAssignmentId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleAssignmentId)[] | .[]' ` ]]
             then
                 checkParams roleAssignments_get roleAssignmentId "false"
             else
@@ -7202,11 +7202,11 @@ roleAssignments_insert() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams roleAssignments_insert customer "false"
             else
@@ -7323,11 +7323,11 @@ roleAssignments_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams roleAssignments_list customer "false"
             else
@@ -7394,11 +7394,11 @@ roleAssignments_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams roleAssignments_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -7520,11 +7520,11 @@ roles_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams roles_delete customer "false"
             else
@@ -7548,11 +7548,11 @@ roles_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleId)[] | .[]' ` ]]
             then
                 checkParams roles_delete roleId "false"
             else
@@ -7661,11 +7661,11 @@ roles_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams roles_get customer "false"
             else
@@ -7689,11 +7689,11 @@ roles_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleId)[] | .[]' ` ]]
             then
                 checkParams roles_get roleId "false"
             else
@@ -7802,11 +7802,11 @@ roles_insert() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams roles_insert customer "false"
             else
@@ -7923,11 +7923,11 @@ roles_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams roles_list customer "false"
             else
@@ -7984,11 +7984,11 @@ roles_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams roles_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -8110,11 +8110,11 @@ roles_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams roles_patch customer "false"
             else
@@ -8138,11 +8138,11 @@ roles_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleId)[] | .[]' ` ]]
             then
                 checkParams roles_patch roleId "false"
             else
@@ -8259,11 +8259,11 @@ roles_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customer' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customer[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customer)[] | .[]' ` ]]
             then
                 checkParams roles_update customer "false"
             else
@@ -8287,11 +8287,11 @@ roles_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].roleId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.roleId)[] | .[]' ` ]]
             then
                 checkParams roles_update roleId "false"
             else
@@ -8408,11 +8408,11 @@ schemas_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams schemas_delete customerId "false"
             else
@@ -8436,11 +8436,11 @@ schemas_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)[] | .[]' ` ]]
             then
                 checkParams schemas_delete schemaKey "false"
             else
@@ -8549,11 +8549,11 @@ schemas_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams schemas_get customerId "false"
             else
@@ -8577,11 +8577,11 @@ schemas_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)[] | .[]' ` ]]
             then
                 checkParams schemas_get schemaKey "false"
             else
@@ -8690,11 +8690,11 @@ schemas_insert() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams schemas_insert customerId "false"
             else
@@ -8811,11 +8811,11 @@ schemas_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams schemas_list customerId "false"
             else
@@ -8924,11 +8924,11 @@ schemas_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams schemas_patch customerId "false"
             else
@@ -8952,11 +8952,11 @@ schemas_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)[] | .[]' ` ]]
             then
                 checkParams schemas_patch schemaKey "false"
             else
@@ -9073,11 +9073,11 @@ schemas_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].customerId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
             then
                 checkParams schemas_update customerId "false"
             else
@@ -9101,11 +9101,11 @@ schemas_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].schemaKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)[] | .[]' ` ]]
             then
                 checkParams schemas_update schemaKey "false"
             else
@@ -9222,11 +9222,11 @@ tokens_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].clientId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.clientId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].clientId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.clientId)[] | .[]' ` ]]
             then
                 checkParams tokens_delete clientId "false"
             else
@@ -9250,11 +9250,11 @@ tokens_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams tokens_delete userKey "false"
             else
@@ -9363,11 +9363,11 @@ tokens_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].clientId' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.clientId)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].clientId[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.clientId)[] | .[]' ` ]]
             then
                 checkParams tokens_get clientId "false"
             else
@@ -9391,11 +9391,11 @@ tokens_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams tokens_get userKey "false"
             else
@@ -9504,11 +9504,11 @@ tokens_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams tokens_list userKey "false"
             else
@@ -9617,11 +9617,11 @@ twoStepVerification_turnOff() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams twoStepVerification_turnOff userKey "false"
             else
@@ -9738,11 +9738,11 @@ users_delete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams users_delete userKey "false"
             else
@@ -9851,11 +9851,11 @@ users_get() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams users_get userKey "false"
             else
@@ -9914,11 +9914,11 @@ users_get() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams users_get ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -9984,11 +9984,11 @@ users_get() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams users_get ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -10250,11 +10250,11 @@ users_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams users_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -10350,11 +10350,11 @@ users_list() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams users_list ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -10476,11 +10476,11 @@ users_makeAdmin() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams users_makeAdmin userKey "false"
             else
@@ -10597,11 +10597,11 @@ users_patch() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams users_patch userKey "false"
             else
@@ -10718,11 +10718,11 @@ users_signOut() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams users_signOut userKey "false"
             else
@@ -10839,11 +10839,11 @@ users_undelete() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams users_undelete userKey "false"
             else
@@ -10960,11 +10960,11 @@ users_update() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams users_update userKey "false"
             else
@@ -11134,11 +11134,11 @@ users_watch() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams users_watch ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -11234,11 +11234,11 @@ users_watch() {
                 else
                     clear
 
-                    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+                    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
                     then
-                        if ! [[ ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}" ` == "null" ]]
+                        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})" ` ]]
                         then
-                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r ".param[].${option}[]" ` ]]
+                            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr ".param[] | select(.${option})[] | .[]" ` ]]
                             then
                                 checkParams users_watch ${option} "true"
                                 if ! [[ ${addedParams} =~ ${option} ]]
@@ -11368,11 +11368,11 @@ verificationCodes_generate() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams verificationCodes_generate userKey "false"
             else
@@ -11489,11 +11489,11 @@ verificationCodes_invalidate() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams verificationCodes_invalidate userKey "false"
             else
@@ -11610,11 +11610,11 @@ verificationCodes_list() {
     )
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param' ` == "null" ]]
+    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
     then
-        if ! [[ ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey' ` == "null" ]]
+        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)' `  ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -r '.param[].userKey[]' ` ]]
+            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.userKey)[] | .[]' ` ]]
             then
                 checkParams verificationCodes_list userKey "false"
             else

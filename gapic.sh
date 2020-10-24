@@ -1056,7 +1056,7 @@ paramsRevListBuild() {
     jq -c ".\${1}=[\${2},.\${1}[]]" \\
     | read -r requestPayload
 
-    export requestPayload
+    echo \${requestPayload}
 }
 
 paramBuild() {
@@ -1065,7 +1065,7 @@ paramBuild() {
     | read -r paramNewEntry
 
     cat \${credPath}/\${fileRef} \\
-    | jq -c ".param=[.param,\${paramNewEntry}]" \\
+    | jq -c ".param=[.param[],\${paramNewEntry}]" \\
     | read -r newParamPayload
 
     if [[ \`echo \${newParamPayload} | jq -c \` ]]
@@ -1080,7 +1080,7 @@ paramBuild() {
 # Handle parameter removal
 
 rmParams() {
-    modParams=( \`cat \${3} | jq ".param.\${1}[]" | grep -v "\${2}"\` )
+    modParams=( \`cat \${3} | jq ".param[] | select(.\${1})[] | .[]" | grep -v "\${2}"\` )
 
     newList="[]"
 
@@ -1092,7 +1092,7 @@ rmParams() {
     done
 
     cat \${3} \\
-    | jq -c ".param.\${1}=\${newList}" \\
+    | jq -c ".param[].\${1}=\${newList}" \\
     | read -r newParamPayload
     
     if [[ \`echo \${newParamPayload} | jq -c \` ]]
@@ -1169,7 +1169,7 @@ checkParams() {
 
     echo -en "# You have saved values for the \${tempPar} parameter. Do you want to use one?\n\n"
 
-    savedParams=( \`cat \${credPath}/\${fileRef} | jq -c ".param.\${tempPar}[]"\` )
+    savedParams=( \`cat \${credPath}/\${fileRef} | jq -rc ".param[] | select(.\${tempPar})[] | .[]"\` )
 
     if ! [[ -z \${savedParams} ]]
     then 
@@ -2081,11 +2081,11 @@ EOF
     
                 cat << EOF >> "${outputLibWiz}"
 
-    if ! [[ \` cat \${credPath}/\${fileRef} | jq -r '.param' \` == "null" ]]
+    if ! [[ \` cat \${credPath}/\${fileRef} | jq -cr '.param' \` == "null" ]]
     then
-        if ! [[ \` cat \${credPath}/\${fileRef} | jq -r '.param[].${curReqParams[$h]}' \` == "null" ]]
+        if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -cr '.param[] | select(.${curReqParams[$h]})' \`  ]]
         then
-            if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -r '.param[].${curReqParams[$h]}[]' \` ]]
+            if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -cr '.param[] | select(.${curReqParams[$h]})[] | .[]' \` ]]
             then
                 checkParams ${(P)${apiSets[$c]}[$d]} ${curReqParams[$h]} "false"
             else
@@ -2166,11 +2166,11 @@ EOF
                 else
                     clear
 
-                    if ! [[ \` cat \${credPath}/\${fileRef} | jq -r '.param' \` == "null" ]]
+                    if ! [[ \` cat \${credPath}/\${fileRef} | jq -cr '.param' \` == "null" ]]
                     then
-                        if ! [[ \` cat \${credPath}/\${fileRef} | jq -r ".param[].\${option}" \` == "null" ]]
+                        if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -cr ".param[] | select(.\${option})" \` ]]
                         then
-                            if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -r ".param[].\${option}[]" \` ]]
+                            if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -cr ".param[] | select(.\${option})[] | .[]" \` ]]
                             then
                                 checkParams ${(P)${apiSets[$c]}[$d]} \${option} "true"
                                 if ! [[ \${addedParams} =~ \${option} ]]
@@ -2257,11 +2257,11 @@ EOF
                 else
                     clear
 
-                    if ! [[ \` cat \${credPath}/\${fileRef} | jq -r '.param' \` == "null" ]]
+                    if ! [[ \` cat \${credPath}/\${fileRef} | jq -cr '.param' \` == "null" ]]
                     then
-                        if ! [[ \` cat \${credPath}/\${fileRef} | jq -r ".param[].\${option}" \` == "null" ]]
+                        if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -cr ".param[] | select(.\${option})" \` ]]
                         then
-                            if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -r ".param[].\${option}[]" \` ]]
+                            if ! [[ -z \` cat \${credPath}/\${fileRef} | jq -cr ".param[] | select(.\${option})[] | .[]" \` ]]
                             then
                                 checkParams ${(P)${apiSets[$c]}[$d]} \${option} "true"
                                 if ! [[ \${addedParams} =~ \${option} ]]
