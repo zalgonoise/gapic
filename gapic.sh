@@ -1750,7 +1750,12 @@ postBrowseProps() {
     | fuzzExPostParametersPreview "\${1}" "Choose properties to add" \\
     | read -r postPropOpt
 
-    postPropPayload=\`cat \${schemaFile} | jq -c ".schemas.\${1}.properties.\${postPropOpt}" \`
+    if ! [[ -z \${postPropOpt} ]]
+    then
+        postPropPayload=\`cat \${schemaFile} | jq -c ".schemas.\${1}.properties.\${postPropOpt}" \`
+    else
+        export postLoopBreak=true
+    fi
 }
 
 postDataPropBuild() {
@@ -2429,49 +2434,64 @@ EOF
 
         ### While loop
 
-        postBrowseProps "${curPostDefaultRef}"
-        
-        # Handle redirections (e.g. "\$ref": "UserName")
-
-        if [[ -z \${requestPostData} ]]
-        then 
-            requestPostData='{}'
-        fi
-
-        export requestPostData
-
-        if ! [[ \`echo \${postPropPayload} | jq -cr '."\$ref"' \` == "null" ]]
-        then
-            postDataStrucHead=\${postPropOpt}
-
-            echo \${requestPostData} \\
-            | jq -c ".\${postPropOpt}={}" \\
-            | read -r requestPostData
-
-            ### while loop
-
-            postBrowseProps "\`echo \${postPropPayload} | jq -cr '."\$ref"' \`"
-
-            fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
-            | read -r postPropVal
-
-            postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\"\${postPropVal}\""
+        while [[ \${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "${curPostDefaultRef}"
             
-            ### while done
-
-            # Handle refs (nesting) 
-
-
-
-        else
-            fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
-            | read -r postPropVal
-
-            postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\"\${postPropVal}\""
+            if [[ \${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                break
+            fi
 
 
-        fi
-        
+            # Handle redirections (e.g. "\$ref": "UserName")
+
+            if [[ -z \${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ \`echo \${postPropPayload} | jq -cr '."\$ref"' \` == "null" ]]
+            then
+                postDataStrucHead=\${postPropOpt}
+                
+                if [[ \`echo \${requestPostData} | jq -cr ".\${postDataStrucHead}"\` == "null" ]]
+                then
+                    echo \${requestPostData} \\
+                    | jq -c ".\${postDataStrucHead}={}" \\
+                    | read -r requestPostData
+                fi
+
+                while [[ \${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "\`echo \${postPropPayload} | jq -cr '."\$ref"' \`"
+
+                    if [[ \${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
+                    | read -r postPropVal
+
+                    postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\"\${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
+                | read -r postPropVal
+
+                postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\"\${postPropVal}\""
+
+
+            fi
+        done
     
     fi
 
@@ -2520,6 +2540,12 @@ EOF
             histUpdateJson "\"\${requestId}\"" ".auth.response" "\${authPayload}"          
         fi
 
+        if ! [[ -z \${requestPostData} ]]
+        then
+            curlExtraOpts="--header 'Content-Type: application/json' --data '\${requestPostData}' --compressed"
+        else
+            curlExtraOpts="--compressed"
+        fi
 
         curl -s \\
             --request ${curMethod} \\
@@ -2532,13 +2558,11 @@ EOF
 EOF
         done
 
-### TODO
-# add post request support: --data "{JSON}"
-
         unset k 
 
+
         cat << EOF >> ${outputLibWiz}
-            --compressed \\
+            \${curlExtraOpts} \\
             | jq -c '.' \\
             | read -r outputJson
         export outputJson
