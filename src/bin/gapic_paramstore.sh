@@ -105,7 +105,7 @@ rmParams() {
         fi
     done
 
-    modParams=( `cat ${3} | jq ".param[] | select(.${1})[] | .[]" | grep -v "${2}"` )
+    modParams=( `cat ${3} | jq -r ".param[] | select(.${1})[] | .[]" | grep -v "${2}"` )
 
     newList="[]"
 
