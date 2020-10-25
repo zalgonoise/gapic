@@ -2151,25 +2151,8 @@ do
             "Accept: application/json"
             )
 
-        # based on the API method or the HTTP method, add post request headers (to post JSON data)
-        if ! [[ ${(P)${apiSets[$c]}[$d]} =~ "users_signOut" ]] \
-        && [[ ${curMethod} =~ "PATCH" ]] \
-        || [[ ${curMethod} =~ "PUT" ]] \
-        || [[ ${curMethod} =~ "POST" ]]
-        then 
-            curHeaderSet=( 
-                ${curHeaderSet[@]}
-                "Content-Type: application/json"
-            )
-
-        fi
-
-
 
         # Function headers
-
-        #Log message
-        #gapicLogger "ENGINE" "BUILD" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Creating function."
 
 
         cat << EOF >> ${outputLibWiz}
@@ -2469,6 +2452,8 @@ EOF
             if ! [[ \`echo \${postPropPayload} | jq -cr '."\$ref"' \` == "null" ]]
             then
                 postDataStrucHead=\${postPropOpt}
+                postDataContentHead=\${postPropPayload}
+                postDataStrucTail=\`echo \${postPropPayload} | jq -cr '."\$ref"' \`
                 
                 if [[ \`echo \${requestPostData} | jq -cr ".\${postDataStrucHead}"\` == "null" ]]
                 then
@@ -2480,11 +2465,12 @@ EOF
                 while [[ \${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "\`echo \${postPropPayload} | jq -cr '."\$ref"' \`"
+                    postBrowseProps "\${postDataStrucTail}"
 
                     if [[ \${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 

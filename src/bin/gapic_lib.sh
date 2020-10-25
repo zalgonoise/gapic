@@ -136,6 +136,8 @@ asps_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -147,11 +149,12 @@ asps_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -661,6 +664,8 @@ channels_stop() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -672,11 +677,12 @@ channels_stop() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -723,9 +729,6 @@ channels_stop() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -751,7 +754,6 @@ channels_stop() {
             ${CHANNELS_STOP_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -765,7 +767,6 @@ channels_stop() {
             ${CHANNELS_STOP_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -793,10 +794,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -925,6 +922,8 @@ chromeosdevices_action() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -936,11 +935,12 @@ chromeosdevices_action() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -987,9 +987,6 @@ chromeosdevices_action() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -1015,7 +1012,6 @@ chromeosdevices_action() {
             ${CHROMEOSDEVICES_ACTION_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -1029,7 +1025,6 @@ chromeosdevices_action() {
             ${CHROMEOSDEVICES_ACTION_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -1057,10 +1052,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -1753,6 +1744,8 @@ chromeosdevices_moveDevicesToOu() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -1764,11 +1757,12 @@ chromeosdevices_moveDevicesToOu() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -1815,9 +1809,6 @@ chromeosdevices_moveDevicesToOu() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -1843,7 +1834,6 @@ chromeosdevices_moveDevicesToOu() {
             ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -1857,7 +1847,6 @@ chromeosdevices_moveDevicesToOu() {
             ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -1885,10 +1874,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -2088,6 +2073,8 @@ chromeosdevices_patch() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -2099,11 +2086,12 @@ chromeosdevices_patch() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -2150,9 +2138,6 @@ chromeosdevices_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -2178,7 +2163,6 @@ chromeosdevices_patch() {
             ${CHROMEOSDEVICES_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -2192,7 +2176,6 @@ chromeosdevices_patch() {
             ${CHROMEOSDEVICES_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -2220,10 +2203,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -2423,6 +2402,8 @@ chromeosdevices_update() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -2434,11 +2415,12 @@ chromeosdevices_update() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -2485,9 +2467,6 @@ chromeosdevices_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -2513,7 +2492,6 @@ chromeosdevices_update() {
             ${CHROMEOSDEVICES_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -2527,7 +2505,6 @@ chromeosdevices_update() {
             ${CHROMEOSDEVICES_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -2555,10 +2532,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -2808,6 +2781,8 @@ customers_patch() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -2819,11 +2794,12 @@ customers_patch() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -2870,9 +2846,6 @@ customers_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -2898,7 +2871,6 @@ customers_patch() {
             ${CUSTOMERS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -2912,7 +2884,6 @@ customers_patch() {
             ${CUSTOMERS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -2940,10 +2911,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -3044,6 +3011,8 @@ customers_update() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -3055,11 +3024,12 @@ customers_update() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -3106,9 +3076,6 @@ customers_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -3134,7 +3101,6 @@ customers_update() {
             ${CUSTOMERS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -3148,7 +3114,6 @@ customers_update() {
             ${CUSTOMERS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -3176,10 +3141,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -3308,6 +3269,8 @@ domainAliases_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -3319,11 +3282,12 @@ domainAliases_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -3712,6 +3676,8 @@ domainAliases_insert() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -3723,11 +3689,12 @@ domainAliases_insert() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -3774,9 +3741,6 @@ domainAliases_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -3802,7 +3766,6 @@ domainAliases_insert() {
             ${DOMAINALIASES_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -3816,7 +3779,6 @@ domainAliases_insert() {
             ${DOMAINALIASES_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -3844,10 +3806,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -4194,6 +4152,8 @@ domains_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -4205,11 +4165,12 @@ domains_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -4598,6 +4559,8 @@ domains_insert() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -4609,11 +4572,12 @@ domains_insert() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -4660,9 +4624,6 @@ domains_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -4688,7 +4649,6 @@ domains_insert() {
             ${DOMAINS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -4702,7 +4662,6 @@ domains_insert() {
             ${DOMAINS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -4730,10 +4689,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -4983,6 +4938,8 @@ groups_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -4994,11 +4951,12 @@ groups_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -5331,6 +5289,8 @@ groups_insert() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -5342,11 +5302,12 @@ groups_insert() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -5393,9 +5354,6 @@ groups_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -5421,7 +5379,6 @@ groups_insert() {
             ${GROUPS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -5435,7 +5392,6 @@ groups_insert() {
             ${GROUPS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -5463,10 +5419,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -5859,6 +5811,8 @@ groups_patch() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -5870,11 +5824,12 @@ groups_patch() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -5921,9 +5876,6 @@ groups_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -5949,7 +5901,6 @@ groups_patch() {
             ${GROUPS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -5963,7 +5914,6 @@ groups_patch() {
             ${GROUPS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -5991,10 +5941,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -6095,6 +6041,8 @@ groups_update() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -6106,11 +6054,12 @@ groups_update() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -6157,9 +6106,6 @@ groups_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -6185,7 +6131,6 @@ groups_update() {
             ${GROUPS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -6199,7 +6144,6 @@ groups_update() {
             ${GROUPS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -6227,10 +6171,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -6359,6 +6299,8 @@ members_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -6370,11 +6312,12 @@ members_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -6940,6 +6883,8 @@ members_insert() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -6951,11 +6896,12 @@ members_insert() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -7002,9 +6948,6 @@ members_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -7030,7 +6973,6 @@ members_insert() {
             ${MEMBERS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -7044,7 +6986,6 @@ members_insert() {
             ${MEMBERS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -7072,10 +7013,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -7437,6 +7374,8 @@ members_patch() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -7448,11 +7387,12 @@ members_patch() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -7499,9 +7439,6 @@ members_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -7527,7 +7464,6 @@ members_patch() {
             ${MEMBERS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -7541,7 +7477,6 @@ members_patch() {
             ${MEMBERS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -7569,10 +7504,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -7701,6 +7632,8 @@ members_update() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -7712,11 +7645,12 @@ members_update() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -7763,9 +7697,6 @@ members_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -7791,7 +7722,6 @@ members_update() {
             ${MEMBERS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -7805,7 +7735,6 @@ members_update() {
             ${MEMBERS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -7833,10 +7762,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -7965,6 +7890,8 @@ mobiledevices_action() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -7976,11 +7903,12 @@ mobiledevices_action() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -8027,9 +7955,6 @@ mobiledevices_action() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -8055,7 +7980,6 @@ mobiledevices_action() {
             ${MOBILEDEVICES_ACTION_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -8069,7 +7993,6 @@ mobiledevices_action() {
             ${MOBILEDEVICES_ACTION_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -8097,10 +8020,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -8229,6 +8148,8 @@ mobiledevices_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -8240,11 +8161,12 @@ mobiledevices_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -9043,6 +8965,8 @@ orgunits_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -9054,11 +8978,12 @@ orgunits_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -9447,6 +9372,8 @@ orgunits_insert() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -9458,11 +9385,12 @@ orgunits_insert() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -9509,9 +9437,6 @@ orgunits_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -9537,7 +9462,6 @@ orgunits_insert() {
             ${ORGUNITS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -9551,7 +9475,6 @@ orgunits_insert() {
             ${ORGUNITS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -9579,10 +9502,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -10000,6 +9919,8 @@ orgunits_patch() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -10011,11 +9932,12 @@ orgunits_patch() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -10062,9 +9984,6 @@ orgunits_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -10090,7 +10009,6 @@ orgunits_patch() {
             ${ORGUNITS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -10104,7 +10022,6 @@ orgunits_patch() {
             ${ORGUNITS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -10132,10 +10049,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -10264,6 +10177,8 @@ orgunits_update() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -10275,11 +10190,12 @@ orgunits_update() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -10326,9 +10242,6 @@ orgunits_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -10354,7 +10267,6 @@ orgunits_update() {
             ${ORGUNITS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -10368,7 +10280,6 @@ orgunits_update() {
             ${ORGUNITS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -10396,10 +10307,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -10677,6 +10584,8 @@ roleAssignments_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -10688,11 +10597,12 @@ roleAssignments_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -11081,6 +10991,8 @@ roleAssignments_insert() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -11092,11 +11004,12 @@ roleAssignments_insert() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -11143,9 +11056,6 @@ roleAssignments_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -11171,7 +11081,6 @@ roleAssignments_insert() {
             ${ROLEASSIGNMENTS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -11185,7 +11094,6 @@ roleAssignments_insert() {
             ${ROLEASSIGNMENTS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -11213,10 +11121,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -11578,6 +11482,8 @@ roles_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -11589,11 +11495,12 @@ roles_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -11982,6 +11889,8 @@ roles_insert() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -11993,11 +11902,12 @@ roles_insert() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -12044,9 +11954,6 @@ roles_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -12072,7 +11979,6 @@ roles_insert() {
             ${ROLES_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -12086,7 +11992,6 @@ roles_insert() {
             ${ROLES_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -12114,10 +12019,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -12469,6 +12370,8 @@ roles_patch() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -12480,11 +12383,12 @@ roles_patch() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -12531,9 +12435,6 @@ roles_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -12559,7 +12460,6 @@ roles_patch() {
             ${ROLES_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -12573,7 +12473,6 @@ roles_patch() {
             ${ROLES_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -12601,10 +12500,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -12733,6 +12628,8 @@ roles_update() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -12744,11 +12641,12 @@ roles_update() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -12795,9 +12693,6 @@ roles_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -12823,7 +12718,6 @@ roles_update() {
             ${ROLES_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -12837,7 +12731,6 @@ roles_update() {
             ${ROLES_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -12865,10 +12758,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -13118,6 +13007,8 @@ tokens_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -13129,11 +13020,12 @@ tokens_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -13671,6 +13563,8 @@ twoStepVerification_turnOff() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -13682,11 +13576,12 @@ twoStepVerification_turnOff() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -13733,9 +13628,6 @@ twoStepVerification_turnOff() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -13761,7 +13653,6 @@ twoStepVerification_turnOff() {
             ${TWOSTEPVERIFICATION_TURNOFF_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -13775,7 +13666,6 @@ twoStepVerification_turnOff() {
             ${TWOSTEPVERIFICATION_TURNOFF_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -13803,10 +13693,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -13907,6 +13793,8 @@ users_delete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -13918,11 +13806,12 @@ users_delete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -14401,6 +14290,8 @@ users_insert() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -14412,11 +14303,12 @@ users_insert() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -14463,9 +14355,6 @@ users_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -14491,7 +14380,6 @@ users_insert() {
             ${USERS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -14505,7 +14393,6 @@ users_insert() {
             ${USERS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -14533,10 +14420,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -14946,6 +14829,8 @@ users_makeAdmin() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -14957,11 +14842,12 @@ users_makeAdmin() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -15008,9 +14894,6 @@ users_makeAdmin() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -15036,7 +14919,6 @@ users_makeAdmin() {
             ${USERS_MAKEADMIN_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -15050,7 +14932,6 @@ users_makeAdmin() {
             ${USERS_MAKEADMIN_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -15078,10 +14959,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -15182,6 +15059,8 @@ users_patch() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -15193,11 +15072,12 @@ users_patch() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -15244,9 +15124,6 @@ users_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -15272,7 +15149,6 @@ users_patch() {
             ${USERS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -15286,7 +15162,6 @@ users_patch() {
             ${USERS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -15314,10 +15189,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -15418,6 +15289,8 @@ users_signOut() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -15429,11 +15302,12 @@ users_signOut() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -15480,9 +15354,6 @@ users_signOut() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -15508,7 +15379,6 @@ users_signOut() {
             ${USERS_SIGNOUT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -15522,7 +15392,6 @@ users_signOut() {
             ${USERS_SIGNOUT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -15550,10 +15419,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -15654,6 +15519,8 @@ users_undelete() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -15665,11 +15532,12 @@ users_undelete() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -15716,9 +15584,6 @@ users_undelete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -15744,7 +15609,6 @@ users_undelete() {
             ${USERS_UNDELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -15758,7 +15622,6 @@ users_undelete() {
             ${USERS_UNDELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -15786,10 +15649,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -15890,6 +15749,8 @@ users_update() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -15901,11 +15762,12 @@ users_update() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -15952,9 +15814,6 @@ users_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -15980,7 +15839,6 @@ users_update() {
             ${USERS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -15994,7 +15852,6 @@ users_update() {
             ${USERS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -16022,10 +15879,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -16292,6 +16145,8 @@ users_watch() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -16303,11 +16158,12 @@ users_watch() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -16354,9 +16210,6 @@ users_watch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -16382,7 +16235,6 @@ users_watch() {
             ${USERS_WATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -16396,7 +16248,6 @@ users_watch() {
             ${USERS_WATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -16424,10 +16275,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -16528,6 +16375,8 @@ verificationCodes_generate() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -16539,11 +16388,12 @@ verificationCodes_generate() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -16590,9 +16440,6 @@ verificationCodes_generate() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -16618,7 +16465,6 @@ verificationCodes_generate() {
             ${VERIFICATIONCODES_GENERATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -16632,7 +16478,6 @@ verificationCodes_generate() {
             ${VERIFICATIONCODES_GENERATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -16660,10 +16505,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
@@ -16764,6 +16605,8 @@ verificationCodes_invalidate() {
             if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
             then
                 postDataStrucHead=${postPropOpt}
+                postDataContentHead=${postPropPayload}
+                postDataStrucTail=`echo ${postPropPayload} | jq -cr '."$ref"' `
                 
                 if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
                 then
@@ -16775,11 +16618,12 @@ verificationCodes_invalidate() {
                 while [[ ${postSubLoopBreak} != "true" ]]
                 do
 
-                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+                    postBrowseProps "${postDataStrucTail}"
 
                     if [[ ${postLoopBreak} == "true" ]]
                     then
                         postSubLoopBreak=true
+                        postLoopBreak=false                
                         break
                     fi
 
@@ -16826,9 +16670,6 @@ verificationCodes_invalidate() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -16854,7 +16695,6 @@ verificationCodes_invalidate() {
             ${VERIFICATIONCODES_INVALIDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --header 'Content-Type: application/json' \
             --data "${requestPostData}" \
             --compressed \
@@ -16868,7 +16708,6 @@ verificationCodes_invalidate() {
             ${VERIFICATIONCODES_INVALIDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
@@ -16896,10 +16735,6 @@ EOIF
         execCurl+="--header 'Accept: application/json' "
         cat << EOIF
         --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
 EOIF
         if ! [[ -z ${requestPostData} ]]
         then
