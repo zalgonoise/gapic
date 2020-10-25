@@ -57,9 +57,54 @@ paramBuild() {
 
 }
 
+addParams() {
+    keyValue=( `cat ${3} | jq -r ".param[] | keys[] " ` )
+
+    for (( index = 1 ; index <= ${#keyValue[@]} ; index++ ))
+    do
+        if [[ "${keyValue[${index}]}" == "${1}" ]]
+        then 
+            keyIndex=$((${index}-1))
+        fi
+    done
+
+    modParams=( `cat ${3} | jq -r ".param[] | select(.${1})[] | .[]" ` )
+
+    newList="[\"${2}\"]"
+
+    for (( par = 1 ; par <= ${#modParams[@]} ; par++ ))
+    do 
+        echo ${newList} \
+        | jq -c ".=[.[],\"${modParams[${par}]}\"]" \
+        | read -r newList
+    done
+
+    cat ${3} \
+    | jq -c ".param[${keyIndex}].${1}=${newList}" \
+    | read -r newParamPayload
+    
+    if [[ `echo ${newParamPayload} | jq -c ` ]]
+    then 
+        echo ${newParamPayload} \
+        | jq \
+        > ${3}
+    fi
+
+}
+
 # Handle parameter removal
 
 rmParams() {
+    keyValue=( `cat ${3} | jq -r ".param[] | keys[] " ` )
+
+    for (( index = 1 ; index <= ${#keyValue[@]} ; index++ ))
+    do
+        if [[ "${keyValue[${index}]}" == "${1}" ]]
+        then 
+            keyIndex=$((${index}-1))
+        fi
+    done
+
     modParams=( `cat ${3} | jq ".param[] | select(.${1})[] | .[]" | grep -v "${2}"` )
 
     newList="[]"
@@ -72,7 +117,7 @@ rmParams() {
     done
 
     cat ${3} \
-    | jq -c ".param[].${1}=${newList}" \
+    | jq -c ".param[${keyIndex}].${1}=${newList}" \
     | read -r newParamPayload
     
     if [[ `echo ${newParamPayload} | jq -c ` ]]
@@ -131,7 +176,7 @@ getParams() {
             declare -g "tempUrlPar=&${tempPar}=${(P)${tempPar}}"
         fi
 
-        paramBuild "${tempPar}" "${tempVal}" "${paramPayload}"
+        addParams "${tempPar}" "${tempVal}" "${credPath}/${fileRef}"
 
     fi
     unset tempPar tempVal
