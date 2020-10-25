@@ -179,6 +179,7 @@ outputExecWiz="${outputBinDir}/gapic_exec.sh"
 outputParamStoreWiz="${outputBinDir}/gapic_paramstore.sh"
 outputFuzzWiz="${outputBinDir}/gapic_fuzzex.sh"
 outputHistWiz="${outputBinDir}/gapic_history.sh"
+outputPostWiz="${outputBinDir}/gapic_post.sh"
 
 defaultSchemaFile="${outputSchemaDir}/gapic_AdminSDK_Directory.json"
 
@@ -227,7 +228,7 @@ if ! [ -f ${outputCredsWiz} ] \
 || ! [ -f ${outputFuzzWiz} ] \
 || ! [ -f ${outputHistWiz} ]
 then
-    touch ${outputCredsWiz} ${outputLibWiz} ${outputExecWiz} ${outputParamStoreWiz} ${outputFuzzWiz} ${outputHistWiz}
+    touch ${outputCredsWiz} ${outputLibWiz} ${outputExecWiz} ${outputParamStoreWiz} ${outputFuzzWiz} ${outputHistWiz} ${outputPostWiz}
 fi
 
 if ! [ -f ${outputLogDir}/requests.json ]
@@ -1432,6 +1433,33 @@ fuzzExPromptParameters() {
     --black 
 }
 
+fuzzExPostParametersPrompt() {
+    fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --preview "cat \${schemaFile} | jq --sort-keys -C  \${1} \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# \${2} #" \\
+    --color=dark \\
+    --black 
+}
+
+
+fuzzExPostParametersPreview() {
+    fzf \\
+    --bind "tab:replace-query" \\
+    --bind "change:top" \\
+    --layout=reverse-list \\
+    --preview "cat \${schemaFile} | jq --sort-keys -C  .schemas.\${1}.properties.{}"  \\
+    --prompt="~ " \\
+    --pointer="~ " \\
+    --header="# \${2} #" \\
+    --color=dark \\
+    --black
+}
+
 fuzzExSavedCreds() {
     fzf \\
     --bind "tab:replace-query" \\
@@ -1707,6 +1735,33 @@ histReplayRequest() {
 EOF
 
 
+# Create Post Data handler file
+
+#Log message
+gapicLogger "ENGINE" "EXEC" '\t\t' "INFO" "Creating post data wizard under: ${outputPostWiz}"
+
+apacheLicense > ${outputPostWiz}
+
+cat << EOF >> ${outputPostWiz}
+
+postBrowseProps() {
+    cat \${schemaFile} \\
+    | jq -rc ".schemas.\${1}.properties | keys[]" \\
+    | fuzzExPostParametersPreview "\${1}" "Choose properties to add" \\
+    | read -r postPropOpt
+
+    postPropPayload=\`cat \${schemaFile} | jq -c ".schemas.\${1}.properties.\${postPropOpt}" \`
+}
+
+postDataPropBuild() {
+    echo \${requestPostData} \\
+    | jq -c "\${1}=\${2}" \\
+    | read -r requestPostData
+
+    export requestPostData
+}
+
+EOF
 
 
 # if an input JSON file isn't supplied, defaults to fetching the Directory API schema via curl
@@ -1991,8 +2046,17 @@ do
         || [[ "${curMethod}" == "PUT" ]] \
         || [[ "${curMethod}" == "DELETE" ]]
         then
-            curPostDefaultRef=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r '.request."$ref"'`
-            curPostExtraRefs+=( `echo ${inputJson} | jq -r ".schemas.${curPostDefaultRef}.properties[] | select(.\"\$ref\")" | .\"\$ref\"` )
+            curPostDefaultRef=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -cr '.request."$ref"'`
+            curPostExtraRefs+=( `echo ${inputJson} | jq -cr ".schemas.${curPostDefaultRef}.properties[] | select(.\"\$ref\")" | .\"\$ref\"` )
+        
+            curPostSchemaRef=`echo ${inputJson} | jq -cr ".schemas.${curPostDefaultRef}.properties"`
+            
+            for (( schemas = 1 ; schemas <= ${#curlPostExtraRefs[@]} ; schemas++ ))
+            do
+                curPostSchemaExtraRef+=( `echo ${inputJson} | jq -cr ".schemas.${curPostExtraRefs[$schemas]}.properties"` )
+            done
+
+            
         fi
         
 
@@ -2347,6 +2411,76 @@ EOF
 EOF
         fi
 
+        # Post requests
+
+        if [[ "${curMethod}" == "POST" ]] \
+        || [[ "${curMethod}" == "PATCH" ]] \
+        || [[ "${curMethod}" == "PUT" ]] \
+        || [[ "${curMethod}" == "DELETE" ]]
+        then
+            cat << EOF >> "${outputLibWiz}"
+
+    echo -e "yes\nno" \\
+    | fuzzExPostParametersPrompt "\".schemas.${curPostDefaultRef}.properties\"" "Add any Post Data to the request?" \\
+    | read -r postDataChoice
+
+    if [[ \${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+
+        postBrowseProps "${curPostDefaultRef}"
+        
+        # Handle redirections (e.g. "\$ref": "UserName")
+
+        if [[ -z \${requestPostData} ]]
+        then 
+            requestPostData='{}'
+        fi
+
+        export requestPostData
+
+        if ! [[ \`echo \${postPropPayload} | jq -cr '."\$ref"' \` == "null" ]]
+        then
+            postDataStrucHead=\${postPropOpt}
+
+            echo \${requestPostData} \\
+            | jq -c ".\${postPropOpt}={}" \\
+            | read -r requestPostData
+
+            ### while loop
+
+            postBrowseProps "\`echo \${postPropPayload} | jq -cr '."\$ref"' \`"
+
+            fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
+            | read -r postPropVal
+
+            postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\"\${postPropVal}\""
+            
+            ### while done
+
+            # Handle refs (nesting) 
+
+
+
+        else
+            fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
+            | read -r postPropVal
+
+            postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\"\${postPropVal}\""
+
+
+        fi
+        
+    
+    fi
+
+
+
+
+EOF
+        fi
+
 
 
         cat << EOF >> ${outputLibWiz}
@@ -2463,7 +2597,7 @@ EOF
         gapicLogger "ENGINE" "BUILD" '\t\t' " OK " "[${(P)apiSets[$c][$d]/_//}] - Function created."
 
 
-        unset curPrefix curUrl curReqParams curOptParams curInpParams curMethod
+        unset curPrefix curUrl curReqParams curOptParams curInpParams curMethod curPostSchemaExtraRef
     done
 done
 
