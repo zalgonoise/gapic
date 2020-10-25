@@ -1986,6 +1986,17 @@ do
 
         curMethod=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r ".httpMethod"`
 
+        if [[ "${curMethod}" == "POST" ]] \
+        || [[ "${curMethod}" == "PATCH" ]] \
+        || [[ "${curMethod}" == "PUT" ]] \
+        || [[ "${curMethod}" == "DELETE" ]]
+        then
+            curPostDefaultRef=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -r '.request."$ref"'`
+            curPostExtraRefs+=( `echo ${inputJson} | jq -r ".schemas.${curPostDefaultRef}.properties[] | select(.\"\$ref\")" | .\"\$ref\"` )
+        fi
+        
+
+
         # fetch all available query parameters (not the post data)
 
         #Log message
