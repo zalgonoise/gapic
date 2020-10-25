@@ -38,6 +38,7 @@
     gapicParamWiz="${gapicBinDir}gapic_paramstore.sh"
     gapicFuzzWiz="${gapicBinDir}gapic_fuzzex.sh"
     gapicHistWiz="${gapicBinDir}gapic_history.sh"
+    gapicPostWiz="${gapicBinDir}gapic_post.sh"
 
 gapicMenu() {
     echo ${uniqueSchemas} "Fuzzy_History" \
@@ -119,7 +120,14 @@ gapicBootstrap() {
         source ${gapicHistWiz}
     fi
 
-
+    if ! [[ -f ${gapicPostWiz} ]]
+    then
+        clear
+        echo -en "# No Post Request source file found! Please re-run the generator."
+        exit 1
+    else
+        source ${gapicPostWiz}
+    fi
 }
 
 # Check for existing credentials and access token

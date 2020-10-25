@@ -187,6 +187,33 @@ fuzzExPromptParameters() {
     --black 
 }
 
+fuzzExPostParametersPrompt() {
+    fzf \
+    --bind "tab:replace-query" \
+    --bind "change:top" \
+    --layout=reverse-list \
+    --preview "cat ${schemaFile} | jq --sort-keys -C  ${1}" \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# ${2} #" \
+    --color=dark \
+    --black 
+}
+
+
+fuzzExPostParametersPreview() {
+    fzf \
+    --bind "tab:replace-query" \
+    --bind "change:top" \
+    --layout=reverse-list \
+    --preview "cat ${schemaFile} | jq --sort-keys -C  .schemas.${1}.properties.{}"  \
+    --prompt="~ " \
+    --pointer="~ " \
+    --header="# ${2} #" \
+    --color=dark \
+    --black
+}
+
 fuzzExSavedCreds() {
     fzf \
     --bind "tab:replace-query" \

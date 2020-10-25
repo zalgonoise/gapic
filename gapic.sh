@@ -1446,7 +1446,7 @@ fuzzExPostParametersPrompt() {
     --bind "tab:replace-query" \\
     --bind "change:top" \\
     --layout=reverse-list \\
-    --preview "cat \${schemaFile} | jq --sort-keys -C  \${1} \\
+    --preview "cat \${schemaFile} | jq --sort-keys -C  \${1}" \\
     --prompt="~ " \\
     --pointer="~ " \\
     --header="# \${2} #" \\
@@ -1762,7 +1762,7 @@ postBrowseProps() {
     then
         postPropPayload=\`cat \${schemaFile} | jq -c ".schemas.\${1}.properties.\${postPropOpt}" \`
     else
-        export postLoopBreak=true
+        postLoopBreak=true
     fi
 }
 
@@ -2060,7 +2060,7 @@ do
         || [[ "${curMethod}" == "DELETE" ]]
         then
             curPostDefaultRef=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -cr '.request."$ref"'`
-            curPostExtraRefs+=( `echo ${inputJson} | jq -cr ".schemas.${curPostDefaultRef}.properties[] | select(.\"\$ref\")" | .\"\$ref\"` )
+            curPostExtraRefs+=( `echo ${inputJson} | jq -cr ".schemas.${curPostDefaultRef}.properties[] | select(.\"\$ref\") | .\"\$ref\""` )
         
             curPostSchemaRef=`echo ${inputJson} | jq -cr ".schemas.${curPostDefaultRef}.properties"`
             
@@ -2441,6 +2441,9 @@ EOF
     then
 
         ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
 
         while [[ \${postMainLoopBreak} != "true" ]]
         do
@@ -2449,6 +2452,7 @@ EOF
             if [[ \${postLoopBreak} == "true" ]]
             then
                 postMainLoopBreak=true
+                postLoopBreak=false
                 break
             fi
 
@@ -2548,14 +2552,19 @@ EOF
             histUpdateJson "\"\${requestId}\"" ".auth.response" "\${authPayload}"          
         fi
 
+        # handle GET/POST requests
+
         if ! [[ -z \${requestPostData} ]]
         then
-            curlExtraOpts="--header 'Content-Type: application/json' --data '\${requestPostData}' --compressed"
-        else
-            curlExtraOpts="--compressed"
-        fi
+            # handle POST requests
 
-        curl -s \\
+            echo \${requestPayload} \\
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo \${requestPayload} \\
+            | histUpdatePayload ".request.postData" "\${requestPostData}"
+
+            curl -s \\
             --request ${curMethod} \\
             \${${curPrefix}URL} \\
 EOF
@@ -2570,10 +2579,35 @@ EOF
 
 
         cat << EOF >> ${outputLibWiz}
-            \${curlExtraOpts} \\
+            --header 'Content-Type: application/json' \\
+            --data "\${requestPostData}" \\
+            --compressed \\
             | jq -c '.' \\
             | read -r outputJson
-        export outputJson
+            export outputJson
+
+        else
+            curl -s \\
+            --request ${curMethod} \\
+            \${${curPrefix}URL} \\
+EOF
+        for (( k = 1 ; k <= ${#curHeaderSet[@]} ; k++ ))
+        do
+            cat << EOF >> ${outputLibWiz}
+            --header "${curHeaderSet[$k]}" \\
+EOF
+        done
+
+        unset k 
+
+
+        cat << EOF >> ${outputLibWiz}
+            --compressed \\
+            | jq -c '.' \\
+            | read -r outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"\${requestId}\"" ".response" "\${outputJson}"          
 
@@ -2600,7 +2634,17 @@ EOIF
 EOF
         done
         unset curHeaderSet
-        cat << EOF >> ${outputLibWiz}
+        cat << EOF >> ${outputLibWiz}        
+        if ! [[ -z \${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '\${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '\${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF

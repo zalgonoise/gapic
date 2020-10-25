@@ -99,6 +99,84 @@ asps_delete() {
 
     ASPS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/asps/${codeId}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -128,8 +206,32 @@ asps_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${ASPS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${ASPS_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -137,7 +239,9 @@ asps_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -160,6 +264,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -269,8 +383,32 @@ asps_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${ASPS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${ASPS_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -278,7 +416,9 @@ asps_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -301,6 +441,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -382,8 +532,32 @@ asps_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${ASPS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${ASPS_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -391,7 +565,9 @@ asps_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -414,6 +590,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -437,6 +623,84 @@ channels_stop() {
 
 
     CHANNELS_STOP_URL="https://www.googleapis.com/admin/directory_v1/channels/stop?key=${CLIENTID}"
+
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Channel.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Channel"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
 
     execRequest() {
         if [[ -z ${requestId} ]]
@@ -470,8 +734,33 @@ channels_stop() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${CHANNELS_STOP_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${CHANNELS_STOP_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -480,7 +769,9 @@ channels_stop() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -507,6 +798,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -587,6 +888,84 @@ chromeosdevices_action() {
 
     CHROMEOSDEVICES_ACTION_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/chromeos/${resourceId}/action?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.ChromeOsDeviceAction.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "ChromeOsDeviceAction"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -619,8 +998,33 @@ chromeosdevices_action() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${CHROMEOSDEVICES_ACTION_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${CHROMEOSDEVICES_ACTION_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -629,7 +1033,9 @@ chromeosdevices_action() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -656,6 +1062,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -836,8 +1252,32 @@ chromeosdevices_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${CHROMEOSDEVICES_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${CHROMEOSDEVICES_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -845,7 +1285,9 @@ chromeosdevices_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -868,6 +1310,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -1116,8 +1568,32 @@ chromeosdevices_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${CHROMEOSDEVICES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${CHROMEOSDEVICES_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -1125,7 +1601,9 @@ chromeosdevices_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -1148,6 +1626,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -1228,6 +1716,84 @@ chromeosdevices_moveDevicesToOu() {
 
     CHROMEOSDEVICES_MOVEDEVICESTOOU_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/chromeos/moveDevicesToOu?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.ChromeOsMoveDevicesToOu.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "ChromeOsMoveDevicesToOu"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -1260,8 +1826,33 @@ chromeosdevices_moveDevicesToOu() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -1270,7 +1861,9 @@ chromeosdevices_moveDevicesToOu() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -1297,6 +1890,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -1448,6 +2051,84 @@ chromeosdevices_patch() {
         done
     fi
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.ChromeOsDevice.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "ChromeOsDevice"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -1480,8 +2161,33 @@ chromeosdevices_patch() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PATCH \
+            ${CHROMEOSDEVICES_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PATCH \
             ${CHROMEOSDEVICES_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -1490,7 +2196,9 @@ chromeosdevices_patch() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -1517,6 +2225,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -1668,6 +2386,84 @@ chromeosdevices_update() {
         done
     fi
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.ChromeOsDevice.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "ChromeOsDevice"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -1700,8 +2496,33 @@ chromeosdevices_update() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PUT \
+            ${CHROMEOSDEVICES_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PUT \
             ${CHROMEOSDEVICES_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -1710,7 +2531,9 @@ chromeosdevices_update() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -1737,6 +2560,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -1818,8 +2651,32 @@ customers_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${CUSTOMERS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${CUSTOMERS_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -1827,7 +2684,9 @@ customers_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -1850,6 +2709,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -1902,6 +2771,84 @@ customers_patch() {
 
     CUSTOMERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Customer.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Customer"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -1934,8 +2881,33 @@ customers_patch() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PATCH \
+            ${CUSTOMERS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PATCH \
             ${CUSTOMERS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -1944,7 +2916,9 @@ customers_patch() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -1971,6 +2945,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -2023,6 +3007,84 @@ customers_update() {
 
     CUSTOMERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customers/${customerKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Customer.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Customer"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -2055,8 +3117,33 @@ customers_update() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PUT \
+            ${CUSTOMERS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PUT \
             ${CUSTOMERS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -2065,7 +3152,9 @@ customers_update() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -2092,6 +3181,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -2172,6 +3271,84 @@ domainAliases_delete() {
 
     DOMAINALIASES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases/${domainAliasName}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -2201,8 +3378,32 @@ domainAliases_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${DOMAINALIASES_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${DOMAINALIASES_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -2210,7 +3411,9 @@ domainAliases_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -2233,6 +3436,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -2342,8 +3555,32 @@ domainAliases_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${DOMAINALIASES_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${DOMAINALIASES_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -2351,7 +3588,9 @@ domainAliases_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -2374,6 +3613,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -2426,6 +3675,84 @@ domainAliases_insert() {
 
     DOMAINALIASES_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domainaliases?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.DomainAlias.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "DomainAlias"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -2458,8 +3785,33 @@ domainAliases_insert() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${DOMAINALIASES_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${DOMAINALIASES_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -2468,7 +3820,9 @@ domainAliases_insert() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -2495,6 +3849,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -2645,8 +4009,32 @@ domainAliases_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${DOMAINALIASES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${DOMAINALIASES_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -2654,7 +4042,9 @@ domainAliases_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -2677,6 +4067,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -2757,6 +4157,84 @@ domains_delete() {
 
     DOMAINS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains/${domainName}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -2786,8 +4264,32 @@ domains_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${DOMAINS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${DOMAINS_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -2795,7 +4297,9 @@ domains_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -2818,6 +4322,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -2927,8 +4441,32 @@ domains_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${DOMAINS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${DOMAINS_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -2936,7 +4474,9 @@ domains_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -2959,6 +4499,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -3011,6 +4561,84 @@ domains_insert() {
 
     DOMAINS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/domains?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Domains.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Domains"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -3043,8 +4671,33 @@ domains_insert() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${DOMAINS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${DOMAINS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -3053,7 +4706,9 @@ domains_insert() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -3080,6 +4735,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -3161,8 +4826,32 @@ domains_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${DOMAINS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${DOMAINS_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -3170,7 +4859,9 @@ domains_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -3193,6 +4884,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -3245,6 +4946,84 @@ groups_delete() {
 
     GROUPS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -3274,8 +5053,32 @@ groups_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${GROUPS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${GROUPS_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -3283,7 +5086,9 @@ groups_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -3306,6 +5111,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -3387,8 +5202,32 @@ groups_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${GROUPS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${GROUPS_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -3396,7 +5235,9 @@ groups_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -3419,6 +5260,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -3442,6 +5293,84 @@ groups_insert() {
 
 
     GROUPS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/groups?key=${CLIENTID}"
+
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Group.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Group"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
 
     execRequest() {
         if [[ -z ${requestId} ]]
@@ -3475,8 +5404,33 @@ groups_insert() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${GROUPS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${GROUPS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -3485,7 +5439,9 @@ groups_insert() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -3512,6 +5468,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -3736,8 +5702,32 @@ groups_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${GROUPS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${GROUPS_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -3745,7 +5735,9 @@ groups_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -3768,6 +5760,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -3820,6 +5822,84 @@ groups_patch() {
 
     GROUPS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Group.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Group"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -3852,8 +5932,33 @@ groups_patch() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PATCH \
+            ${GROUPS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PATCH \
             ${GROUPS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -3862,7 +5967,9 @@ groups_patch() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -3889,6 +5996,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -3941,6 +6058,84 @@ groups_update() {
 
     GROUPS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Group.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Group"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -3973,8 +6168,33 @@ groups_update() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PUT \
+            ${GROUPS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PUT \
             ${GROUPS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -3983,7 +6203,9 @@ groups_update() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -4010,6 +6232,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -4090,6 +6322,84 @@ members_delete() {
 
     MEMBERS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -4119,8 +6429,32 @@ members_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${MEMBERS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${MEMBERS_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -4128,7 +6462,9 @@ members_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -4151,6 +6487,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -4260,8 +6606,32 @@ members_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${MEMBERS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${MEMBERS_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -4269,7 +6639,9 @@ members_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -4292,6 +6664,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -4401,8 +6783,32 @@ members_hasMember() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${MEMBERS_HASMEMBER_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${MEMBERS_HASMEMBER_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -4410,7 +6816,9 @@ members_hasMember() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -4433,6 +6841,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -4485,6 +6903,84 @@ members_insert() {
 
     MEMBERS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Member.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Member"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -4517,8 +7013,33 @@ members_insert() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${MEMBERS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${MEMBERS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -4527,7 +7048,9 @@ members_insert() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -4554,6 +7077,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -4719,8 +7252,32 @@ members_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${MEMBERS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${MEMBERS_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -4728,7 +7285,9 @@ members_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -4751,6 +7310,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -4831,6 +7400,84 @@ members_patch() {
 
     MEMBERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Member.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Member"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -4863,8 +7510,33 @@ members_patch() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PATCH \
+            ${MEMBERS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PATCH \
             ${MEMBERS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -4873,7 +7545,9 @@ members_patch() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -4900,6 +7574,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -4980,6 +7664,84 @@ members_update() {
 
     MEMBERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/groups/${groupKey}/members/${memberKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Member.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Member"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -5012,8 +7774,33 @@ members_update() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PUT \
+            ${MEMBERS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PUT \
             ${MEMBERS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -5022,7 +7809,9 @@ members_update() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -5049,6 +7838,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -5129,6 +7928,84 @@ mobiledevices_action() {
 
     MOBILEDEVICES_ACTION_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/mobile/${resourceId}/action?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.MobileDeviceAction.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "MobileDeviceAction"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -5161,8 +8038,33 @@ mobiledevices_action() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${MOBILEDEVICES_ACTION_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${MOBILEDEVICES_ACTION_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -5171,7 +8073,9 @@ mobiledevices_action() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -5198,6 +8102,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -5278,6 +8192,84 @@ mobiledevices_delete() {
 
     MOBILEDEVICES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/devices/mobile/${resourceId}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -5307,8 +8299,32 @@ mobiledevices_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${MOBILEDEVICES_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${MOBILEDEVICES_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -5316,7 +8332,9 @@ mobiledevices_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -5339,6 +8357,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -5519,8 +8547,32 @@ mobiledevices_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${MOBILEDEVICES_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${MOBILEDEVICES_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -5528,7 +8580,9 @@ mobiledevices_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -5551,6 +8605,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -5794,8 +8858,32 @@ mobiledevices_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${MOBILEDEVICES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${MOBILEDEVICES_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -5803,7 +8891,9 @@ mobiledevices_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -5826,6 +8916,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -5906,6 +9006,84 @@ orgunits_delete() {
 
     ORGUNITS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -5935,8 +9113,32 @@ orgunits_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${ORGUNITS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${ORGUNITS_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -5944,7 +9146,9 @@ orgunits_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -5967,6 +9171,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -6076,8 +9290,32 @@ orgunits_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${ORGUNITS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${ORGUNITS_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -6085,7 +9323,9 @@ orgunits_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -6108,6 +9348,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -6160,6 +9410,84 @@ orgunits_insert() {
 
     ORGUNITS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.OrgUnit.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "OrgUnit"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -6192,8 +9520,33 @@ orgunits_insert() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${ORGUNITS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${ORGUNITS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -6202,7 +9555,9 @@ orgunits_insert() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -6229,6 +9584,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -6450,8 +9815,32 @@ orgunits_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${ORGUNITS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${ORGUNITS_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -6459,7 +9848,9 @@ orgunits_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -6482,6 +9873,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -6562,6 +9963,84 @@ orgunits_patch() {
 
     ORGUNITS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.OrgUnit.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "OrgUnit"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -6594,8 +10073,33 @@ orgunits_patch() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PATCH \
+            ${ORGUNITS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PATCH \
             ${ORGUNITS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -6604,7 +10108,9 @@ orgunits_patch() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -6631,6 +10137,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -6711,6 +10227,84 @@ orgunits_update() {
 
     ORGUNITS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/orgunits/${orgunitsId}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.OrgUnit.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "OrgUnit"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -6743,8 +10337,33 @@ orgunits_update() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PUT \
+            ${ORGUNITS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PUT \
             ${ORGUNITS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -6753,7 +10372,9 @@ orgunits_update() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -6780,6 +10401,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -6861,8 +10492,32 @@ privileges_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${PRIVILEGES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${PRIVILEGES_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -6870,7 +10525,9 @@ privileges_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -6893,6 +10550,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -6973,6 +10640,84 @@ roleAssignments_delete() {
 
     ROLEASSIGNMENTS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments/${roleAssignmentId}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -7002,8 +10747,32 @@ roleAssignments_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${ROLEASSIGNMENTS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${ROLEASSIGNMENTS_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -7011,7 +10780,9 @@ roleAssignments_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -7034,6 +10805,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -7143,8 +10924,32 @@ roleAssignments_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${ROLEASSIGNMENTS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${ROLEASSIGNMENTS_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -7152,7 +10957,9 @@ roleAssignments_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -7175,6 +10982,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -7227,6 +11044,84 @@ roleAssignments_insert() {
 
     ROLEASSIGNMENTS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roleassignments?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.RoleAssignment.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "RoleAssignment"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -7259,8 +11154,33 @@ roleAssignments_insert() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${ROLEASSIGNMENTS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${ROLEASSIGNMENTS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -7269,7 +11189,9 @@ roleAssignments_insert() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -7296,6 +11218,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -7461,8 +11393,32 @@ roleAssignments_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${ROLEASSIGNMENTS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${ROLEASSIGNMENTS_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -7470,7 +11426,9 @@ roleAssignments_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -7493,6 +11451,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -7573,6 +11541,84 @@ roles_delete() {
 
     ROLES_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -7602,8 +11648,32 @@ roles_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${ROLES_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${ROLES_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -7611,7 +11681,9 @@ roles_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -7634,6 +11706,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -7743,8 +11825,32 @@ roles_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${ROLES_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${ROLES_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -7752,7 +11858,9 @@ roles_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -7775,6 +11883,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -7827,6 +11945,84 @@ roles_insert() {
 
     ROLES_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Role.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Role"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -7859,8 +12055,33 @@ roles_insert() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${ROLES_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${ROLES_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -7869,7 +12090,9 @@ roles_insert() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -7896,6 +12119,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -8051,8 +12284,32 @@ roles_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${ROLES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${ROLES_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -8060,7 +12317,9 @@ roles_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -8083,6 +12342,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -8163,6 +12432,84 @@ roles_patch() {
 
     ROLES_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Role.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Role"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -8195,8 +12542,33 @@ roles_patch() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PATCH \
+            ${ROLES_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PATCH \
             ${ROLES_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -8205,7 +12577,9 @@ roles_patch() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -8232,6 +12606,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -8312,6 +12696,84 @@ roles_update() {
 
     ROLES_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customer}/roles/${roleId}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Role.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Role"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -8344,8 +12806,33 @@ roles_update() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PUT \
+            ${ROLES_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PUT \
             ${ROLES_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -8354,7 +12841,9 @@ roles_update() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -8381,6 +12870,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -8397,74 +12896,18 @@ EOIF
 }
 
 
-schemas_delete() {
+1() {
 
-    apiQueryRef=( `echo schemas delete`)
-
-
-    customerIdMeta=( 
-        'string'
-        'Immutable ID of the G Suite account'
-    )
+    apiQueryRef=( `echo 1`)
 
 
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
-    then
-        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
-        then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
-            then
-                checkParams schemas_delete customerId "false"
-            else
-                getParams "schemas_delete" "customerId"
-            fi
-        else
-            getParams "schemas_delete" "customerId"
-        fi
-    else
-        genParamConfig
-        getParams "schemas_delete" "customerId"
-    fi
 
-    #    declare -g "SCHEMAS_DELETE_customerId=${customerId}"
-
-
-    
-    schemaKeyMeta=( 
-        'string'
-        'Name or immutable ID of the schema'
-    )
-
-
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
-    then
-        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)' `  ]]
-        then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)[] | .[]' ` ]]
-            then
-                checkParams schemas_delete schemaKey "false"
-            else
-                getParams "schemas_delete" "schemaKey"
-            fi
-        else
-            getParams "schemas_delete" "schemaKey"
-        fi
-    else
-        genParamConfig
-        getParams "schemas_delete" "schemaKey"
-    fi
-
-    #    declare -g "SCHEMAS_DELETE_schemaKey=${schemaKey}"
-
-
-    
-
-    SCHEMAS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
+    URL="https://www.googleapis.com/?key=${CLIENTID}"
 
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
-            histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${SCHEMAS_DELETE_URL}"
+            histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "" "${URL}"
  
             if ! [[ -z ${sentAuthRequest} ]] \
             && ! [[ -z ${authPayload} ]]
@@ -8490,278 +12933,46 @@ schemas_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
-            --request DELETE \
-            ${SCHEMAS_DELETE_URL} \
-            --header "Authorization: Bearer ${ACCESSTOKEN}" \
-            --header "Accept: application/json" \
-            --compressed \
-            | jq -c '.' \
-            | read -r outputJson
-        export outputJson
-
-        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
-
-        execCurl="curl -s --request DELETE \"${SCHEMAS_DELETE_URL}\" "
-
-
-        echo -e "# Request issued:\n\n"
-        echo -e "#########################\n"
-        cat << EOIF
-
-    curl -s \\ 
-        --request DELETE \\ 
-        ${SCHEMAS_DELETE_URL} \\ 
-EOIF
-        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
-        cat << EOIF
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
-EOIF
-        execCurl+="--header 'Accept: application/json' "
-        cat << EOIF
-        --header "Accept: application/json" \\ 
-EOIF
-        cat << EOIF
-        --compressed
-EOIF
-        echo -e "\n\n"
-        echo -e "#########################\n"
-
-        execCurl+="--compressed"
-        histUpdateToken "\"${requestId}\"" ".request.curl" "${execCurl}"          
-        unset execCurl
-
-    }
-    execRequest
-
-}
-
-
-schemas_get() {
-
-    apiQueryRef=( `echo schemas get`)
-
-
-    customerIdMeta=( 
-        'string'
-        'Immutable ID of the G Suite account'
-    )
-
-
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
-    then
-        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
+        if ! [[ -z ${requestPostData} ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
-            then
-                checkParams schemas_get customerId "false"
-            else
-                getParams "schemas_get" "customerId"
-            fi
-        else
-            getParams "schemas_get" "customerId"
-        fi
-    else
-        genParamConfig
-        getParams "schemas_get" "customerId"
-    fi
-
-    #    declare -g "SCHEMAS_GET_customerId=${customerId}"
-
-
-    
-    schemaKeyMeta=( 
-        'string'
-        'Name or immutable ID of the schema'
-    )
-
-
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
-    then
-        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)' `  ]]
-        then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)[] | .[]' ` ]]
-            then
-                checkParams schemas_get schemaKey "false"
-            else
-                getParams "schemas_get" "schemaKey"
-            fi
-        else
-            getParams "schemas_get" "schemaKey"
-        fi
-    else
-        genParamConfig
-        getParams "schemas_get" "schemaKey"
-    fi
-
-    #    declare -g "SCHEMAS_GET_schemaKey=${schemaKey}"
-
-
-    
-
-    SCHEMAS_GET_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
-
-    execRequest() {
-        if [[ -z ${requestId} ]]
-        then 
-            histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${SCHEMAS_GET_URL}"
- 
-            if ! [[ -z ${sentAuthRequest} ]] \
-            && ! [[ -z ${authPayload} ]]
-            then 
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
-
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.response" "${authPayload}"
-            fi
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Accept: application/json\""
-
-            histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
-       else
-            histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
-            histUpdateToken "\"${requestId}\"" ".auth.accessToken" "${ACCESSTOKEN}"        
-            histUpdateToken "\"${requestId}\"" ".auth.curl" "${sentAuthRequest}"            
-            histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
-        fi
-
-
-        curl -s \
-            --request GET \
-            ${SCHEMAS_GET_URL} \
-            --header "Authorization: Bearer ${ACCESSTOKEN}" \
-            --header "Accept: application/json" \
-            --compressed \
-            | jq -c '.' \
-            | read -r outputJson
-        export outputJson
-
-        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
-
-        execCurl="curl -s --request GET \"${SCHEMAS_GET_URL}\" "
-
-
-        echo -e "# Request issued:\n\n"
-        echo -e "#########################\n"
-        cat << EOIF
-
-    curl -s \\ 
-        --request GET \\ 
-        ${SCHEMAS_GET_URL} \\ 
-EOIF
-        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
-        cat << EOIF
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
-EOIF
-        execCurl+="--header 'Accept: application/json' "
-        cat << EOIF
-        --header "Accept: application/json" \\ 
-EOIF
-        cat << EOIF
-        --compressed
-EOIF
-        echo -e "\n\n"
-        echo -e "#########################\n"
-
-        execCurl+="--compressed"
-        histUpdateToken "\"${requestId}\"" ".request.curl" "${execCurl}"          
-        unset execCurl
-
-    }
-    execRequest
-
-}
-
-
-schemas_insert() {
-
-    apiQueryRef=( `echo schemas insert`)
-
-
-    customerIdMeta=( 
-        'string'
-        'Immutable ID of the G Suite account'
-    )
-
-
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
-    then
-        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
-        then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
-            then
-                checkParams schemas_insert customerId "false"
-            else
-                getParams "schemas_insert" "customerId"
-            fi
-        else
-            getParams "schemas_insert" "customerId"
-        fi
-    else
-        genParamConfig
-        getParams "schemas_insert" "customerId"
-    fi
-
-    #    declare -g "SCHEMAS_INSERT_customerId=${customerId}"
-
-
-    
-
-    SCHEMAS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas?key=${CLIENTID}"
-
-    execRequest() {
-        if [[ -z ${requestId} ]]
-        then 
-            histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${SCHEMAS_INSERT_URL}"
- 
-            if ! [[ -z ${sentAuthRequest} ]] \
-            && ! [[ -z ${authPayload} ]]
-            then 
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
-
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.response" "${authPayload}"
-            fi
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Accept: application/json\""
+            # handle POST requests
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Content-Type: application/json\""
 
-            histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
-       else
-            histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
-            histUpdateToken "\"${requestId}\"" ".auth.accessToken" "${ACCESSTOKEN}"        
-            histUpdateToken "\"${requestId}\"" ".auth.curl" "${sentAuthRequest}"            
-            histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
-        fi
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
 
-
-        curl -s \
-            --request POST \
-            ${SCHEMAS_INSERT_URL} \
+            curl -s \
+            --request  \
+            ${URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
             --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+
+        else
+            curl -s \
+            --request  \
+            ${URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
-        execCurl="curl -s --request POST \"${SCHEMAS_INSERT_URL}\" "
+        execCurl="curl -s --request  \"${URL}\" "
 
 
         echo -e "# Request issued:\n\n"
@@ -8769,8 +12980,8 @@ schemas_insert() {
         cat << EOIF
 
     curl -s \\ 
-        --request POST \\ 
-        ${SCHEMAS_INSERT_URL} \\ 
+        --request  \\ 
+        ${URL} \\ 
 EOIF
         execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
         cat << EOIF
@@ -8780,421 +12991,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
-EOIF
-        cat << EOIF
-        --compressed
-EOIF
-        echo -e "\n\n"
-        echo -e "#########################\n"
-
-        execCurl+="--compressed"
-        histUpdateToken "\"${requestId}\"" ".request.curl" "${execCurl}"          
-        unset execCurl
-
-    }
-    execRequest
-
-}
-
-
-schemas_list() {
-
-    apiQueryRef=( `echo schemas list`)
-
-
-    customerIdMeta=( 
-        'string'
-        'Immutable ID of the G Suite account'
-    )
-
-
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
-    then
-        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
+        if ! [[ -z ${requestPostData} ]]
         then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
-            then
-                checkParams schemas_list customerId "false"
-            else
-                getParams "schemas_list" "customerId"
-            fi
-        else
-            getParams "schemas_list" "customerId"
-        fi
-    else
-        genParamConfig
-        getParams "schemas_list" "customerId"
-    fi
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
-    #    declare -g "SCHEMAS_LIST_customerId=${customerId}"
-
-
-    
-
-    SCHEMAS_LIST_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas?key=${CLIENTID}"
-
-    execRequest() {
-        if [[ -z ${requestId} ]]
-        then 
-            histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${SCHEMAS_LIST_URL}"
- 
-            if ! [[ -z ${sentAuthRequest} ]] \
-            && ! [[ -z ${authPayload} ]]
-            then 
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
-
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.response" "${authPayload}"
-            fi
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Accept: application/json\""
-
-            histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
-       else
-            histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
-            histUpdateToken "\"${requestId}\"" ".auth.accessToken" "${ACCESSTOKEN}"        
-            histUpdateToken "\"${requestId}\"" ".auth.curl" "${sentAuthRequest}"            
-            histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
         fi
 
-
-        curl -s \
-            --request GET \
-            ${SCHEMAS_LIST_URL} \
-            --header "Authorization: Bearer ${ACCESSTOKEN}" \
-            --header "Accept: application/json" \
-            --compressed \
-            | jq -c '.' \
-            | read -r outputJson
-        export outputJson
-
-        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
-
-        execCurl="curl -s --request GET \"${SCHEMAS_LIST_URL}\" "
-
-
-        echo -e "# Request issued:\n\n"
-        echo -e "#########################\n"
-        cat << EOIF
-
-    curl -s \\ 
-        --request GET \\ 
-        ${SCHEMAS_LIST_URL} \\ 
-EOIF
-        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
-        cat << EOIF
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
-EOIF
-        execCurl+="--header 'Accept: application/json' "
-        cat << EOIF
-        --header "Accept: application/json" \\ 
-EOIF
-        cat << EOIF
-        --compressed
-EOIF
-        echo -e "\n\n"
-        echo -e "#########################\n"
-
-        execCurl+="--compressed"
-        histUpdateToken "\"${requestId}\"" ".request.curl" "${execCurl}"          
-        unset execCurl
-
-    }
-    execRequest
-
-}
-
-
-schemas_patch() {
-
-    apiQueryRef=( `echo schemas patch`)
-
-
-    customerIdMeta=( 
-        'string'
-        'Immutable ID of the G Suite account'
-    )
-
-
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
-    then
-        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
-        then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
-            then
-                checkParams schemas_patch customerId "false"
-            else
-                getParams "schemas_patch" "customerId"
-            fi
-        else
-            getParams "schemas_patch" "customerId"
-        fi
-    else
-        genParamConfig
-        getParams "schemas_patch" "customerId"
-    fi
-
-    #    declare -g "SCHEMAS_PATCH_customerId=${customerId}"
-
-
-    
-    schemaKeyMeta=( 
-        'string'
-        'Name or immutable ID of the schema.'
-    )
-
-
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
-    then
-        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)' `  ]]
-        then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)[] | .[]' ` ]]
-            then
-                checkParams schemas_patch schemaKey "false"
-            else
-                getParams "schemas_patch" "schemaKey"
-            fi
-        else
-            getParams "schemas_patch" "schemaKey"
-        fi
-    else
-        genParamConfig
-        getParams "schemas_patch" "schemaKey"
-    fi
-
-    #    declare -g "SCHEMAS_PATCH_schemaKey=${schemaKey}"
-
-
-    
-
-    SCHEMAS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
-
-    execRequest() {
-        if [[ -z ${requestId} ]]
-        then 
-            histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${SCHEMAS_PATCH_URL}"
- 
-            if ! [[ -z ${sentAuthRequest} ]] \
-            && ! [[ -z ${authPayload} ]]
-            then 
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
-
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.response" "${authPayload}"
-            fi
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Accept: application/json\""
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
-            histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
-       else
-            histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
-            histUpdateToken "\"${requestId}\"" ".auth.accessToken" "${ACCESSTOKEN}"        
-            histUpdateToken "\"${requestId}\"" ".auth.curl" "${sentAuthRequest}"            
-            histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
-        fi
-
-
-        curl -s \
-            --request PATCH \
-            ${SCHEMAS_PATCH_URL} \
-            --header "Authorization: Bearer ${ACCESSTOKEN}" \
-            --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
-            --compressed \
-            | jq -c '.' \
-            | read -r outputJson
-        export outputJson
-
-        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
-
-        execCurl="curl -s --request PATCH \"${SCHEMAS_PATCH_URL}\" "
-
-
-        echo -e "# Request issued:\n\n"
-        echo -e "#########################\n"
-        cat << EOIF
-
-    curl -s \\ 
-        --request PATCH \\ 
-        ${SCHEMAS_PATCH_URL} \\ 
-EOIF
-        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
-        cat << EOIF
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
-EOIF
-        execCurl+="--header 'Accept: application/json' "
-        cat << EOIF
-        --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
-EOIF
-        cat << EOIF
-        --compressed
-EOIF
-        echo -e "\n\n"
-        echo -e "#########################\n"
-
-        execCurl+="--compressed"
-        histUpdateToken "\"${requestId}\"" ".request.curl" "${execCurl}"          
-        unset execCurl
-
-    }
-    execRequest
-
-}
-
-
-schemas_update() {
-
-    apiQueryRef=( `echo schemas update`)
-
-
-    customerIdMeta=( 
-        'string'
-        'Immutable ID of the G Suite account'
-    )
-
-
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
-    then
-        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)' `  ]]
-        then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.customerId)[] | .[]' ` ]]
-            then
-                checkParams schemas_update customerId "false"
-            else
-                getParams "schemas_update" "customerId"
-            fi
-        else
-            getParams "schemas_update" "customerId"
-        fi
-    else
-        genParamConfig
-        getParams "schemas_update" "customerId"
-    fi
-
-    #    declare -g "SCHEMAS_UPDATE_customerId=${customerId}"
-
-
-    
-    schemaKeyMeta=( 
-        'string'
-        'Name or immutable ID of the schema.'
-    )
-
-
-    if ! [[ ` cat ${credPath}/${fileRef} | jq -cr '.param' ` == "null" ]]
-    then
-        if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)' `  ]]
-        then
-            if ! [[ -z ` cat ${credPath}/${fileRef} | jq -cr '.param[] | select(.schemaKey)[] | .[]' ` ]]
-            then
-                checkParams schemas_update schemaKey "false"
-            else
-                getParams "schemas_update" "schemaKey"
-            fi
-        else
-            getParams "schemas_update" "schemaKey"
-        fi
-    else
-        genParamConfig
-        getParams "schemas_update" "schemaKey"
-    fi
-
-    #    declare -g "SCHEMAS_UPDATE_schemaKey=${schemaKey}"
-
-
-    
-
-    SCHEMAS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/customer/${customerId}/schemas/${schemaKey}?key=${CLIENTID}"
-
-    execRequest() {
-        if [[ -z ${requestId} ]]
-        then 
-            histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${SCHEMAS_UPDATE_URL}"
- 
-            if ! [[ -z ${sentAuthRequest} ]] \
-            && ! [[ -z ${authPayload} ]]
-            then 
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
-
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.response" "${authPayload}"
-            fi
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Accept: application/json\""
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
-            histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
-       else
-            histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
-            histUpdateToken "\"${requestId}\"" ".auth.accessToken" "${ACCESSTOKEN}"        
-            histUpdateToken "\"${requestId}\"" ".auth.curl" "${sentAuthRequest}"            
-            histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
-        fi
-
-
-        curl -s \
-            --request PUT \
-            ${SCHEMAS_UPDATE_URL} \
-            --header "Authorization: Bearer ${ACCESSTOKEN}" \
-            --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
-            --compressed \
-            | jq -c '.' \
-            | read -r outputJson
-        export outputJson
-
-        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
-
-        execCurl="curl -s --request PUT \"${SCHEMAS_UPDATE_URL}\" "
-
-
-        echo -e "# Request issued:\n\n"
-        echo -e "#########################\n"
-        cat << EOIF
-
-    curl -s \\ 
-        --request PUT \\ 
-        ${SCHEMAS_UPDATE_URL} \\ 
-EOIF
-        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
-        cat << EOIF
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
-EOIF
-        execCurl+="--header 'Accept: application/json' "
-        cat << EOIF
-        --header "Accept: application/json" \\ 
-EOIF
-        execCurl+="--header 'Content-Type: application/json' "
-        cat << EOIF
-        --header "Content-Type: application/json" \\ 
-EOIF
         cat << EOIF
         --compressed
 EOIF
@@ -9275,6 +13081,84 @@ tokens_delete() {
 
     TOKENS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/tokens/${clientId}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -9304,8 +13188,32 @@ tokens_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${TOKENS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${TOKENS_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -9313,7 +13221,9 @@ tokens_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -9336,6 +13246,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -9445,8 +13365,32 @@ tokens_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${TOKENS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${TOKENS_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -9454,7 +13398,9 @@ tokens_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -9477,6 +13423,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -9558,8 +13514,32 @@ tokens_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${TOKENS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${TOKENS_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -9567,7 +13547,9 @@ tokens_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -9590,6 +13572,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -9642,6 +13634,84 @@ twoStepVerification_turnOff() {
 
     TWOSTEPVERIFICATION_TURNOFF_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/twoStepVerification/turnOff?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -9674,8 +13744,33 @@ twoStepVerification_turnOff() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${TWOSTEPVERIFICATION_TURNOFF_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${TWOSTEPVERIFICATION_TURNOFF_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -9684,7 +13779,9 @@ twoStepVerification_turnOff() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -9711,6 +13808,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -9763,6 +13870,84 @@ users_delete() {
 
     USERS_DELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -9792,8 +13977,32 @@ users_delete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request DELETE \
+            ${USERS_DELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request DELETE \
             ${USERS_DELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -9801,7 +14010,9 @@ users_delete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -9824,6 +14035,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -10051,8 +14272,32 @@ users_get() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${USERS_GET_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${USERS_GET_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -10060,7 +14305,9 @@ users_get() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -10083,6 +14330,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -10106,6 +14363,84 @@ users_insert() {
 
 
     USERS_INSERT_URL="https://www.googleapis.com/admin/directory/v1/users?key=${CLIENTID}"
+
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.User.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "User"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
 
     execRequest() {
         if [[ -z ${requestId} ]]
@@ -10139,8 +14474,33 @@ users_insert() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${USERS_INSERT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${USERS_INSERT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -10149,7 +14509,9 @@ users_insert() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -10176,6 +14538,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -10417,8 +14789,32 @@ users_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${USERS_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${USERS_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -10426,7 +14822,9 @@ users_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -10449,6 +14847,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -10501,6 +14909,84 @@ users_makeAdmin() {
 
     USERS_MAKEADMIN_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/makeAdmin?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.UserMakeAdmin.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "UserMakeAdmin"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -10533,8 +15019,33 @@ users_makeAdmin() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${USERS_MAKEADMIN_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${USERS_MAKEADMIN_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -10543,7 +15054,9 @@ users_makeAdmin() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -10570,6 +15083,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -10622,6 +15145,84 @@ users_patch() {
 
     USERS_PATCH_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.User.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "User"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -10654,8 +15255,33 @@ users_patch() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PATCH \
+            ${USERS_PATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PATCH \
             ${USERS_PATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -10664,7 +15290,9 @@ users_patch() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -10691,6 +15319,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -10743,6 +15381,84 @@ users_signOut() {
 
     USERS_SIGNOUT_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/signOut?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -10775,8 +15491,33 @@ users_signOut() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${USERS_SIGNOUT_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${USERS_SIGNOUT_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -10785,7 +15526,9 @@ users_signOut() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -10812,6 +15555,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -10864,6 +15617,84 @@ users_undelete() {
 
     USERS_UNDELETE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/undelete?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.UserUndelete.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "UserUndelete"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -10896,8 +15727,33 @@ users_undelete() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${USERS_UNDELETE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${USERS_UNDELETE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -10906,7 +15762,9 @@ users_undelete() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -10933,6 +15791,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -10985,6 +15853,84 @@ users_update() {
 
     USERS_UPDATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.User.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "User"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -11017,8 +15963,33 @@ users_update() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request PUT \
+            ${USERS_UPDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request PUT \
             ${USERS_UPDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -11027,7 +15998,9 @@ users_update() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -11054,6 +16027,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -11272,6 +16255,84 @@ users_watch() {
             fi
         done
     fi
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.Channel.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "Channel"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -11304,8 +16365,33 @@ users_watch() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${USERS_WATCH_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${USERS_WATCH_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -11314,7 +16400,9 @@ users_watch() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -11341,6 +16429,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -11393,6 +16491,84 @@ verificationCodes_generate() {
 
     VERIFICATIONCODES_GENERATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes/generate?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -11425,8 +16601,33 @@ verificationCodes_generate() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${VERIFICATIONCODES_GENERATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${VERIFICATIONCODES_GENERATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -11435,7 +16636,9 @@ verificationCodes_generate() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -11462,6 +16665,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -11514,6 +16727,84 @@ verificationCodes_invalidate() {
 
     VERIFICATIONCODES_INVALIDATE_URL="https://www.googleapis.com/admin/directory/v1/users/${userKey}/verificationCodes/invalidate?key=${CLIENTID}"
 
+
+    echo -e "yes\nno" \
+    | fuzzExPostParametersPrompt "\".schemas.null.properties\"" "Add any Post Data to the request?" \
+    | read -r postDataChoice
+
+    if [[ ${postDataChoice} == "yes" ]]
+    then
+
+        ### While loop
+        export postLoopBreak=false
+        export postMainLoopBreak=false
+        export postSubLoopBreak=false
+
+        while [[ ${postMainLoopBreak} != "true" ]]
+        do
+            postBrowseProps "null"
+            
+            if [[ ${postLoopBreak} == "true" ]]
+            then
+                postMainLoopBreak=true
+                postLoopBreak=false
+                break
+            fi
+
+
+            # Handle redirections (e.g. "$ref": "UserName")
+
+            if [[ -z ${requestPostData} ]]
+            then 
+                requestPostData='{}'
+            fi
+
+            export requestPostData
+
+            if ! [[ `echo ${postPropPayload} | jq -cr '."$ref"' ` == "null" ]]
+            then
+                postDataStrucHead=${postPropOpt}
+                
+                if [[ `echo ${requestPostData} | jq -cr ".${postDataStrucHead}"` == "null" ]]
+                then
+                    echo ${requestPostData} \
+                    | jq -c ".${postDataStrucHead}={}" \
+                    | read -r requestPostData
+                fi
+
+                while [[ ${postSubLoopBreak} != "true" ]]
+                do
+
+                    postBrowseProps "`echo ${postPropPayload} | jq -cr '."$ref"' `"
+
+                    if [[ ${postLoopBreak} == "true" ]]
+                    then
+                        postSubLoopBreak=true
+                        break
+                    fi
+
+                    fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                    | read -r postPropVal
+
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    
+                done
+
+            else
+                fuzzExInputCreds "Enter a value for ${postPropOpt}" \
+                | read -r postPropVal
+
+                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+
+
+            fi
+        done
+    
+    fi
+
+
+
+
     execRequest() {
         if [[ -z ${requestId} ]]
         then 
@@ -11546,8 +16837,33 @@ verificationCodes_invalidate() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request POST \
+            ${VERIFICATIONCODES_INVALIDATE_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request POST \
             ${VERIFICATIONCODES_INVALIDATE_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -11556,7 +16872,9 @@ verificationCodes_invalidate() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -11583,6 +16901,16 @@ EOIF
         cat << EOIF
         --header "Content-Type: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
@@ -11664,8 +16992,32 @@ verificationCodes_list() {
             histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
         fi
 
+        # handle GET/POST requests
 
-        curl -s \
+        if ! [[ -z ${requestPostData} ]]
+        then
+            # handle POST requests
+
+            echo ${requestPayload} \
+            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+
+            echo ${requestPayload} \
+            | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            curl -s \
+            --request GET \
+            ${VERIFICATIONCODES_LIST_URL} \
+            --header "Authorization: Bearer ${ACCESSTOKEN}" \
+            --header "Accept: application/json" \
+            --header 'Content-Type: application/json' \
+            --data "${requestPostData}" \
+            --compressed \
+            | jq -c '.' \
+            | read -r outputJson
+            export outputJson
+
+        else
+            curl -s \
             --request GET \
             ${VERIFICATIONCODES_LIST_URL} \
             --header "Authorization: Bearer ${ACCESSTOKEN}" \
@@ -11673,7 +17025,9 @@ verificationCodes_list() {
             --compressed \
             | jq -c '.' \
             | read -r outputJson
-        export outputJson
+            export outputJson
+            
+        fi
 
         histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
 
@@ -11696,6 +17050,16 @@ EOIF
         cat << EOIF
         --header "Accept: application/json" \\ 
 EOIF
+        if ! [[ -z ${requestPostData} ]]
+        then
+            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
+
+            cat << EOIF
+        --header 'Content-Type: application/json'
+        --data '${requestPostData}'
+EOIF
+        fi
+
         cat << EOIF
         --compressed
 EOIF
