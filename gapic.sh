@@ -291,8 +291,6 @@ cat << EOF >> ${outputExecWiz}
     gapicFuzzWiz="\${gapicBinDir}gapic_fuzzex.sh"
     gapicHistWiz="\${gapicBinDir}gapic_history.sh"
 
-    gapicSavedPar="\${gapicDataDir}.api_params"
-
 gapicMenu() {
     echo \${uniqueSchemas} "Fuzzy_History" \\
     | gapicFuzzyMenu \\
@@ -353,11 +351,6 @@ gapicBootstrap() {
         exit 1
     else
         source \${gapicParamWiz}
-    fi
-
-    if [[ -f \${gapicSavedPar} ]]
-    then
-        source \${gapicSavedPar}
     fi
 
     if ! [[ -f \${gapicFuzzWiz} ]]
