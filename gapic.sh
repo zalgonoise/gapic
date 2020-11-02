@@ -2159,7 +2159,7 @@ do
 
 ${(P)${apiSets[$c]}[$d]}() {
 
-    apiQueryRef=( \`echo ${(P)${apiSets[$c]}[$d]//_/ }\`)
+    apiQueryRef=( \`echo ${(P)${apiSets[$c]}[$d]//_/ }\` )
 
 
 EOF
@@ -2477,7 +2477,7 @@ EOF
                     fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
                     | read -r postPropVal
 
-                    postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\"\${postPropVal}\""
+                    postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\${(qqq)postPropVal}"
                     
                 done
 
@@ -2485,7 +2485,7 @@ EOF
                 fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
                 | read -r postPropVal
 
-                postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\"\${postPropVal}\""
+                postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\${(qqq)postPropVal}"
 
 
             fi
