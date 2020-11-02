@@ -161,7 +161,7 @@ asps_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -169,7 +169,7 @@ asps_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postDataStrucHead}" "${(qqq)postPropVal}"
 
 
             fi
@@ -14315,7 +14315,7 @@ users_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -14323,7 +14323,7 @@ users_insert() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi

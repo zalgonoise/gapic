@@ -2485,7 +2485,7 @@ EOF
                 fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
                 | read -r postPropVal
 
-                postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\${(qqq)postPropVal}"
+                postDataPropBuild ".\${postPropOpt}" "\${(qqq)postPropVal}"
 
 
             fi
@@ -2626,8 +2626,8 @@ EOF
             execCurl+="--header 'Content-Type: application/json' --data '\${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '\${requestPostData}'
+        --header 'Content-Type: application/json' \\\
+        --data '\${requestPostData}' \\\
 EOIF
         fi
 
