@@ -1644,6 +1644,23 @@ histUpdateJson() {
 
 }
 
+histUpdateJsonList() {
+    cat \${gapicLogDir}\${gapicReqLog} \\
+    | jq \\
+    -c \\
+    "map(select(.requestId == \${1}) | \${2}=[\${2}[],\${3}])" \\
+    | read -r newPayload
+
+    if [[ \`echo \${newPayload} | jq -c \` ]]
+    then
+        echo \${newPayload} \\
+        | jq \\
+        > \${gapicLogDir}\${gapicReqLog}
+    fi
+
+    unset newPayload
+
+}
 
 histReplayRequest() {
     if [[ \`echo \${1} | jq -r '.tags'\` != "null" ]] \\
@@ -2551,7 +2568,7 @@ EOF
             # handle POST requests
 
             echo \${requestPayload} \\
-            | histUpdateJson "\"\${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"\${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo \${requestPayload} \\
             | histUpdateJson "\"\${requestId}\"" ".request.postData" "\${requestPostData}"

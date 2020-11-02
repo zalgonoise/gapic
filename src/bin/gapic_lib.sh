@@ -216,7 +216,7 @@ asps_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -393,7 +393,7 @@ asps_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -542,7 +542,7 @@ asps_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -744,7 +744,7 @@ channels_stop() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -1002,7 +1002,7 @@ chromeosdevices_action() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -1250,7 +1250,7 @@ chromeosdevices_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -1566,7 +1566,7 @@ chromeosdevices_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -1824,7 +1824,7 @@ chromeosdevices_moveDevicesToOu() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -2153,7 +2153,7 @@ chromeosdevices_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -2482,7 +2482,7 @@ chromeosdevices_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -2631,7 +2631,7 @@ customers_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -2861,7 +2861,7 @@ customers_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -3091,7 +3091,7 @@ customers_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -3349,7 +3349,7 @@ domainAliases_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -3526,7 +3526,7 @@ domainAliases_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -3756,7 +3756,7 @@ domainAliases_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -3974,7 +3974,7 @@ domainAliases_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -4232,7 +4232,7 @@ domains_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -4409,7 +4409,7 @@ domains_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -4639,7 +4639,7 @@ domains_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -4788,7 +4788,7 @@ domains_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -5018,7 +5018,7 @@ groups_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -5167,7 +5167,7 @@ groups_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -5369,7 +5369,7 @@ groups_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -5661,7 +5661,7 @@ groups_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -5891,7 +5891,7 @@ groups_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -6121,7 +6121,7 @@ groups_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -6379,7 +6379,7 @@ members_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -6556,7 +6556,7 @@ members_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -6733,7 +6733,7 @@ members_hasMember() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -6963,7 +6963,7 @@ members_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -7196,7 +7196,7 @@ members_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -7454,7 +7454,7 @@ members_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -7712,7 +7712,7 @@ members_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -7970,7 +7970,7 @@ mobiledevices_action() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -8228,7 +8228,7 @@ mobiledevices_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -8476,7 +8476,7 @@ mobiledevices_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -8787,7 +8787,7 @@ mobiledevices_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -9045,7 +9045,7 @@ orgunits_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -9222,7 +9222,7 @@ orgunits_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -9452,7 +9452,7 @@ orgunits_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -9741,7 +9741,7 @@ orgunits_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -9999,7 +9999,7 @@ orgunits_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -10257,7 +10257,7 @@ orgunits_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -10406,7 +10406,7 @@ privileges_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -10664,7 +10664,7 @@ roleAssignments_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -10841,7 +10841,7 @@ roleAssignments_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -11071,7 +11071,7 @@ roleAssignments_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -11304,7 +11304,7 @@ roleAssignments_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -11562,7 +11562,7 @@ roles_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -11739,7 +11739,7 @@ roles_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -11969,7 +11969,7 @@ roles_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -12192,7 +12192,7 @@ roles_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -12450,7 +12450,7 @@ roles_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -12708,7 +12708,7 @@ roles_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -12966,7 +12966,7 @@ tokens_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -13143,7 +13143,7 @@ tokens_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -13292,7 +13292,7 @@ tokens_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -13522,7 +13522,7 @@ twoStepVerification_turnOff() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -13752,7 +13752,7 @@ users_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -14047,7 +14047,7 @@ users_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -14249,7 +14249,7 @@ users_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -14558,7 +14558,7 @@ users_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -14788,7 +14788,7 @@ users_makeAdmin() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -15018,7 +15018,7 @@ users_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -15248,7 +15248,7 @@ users_signOut() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -15478,7 +15478,7 @@ users_undelete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -15708,7 +15708,7 @@ users_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -16104,7 +16104,7 @@ users_watch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -16334,7 +16334,7 @@ verificationCodes_generate() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -16564,7 +16564,7 @@ verificationCodes_invalidate() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
@@ -16713,7 +16713,7 @@ verificationCodes_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
             | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
