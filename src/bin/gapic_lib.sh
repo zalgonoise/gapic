@@ -37,7 +37,7 @@ verificationCodes=( verificationCodes_generate verificationCodes_invalidate veri
 
 asps_delete() {
 
-    apiQueryRef=( `echo asps delete`)
+    apiQueryRef=( `echo asps delete` )
 
 
     codeIdMeta=( 
@@ -169,7 +169,7 @@ asps_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}" "${(qqq)postPropVal}"
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -272,8 +272,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -295,7 +295,7 @@ EOIF
 
 asps_get() {
 
-    apiQueryRef=( `echo asps get`)
+    apiQueryRef=( `echo asps get` )
 
 
     codeIdMeta=( 
@@ -449,8 +449,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -472,7 +472,7 @@ EOIF
 
 asps_list() {
 
-    apiQueryRef=( `echo asps list`)
+    apiQueryRef=( `echo asps list` )
 
 
     userKeyMeta=( 
@@ -598,8 +598,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -621,7 +621,7 @@ EOIF
 
 channels_stop() {
 
-    apiQueryRef=( `echo channels stop`)
+    apiQueryRef=( `echo channels stop` )
 
 
 
@@ -689,7 +689,7 @@ channels_stop() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -697,7 +697,7 @@ channels_stop() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -800,8 +800,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -823,7 +823,7 @@ EOIF
 
 chromeosdevices_action() {
 
-    apiQueryRef=( `echo chromeosdevices action`)
+    apiQueryRef=( `echo chromeosdevices action` )
 
 
     customerIdMeta=( 
@@ -947,7 +947,7 @@ chromeosdevices_action() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -955,7 +955,7 @@ chromeosdevices_action() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -1058,8 +1058,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -1081,7 +1081,7 @@ EOIF
 
 chromeosdevices_get() {
 
-    apiQueryRef=( `echo chromeosdevices get`)
+    apiQueryRef=( `echo chromeosdevices get` )
 
 
     customerIdMeta=( 
@@ -1306,8 +1306,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -1329,7 +1329,7 @@ EOIF
 
 chromeosdevices_list() {
 
-    apiQueryRef=( `echo chromeosdevices list`)
+    apiQueryRef=( `echo chromeosdevices list` )
 
 
     customerIdMeta=( 
@@ -1622,8 +1622,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -1645,7 +1645,7 @@ EOIF
 
 chromeosdevices_moveDevicesToOu() {
 
-    apiQueryRef=( `echo chromeosdevices moveDevicesToOu`)
+    apiQueryRef=( `echo chromeosdevices moveDevicesToOu` )
 
 
     customerIdMeta=( 
@@ -1769,7 +1769,7 @@ chromeosdevices_moveDevicesToOu() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -1777,7 +1777,7 @@ chromeosdevices_moveDevicesToOu() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -1880,8 +1880,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -1903,7 +1903,7 @@ EOIF
 
 chromeosdevices_patch() {
 
-    apiQueryRef=( `echo chromeosdevices patch`)
+    apiQueryRef=( `echo chromeosdevices patch` )
 
 
     customerIdMeta=( 
@@ -2098,7 +2098,7 @@ chromeosdevices_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -2106,7 +2106,7 @@ chromeosdevices_patch() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -2209,8 +2209,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -2232,7 +2232,7 @@ EOIF
 
 chromeosdevices_update() {
 
-    apiQueryRef=( `echo chromeosdevices update`)
+    apiQueryRef=( `echo chromeosdevices update` )
 
 
     customerIdMeta=( 
@@ -2427,7 +2427,7 @@ chromeosdevices_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -2435,7 +2435,7 @@ chromeosdevices_update() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -2538,8 +2538,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -2561,7 +2561,7 @@ EOIF
 
 customers_get() {
 
-    apiQueryRef=( `echo customers get`)
+    apiQueryRef=( `echo customers get` )
 
 
     customerKeyMeta=( 
@@ -2687,8 +2687,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -2710,7 +2710,7 @@ EOIF
 
 customers_patch() {
 
-    apiQueryRef=( `echo customers patch`)
+    apiQueryRef=( `echo customers patch` )
 
 
     customerKeyMeta=( 
@@ -2806,7 +2806,7 @@ customers_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -2814,7 +2814,7 @@ customers_patch() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -2917,8 +2917,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -2940,7 +2940,7 @@ EOIF
 
 customers_update() {
 
-    apiQueryRef=( `echo customers update`)
+    apiQueryRef=( `echo customers update` )
 
 
     customerKeyMeta=( 
@@ -3036,7 +3036,7 @@ customers_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -3044,7 +3044,7 @@ customers_update() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -3147,8 +3147,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -3170,7 +3170,7 @@ EOIF
 
 domainAliases_delete() {
 
-    apiQueryRef=( `echo domainAliases delete`)
+    apiQueryRef=( `echo domainAliases delete` )
 
 
     customerMeta=( 
@@ -3294,7 +3294,7 @@ domainAliases_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -3302,7 +3302,7 @@ domainAliases_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -3405,8 +3405,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -3428,7 +3428,7 @@ EOIF
 
 domainAliases_get() {
 
-    apiQueryRef=( `echo domainAliases get`)
+    apiQueryRef=( `echo domainAliases get` )
 
 
     customerMeta=( 
@@ -3582,8 +3582,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -3605,7 +3605,7 @@ EOIF
 
 domainAliases_insert() {
 
-    apiQueryRef=( `echo domainAliases insert`)
+    apiQueryRef=( `echo domainAliases insert` )
 
 
     customerMeta=( 
@@ -3701,7 +3701,7 @@ domainAliases_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -3709,7 +3709,7 @@ domainAliases_insert() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -3812,8 +3812,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -3835,7 +3835,7 @@ EOIF
 
 domainAliases_list() {
 
-    apiQueryRef=( `echo domainAliases list`)
+    apiQueryRef=( `echo domainAliases list` )
 
 
     customerMeta=( 
@@ -4030,8 +4030,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -4053,7 +4053,7 @@ EOIF
 
 domains_delete() {
 
-    apiQueryRef=( `echo domains delete`)
+    apiQueryRef=( `echo domains delete` )
 
 
     customerMeta=( 
@@ -4177,7 +4177,7 @@ domains_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -4185,7 +4185,7 @@ domains_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -4288,8 +4288,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -4311,7 +4311,7 @@ EOIF
 
 domains_get() {
 
-    apiQueryRef=( `echo domains get`)
+    apiQueryRef=( `echo domains get` )
 
 
     customerMeta=( 
@@ -4465,8 +4465,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -4488,7 +4488,7 @@ EOIF
 
 domains_insert() {
 
-    apiQueryRef=( `echo domains insert`)
+    apiQueryRef=( `echo domains insert` )
 
 
     customerMeta=( 
@@ -4584,7 +4584,7 @@ domains_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -4592,7 +4592,7 @@ domains_insert() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -4695,8 +4695,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -4718,7 +4718,7 @@ EOIF
 
 domains_list() {
 
-    apiQueryRef=( `echo domains list`)
+    apiQueryRef=( `echo domains list` )
 
 
     customerMeta=( 
@@ -4844,8 +4844,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -4867,7 +4867,7 @@ EOIF
 
 groups_delete() {
 
-    apiQueryRef=( `echo groups delete`)
+    apiQueryRef=( `echo groups delete` )
 
 
     groupKeyMeta=( 
@@ -4963,7 +4963,7 @@ groups_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -4971,7 +4971,7 @@ groups_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -5074,8 +5074,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -5097,7 +5097,7 @@ EOIF
 
 groups_get() {
 
-    apiQueryRef=( `echo groups get`)
+    apiQueryRef=( `echo groups get` )
 
 
     groupKeyMeta=( 
@@ -5223,8 +5223,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -5246,7 +5246,7 @@ EOIF
 
 groups_insert() {
 
-    apiQueryRef=( `echo groups insert`)
+    apiQueryRef=( `echo groups insert` )
 
 
 
@@ -5314,7 +5314,7 @@ groups_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -5322,7 +5322,7 @@ groups_insert() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -5425,8 +5425,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -5448,7 +5448,7 @@ EOIF
 
 groups_list() {
 
-    apiQueryRef=( `echo groups list`)
+    apiQueryRef=( `echo groups list` )
 
 
 
@@ -5717,8 +5717,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -5740,7 +5740,7 @@ EOIF
 
 groups_patch() {
 
-    apiQueryRef=( `echo groups patch`)
+    apiQueryRef=( `echo groups patch` )
 
 
     groupKeyMeta=( 
@@ -5836,7 +5836,7 @@ groups_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -5844,7 +5844,7 @@ groups_patch() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -5947,8 +5947,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -5970,7 +5970,7 @@ EOIF
 
 groups_update() {
 
-    apiQueryRef=( `echo groups update`)
+    apiQueryRef=( `echo groups update` )
 
 
     groupKeyMeta=( 
@@ -6066,7 +6066,7 @@ groups_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -6074,7 +6074,7 @@ groups_update() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -6177,8 +6177,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -6200,7 +6200,7 @@ EOIF
 
 members_delete() {
 
-    apiQueryRef=( `echo members delete`)
+    apiQueryRef=( `echo members delete` )
 
 
     groupKeyMeta=( 
@@ -6324,7 +6324,7 @@ members_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -6332,7 +6332,7 @@ members_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -6435,8 +6435,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -6458,7 +6458,7 @@ EOIF
 
 members_get() {
 
-    apiQueryRef=( `echo members get`)
+    apiQueryRef=( `echo members get` )
 
 
     groupKeyMeta=( 
@@ -6612,8 +6612,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -6635,7 +6635,7 @@ EOIF
 
 members_hasMember() {
 
-    apiQueryRef=( `echo members hasMember`)
+    apiQueryRef=( `echo members hasMember` )
 
 
     groupKeyMeta=( 
@@ -6789,8 +6789,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -6812,7 +6812,7 @@ EOIF
 
 members_insert() {
 
-    apiQueryRef=( `echo members insert`)
+    apiQueryRef=( `echo members insert` )
 
 
     groupKeyMeta=( 
@@ -6908,7 +6908,7 @@ members_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -6916,7 +6916,7 @@ members_insert() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -7019,8 +7019,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -7042,7 +7042,7 @@ EOIF
 
 members_list() {
 
-    apiQueryRef=( `echo members list`)
+    apiQueryRef=( `echo members list` )
 
 
     groupKeyMeta=( 
@@ -7252,8 +7252,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -7275,7 +7275,7 @@ EOIF
 
 members_patch() {
 
-    apiQueryRef=( `echo members patch`)
+    apiQueryRef=( `echo members patch` )
 
 
     groupKeyMeta=( 
@@ -7399,7 +7399,7 @@ members_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -7407,7 +7407,7 @@ members_patch() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -7510,8 +7510,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -7533,7 +7533,7 @@ EOIF
 
 members_update() {
 
-    apiQueryRef=( `echo members update`)
+    apiQueryRef=( `echo members update` )
 
 
     groupKeyMeta=( 
@@ -7657,7 +7657,7 @@ members_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -7665,7 +7665,7 @@ members_update() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -7768,8 +7768,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -7791,7 +7791,7 @@ EOIF
 
 mobiledevices_action() {
 
-    apiQueryRef=( `echo mobiledevices action`)
+    apiQueryRef=( `echo mobiledevices action` )
 
 
     customerIdMeta=( 
@@ -7915,7 +7915,7 @@ mobiledevices_action() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -7923,7 +7923,7 @@ mobiledevices_action() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -8026,8 +8026,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -8049,7 +8049,7 @@ EOIF
 
 mobiledevices_delete() {
 
-    apiQueryRef=( `echo mobiledevices delete`)
+    apiQueryRef=( `echo mobiledevices delete` )
 
 
     customerIdMeta=( 
@@ -8173,7 +8173,7 @@ mobiledevices_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -8181,7 +8181,7 @@ mobiledevices_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -8284,8 +8284,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -8307,7 +8307,7 @@ EOIF
 
 mobiledevices_get() {
 
-    apiQueryRef=( `echo mobiledevices get`)
+    apiQueryRef=( `echo mobiledevices get` )
 
 
     customerIdMeta=( 
@@ -8532,8 +8532,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -8555,7 +8555,7 @@ EOIF
 
 mobiledevices_list() {
 
-    apiQueryRef=( `echo mobiledevices list`)
+    apiQueryRef=( `echo mobiledevices list` )
 
 
     customerIdMeta=( 
@@ -8843,8 +8843,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -8866,7 +8866,7 @@ EOIF
 
 orgunits_delete() {
 
-    apiQueryRef=( `echo orgunits delete`)
+    apiQueryRef=( `echo orgunits delete` )
 
 
     customerIdMeta=( 
@@ -8990,7 +8990,7 @@ orgunits_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -8998,7 +8998,7 @@ orgunits_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -9101,8 +9101,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -9124,7 +9124,7 @@ EOIF
 
 orgunits_get() {
 
-    apiQueryRef=( `echo orgunits get`)
+    apiQueryRef=( `echo orgunits get` )
 
 
     customerIdMeta=( 
@@ -9278,8 +9278,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -9301,7 +9301,7 @@ EOIF
 
 orgunits_insert() {
 
-    apiQueryRef=( `echo orgunits insert`)
+    apiQueryRef=( `echo orgunits insert` )
 
 
     customerIdMeta=( 
@@ -9397,7 +9397,7 @@ orgunits_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -9405,7 +9405,7 @@ orgunits_insert() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -9508,8 +9508,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -9531,7 +9531,7 @@ EOIF
 
 orgunits_list() {
 
-    apiQueryRef=( `echo orgunits list`)
+    apiQueryRef=( `echo orgunits list` )
 
 
     customerIdMeta=( 
@@ -9797,8 +9797,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -9820,7 +9820,7 @@ EOIF
 
 orgunits_patch() {
 
-    apiQueryRef=( `echo orgunits patch`)
+    apiQueryRef=( `echo orgunits patch` )
 
 
     customerIdMeta=( 
@@ -9944,7 +9944,7 @@ orgunits_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -9952,7 +9952,7 @@ orgunits_patch() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -10055,8 +10055,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -10078,7 +10078,7 @@ EOIF
 
 orgunits_update() {
 
-    apiQueryRef=( `echo orgunits update`)
+    apiQueryRef=( `echo orgunits update` )
 
 
     customerIdMeta=( 
@@ -10202,7 +10202,7 @@ orgunits_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -10210,7 +10210,7 @@ orgunits_update() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -10313,8 +10313,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -10336,7 +10336,7 @@ EOIF
 
 privileges_list() {
 
-    apiQueryRef=( `echo privileges list`)
+    apiQueryRef=( `echo privileges list` )
 
 
     customerMeta=( 
@@ -10462,8 +10462,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -10485,7 +10485,7 @@ EOIF
 
 roleAssignments_delete() {
 
-    apiQueryRef=( `echo roleAssignments delete`)
+    apiQueryRef=( `echo roleAssignments delete` )
 
 
     customerMeta=( 
@@ -10609,7 +10609,7 @@ roleAssignments_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -10617,7 +10617,7 @@ roleAssignments_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -10720,8 +10720,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -10743,7 +10743,7 @@ EOIF
 
 roleAssignments_get() {
 
-    apiQueryRef=( `echo roleAssignments get`)
+    apiQueryRef=( `echo roleAssignments get` )
 
 
     customerMeta=( 
@@ -10897,8 +10897,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -10920,7 +10920,7 @@ EOIF
 
 roleAssignments_insert() {
 
-    apiQueryRef=( `echo roleAssignments insert`)
+    apiQueryRef=( `echo roleAssignments insert` )
 
 
     customerMeta=( 
@@ -11016,7 +11016,7 @@ roleAssignments_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -11024,7 +11024,7 @@ roleAssignments_insert() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -11127,8 +11127,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -11150,7 +11150,7 @@ EOIF
 
 roleAssignments_list() {
 
-    apiQueryRef=( `echo roleAssignments list`)
+    apiQueryRef=( `echo roleAssignments list` )
 
 
     customerMeta=( 
@@ -11360,8 +11360,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -11383,7 +11383,7 @@ EOIF
 
 roles_delete() {
 
-    apiQueryRef=( `echo roles delete`)
+    apiQueryRef=( `echo roles delete` )
 
 
     customerMeta=( 
@@ -11507,7 +11507,7 @@ roles_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -11515,7 +11515,7 @@ roles_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -11618,8 +11618,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -11641,7 +11641,7 @@ EOIF
 
 roles_get() {
 
-    apiQueryRef=( `echo roles get`)
+    apiQueryRef=( `echo roles get` )
 
 
     customerMeta=( 
@@ -11795,8 +11795,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -11818,7 +11818,7 @@ EOIF
 
 roles_insert() {
 
-    apiQueryRef=( `echo roles insert`)
+    apiQueryRef=( `echo roles insert` )
 
 
     customerMeta=( 
@@ -11914,7 +11914,7 @@ roles_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -11922,7 +11922,7 @@ roles_insert() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -12025,8 +12025,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -12048,7 +12048,7 @@ EOIF
 
 roles_list() {
 
-    apiQueryRef=( `echo roles list`)
+    apiQueryRef=( `echo roles list` )
 
 
     customerMeta=( 
@@ -12248,8 +12248,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -12271,7 +12271,7 @@ EOIF
 
 roles_patch() {
 
-    apiQueryRef=( `echo roles patch`)
+    apiQueryRef=( `echo roles patch` )
 
 
     customerMeta=( 
@@ -12395,7 +12395,7 @@ roles_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -12403,7 +12403,7 @@ roles_patch() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -12506,8 +12506,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -12529,7 +12529,7 @@ EOIF
 
 roles_update() {
 
-    apiQueryRef=( `echo roles update`)
+    apiQueryRef=( `echo roles update` )
 
 
     customerMeta=( 
@@ -12653,7 +12653,7 @@ roles_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -12661,7 +12661,7 @@ roles_update() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -12764,129 +12764,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
-EOIF
-        fi
-
-        cat << EOIF
-        --compressed
-EOIF
-        echo -e "\n\n"
-        echo -e "#########################\n"
-
-        execCurl+="--compressed"
-        histUpdateToken "\"${requestId}\"" ".request.curl" "${execCurl}"          
-        unset execCurl
-
-    }
-    execRequest
-
-}
-
-
-1() {
-
-    apiQueryRef=( `echo 1`)
-
-
-
-    URL="https://www.googleapis.com/?key=${CLIENTID}"
-
-    execRequest() {
-        if [[ -z ${requestId} ]]
-        then 
-            histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "" "${URL}"
- 
-            if ! [[ -z ${sentAuthRequest} ]] \
-            && ! [[ -z ${authPayload} ]]
-            then 
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
-
-                echo ${requestPayload} \
-                | histUpdatePayload ".auth.response" "${authPayload}"
-            fi
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Accept: application/json\""
-
-            histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
-       else
-            histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
-            histUpdateToken "\"${requestId}\"" ".auth.accessToken" "${ACCESSTOKEN}"        
-            histUpdateToken "\"${requestId}\"" ".auth.curl" "${sentAuthRequest}"            
-            histUpdateJson "\"${requestId}\"" ".auth.response" "${authPayload}"          
-        fi
-
-        # handle GET/POST requests
-
-        if ! [[ -z ${requestPostData} ]]
-        then
-            # handle POST requests
-
-            echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
-
-            curl -s \
-            --request  \
-            ${URL} \
-            --header "Authorization: Bearer ${ACCESSTOKEN}" \
-            --header "Accept: application/json" \
-            --header 'Content-Type: application/json' \
-            --data "${requestPostData}" \
-            --compressed \
-            | jq -c '.' \
-            | read -r outputJson
-            export outputJson
-
-        else
-            curl -s \
-            --request  \
-            ${URL} \
-            --header "Authorization: Bearer ${ACCESSTOKEN}" \
-            --header "Accept: application/json" \
-            --compressed \
-            | jq -c '.' \
-            | read -r outputJson
-            export outputJson
-            
-        fi
-
-        histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
-
-        execCurl="curl -s --request  \"${URL}\" "
-
-
-        echo -e "# Request issued:\n\n"
-        echo -e "#########################\n"
-        cat << EOIF
-
-    curl -s \\ 
-        --request  \\ 
-        ${URL} \\ 
-EOIF
-        execCurl+="--header 'Authorization: Bearer ${ACCESSTOKEN}' "
-        cat << EOIF
-        --header "Authorization: Bearer ${ACCESSTOKEN}" \\ 
-EOIF
-        execCurl+="--header 'Accept: application/json' "
-        cat << EOIF
-        --header "Accept: application/json" \\ 
-EOIF
-        if ! [[ -z ${requestPostData} ]]
-        then
-            execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
-
-            cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -12908,7 +12787,7 @@ EOIF
 
 tokens_delete() {
 
-    apiQueryRef=( `echo tokens delete`)
+    apiQueryRef=( `echo tokens delete` )
 
 
     clientIdMeta=( 
@@ -13032,7 +12911,7 @@ tokens_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -13040,7 +12919,7 @@ tokens_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -13143,8 +13022,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -13166,7 +13045,7 @@ EOIF
 
 tokens_get() {
 
-    apiQueryRef=( `echo tokens get`)
+    apiQueryRef=( `echo tokens get` )
 
 
     clientIdMeta=( 
@@ -13320,8 +13199,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -13343,7 +13222,7 @@ EOIF
 
 tokens_list() {
 
-    apiQueryRef=( `echo tokens list`)
+    apiQueryRef=( `echo tokens list` )
 
 
     userKeyMeta=( 
@@ -13469,8 +13348,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -13492,7 +13371,7 @@ EOIF
 
 twoStepVerification_turnOff() {
 
-    apiQueryRef=( `echo twoStepVerification turnOff`)
+    apiQueryRef=( `echo twoStepVerification turnOff` )
 
 
     userKeyMeta=( 
@@ -13588,7 +13467,7 @@ twoStepVerification_turnOff() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -13596,7 +13475,7 @@ twoStepVerification_turnOff() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -13699,8 +13578,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -13722,7 +13601,7 @@ EOIF
 
 users_delete() {
 
-    apiQueryRef=( `echo users delete`)
+    apiQueryRef=( `echo users delete` )
 
 
     userKeyMeta=( 
@@ -13818,7 +13697,7 @@ users_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -13826,7 +13705,7 @@ users_delete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -13929,8 +13808,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -13952,7 +13831,7 @@ EOIF
 
 users_get() {
 
-    apiQueryRef=( `echo users get`)
+    apiQueryRef=( `echo users get` )
 
 
     userKeyMeta=( 
@@ -14224,8 +14103,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -14247,7 +14126,7 @@ EOIF
 
 users_insert() {
 
-    apiQueryRef=( `echo users insert`)
+    apiQueryRef=( `echo users insert` )
 
 
 
@@ -14426,8 +14305,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -14449,7 +14328,7 @@ EOIF
 
 users_list() {
 
-    apiQueryRef=( `echo users list`)
+    apiQueryRef=( `echo users list` )
 
 
 
@@ -14735,8 +14614,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -14758,7 +14637,7 @@ EOIF
 
 users_makeAdmin() {
 
-    apiQueryRef=( `echo users makeAdmin`)
+    apiQueryRef=( `echo users makeAdmin` )
 
 
     userKeyMeta=( 
@@ -14854,7 +14733,7 @@ users_makeAdmin() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -14862,7 +14741,7 @@ users_makeAdmin() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -14965,8 +14844,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -14988,7 +14867,7 @@ EOIF
 
 users_patch() {
 
-    apiQueryRef=( `echo users patch`)
+    apiQueryRef=( `echo users patch` )
 
 
     userKeyMeta=( 
@@ -15084,7 +14963,7 @@ users_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -15092,7 +14971,7 @@ users_patch() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -15195,8 +15074,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -15218,7 +15097,7 @@ EOIF
 
 users_signOut() {
 
-    apiQueryRef=( `echo users signOut`)
+    apiQueryRef=( `echo users signOut` )
 
 
     userKeyMeta=( 
@@ -15314,7 +15193,7 @@ users_signOut() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -15322,7 +15201,7 @@ users_signOut() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -15425,8 +15304,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -15448,7 +15327,7 @@ EOIF
 
 users_undelete() {
 
-    apiQueryRef=( `echo users undelete`)
+    apiQueryRef=( `echo users undelete` )
 
 
     userKeyMeta=( 
@@ -15544,7 +15423,7 @@ users_undelete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -15552,7 +15431,7 @@ users_undelete() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -15655,8 +15534,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -15678,7 +15557,7 @@ EOIF
 
 users_update() {
 
-    apiQueryRef=( `echo users update`)
+    apiQueryRef=( `echo users update` )
 
 
     userKeyMeta=( 
@@ -15774,7 +15653,7 @@ users_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -15782,7 +15661,7 @@ users_update() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -15885,8 +15764,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -15908,7 +15787,7 @@ EOIF
 
 users_watch() {
 
-    apiQueryRef=( `echo users watch`)
+    apiQueryRef=( `echo users watch` )
 
 
 
@@ -16170,7 +16049,7 @@ users_watch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -16178,7 +16057,7 @@ users_watch() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -16281,8 +16160,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -16304,7 +16183,7 @@ EOIF
 
 verificationCodes_generate() {
 
-    apiQueryRef=( `echo verificationCodes generate`)
+    apiQueryRef=( `echo verificationCodes generate` )
 
 
     userKeyMeta=( 
@@ -16400,7 +16279,7 @@ verificationCodes_generate() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -16408,7 +16287,7 @@ verificationCodes_generate() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -16511,8 +16390,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -16534,7 +16413,7 @@ EOIF
 
 verificationCodes_invalidate() {
 
-    apiQueryRef=( `echo verificationCodes invalidate`)
+    apiQueryRef=( `echo verificationCodes invalidate` )
 
 
     userKeyMeta=( 
@@ -16630,7 +16509,7 @@ verificationCodes_invalidate() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
                     
                 done
 
@@ -16638,7 +16517,7 @@ verificationCodes_invalidate() {
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "\"${postPropVal}\""
+                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
 
             fi
@@ -16741,8 +16620,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 
@@ -16764,7 +16643,7 @@ EOIF
 
 verificationCodes_list() {
 
-    apiQueryRef=( `echo verificationCodes list`)
+    apiQueryRef=( `echo verificationCodes list` )
 
 
     userKeyMeta=( 
@@ -16890,8 +16769,8 @@ EOIF
             execCurl+="--header 'Content-Type: application/json' --data '${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json'
-        --data '${requestPostData}'
+        --header 'Content-Type: application/json' \\ 
+        --data '${requestPostData}' \\ 
 EOIF
         fi
 

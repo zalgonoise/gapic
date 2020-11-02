@@ -1874,7 +1874,7 @@ then
             rm ${newSchemaName}
         else
             #Log message
-            gapicLogger "SCHEMA" "DIFF" '\t\t' "WARNING" "Found differences in the schema. Keeping both files." "Found differences in the schema. Keeping both files" "WARNING:schema-diff" "Difference in schemas: ${checkDiff}"
+            gapicLogger "SCHEMA" "DIFF" '\t\t' "WARNING" "Found differences in the schema. Keeping both files." "Found differences in the schema. Keeping both files" "WARNING:schema-diff" "Difference in schemas: ${(qqq)checkDiff}"
 
             echo -e ":\n\n"
             echo ${checkDiff}
@@ -2034,6 +2034,9 @@ do
     for (( d = 1 ; d <= ${(P)#apiSets[$c]} ; d++ ))
     do
 
+        if ! [[ -z ${(P)${(P)apiSets[$c]}[$d][2]} ]]
+        then
+
         #Log message
         gapicLogger "ENGINE" "BUILD" '\t\t' "INFO" "[${(P)apiSets[$c][$d]/_//}] - Building function."
 
@@ -2060,15 +2063,18 @@ do
         || [[ "${curMethod}" == "DELETE" ]]
         then
             curPostDefaultRef=`echo ${(P)${(P)apiSets[$c]}[$d][3]} | jq -cr '.request."$ref"'`
-            curPostExtraRefs+=( `echo ${inputJson} | jq -cr ".schemas.${curPostDefaultRef}.properties[] | select(.\"\$ref\") | .\"\$ref\""` )
-        
-            curPostSchemaRef=`echo ${inputJson} | jq -cr ".schemas.${curPostDefaultRef}.properties"`
-            
-            for (( schemas = 1 ; schemas <= ${#curlPostExtraRefs[@]} ; schemas++ ))
-            do
-                curPostSchemaExtraRef+=( `echo ${inputJson} | jq -cr ".schemas.${curPostExtraRefs[$schemas]}.properties"` )
-            done
 
+            if ! [[ ${curPostDefaultRef} == "null" ]]
+            then 
+                curPostExtraRefs+=( `echo ${inputJson} | jq -cr ".schemas.${curPostDefaultRef}.properties[] | select(.\"\$ref\") | .\"\$ref\""` )
+            
+                curPostSchemaRef=`echo ${inputJson} | jq -cr ".schemas.${curPostDefaultRef}.properties"`
+                
+                for (( schemas = 1 ; schemas <= ${#curlPostExtraRefs[@]} ; schemas++ ))
+                do
+                    curPostSchemaExtraRef+=( `echo ${inputJson} | jq -cr ".schemas.${curPostExtraRefs[$schemas]}.properties"` )
+                done
+            fi
             
         fi
         
@@ -2626,8 +2632,8 @@ EOF
             execCurl+="--header 'Content-Type: application/json' --data '\${requestPostData}' " 
 
             cat << EOIF
-        --header 'Content-Type: application/json' \\\
-        --data '\${requestPostData}' \\\
+        --header 'Content-Type: application/json' \\\ 
+        --data '\${requestPostData}' \\\ 
 EOIF
         fi
 
@@ -2660,6 +2666,7 @@ EOF
 
 
         unset curPrefix curUrl curReqParams curOptParams curInpParams curMethod curPostSchemaExtraRef
+        fi
     done
 done
 
