@@ -216,10 +216,10 @@ asps_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -393,10 +393,10 @@ asps_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -542,10 +542,10 @@ asps_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -744,10 +744,10 @@ channels_stop() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -1002,10 +1002,10 @@ chromeosdevices_action() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -1250,10 +1250,10 @@ chromeosdevices_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -1566,10 +1566,10 @@ chromeosdevices_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -1824,10 +1824,10 @@ chromeosdevices_moveDevicesToOu() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -2153,10 +2153,10 @@ chromeosdevices_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -2482,10 +2482,10 @@ chromeosdevices_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -2631,10 +2631,10 @@ customers_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -2861,10 +2861,10 @@ customers_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -3091,10 +3091,10 @@ customers_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -3349,10 +3349,10 @@ domainAliases_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -3526,10 +3526,10 @@ domainAliases_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -3756,10 +3756,10 @@ domainAliases_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -3974,10 +3974,10 @@ domainAliases_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -4232,10 +4232,10 @@ domains_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -4409,10 +4409,10 @@ domains_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -4639,10 +4639,10 @@ domains_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -4788,10 +4788,10 @@ domains_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -5018,10 +5018,10 @@ groups_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -5167,10 +5167,10 @@ groups_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -5369,10 +5369,10 @@ groups_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -5661,10 +5661,10 @@ groups_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -5891,10 +5891,10 @@ groups_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -6121,10 +6121,10 @@ groups_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -6379,10 +6379,10 @@ members_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -6556,10 +6556,10 @@ members_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -6733,10 +6733,10 @@ members_hasMember() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -6963,10 +6963,10 @@ members_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -7196,10 +7196,10 @@ members_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -7454,10 +7454,10 @@ members_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -7712,10 +7712,10 @@ members_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -7970,10 +7970,10 @@ mobiledevices_action() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -8228,10 +8228,10 @@ mobiledevices_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -8476,10 +8476,10 @@ mobiledevices_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -8787,10 +8787,10 @@ mobiledevices_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -9045,10 +9045,10 @@ orgunits_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -9222,10 +9222,10 @@ orgunits_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -9452,10 +9452,10 @@ orgunits_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -9741,10 +9741,10 @@ orgunits_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -9999,10 +9999,10 @@ orgunits_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -10257,10 +10257,10 @@ orgunits_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -10406,10 +10406,10 @@ privileges_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -10664,10 +10664,10 @@ roleAssignments_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -10841,10 +10841,10 @@ roleAssignments_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -11071,10 +11071,10 @@ roleAssignments_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -11304,10 +11304,10 @@ roleAssignments_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -11562,10 +11562,10 @@ roles_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -11739,10 +11739,10 @@ roles_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -11969,10 +11969,10 @@ roles_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -12192,10 +12192,10 @@ roles_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -12450,10 +12450,10 @@ roles_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -12708,10 +12708,10 @@ roles_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -12966,10 +12966,10 @@ tokens_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -13143,10 +13143,10 @@ tokens_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -13292,10 +13292,10 @@ tokens_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -13522,10 +13522,10 @@ twoStepVerification_turnOff() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -13752,10 +13752,10 @@ users_delete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -14047,10 +14047,10 @@ users_get() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -14249,10 +14249,10 @@ users_insert() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -14558,10 +14558,10 @@ users_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -14788,10 +14788,10 @@ users_makeAdmin() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -15018,10 +15018,10 @@ users_patch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -15248,10 +15248,10 @@ users_signOut() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -15478,10 +15478,10 @@ users_undelete() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -15708,10 +15708,10 @@ users_update() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -16104,10 +16104,10 @@ users_watch() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -16334,10 +16334,10 @@ verificationCodes_generate() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -16564,10 +16564,10 @@ verificationCodes_invalidate() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -16713,10 +16713,10 @@ verificationCodes_list() {
             # handle POST requests
 
             echo ${requestPayload} \
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo ${requestPayload} \
-            | histUpdatePayload ".request.postData" "${requestPostData}"
+            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \

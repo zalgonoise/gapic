@@ -2551,10 +2551,10 @@ EOF
             # handle POST requests
 
             echo \${requestPayload} \\
-            | histListBuild ".request.headers" "\"Content-Type: application/json\""
+            | histUpdateJson "\"\${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
 
             echo \${requestPayload} \\
-            | histUpdatePayload ".request.postData" "\${requestPostData}"
+            | histUpdateJson "\"\${requestId}\"" ".request.postData" "\${requestPostData}"
 
             curl -s \\
             --request ${curMethod} \\
