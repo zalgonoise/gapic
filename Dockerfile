@@ -37,7 +37,7 @@ LABEL git_repo="https://github.com/zalgonoise/gapic"
 
 # get source files
 
-COPY --from=builder /gapic/src .
+COPY --from=builder /gapic/src /src
 
 # add needed dependencies
 # zsh as the main interpreter
