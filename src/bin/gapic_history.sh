@@ -119,24 +119,6 @@ histUpdateJson() {
 
 }
 
-histUpdateJsonList() {
-    cat ${gapicLogDir}${gapicReqLog} \
-    | jq \
-    -c \
-    "map(select(.requestId == ${1}) | ${2}=[${2}[],${3}])" \
-    | read -r newPayload
-
-    if [[ `echo ${newPayload} | jq -c ` ]]
-    then
-        echo ${newPayload} \
-        | jq \
-        > ${gapicLogDir}${gapicReqLog}
-    fi
-
-    unset newPayload
-
-}
-
 histReplayRequest() {
     if [[ `echo ${1} | jq -r '.tags'` != "null" ]] \
     && [[ `echo ${1} | jq -r '.tags.replay'` == "true" ]]

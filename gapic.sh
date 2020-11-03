@@ -1644,24 +1644,6 @@ histUpdateJson() {
 
 }
 
-histUpdateJsonList() {
-    cat \${gapicLogDir}\${gapicReqLog} \\
-    | jq \\
-    -c \\
-    "map(select(.requestId == \${1}) | \${2}=[\${2}[],\${3}])" \\
-    | read -r newPayload
-
-    if [[ \`echo \${newPayload} | jq -c \` ]]
-    then
-        echo \${newPayload} \\
-        | jq \\
-        > \${gapicLogDir}\${gapicReqLog}
-    fi
-
-    unset newPayload
-
-}
-
 histReplayRequest() {
     if [[ \`echo \${1} | jq -r '.tags'\` != "null" ]] \\
     && [[ \`echo \${1} | jq -r '.tags.replay'\` == "true" ]]
@@ -2500,16 +2482,21 @@ EOF
                     fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
                     | read -r postPropVal
 
-                    postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\${(qqq)postPropVal}"
-                    
+                    if ! [[ -z \${postPropVal} ]]
+                    then
+                        postDataPropBuild ".\${postDataStrucHead}.\${postPropOpt}" "\${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for \${postPropOpt}" \\
                 | read -r postPropVal
 
-                postDataPropBuild ".\${postPropOpt}" "\${(qqq)postPropVal}"
 
+                if ! [[ -z \${postPropVal} ]]
+                then
+                    postDataPropBuild ".\${postPropOpt}" "\${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -2553,6 +2540,16 @@ EOF
 
 
         cat << EOF >> ${outputLibWiz}
+            if ! [[ -z \${requestPostData} ]]
+            then
+                echo \${requestPayload} \\
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo \${requestPayload} \\
+                | histUpdatePayload ".request.postData" "\${requestPostData}"
+
+            fi
+
             histNewEntry "\${requestPayload}" "\${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"\${requestId}\"" ".auth.refreshToken" "\${REFRESHTOKEN}"
@@ -2566,12 +2563,6 @@ EOF
         if ! [[ -z \${requestPostData} ]]
         then
             # handle POST requests
-
-            echo \${requestPayload} \\
-            | histUpdateJsonList "\"\${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo \${requestPayload} \\
-            | histUpdateJson "\"\${requestId}\"" ".request.postData" "\${requestPostData}"
 
             curl -s \\
             --request ${curMethod} \\

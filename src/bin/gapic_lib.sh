@@ -161,16 +161,21 @@ asps_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -201,6 +206,16 @@ asps_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -214,12 +229,6 @@ asps_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -378,6 +387,16 @@ asps_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -391,12 +410,6 @@ asps_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -527,6 +540,16 @@ asps_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -540,12 +563,6 @@ asps_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -689,16 +706,21 @@ channels_stop() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -729,6 +751,16 @@ channels_stop() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -742,12 +774,6 @@ channels_stop() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -947,16 +973,21 @@ chromeosdevices_action() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -987,6 +1018,16 @@ chromeosdevices_action() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -1000,12 +1041,6 @@ chromeosdevices_action() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -1235,6 +1270,16 @@ chromeosdevices_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -1248,12 +1293,6 @@ chromeosdevices_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -1551,6 +1590,16 @@ chromeosdevices_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -1564,12 +1613,6 @@ chromeosdevices_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -1769,16 +1812,21 @@ chromeosdevices_moveDevicesToOu() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -1809,6 +1857,16 @@ chromeosdevices_moveDevicesToOu() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -1822,12 +1880,6 @@ chromeosdevices_moveDevicesToOu() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -2098,16 +2150,21 @@ chromeosdevices_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -2138,6 +2195,16 @@ chromeosdevices_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -2151,12 +2218,6 @@ chromeosdevices_patch() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -2427,16 +2488,21 @@ chromeosdevices_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -2467,6 +2533,16 @@ chromeosdevices_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -2480,12 +2556,6 @@ chromeosdevices_update() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -2616,6 +2686,16 @@ customers_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -2629,12 +2709,6 @@ customers_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -2806,16 +2880,21 @@ customers_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -2846,6 +2925,16 @@ customers_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -2859,12 +2948,6 @@ customers_patch() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -3036,16 +3119,21 @@ customers_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -3076,6 +3164,16 @@ customers_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -3089,12 +3187,6 @@ customers_update() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -3294,16 +3386,21 @@ domainAliases_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -3334,6 +3431,16 @@ domainAliases_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -3347,12 +3454,6 @@ domainAliases_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -3511,6 +3612,16 @@ domainAliases_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -3524,12 +3635,6 @@ domainAliases_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -3701,16 +3806,21 @@ domainAliases_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -3741,6 +3851,16 @@ domainAliases_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -3754,12 +3874,6 @@ domainAliases_insert() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -3959,6 +4073,16 @@ domainAliases_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -3972,12 +4096,6 @@ domainAliases_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -4177,16 +4295,21 @@ domains_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -4217,6 +4340,16 @@ domains_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -4230,12 +4363,6 @@ domains_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -4394,6 +4521,16 @@ domains_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -4407,12 +4544,6 @@ domains_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -4584,16 +4715,21 @@ domains_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -4624,6 +4760,16 @@ domains_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -4637,12 +4783,6 @@ domains_insert() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -4773,6 +4913,16 @@ domains_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -4786,12 +4936,6 @@ domains_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -4963,16 +5107,21 @@ groups_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -5003,6 +5152,16 @@ groups_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -5016,12 +5175,6 @@ groups_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -5152,6 +5305,16 @@ groups_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -5165,12 +5328,6 @@ groups_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -5314,16 +5471,21 @@ groups_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -5354,6 +5516,16 @@ groups_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -5367,12 +5539,6 @@ groups_insert() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -5646,6 +5812,16 @@ groups_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -5659,12 +5835,6 @@ groups_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -5836,16 +6006,21 @@ groups_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -5876,6 +6051,16 @@ groups_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -5889,12 +6074,6 @@ groups_patch() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -6066,16 +6245,21 @@ groups_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -6106,6 +6290,16 @@ groups_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -6119,12 +6313,6 @@ groups_update() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -6324,16 +6512,21 @@ members_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -6364,6 +6557,16 @@ members_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -6377,12 +6580,6 @@ members_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -6541,6 +6738,16 @@ members_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -6554,12 +6761,6 @@ members_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -6718,6 +6919,16 @@ members_hasMember() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -6731,12 +6942,6 @@ members_hasMember() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -6908,16 +7113,21 @@ members_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -6948,6 +7158,16 @@ members_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -6961,12 +7181,6 @@ members_insert() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -7181,6 +7395,16 @@ members_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -7194,12 +7418,6 @@ members_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -7399,16 +7617,21 @@ members_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -7439,6 +7662,16 @@ members_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -7452,12 +7685,6 @@ members_patch() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -7657,16 +7884,21 @@ members_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -7697,6 +7929,16 @@ members_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -7710,12 +7952,6 @@ members_update() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -7915,16 +8151,21 @@ mobiledevices_action() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -7955,6 +8196,16 @@ mobiledevices_action() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -7968,12 +8219,6 @@ mobiledevices_action() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -8173,16 +8418,21 @@ mobiledevices_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -8213,6 +8463,16 @@ mobiledevices_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -8226,12 +8486,6 @@ mobiledevices_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -8461,6 +8715,16 @@ mobiledevices_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -8474,12 +8738,6 @@ mobiledevices_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -8772,6 +9030,16 @@ mobiledevices_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -8785,12 +9053,6 @@ mobiledevices_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -8990,16 +9252,21 @@ orgunits_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -9030,6 +9297,16 @@ orgunits_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -9043,12 +9320,6 @@ orgunits_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -9207,6 +9478,16 @@ orgunits_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -9220,12 +9501,6 @@ orgunits_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -9397,16 +9672,21 @@ orgunits_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -9437,6 +9717,16 @@ orgunits_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -9450,12 +9740,6 @@ orgunits_insert() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -9726,6 +10010,16 @@ orgunits_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -9739,12 +10033,6 @@ orgunits_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -9944,16 +10232,21 @@ orgunits_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -9984,6 +10277,16 @@ orgunits_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -9997,12 +10300,6 @@ orgunits_patch() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -10202,16 +10499,21 @@ orgunits_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -10242,6 +10544,16 @@ orgunits_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -10255,12 +10567,6 @@ orgunits_update() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -10391,6 +10697,16 @@ privileges_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -10404,12 +10720,6 @@ privileges_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -10609,16 +10919,21 @@ roleAssignments_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -10649,6 +10964,16 @@ roleAssignments_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -10662,12 +10987,6 @@ roleAssignments_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -10826,6 +11145,16 @@ roleAssignments_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -10839,12 +11168,6 @@ roleAssignments_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -11016,16 +11339,21 @@ roleAssignments_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -11056,6 +11384,16 @@ roleAssignments_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -11069,12 +11407,6 @@ roleAssignments_insert() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -11289,6 +11621,16 @@ roleAssignments_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -11302,12 +11644,6 @@ roleAssignments_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -11507,16 +11843,21 @@ roles_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -11547,6 +11888,16 @@ roles_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -11560,12 +11911,6 @@ roles_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -11724,6 +12069,16 @@ roles_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -11737,12 +12092,6 @@ roles_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -11914,16 +12263,21 @@ roles_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -11954,6 +12308,16 @@ roles_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -11967,12 +12331,6 @@ roles_insert() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -12177,6 +12535,16 @@ roles_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -12190,12 +12558,6 @@ roles_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -12395,16 +12757,21 @@ roles_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -12435,6 +12802,16 @@ roles_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -12448,12 +12825,6 @@ roles_patch() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -12653,16 +13024,21 @@ roles_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -12693,6 +13069,16 @@ roles_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -12706,12 +13092,6 @@ roles_update() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -12911,16 +13291,21 @@ tokens_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -12951,6 +13336,16 @@ tokens_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -12964,12 +13359,6 @@ tokens_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -13128,6 +13517,16 @@ tokens_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -13141,12 +13540,6 @@ tokens_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -13277,6 +13670,16 @@ tokens_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -13290,12 +13693,6 @@ tokens_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -13467,16 +13864,21 @@ twoStepVerification_turnOff() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -13507,6 +13909,16 @@ twoStepVerification_turnOff() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -13520,12 +13932,6 @@ twoStepVerification_turnOff() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -13697,16 +14103,21 @@ users_delete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -13737,6 +14148,16 @@ users_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -13750,12 +14171,6 @@ users_delete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request DELETE \
@@ -14032,6 +14447,16 @@ users_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -14045,12 +14470,6 @@ users_get() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -14194,16 +14613,21 @@ users_insert() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -14234,6 +14658,16 @@ users_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -14247,12 +14681,6 @@ users_insert() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -14543,6 +14971,16 @@ users_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -14556,12 +14994,6 @@ users_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
@@ -14733,16 +15165,21 @@ users_makeAdmin() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -14773,6 +15210,16 @@ users_makeAdmin() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -14786,12 +15233,6 @@ users_makeAdmin() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -14963,16 +15404,21 @@ users_patch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -15003,6 +15449,16 @@ users_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -15016,12 +15472,6 @@ users_patch() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PATCH \
@@ -15193,16 +15643,21 @@ users_signOut() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -15233,6 +15688,16 @@ users_signOut() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -15246,12 +15711,6 @@ users_signOut() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -15423,16 +15882,21 @@ users_undelete() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -15463,6 +15927,16 @@ users_undelete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -15476,12 +15950,6 @@ users_undelete() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -15653,16 +16121,21 @@ users_update() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -15693,6 +16166,16 @@ users_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -15706,12 +16189,6 @@ users_update() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request PUT \
@@ -16049,16 +16526,21 @@ users_watch() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -16089,6 +16571,16 @@ users_watch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -16102,12 +16594,6 @@ users_watch() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -16279,16 +16765,21 @@ verificationCodes_generate() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -16319,6 +16810,16 @@ verificationCodes_generate() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -16332,12 +16833,6 @@ verificationCodes_generate() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -16509,16 +17004,21 @@ verificationCodes_invalidate() {
                     fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                     | read -r postPropVal
 
-                    postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
-                    
+                    if ! [[ -z ${postPropVal} ]]
+                    then
+                        postDataPropBuild ".${postDataStrucHead}.${postPropOpt}" "${(qqq)postPropVal}"
+                    fi                
                 done
 
             else
                 fuzzExInputCreds "Enter a value for ${postPropOpt}" \
                 | read -r postPropVal
 
-                postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
 
+                if ! [[ -z ${postPropVal} ]]
+                then
+                    postDataPropBuild ".${postPropOpt}" "${(qqq)postPropVal}"
+                fi
 
             fi
         done
@@ -16549,6 +17049,16 @@ verificationCodes_invalidate() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -16562,12 +17072,6 @@ verificationCodes_invalidate() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request POST \
@@ -16698,6 +17202,16 @@ verificationCodes_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
+
+            fi
+
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
        else
             histUpdateToken "\"${requestId}\"" ".auth.refreshToken" "${REFRESHTOKEN}"
@@ -16711,12 +17225,6 @@ verificationCodes_list() {
         if ! [[ -z ${requestPostData} ]]
         then
             # handle POST requests
-
-            echo ${requestPayload} \
-            | histUpdateJsonList "\"${requestId}\"" ".request.headers" "\"Content-Type: application/json\""
-
-            echo ${requestPayload} \
-            | histUpdateJson "\"${requestId}\"" ".request.postData" "${requestPostData}"
 
             curl -s \
             --request GET \
