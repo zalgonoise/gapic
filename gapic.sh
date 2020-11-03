@@ -1281,7 +1281,7 @@ gapicFuzzyMenu() {
            || { cat <( jq -C '.' \${gapicLogDir}\${gapicReqLog} ) }" \\
     --bind "tab:replace-query" \\
     --bind "ctrl-space:execute% cat \${1}  | jq --sort-keys -C .resources.{}.methods | less -R > /dev/tty 2>&1 %" \\
-    --bind "change:top" \
+    --bind "change:top" \\
     --layout=reverse-list \\
     --prompt="~ " \\
     --pointer="~ " \\
