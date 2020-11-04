@@ -20,15 +20,17 @@ gapicFuzzyMenu() {
     sed 's/ /\n/g' \
     | fzf \
     --preview \
-        "{ cat \
+        "zsh -c '{ cat \
           <(echo -e \"# Please choose an option, and press Enter #\") \
           <(echo -e \"# Tab: Query quick-replace #\n\n\") \
          } && [[ -f ${gapicSchemaDir}{}.json ]] \
            && { cat  <( jq -C  '.' ${gapicSchemaDir}{}.json ) } \
-           || { cat <( jq -C '.' ${gapicLogDir}${gapicReqLog} ) }" \
+           || { cat <( jq -C '.' ${gapicLogDir}${gapicReqLog} ) } \
+           '" \
     --bind "tab:replace-query" \
     --bind "ctrl-space:execute% cat ${1}  | jq --sort-keys -C .resources.{}.methods | less -R > /dev/tty 2>&1 %" \
-    --bind "change:top"     --layout=reverse-list \
+    --bind "change:top" \
+    --layout=reverse-list \
     --prompt="~ " \
     --pointer="~ " \
     --header="# gapic: API Composer #" \
@@ -42,13 +44,14 @@ gapicFuzzyMenu() {
 gapicFuzzyHistory() { 
     jq -c '.[]' \
     | fzf \
-    --preview "cat \
-      <(echo -e \"# Ctrl-space: Expand preview (use '/' to search) #\")  \
+    --preview \
+    "zsh -c 'cat \
+      <(echo -e \"# Ctrl-space: Expand preview [use / to search] #\")  \
       <(echo -e \"# Tab: query quick-replace #\") \
       <(echo -e \"# Search for a keyword and press Enter to replay request #\n\n\") \
-      <(jq -C {} < ${1} ) \
-      " \
-    --bind "ctrl-space:execute% cat <(jq -C {1} < ${1}) | less -R > /dev/tty 2>&1 %" \
+      <( echo {} | jq -C ) \
+      '" \
+    --bind "ctrl-space:execute% zsh -c \"cat <(jq -C {1} < ${gapicLogDir}${gapicReqLog} ) | less -R > /dev/tty 2>&1 %\"" \
     --bind "tab:replace-query" \
     --layout=reverse-list \
     --prompt="~ " \
@@ -68,16 +71,17 @@ gapicFuzzySchema() {
     | sed "s/\.\([[:digit:]]\+\)/[\1]/g" \
     | fzf  \
     --preview \
-        "cat \
-          <(echo -e \"# Ctrl-space: Expand preview (use '/' to search) #\")  \
+        "zsh -c 'cat \
+          <(echo -e \"# Ctrl-space: Expand preview [use / to search] #\")  \
           <(echo -e \"# Ctrl-k: preview keys #\") \
           <(echo -e \"# Tab: query quick-replace #\n\n\") \
-          <(jq -C {1} < ${1})" \
-    --bind "ctrl-s:execute% cat <(jq -c {1} < ${1}) | less -R > /dev/tty 2>&1 %" \
-    --bind "ctrl-b:preview(cat <(jq -c {1} < ${1}) | base64 -d)" \
-    --bind "ctrl-k:preview(cat <(jq -c {1} < ${1}) | jq '. | keys[]')" \
+          <(jq -C {1} < ${1}) \
+          '" \
+    --bind "ctrl-s:execute% zsh -c \"cat <(jq -c {1} < ${1}) | less -R > /dev/tty 2>&1 %\"" \
+    --bind "ctrl-b:preview( zsh -c \"cat <(jq -c {1} < ${1}) | base64 -d)\"" \
+    --bind "ctrl-k:preview( zsh -c \"cat <(jq -c {1} < ${1}) | jq '. | keys[]')\"" \
     --bind "tab:replace-query" \
-    --bind "ctrl-space:execute% cat <(jq -C {1} < ${1}) | less -R > /dev/tty 2>&1 %" \
+    --bind "ctrl-space:execute% zsh -c \"cat <(jq -C {1} < ${1}) | less -R > /dev/tty 2>&1 %\"" \
     --bind "change:top" \
     --layout=reverse-list \
     --prompt="~ " \
@@ -85,19 +89,19 @@ gapicFuzzySchema() {
     --header="# Fuzzy Object Explorer #" \
     --color=dark \
     --black \
-    | xargs -ri jq -C {} <(cat ${1})
+    | xargs -ri zsh -c "jq -C {} <(cat ${1})"
 }
 
 gapicFuzzyResources() {
     sed 's/ /\n/g' \
     | fzf \
     --preview \
-        "cat \
-          <(echo -e \"# Ctrl-space: Expand preview (use '/' to search) #\") \
+        "zsh -c 'cat \
+          <(echo -e \"# Ctrl-space: Expand preview [use / to search] #\") \
           <(echo -e \"# Tab: query quick-replace #\n\n\") \
           <( cat ${1} | jq -C  \
-            '.resources.{}.methods | keys[]')
-        " \
+            \".resources.{}.methods | keys[]\")
+        '" \
     --bind "tab:replace-query" \
     --bind "ctrl-space:execute% cat ${1}  | jq --sort-keys -C .resources.{}.methods | less -R > /dev/tty 2>&1 %" \
     --bind "change:top" \
@@ -114,11 +118,11 @@ gapicFuzzyMethods() {
     | sed "s/^[^.]*_//g" \
     | fzf \
     --preview \
-        "cat \
-          <(echo -e \"# Ctrl-space: Expand preview (use '/' to search) #\n\n\") \
+        "zsh -c 'cat \
+          <(echo -e \"# Ctrl-space: Expand preview [use / to search] #\n\n\") \
           <( cat ${1} | jq -C  \
             .resources.${2}.methods.{})
-        " \
+        '" \
     --bind "tab:replace-query" \
     --bind "ctrl-space:execute% cat ${1}  | jq --sort-keys -C .resources.${2}.methods.{} | less -R > /dev/tty 2>&1 %" \
     --bind "change:top" \
@@ -136,8 +140,8 @@ fuzzExSimpleParameters() {
     --bind "tab:replace-query" \
     --bind "change:top" \
     --layout=reverse-list \
-    --bind "ctrl-r:execute% source ${gapicParamWiz} && rmParams ${tempPar} {} ${credPath}/${fileRef} %+preview(cat <(echo -e \# Removed {}))" \
-    --preview "cat <(echo -e \"# Ctrl-r: Remove entry #\n\n\") <( cat ${schemaFile} | jq --sort-keys -C  .resources.${1}.methods.${2}.parameters.${3})" \
+    --bind "ctrl-r:execute% source ${gapicParamWiz} && rmParams ${tempPar} {} ${credPath}/${fileRef} %+preview( zsh -c \"cat <(echo -e \# Removed {})\" )" \
+    --preview "zsh -c 'cat <(echo -e \"# Ctrl-r: Remove entry #\n\n\") <( cat ${schemaFile} | jq --sort-keys -C  .resources.${1}.methods.${2}.parameters.${3} )'" \
     --prompt="~ " \
     --pointer="~ " \
     --header="# ${1}.${2}: Saved ${3} Params #" \
@@ -179,7 +183,7 @@ fuzzExPromptParameters() {
     --bind "tab:replace-query" \
     --bind "change:top" \
     --layout=reverse-list \
-    --preview "cat <(echo ${2} | sed 's/ /\n/g')" \
+    --preview "zsh -c 'cat <(echo ${2} | sed \"s/ /\n/g\")'" \
     --prompt="~ " \
     --pointer="~ " \
     --header="# ${1} #" \
@@ -219,7 +223,7 @@ fuzzExSavedCreds() {
     --bind "tab:replace-query" \
     --bind "change:top" \
     --layout=reverse-list \
-    --preview "cat <( cat ${2}/{} | jq -C )" \
+    --preview "zsh -c 'cat <( cat ${2}/{} | jq -C )'" \
     --prompt="~ " \
     --pointer="~ " \
     --header="# ${1} #" \
@@ -262,7 +266,7 @@ fuzzExCreateScopes() {
     --bind "tab:replace-query" \
     --bind "change:top" \
     --layout=reverse-list \
-    --preview "cat <( cat ${4} | jq -C \".resources.${2}.methods.${3}\")" \
+    --preview "zsh -c 'cat <( cat ${4} | jq -C \".resources.${2}.methods.${3}\")'" \
     --prompt="~ " \
     --pointer="~ " \
     --header="# ${1} #" \

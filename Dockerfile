@@ -18,7 +18,7 @@ RUN apk add \
 
 # fetch repo
 
-RUN ["git", "clone", "https://github.com/zalgonoise/gapic"]
+RUN ["git", "clone", "-b", "feature/docker", "https://github.com/zalgonoise/gapic"]
 
 # move into repo directory (to properly log this build)
 
