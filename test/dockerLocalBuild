@@ -1,0 +1,25 @@
+FROM zalgonoise/docker-baseimage-alpine:latest
+
+LABEL maintainer="Zalgo Noise <zalgo.noise@gmail.com>"
+LABEL version="0.6-beta"
+LABEL git_repo="https://github.com/zalgonoise/gapic"
+
+# Get source files
+
+COPY ./src /src
+
+# Add needed dependencies
+# jq to parse JSON
+# fzf (fuzzy finder) is the program of choice for menus
+
+RUN apk add \
+    --no-cache \
+    --update \
+    jq \
+    fzf
+
+# Prepare gapic to execute on container runtime
+
+RUN chown -R app:app /src
+
+CMD ["/src/bin/gapic_exec.sh"]
