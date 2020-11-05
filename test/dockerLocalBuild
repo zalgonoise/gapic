@@ -1,4 +1,4 @@
-FROM zalgonoise/docker-baseimage-alpine:latest
+FROM zalgonoise/docker-baseimage-alpine:0.2
 
 LABEL maintainer="Zalgo Noise <zalgo.noise@gmail.com>"
 LABEL version="0.6-beta"

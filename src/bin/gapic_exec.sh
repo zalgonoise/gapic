@@ -48,7 +48,7 @@ gapicMenu() {
     if [[ ${gapicMenuOpt} == "Fuzzy_History" ]]
     then
         cat ${gapicLogDir}${gapicReqLog} \
-        | gapicFuzzyHistory ${gapicLogDir}${gapicReqLog} \
+        | gapicFuzzyHistory \
         | read -r histPayload
 
         if [[ `echo ${histPayload} | jq -c ` ]]

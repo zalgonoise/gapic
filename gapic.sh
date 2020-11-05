@@ -1297,12 +1297,11 @@ gapicFuzzyMenu() {
 gapicFuzzyHistory() { 
     jq -c '.[]' \\
     | fzf \\
-    --preview "zsh -c 'cat \\
-      <(echo -e \"# Ctrl-space: Expand preview [use / to search] #\")  \\
-      <(echo -e \"# Tab: query quick-replace #\") \\
-      <(echo -e \"# Search for a keyword and press Enter to replay request #\n\n\") \\
-      <(jq -C {} < \${gapicLogDir}\${gapicReqLog} ) \\
-      '" \\
+    --preview " \\
+      echo -e \"# Ctrl-space: Expand preview [use / to search] #\"  \\
+      && echo -e \"# Tab: query quick-replace #\" \\
+      && echo -e \"# Search for a keyword and press Enter to replay request #\n\n\" \\
+      && echo {} | jq -C" \\
     --bind "ctrl-space:execute% zsh -c \"cat <(jq -C {1} < \${gapicLogDir}\${gapicReqLog}) | less -R > /dev/tty 2>&1 %\"" \\
     --bind "tab:replace-query" \\
     --layout=reverse-list \\

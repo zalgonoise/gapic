@@ -44,14 +44,12 @@ gapicFuzzyMenu() {
 gapicFuzzyHistory() { 
     jq -c '.[]' \
     | fzf \
-    --preview \
-    "zsh -c 'cat \
-      <(echo -e \"# Ctrl-space: Expand preview [use / to search] #\")  \
-      <(echo -e \"# Tab: query quick-replace #\") \
-      <(echo -e \"# Search for a keyword and press Enter to replay request #\n\n\") \
-      <( echo {} | jq -C ) \
-      '" \
-    --bind "ctrl-space:execute% zsh -c \"cat <(jq -C {1} < ${gapicLogDir}${gapicReqLog} ) | less -R > /dev/tty 2>&1 %\"" \
+    --preview " \
+      echo -e \"# Ctrl-space: Expand preview [use / to search] #\"  \
+      && echo -e \"# Tab: query quick-replace #\" \
+      && echo -e \"# Search for a keyword and press Enter to replay request #\n\n\" \
+      && echo {} | jq -C" \
+    --bind "ctrl-space:execute% zsh -c \"cat <(jq -C {1} < ${gapicLogDir}${gapicReqLog}) | less -R > /dev/tty 2>&1 %\"" \
     --bind "tab:replace-query" \
     --layout=reverse-list \
     --prompt="~ " \
@@ -140,8 +138,8 @@ fuzzExSimpleParameters() {
     --bind "tab:replace-query" \
     --bind "change:top" \
     --layout=reverse-list \
-    --bind "ctrl-r:execute% source ${gapicParamWiz} && rmParams ${tempPar} {} ${credPath}/${fileRef} %+preview( zsh -c \"cat <(echo -e \# Removed {})\" )" \
-    --preview "zsh -c 'cat <(echo -e \"# Ctrl-r: Remove entry #\n\n\") <( cat ${schemaFile} | jq --sort-keys -C  .resources.${1}.methods.${2}.parameters.${3} )'" \
+    --bind "ctrl-r:execute% source ${gapicParamWiz} && rmParams ${tempPar} {} ${credPath}/${fileRef} %+preview( zsh -c 'cat <(echo -e \# Removed {})' )" \
+    --preview "zsh -c 'cat <(echo -e \"# Ctrl-r: Remove entry #\n\n\") <( cat ${schemaFile} | jq --sort-keys -C  .resources.${1}.methods.${2}.parameters.${3})'" \
     --prompt="~ " \
     --pointer="~ " \
     --header="# ${1}.${2}: Saved ${3} Params #" \
