@@ -60,4 +60,5 @@ RUN apk add \
 
 RUN chown -R app:app /src
 
+ENTRYPOINT [ "/init" ]
 CMD ["/src/bin/gapic_exec.sh"]
