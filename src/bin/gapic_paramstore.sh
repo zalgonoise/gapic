@@ -66,22 +66,35 @@ addParams() {
         then 
             keyIndex=$((${index}-1))
         fi
-    done
+    done      
 
     modParams=( `cat ${3} | jq -r ".param[] | select(.${1})[] | .[]" ` )
 
     newList="[\"${2}\"]"
 
-    for (( par = 1 ; par <= ${#modParams[@]} ; par++ ))
-    do 
-        echo ${newList} \
-        | jq -c ".=[.[],\"${modParams[${par}]}\"]" \
-        | read -r newList
-    done
+    if ! [[ ${#modParams[@]} -eq 0 ]]
+    then
 
-    cat ${3} \
-    | jq -c ".param[${keyIndex}].${1}=${newList}" \
-    | read -r newParamPayload
+        for (( par = 1 ; par <= ${#modParams[@]} ; par++ ))
+        do 
+            echo ${newList} \
+            | jq -c ".=[.[],\"${modParams[${par}]}\"]" \
+            | read -r newList
+        done
+
+        cat ${3} \
+        | jq -c ".param[${keyIndex}].${1}=${newList}" \
+        | read -r newParamPayload
+
+    else
+
+        cat ${3} \
+        | jq -c ".param=[.param[],{\"${1}\":[\"${2}\"]}]" \
+        | read -r newParamPayload
+
+    fi
+
+   
     
     if [[ `echo ${newParamPayload} | jq -c ` ]]
     then 
