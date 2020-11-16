@@ -411,6 +411,14 @@ scopeLookup() {
 
     export scopeIndex
     export scopeIndexNo
+
+    if [[ -z ${scopeIndex} ]] \
+    && [[ -z ${scopeIndexNo} ]]
+    then
+        scopeMissing=true
+    else
+        scopeMissing=false
+    fi
 }
 
 
@@ -432,9 +440,11 @@ checkScopes() {
 
         scopeLookup "savedScopes" "availableScopes"
     
-        if [[ -z ${scopeIndex[@]} ]] \
-        || [[ ${#savedScopes[@]} -lt ${#availableScopes[@]} ]] \
-        || [[ ${#scopeIndex[@]} -gt 1 ]]
+        if [[ ${scopeMissing} == "false" ]] \
+        &&  { 
+            [[ ${#savedScopes[@]} -lt ${#availableScopes[@]} ]] \
+            || [[ ${#scopeIndex[@]} -gt 1 ]]
+            }
         then
             echo ${scopeIndex[@]} \
             | fuzzExSavedScopes "Re-use any of these OAuth Scopes?" "${4}" \
@@ -468,7 +478,13 @@ checkScopes() {
                     checkScopeAccess "${activeIndex}" "${4}"
                 fi
             done
-            
+
+        elif [[ ${scopeMissing} == "true" ]]
+        then
+            scopeCreate "${1}" "${2}" "${3}" "${4}"
+            savedScopes=( `cat ${4} | jq -c '.authScopes[]'` )
+            scopeLookup "savedScopes" "availableScopes"
+
         else
             activeIndex=${scopeIndexNo}
             checkScopeAccess "${activeIndex}" "${4}"
