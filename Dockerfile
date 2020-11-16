@@ -60,4 +60,4 @@ RUN apk add \
 
 RUN chown -R app:app /src
 
-CMD ["/src/bin/gapic_exec.sh", "&&", "/init"]
+CMD ["/src/bin/gapic_exec.sh", "/init"]

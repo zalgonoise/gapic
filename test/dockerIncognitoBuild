@@ -6,7 +6,8 @@ LABEL git_repo="https://github.com/zalgonoise/gapic"
 
 # Get source files
 
-COPY ./src /src
+COPY ./src/bin /src/bin
+COPY ./src/schema /src/schema
 
 # Add needed dependencies
 # jq to parse JSON
@@ -16,7 +17,9 @@ RUN apk add \
     --no-cache \
     --update \
     jq \
-    fzf
+    fzf \
+    && mkdir -p /src/data/.creds /src/log \
+    && echo "[]" > /src/log/requests.json
 
 # Prepare gapic to execute on container runtime
 
