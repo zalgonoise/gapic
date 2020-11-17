@@ -188,11 +188,11 @@ asps_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ASPS_DELETE_URL} =~ "pageToken=" ]]
             then                
                 ASPS_DELETE_URL+=\&pageToken=${1}
             else 
-                ASPS_DELETE_URL=`echo ASPS_DELETE_URL | sed "s/$(echo ASPS_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ASPS_DELETE_URL=`echo -n ${ASPS_DELETE_URL} | sed "s/$(echo ${ASPS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -386,11 +386,11 @@ asps_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ASPS_GET_URL} =~ "pageToken=" ]]
             then                
                 ASPS_GET_URL+=\&pageToken=${1}
             else 
-                ASPS_GET_URL=`echo ASPS_GET_URL | sed "s/$(echo ASPS_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ASPS_GET_URL=`echo -n ${ASPS_GET_URL} | sed "s/$(echo ${ASPS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -556,11 +556,11 @@ asps_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ASPS_LIST_URL} =~ "pageToken=" ]]
             then                
                 ASPS_LIST_URL+=\&pageToken=${1}
             else 
-                ASPS_LIST_URL=`echo ASPS_LIST_URL | sed "s/$(echo ASPS_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ASPS_LIST_URL=`echo -n ${ASPS_LIST_URL} | sed "s/$(echo ${ASPS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -784,11 +784,11 @@ channels_stop() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${CHANNELS_STOP_URL} =~ "pageToken=" ]]
             then                
                 CHANNELS_STOP_URL+=\&pageToken=${1}
             else 
-                CHANNELS_STOP_URL=`echo CHANNELS_STOP_URL | sed "s/$(echo CHANNELS_STOP_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                CHANNELS_STOP_URL=`echo -n ${CHANNELS_STOP_URL} | sed "s/$(echo ${CHANNELS_STOP_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -1068,11 +1068,11 @@ chromeosdevices_action() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${CHROMEOSDEVICES_ACTION_URL} =~ "pageToken=" ]]
             then                
                 CHROMEOSDEVICES_ACTION_URL+=\&pageToken=${1}
             else 
-                CHROMEOSDEVICES_ACTION_URL=`echo CHROMEOSDEVICES_ACTION_URL | sed "s/$(echo CHROMEOSDEVICES_ACTION_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                CHROMEOSDEVICES_ACTION_URL=`echo -n ${CHROMEOSDEVICES_ACTION_URL} | sed "s/$(echo ${CHROMEOSDEVICES_ACTION_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -1337,11 +1337,11 @@ chromeosdevices_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${CHROMEOSDEVICES_GET_URL} =~ "pageToken=" ]]
             then                
                 CHROMEOSDEVICES_GET_URL+=\&pageToken=${1}
             else 
-                CHROMEOSDEVICES_GET_URL=`echo CHROMEOSDEVICES_GET_URL | sed "s/$(echo CHROMEOSDEVICES_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                CHROMEOSDEVICES_GET_URL=`echo -n ${CHROMEOSDEVICES_GET_URL} | sed "s/$(echo ${CHROMEOSDEVICES_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -1674,11 +1674,11 @@ chromeosdevices_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${CHROMEOSDEVICES_LIST_URL} =~ "pageToken=" ]]
             then                
                 CHROMEOSDEVICES_LIST_URL+=\&pageToken=${1}
             else 
-                CHROMEOSDEVICES_LIST_URL=`echo CHROMEOSDEVICES_LIST_URL | sed "s/$(echo CHROMEOSDEVICES_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                CHROMEOSDEVICES_LIST_URL=`echo -n ${CHROMEOSDEVICES_LIST_URL} | sed "s/$(echo ${CHROMEOSDEVICES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -1958,11 +1958,11 @@ chromeosdevices_moveDevicesToOu() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} =~ "pageToken=" ]]
             then                
                 CHROMEOSDEVICES_MOVEDEVICESTOOU_URL+=\&pageToken=${1}
             else 
-                CHROMEOSDEVICES_MOVEDEVICESTOOU_URL=`echo CHROMEOSDEVICES_MOVEDEVICESTOOU_URL | sed "s/$(echo CHROMEOSDEVICES_MOVEDEVICESTOOU_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                CHROMEOSDEVICES_MOVEDEVICESTOOU_URL=`echo -n ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} | sed "s/$(echo ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -2313,11 +2313,11 @@ chromeosdevices_patch() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${CHROMEOSDEVICES_PATCH_URL} =~ "pageToken=" ]]
             then                
                 CHROMEOSDEVICES_PATCH_URL+=\&pageToken=${1}
             else 
-                CHROMEOSDEVICES_PATCH_URL=`echo CHROMEOSDEVICES_PATCH_URL | sed "s/$(echo CHROMEOSDEVICES_PATCH_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                CHROMEOSDEVICES_PATCH_URL=`echo -n ${CHROMEOSDEVICES_PATCH_URL} | sed "s/$(echo ${CHROMEOSDEVICES_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -2668,11 +2668,11 @@ chromeosdevices_update() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${CHROMEOSDEVICES_UPDATE_URL} =~ "pageToken=" ]]
             then                
                 CHROMEOSDEVICES_UPDATE_URL+=\&pageToken=${1}
             else 
-                CHROMEOSDEVICES_UPDATE_URL=`echo CHROMEOSDEVICES_UPDATE_URL | sed "s/$(echo CHROMEOSDEVICES_UPDATE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                CHROMEOSDEVICES_UPDATE_URL=`echo -n ${CHROMEOSDEVICES_UPDATE_URL} | sed "s/$(echo ${CHROMEOSDEVICES_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -2838,11 +2838,11 @@ customers_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${CUSTOMERS_GET_URL} =~ "pageToken=" ]]
             then                
                 CUSTOMERS_GET_URL+=\&pageToken=${1}
             else 
-                CUSTOMERS_GET_URL=`echo CUSTOMERS_GET_URL | sed "s/$(echo CUSTOMERS_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                CUSTOMERS_GET_URL=`echo -n ${CUSTOMERS_GET_URL} | sed "s/$(echo ${CUSTOMERS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -3094,11 +3094,11 @@ customers_patch() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${CUSTOMERS_PATCH_URL} =~ "pageToken=" ]]
             then                
                 CUSTOMERS_PATCH_URL+=\&pageToken=${1}
             else 
-                CUSTOMERS_PATCH_URL=`echo CUSTOMERS_PATCH_URL | sed "s/$(echo CUSTOMERS_PATCH_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                CUSTOMERS_PATCH_URL=`echo -n ${CUSTOMERS_PATCH_URL} | sed "s/$(echo ${CUSTOMERS_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -3350,11 +3350,11 @@ customers_update() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${CUSTOMERS_UPDATE_URL} =~ "pageToken=" ]]
             then                
                 CUSTOMERS_UPDATE_URL+=\&pageToken=${1}
             else 
-                CUSTOMERS_UPDATE_URL=`echo CUSTOMERS_UPDATE_URL | sed "s/$(echo CUSTOMERS_UPDATE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                CUSTOMERS_UPDATE_URL=`echo -n ${CUSTOMERS_UPDATE_URL} | sed "s/$(echo ${CUSTOMERS_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -3634,11 +3634,11 @@ domainAliases_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${DOMAINALIASES_DELETE_URL} =~ "pageToken=" ]]
             then                
                 DOMAINALIASES_DELETE_URL+=\&pageToken=${1}
             else 
-                DOMAINALIASES_DELETE_URL=`echo DOMAINALIASES_DELETE_URL | sed "s/$(echo DOMAINALIASES_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                DOMAINALIASES_DELETE_URL=`echo -n ${DOMAINALIASES_DELETE_URL} | sed "s/$(echo ${DOMAINALIASES_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -3832,11 +3832,11 @@ domainAliases_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${DOMAINALIASES_GET_URL} =~ "pageToken=" ]]
             then                
                 DOMAINALIASES_GET_URL+=\&pageToken=${1}
             else 
-                DOMAINALIASES_GET_URL=`echo DOMAINALIASES_GET_URL | sed "s/$(echo DOMAINALIASES_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                DOMAINALIASES_GET_URL=`echo -n ${DOMAINALIASES_GET_URL} | sed "s/$(echo ${DOMAINALIASES_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -4088,11 +4088,11 @@ domainAliases_insert() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${DOMAINALIASES_INSERT_URL} =~ "pageToken=" ]]
             then                
                 DOMAINALIASES_INSERT_URL+=\&pageToken=${1}
             else 
-                DOMAINALIASES_INSERT_URL=`echo DOMAINALIASES_INSERT_URL | sed "s/$(echo DOMAINALIASES_INSERT_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                DOMAINALIASES_INSERT_URL=`echo -n ${DOMAINALIASES_INSERT_URL} | sed "s/$(echo ${DOMAINALIASES_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -4327,11 +4327,11 @@ domainAliases_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${DOMAINALIASES_LIST_URL} =~ "pageToken=" ]]
             then                
                 DOMAINALIASES_LIST_URL+=\&pageToken=${1}
             else 
-                DOMAINALIASES_LIST_URL=`echo DOMAINALIASES_LIST_URL | sed "s/$(echo DOMAINALIASES_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                DOMAINALIASES_LIST_URL=`echo -n ${DOMAINALIASES_LIST_URL} | sed "s/$(echo ${DOMAINALIASES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -4611,11 +4611,11 @@ domains_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${DOMAINS_DELETE_URL} =~ "pageToken=" ]]
             then                
                 DOMAINS_DELETE_URL+=\&pageToken=${1}
             else 
-                DOMAINS_DELETE_URL=`echo DOMAINS_DELETE_URL | sed "s/$(echo DOMAINS_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                DOMAINS_DELETE_URL=`echo -n ${DOMAINS_DELETE_URL} | sed "s/$(echo ${DOMAINS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -4809,11 +4809,11 @@ domains_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${DOMAINS_GET_URL} =~ "pageToken=" ]]
             then                
                 DOMAINS_GET_URL+=\&pageToken=${1}
             else 
-                DOMAINS_GET_URL=`echo DOMAINS_GET_URL | sed "s/$(echo DOMAINS_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                DOMAINS_GET_URL=`echo -n ${DOMAINS_GET_URL} | sed "s/$(echo ${DOMAINS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -5065,11 +5065,11 @@ domains_insert() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${DOMAINS_INSERT_URL} =~ "pageToken=" ]]
             then                
                 DOMAINS_INSERT_URL+=\&pageToken=${1}
             else 
-                DOMAINS_INSERT_URL=`echo DOMAINS_INSERT_URL | sed "s/$(echo DOMAINS_INSERT_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                DOMAINS_INSERT_URL=`echo -n ${DOMAINS_INSERT_URL} | sed "s/$(echo ${DOMAINS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -5235,11 +5235,11 @@ domains_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${DOMAINS_LIST_URL} =~ "pageToken=" ]]
             then                
                 DOMAINS_LIST_URL+=\&pageToken=${1}
             else 
-                DOMAINS_LIST_URL=`echo DOMAINS_LIST_URL | sed "s/$(echo DOMAINS_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                DOMAINS_LIST_URL=`echo -n ${DOMAINS_LIST_URL} | sed "s/$(echo ${DOMAINS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -5491,11 +5491,11 @@ groups_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${GROUPS_DELETE_URL} =~ "pageToken=" ]]
             then                
                 GROUPS_DELETE_URL+=\&pageToken=${1}
             else 
-                GROUPS_DELETE_URL=`echo GROUPS_DELETE_URL | sed "s/$(echo GROUPS_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                GROUPS_DELETE_URL=`echo -n ${GROUPS_DELETE_URL} | sed "s/$(echo ${GROUPS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -5661,11 +5661,11 @@ groups_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${GROUPS_GET_URL} =~ "pageToken=" ]]
             then                
                 GROUPS_GET_URL+=\&pageToken=${1}
             else 
-                GROUPS_GET_URL=`echo GROUPS_GET_URL | sed "s/$(echo GROUPS_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                GROUPS_GET_URL=`echo -n ${GROUPS_GET_URL} | sed "s/$(echo ${GROUPS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -5889,11 +5889,11 @@ groups_insert() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${GROUPS_INSERT_URL} =~ "pageToken=" ]]
             then                
                 GROUPS_INSERT_URL+=\&pageToken=${1}
             else 
-                GROUPS_INSERT_URL=`echo GROUPS_INSERT_URL | sed "s/$(echo GROUPS_INSERT_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                GROUPS_INSERT_URL=`echo -n ${GROUPS_INSERT_URL} | sed "s/$(echo ${GROUPS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -6202,11 +6202,11 @@ groups_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${GROUPS_LIST_URL} =~ "pageToken=" ]]
             then                
                 GROUPS_LIST_URL+=\&pageToken=${1}
             else 
-                GROUPS_LIST_URL=`echo GROUPS_LIST_URL | sed "s/$(echo GROUPS_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                GROUPS_LIST_URL=`echo -n ${GROUPS_LIST_URL} | sed "s/$(echo ${GROUPS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -6458,11 +6458,11 @@ groups_patch() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${GROUPS_PATCH_URL} =~ "pageToken=" ]]
             then                
                 GROUPS_PATCH_URL+=\&pageToken=${1}
             else 
-                GROUPS_PATCH_URL=`echo GROUPS_PATCH_URL | sed "s/$(echo GROUPS_PATCH_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                GROUPS_PATCH_URL=`echo -n ${GROUPS_PATCH_URL} | sed "s/$(echo ${GROUPS_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -6714,11 +6714,11 @@ groups_update() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${GROUPS_UPDATE_URL} =~ "pageToken=" ]]
             then                
                 GROUPS_UPDATE_URL+=\&pageToken=${1}
             else 
-                GROUPS_UPDATE_URL=`echo GROUPS_UPDATE_URL | sed "s/$(echo GROUPS_UPDATE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                GROUPS_UPDATE_URL=`echo -n ${GROUPS_UPDATE_URL} | sed "s/$(echo ${GROUPS_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -6998,11 +6998,11 @@ members_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MEMBERS_DELETE_URL} =~ "pageToken=" ]]
             then                
                 MEMBERS_DELETE_URL+=\&pageToken=${1}
             else 
-                MEMBERS_DELETE_URL=`echo MEMBERS_DELETE_URL | sed "s/$(echo MEMBERS_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MEMBERS_DELETE_URL=`echo -n ${MEMBERS_DELETE_URL} | sed "s/$(echo ${MEMBERS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -7196,11 +7196,11 @@ members_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MEMBERS_GET_URL} =~ "pageToken=" ]]
             then                
                 MEMBERS_GET_URL+=\&pageToken=${1}
             else 
-                MEMBERS_GET_URL=`echo MEMBERS_GET_URL | sed "s/$(echo MEMBERS_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MEMBERS_GET_URL=`echo -n ${MEMBERS_GET_URL} | sed "s/$(echo ${MEMBERS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -7394,11 +7394,11 @@ members_hasMember() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MEMBERS_HASMEMBER_URL} =~ "pageToken=" ]]
             then                
                 MEMBERS_HASMEMBER_URL+=\&pageToken=${1}
             else 
-                MEMBERS_HASMEMBER_URL=`echo MEMBERS_HASMEMBER_URL | sed "s/$(echo MEMBERS_HASMEMBER_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MEMBERS_HASMEMBER_URL=`echo -n ${MEMBERS_HASMEMBER_URL} | sed "s/$(echo ${MEMBERS_HASMEMBER_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -7650,11 +7650,11 @@ members_insert() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MEMBERS_INSERT_URL} =~ "pageToken=" ]]
             then                
                 MEMBERS_INSERT_URL+=\&pageToken=${1}
             else 
-                MEMBERS_INSERT_URL=`echo MEMBERS_INSERT_URL | sed "s/$(echo MEMBERS_INSERT_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MEMBERS_INSERT_URL=`echo -n ${MEMBERS_INSERT_URL} | sed "s/$(echo ${MEMBERS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -7904,11 +7904,11 @@ members_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MEMBERS_LIST_URL} =~ "pageToken=" ]]
             then                
                 MEMBERS_LIST_URL+=\&pageToken=${1}
             else 
-                MEMBERS_LIST_URL=`echo MEMBERS_LIST_URL | sed "s/$(echo MEMBERS_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MEMBERS_LIST_URL=`echo -n ${MEMBERS_LIST_URL} | sed "s/$(echo ${MEMBERS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -8188,11 +8188,11 @@ members_patch() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MEMBERS_PATCH_URL} =~ "pageToken=" ]]
             then                
                 MEMBERS_PATCH_URL+=\&pageToken=${1}
             else 
-                MEMBERS_PATCH_URL=`echo MEMBERS_PATCH_URL | sed "s/$(echo MEMBERS_PATCH_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MEMBERS_PATCH_URL=`echo -n ${MEMBERS_PATCH_URL} | sed "s/$(echo ${MEMBERS_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -8472,11 +8472,11 @@ members_update() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MEMBERS_UPDATE_URL} =~ "pageToken=" ]]
             then                
                 MEMBERS_UPDATE_URL+=\&pageToken=${1}
             else 
-                MEMBERS_UPDATE_URL=`echo MEMBERS_UPDATE_URL | sed "s/$(echo MEMBERS_UPDATE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MEMBERS_UPDATE_URL=`echo -n ${MEMBERS_UPDATE_URL} | sed "s/$(echo ${MEMBERS_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -8756,11 +8756,11 @@ mobiledevices_action() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MOBILEDEVICES_ACTION_URL} =~ "pageToken=" ]]
             then                
                 MOBILEDEVICES_ACTION_URL+=\&pageToken=${1}
             else 
-                MOBILEDEVICES_ACTION_URL=`echo MOBILEDEVICES_ACTION_URL | sed "s/$(echo MOBILEDEVICES_ACTION_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MOBILEDEVICES_ACTION_URL=`echo -n ${MOBILEDEVICES_ACTION_URL} | sed "s/$(echo ${MOBILEDEVICES_ACTION_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -9040,11 +9040,11 @@ mobiledevices_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MOBILEDEVICES_DELETE_URL} =~ "pageToken=" ]]
             then                
                 MOBILEDEVICES_DELETE_URL+=\&pageToken=${1}
             else 
-                MOBILEDEVICES_DELETE_URL=`echo MOBILEDEVICES_DELETE_URL | sed "s/$(echo MOBILEDEVICES_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MOBILEDEVICES_DELETE_URL=`echo -n ${MOBILEDEVICES_DELETE_URL} | sed "s/$(echo ${MOBILEDEVICES_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -9309,11 +9309,11 @@ mobiledevices_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MOBILEDEVICES_GET_URL} =~ "pageToken=" ]]
             then                
                 MOBILEDEVICES_GET_URL+=\&pageToken=${1}
             else 
-                MOBILEDEVICES_GET_URL=`echo MOBILEDEVICES_GET_URL | sed "s/$(echo MOBILEDEVICES_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MOBILEDEVICES_GET_URL=`echo -n ${MOBILEDEVICES_GET_URL} | sed "s/$(echo ${MOBILEDEVICES_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -9641,11 +9641,11 @@ mobiledevices_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${MOBILEDEVICES_LIST_URL} =~ "pageToken=" ]]
             then                
                 MOBILEDEVICES_LIST_URL+=\&pageToken=${1}
             else 
-                MOBILEDEVICES_LIST_URL=`echo MOBILEDEVICES_LIST_URL | sed "s/$(echo MOBILEDEVICES_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                MOBILEDEVICES_LIST_URL=`echo -n ${MOBILEDEVICES_LIST_URL} | sed "s/$(echo ${MOBILEDEVICES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -9925,11 +9925,11 @@ orgunits_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ORGUNITS_DELETE_URL} =~ "pageToken=" ]]
             then                
                 ORGUNITS_DELETE_URL+=\&pageToken=${1}
             else 
-                ORGUNITS_DELETE_URL=`echo ORGUNITS_DELETE_URL | sed "s/$(echo ORGUNITS_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ORGUNITS_DELETE_URL=`echo -n ${ORGUNITS_DELETE_URL} | sed "s/$(echo ${ORGUNITS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -10123,11 +10123,11 @@ orgunits_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ORGUNITS_GET_URL} =~ "pageToken=" ]]
             then                
                 ORGUNITS_GET_URL+=\&pageToken=${1}
             else 
-                ORGUNITS_GET_URL=`echo ORGUNITS_GET_URL | sed "s/$(echo ORGUNITS_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ORGUNITS_GET_URL=`echo -n ${ORGUNITS_GET_URL} | sed "s/$(echo ${ORGUNITS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -10379,11 +10379,11 @@ orgunits_insert() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ORGUNITS_INSERT_URL} =~ "pageToken=" ]]
             then                
                 ORGUNITS_INSERT_URL+=\&pageToken=${1}
             else 
-                ORGUNITS_INSERT_URL=`echo ORGUNITS_INSERT_URL | sed "s/$(echo ORGUNITS_INSERT_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ORGUNITS_INSERT_URL=`echo -n ${ORGUNITS_INSERT_URL} | sed "s/$(echo ${ORGUNITS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -10689,11 +10689,11 @@ orgunits_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ORGUNITS_LIST_URL} =~ "pageToken=" ]]
             then                
                 ORGUNITS_LIST_URL+=\&pageToken=${1}
             else 
-                ORGUNITS_LIST_URL=`echo ORGUNITS_LIST_URL | sed "s/$(echo ORGUNITS_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ORGUNITS_LIST_URL=`echo -n ${ORGUNITS_LIST_URL} | sed "s/$(echo ${ORGUNITS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -10973,11 +10973,11 @@ orgunits_patch() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ORGUNITS_PATCH_URL} =~ "pageToken=" ]]
             then                
                 ORGUNITS_PATCH_URL+=\&pageToken=${1}
             else 
-                ORGUNITS_PATCH_URL=`echo ORGUNITS_PATCH_URL | sed "s/$(echo ORGUNITS_PATCH_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ORGUNITS_PATCH_URL=`echo -n ${ORGUNITS_PATCH_URL} | sed "s/$(echo ${ORGUNITS_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -11257,11 +11257,11 @@ orgunits_update() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ORGUNITS_UPDATE_URL} =~ "pageToken=" ]]
             then                
                 ORGUNITS_UPDATE_URL+=\&pageToken=${1}
             else 
-                ORGUNITS_UPDATE_URL=`echo ORGUNITS_UPDATE_URL | sed "s/$(echo ORGUNITS_UPDATE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ORGUNITS_UPDATE_URL=`echo -n ${ORGUNITS_UPDATE_URL} | sed "s/$(echo ${ORGUNITS_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -11427,11 +11427,11 @@ privileges_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${PRIVILEGES_LIST_URL} =~ "pageToken=" ]]
             then                
                 PRIVILEGES_LIST_URL+=\&pageToken=${1}
             else 
-                PRIVILEGES_LIST_URL=`echo PRIVILEGES_LIST_URL | sed "s/$(echo PRIVILEGES_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                PRIVILEGES_LIST_URL=`echo -n ${PRIVILEGES_LIST_URL} | sed "s/$(echo ${PRIVILEGES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -11711,11 +11711,11 @@ roleAssignments_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ROLEASSIGNMENTS_DELETE_URL} =~ "pageToken=" ]]
             then                
                 ROLEASSIGNMENTS_DELETE_URL+=\&pageToken=${1}
             else 
-                ROLEASSIGNMENTS_DELETE_URL=`echo ROLEASSIGNMENTS_DELETE_URL | sed "s/$(echo ROLEASSIGNMENTS_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ROLEASSIGNMENTS_DELETE_URL=`echo -n ${ROLEASSIGNMENTS_DELETE_URL} | sed "s/$(echo ${ROLEASSIGNMENTS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -11909,11 +11909,11 @@ roleAssignments_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ROLEASSIGNMENTS_GET_URL} =~ "pageToken=" ]]
             then                
                 ROLEASSIGNMENTS_GET_URL+=\&pageToken=${1}
             else 
-                ROLEASSIGNMENTS_GET_URL=`echo ROLEASSIGNMENTS_GET_URL | sed "s/$(echo ROLEASSIGNMENTS_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ROLEASSIGNMENTS_GET_URL=`echo -n ${ROLEASSIGNMENTS_GET_URL} | sed "s/$(echo ${ROLEASSIGNMENTS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -12165,11 +12165,11 @@ roleAssignments_insert() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ROLEASSIGNMENTS_INSERT_URL} =~ "pageToken=" ]]
             then                
                 ROLEASSIGNMENTS_INSERT_URL+=\&pageToken=${1}
             else 
-                ROLEASSIGNMENTS_INSERT_URL=`echo ROLEASSIGNMENTS_INSERT_URL | sed "s/$(echo ROLEASSIGNMENTS_INSERT_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ROLEASSIGNMENTS_INSERT_URL=`echo -n ${ROLEASSIGNMENTS_INSERT_URL} | sed "s/$(echo ${ROLEASSIGNMENTS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -12419,11 +12419,11 @@ roleAssignments_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ROLEASSIGNMENTS_LIST_URL} =~ "pageToken=" ]]
             then                
                 ROLEASSIGNMENTS_LIST_URL+=\&pageToken=${1}
             else 
-                ROLEASSIGNMENTS_LIST_URL=`echo ROLEASSIGNMENTS_LIST_URL | sed "s/$(echo ROLEASSIGNMENTS_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ROLEASSIGNMENTS_LIST_URL=`echo -n ${ROLEASSIGNMENTS_LIST_URL} | sed "s/$(echo ${ROLEASSIGNMENTS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -12703,11 +12703,11 @@ roles_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ROLES_DELETE_URL} =~ "pageToken=" ]]
             then                
                 ROLES_DELETE_URL+=\&pageToken=${1}
             else 
-                ROLES_DELETE_URL=`echo ROLES_DELETE_URL | sed "s/$(echo ROLES_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ROLES_DELETE_URL=`echo -n ${ROLES_DELETE_URL} | sed "s/$(echo ${ROLES_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -12901,11 +12901,11 @@ roles_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ROLES_GET_URL} =~ "pageToken=" ]]
             then                
                 ROLES_GET_URL+=\&pageToken=${1}
             else 
-                ROLES_GET_URL=`echo ROLES_GET_URL | sed "s/$(echo ROLES_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ROLES_GET_URL=`echo -n ${ROLES_GET_URL} | sed "s/$(echo ${ROLES_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -13157,11 +13157,11 @@ roles_insert() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ROLES_INSERT_URL} =~ "pageToken=" ]]
             then                
                 ROLES_INSERT_URL+=\&pageToken=${1}
             else 
-                ROLES_INSERT_URL=`echo ROLES_INSERT_URL | sed "s/$(echo ROLES_INSERT_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ROLES_INSERT_URL=`echo -n ${ROLES_INSERT_URL} | sed "s/$(echo ${ROLES_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -13401,11 +13401,11 @@ roles_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ROLES_LIST_URL} =~ "pageToken=" ]]
             then                
                 ROLES_LIST_URL+=\&pageToken=${1}
             else 
-                ROLES_LIST_URL=`echo ROLES_LIST_URL | sed "s/$(echo ROLES_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ROLES_LIST_URL=`echo -n ${ROLES_LIST_URL} | sed "s/$(echo ${ROLES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -13685,11 +13685,11 @@ roles_patch() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ROLES_PATCH_URL} =~ "pageToken=" ]]
             then                
                 ROLES_PATCH_URL+=\&pageToken=${1}
             else 
-                ROLES_PATCH_URL=`echo ROLES_PATCH_URL | sed "s/$(echo ROLES_PATCH_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ROLES_PATCH_URL=`echo -n ${ROLES_PATCH_URL} | sed "s/$(echo ${ROLES_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -13969,11 +13969,11 @@ roles_update() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${ROLES_UPDATE_URL} =~ "pageToken=" ]]
             then                
                 ROLES_UPDATE_URL+=\&pageToken=${1}
             else 
-                ROLES_UPDATE_URL=`echo ROLES_UPDATE_URL | sed "s/$(echo ROLES_UPDATE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                ROLES_UPDATE_URL=`echo -n ${ROLES_UPDATE_URL} | sed "s/$(echo ${ROLES_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -14253,11 +14253,11 @@ tokens_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${TOKENS_DELETE_URL} =~ "pageToken=" ]]
             then                
                 TOKENS_DELETE_URL+=\&pageToken=${1}
             else 
-                TOKENS_DELETE_URL=`echo TOKENS_DELETE_URL | sed "s/$(echo TOKENS_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                TOKENS_DELETE_URL=`echo -n ${TOKENS_DELETE_URL} | sed "s/$(echo ${TOKENS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -14451,11 +14451,11 @@ tokens_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${TOKENS_GET_URL} =~ "pageToken=" ]]
             then                
                 TOKENS_GET_URL+=\&pageToken=${1}
             else 
-                TOKENS_GET_URL=`echo TOKENS_GET_URL | sed "s/$(echo TOKENS_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                TOKENS_GET_URL=`echo -n ${TOKENS_GET_URL} | sed "s/$(echo ${TOKENS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -14621,11 +14621,11 @@ tokens_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${TOKENS_LIST_URL} =~ "pageToken=" ]]
             then                
                 TOKENS_LIST_URL+=\&pageToken=${1}
             else 
-                TOKENS_LIST_URL=`echo TOKENS_LIST_URL | sed "s/$(echo TOKENS_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                TOKENS_LIST_URL=`echo -n ${TOKENS_LIST_URL} | sed "s/$(echo ${TOKENS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -14877,11 +14877,11 @@ twoStepVerification_turnOff() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${TWOSTEPVERIFICATION_TURNOFF_URL} =~ "pageToken=" ]]
             then                
                 TWOSTEPVERIFICATION_TURNOFF_URL+=\&pageToken=${1}
             else 
-                TWOSTEPVERIFICATION_TURNOFF_URL=`echo TWOSTEPVERIFICATION_TURNOFF_URL | sed "s/$(echo TWOSTEPVERIFICATION_TURNOFF_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                TWOSTEPVERIFICATION_TURNOFF_URL=`echo -n ${TWOSTEPVERIFICATION_TURNOFF_URL} | sed "s/$(echo ${TWOSTEPVERIFICATION_TURNOFF_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -15133,11 +15133,11 @@ users_delete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${USERS_DELETE_URL} =~ "pageToken=" ]]
             then                
                 USERS_DELETE_URL+=\&pageToken=${1}
             else 
-                USERS_DELETE_URL=`echo USERS_DELETE_URL | sed "s/$(echo USERS_DELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                USERS_DELETE_URL=`echo -n ${USERS_DELETE_URL} | sed "s/$(echo ${USERS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -15449,11 +15449,11 @@ users_get() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${USERS_GET_URL} =~ "pageToken=" ]]
             then                
                 USERS_GET_URL+=\&pageToken=${1}
             else 
-                USERS_GET_URL=`echo USERS_GET_URL | sed "s/$(echo USERS_GET_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                USERS_GET_URL=`echo -n ${USERS_GET_URL} | sed "s/$(echo ${USERS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -15677,11 +15677,11 @@ users_insert() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${USERS_INSERT_URL} =~ "pageToken=" ]]
             then                
                 USERS_INSERT_URL+=\&pageToken=${1}
             else 
-                USERS_INSERT_URL=`echo USERS_INSERT_URL | sed "s/$(echo USERS_INSERT_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                USERS_INSERT_URL=`echo -n ${USERS_INSERT_URL} | sed "s/$(echo ${USERS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -16007,11 +16007,11 @@ users_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${USERS_LIST_URL} =~ "pageToken=" ]]
             then                
                 USERS_LIST_URL+=\&pageToken=${1}
             else 
-                USERS_LIST_URL=`echo USERS_LIST_URL | sed "s/$(echo USERS_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                USERS_LIST_URL=`echo -n ${USERS_LIST_URL} | sed "s/$(echo ${USERS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -16263,11 +16263,11 @@ users_makeAdmin() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${USERS_MAKEADMIN_URL} =~ "pageToken=" ]]
             then                
                 USERS_MAKEADMIN_URL+=\&pageToken=${1}
             else 
-                USERS_MAKEADMIN_URL=`echo USERS_MAKEADMIN_URL | sed "s/$(echo USERS_MAKEADMIN_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                USERS_MAKEADMIN_URL=`echo -n ${USERS_MAKEADMIN_URL} | sed "s/$(echo ${USERS_MAKEADMIN_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -16519,11 +16519,11 @@ users_patch() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${USERS_PATCH_URL} =~ "pageToken=" ]]
             then                
                 USERS_PATCH_URL+=\&pageToken=${1}
             else 
-                USERS_PATCH_URL=`echo USERS_PATCH_URL | sed "s/$(echo USERS_PATCH_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                USERS_PATCH_URL=`echo -n ${USERS_PATCH_URL} | sed "s/$(echo ${USERS_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -16775,11 +16775,11 @@ users_signOut() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${USERS_SIGNOUT_URL} =~ "pageToken=" ]]
             then                
                 USERS_SIGNOUT_URL+=\&pageToken=${1}
             else 
-                USERS_SIGNOUT_URL=`echo USERS_SIGNOUT_URL | sed "s/$(echo USERS_SIGNOUT_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                USERS_SIGNOUT_URL=`echo -n ${USERS_SIGNOUT_URL} | sed "s/$(echo ${USERS_SIGNOUT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -17031,11 +17031,11 @@ users_undelete() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${USERS_UNDELETE_URL} =~ "pageToken=" ]]
             then                
                 USERS_UNDELETE_URL+=\&pageToken=${1}
             else 
-                USERS_UNDELETE_URL=`echo USERS_UNDELETE_URL | sed "s/$(echo USERS_UNDELETE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                USERS_UNDELETE_URL=`echo -n ${USERS_UNDELETE_URL} | sed "s/$(echo ${USERS_UNDELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -17287,11 +17287,11 @@ users_update() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${USERS_UPDATE_URL} =~ "pageToken=" ]]
             then                
                 USERS_UPDATE_URL+=\&pageToken=${1}
             else 
-                USERS_UPDATE_URL=`echo USERS_UPDATE_URL | sed "s/$(echo USERS_UPDATE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                USERS_UPDATE_URL=`echo -n ${USERS_UPDATE_URL} | sed "s/$(echo ${USERS_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -17709,11 +17709,11 @@ users_watch() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${USERS_WATCH_URL} =~ "pageToken=" ]]
             then                
                 USERS_WATCH_URL+=\&pageToken=${1}
             else 
-                USERS_WATCH_URL=`echo USERS_WATCH_URL | sed "s/$(echo USERS_WATCH_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                USERS_WATCH_URL=`echo -n ${USERS_WATCH_URL} | sed "s/$(echo ${USERS_WATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -17965,11 +17965,11 @@ verificationCodes_generate() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${VERIFICATIONCODES_GENERATE_URL} =~ "pageToken=" ]]
             then                
                 VERIFICATIONCODES_GENERATE_URL+=\&pageToken=${1}
             else 
-                VERIFICATIONCODES_GENERATE_URL=`echo VERIFICATIONCODES_GENERATE_URL | sed "s/$(echo VERIFICATIONCODES_GENERATE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                VERIFICATIONCODES_GENERATE_URL=`echo -n ${VERIFICATIONCODES_GENERATE_URL} | sed "s/$(echo ${VERIFICATIONCODES_GENERATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -18221,11 +18221,11 @@ verificationCodes_invalidate() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${VERIFICATIONCODES_INVALIDATE_URL} =~ "pageToken=" ]]
             then                
                 VERIFICATIONCODES_INVALIDATE_URL+=\&pageToken=${1}
             else 
-                VERIFICATIONCODES_INVALIDATE_URL=`echo VERIFICATIONCODES_INVALIDATE_URL | sed "s/$(echo VERIFICATIONCODES_INVALIDATE_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                VERIFICATIONCODES_INVALIDATE_URL=`echo -n ${VERIFICATIONCODES_INVALIDATE_URL} | sed "s/$(echo ${VERIFICATIONCODES_INVALIDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         
@@ -18391,11 +18391,11 @@ verificationCodes_list() {
     execRequest() {
         if ! [[ -z "${1}" ]]
         then 
-            if ! [[ ${url} =~ "&pageToken=" ]]
+            if ! [[ ${VERIFICATIONCODES_LIST_URL} =~ "pageToken=" ]]
             then                
                 VERIFICATIONCODES_LIST_URL+=\&pageToken=${1}
             else 
-                VERIFICATIONCODES_LIST_URL=`echo VERIFICATIONCODES_LIST_URL | sed "s/$(echo VERIFICATIONCODES_LIST_URL | grep -oP '&pageToken=.*')/\&pageToken=${1}"`
+                VERIFICATIONCODES_LIST_URL=`echo -n ${VERIFICATIONCODES_LIST_URL} | sed "s/$(echo ${VERIFICATIONCODES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
         fi
         

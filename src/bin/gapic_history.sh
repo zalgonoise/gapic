@@ -158,7 +158,7 @@ histReplayRequest() {
         execRequest() {
             if ! [[ -z "${1}" ]]
             then 
-                if ! [[ ${url} =~ "&pageToken=" ]]
+                if ! [[ ${url} =~ "pageToken=" ]]
                 then                
                     url+=\&pageToken=${1}
                 else 

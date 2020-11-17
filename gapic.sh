@@ -521,7 +521,7 @@ gapicPostExec() {
         fi
     else
 
-        if ! [[ -z \`echo \${outputJson} | jq -rc '.nextPageToken' \` ]]
+        if ! [[ \`echo \${outputJson} | jq -rc '.nextPageToken' \` == "null" ]]
         then
 
             if ! [[ \${multiOutputHeader} == "true" ]]
@@ -1736,7 +1736,7 @@ histReplayRequest() {
         execRequest() {
             if ! [[ -z "\${1}" ]]
             then 
-                if ! [[ \${url} =~ "&pageToken=" ]]
+                if ! [[ \${url} =~ "pageToken=" ]]
                 then                
                     url+=\&pageToken=\${1}
                 else 
@@ -2584,11 +2584,11 @@ EOF
     execRequest() {
         if ! [[ -z "\${1}" ]]
         then 
-            if ! [[ \${url} =~ "&pageToken=" ]]
+            if ! [[ \${${curPrefix}URL} =~ "pageToken=" ]]
             then                
                 ${curPrefix}URL+=\&pageToken=\${1}
             else 
-                ${curPrefix}URL=\`echo ${curPrefix}URL | sed "s/\$(echo ${curPrefix}URL | grep -oP '&pageToken=.*')/\&pageToken=\${1}"\`
+                ${curPrefix}URL=\`echo -n \${${curPrefix}URL} | sed "s/\$(echo \${${curPrefix}URL} | grep -oP '&pageToken=.*')/\&pageToken=\${1}/"\`
             fi
         fi
         

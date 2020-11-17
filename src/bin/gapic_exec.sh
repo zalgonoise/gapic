@@ -268,7 +268,7 @@ gapicPostExec() {
         fi
     else
 
-        if ! [[ -z `echo ${outputJson} | jq -rc '.nextPageToken' ` ]]
+        if ! [[ `echo ${outputJson} | jq -rc '.nextPageToken' ` == "null" ]]
         then
 
             if ! [[ ${multiOutputHeader} == "true" ]]
