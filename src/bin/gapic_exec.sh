@@ -267,14 +267,37 @@ gapicPostExec() {
             exit 1
         fi
     else
-        unset requestId
-        echo -e "# Execution complete!\n\n"
-        echo -e "#########################\n"
-        echo "${outputJson}" | jq '.'
-        echo -e "\n\n"
-        echo -e "#########################\n"
-        exit 0
 
+        if ! [[ -z `echo ${outputJson} | jq -rc '.nextPageToken' ` ]]
+        then
+
+            if ! [[ ${multiOutputHeader} == "true" ]]
+            then
+                echo -e "# Multi-output request: \n\n"
+                echo -e "#########################\n"
+                export multiOutputHeader=true
+            fi
+
+            echo "${outputJson}" | jq '.'
+            echo -e "\n\n"
+            echo -e "#########################\n"
+
+            echo -e "# Requesting next page: `echo ${outputJson} | jq -rc '.nextPageToken'`"
+
+            execRequest "`echo ${outputJson} | jq -rc '.nextPageToken'`"
+
+            gapicPostExec
+
+        else
+
+            unset requestId
+            echo -e "# Execution complete!\n\n"
+            echo -e "#########################\n"
+            echo "${outputJson}" | jq '.'
+            echo -e "\n\n"
+            echo -e "#########################\n"
+            exit 0
+        fi
     fi
 
 }
