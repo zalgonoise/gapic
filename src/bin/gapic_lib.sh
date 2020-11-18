@@ -194,6 +194,19 @@ asps_delete() {
             else 
                 ASPS_DELETE_URL=`echo -n ${ASPS_DELETE_URL} | sed "s/$(echo ${ASPS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -228,9 +241,24 @@ asps_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -392,6 +420,19 @@ asps_get() {
             else 
                 ASPS_GET_URL=`echo -n ${ASPS_GET_URL} | sed "s/$(echo ${ASPS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -426,9 +467,24 @@ asps_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -562,6 +618,19 @@ asps_list() {
             else 
                 ASPS_LIST_URL=`echo -n ${ASPS_LIST_URL} | sed "s/$(echo ${ASPS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -596,9 +665,24 @@ asps_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -790,6 +874,19 @@ channels_stop() {
             else 
                 CHANNELS_STOP_URL=`echo -n ${CHANNELS_STOP_URL} | sed "s/$(echo ${CHANNELS_STOP_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -824,9 +921,24 @@ channels_stop() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -1074,6 +1186,19 @@ chromeosdevices_action() {
             else 
                 CHROMEOSDEVICES_ACTION_URL=`echo -n ${CHROMEOSDEVICES_ACTION_URL} | sed "s/$(echo ${CHROMEOSDEVICES_ACTION_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -1108,9 +1233,24 @@ chromeosdevices_action() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -1343,6 +1483,19 @@ chromeosdevices_get() {
             else 
                 CHROMEOSDEVICES_GET_URL=`echo -n ${CHROMEOSDEVICES_GET_URL} | sed "s/$(echo ${CHROMEOSDEVICES_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -1377,9 +1530,24 @@ chromeosdevices_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -1680,6 +1848,19 @@ chromeosdevices_list() {
             else 
                 CHROMEOSDEVICES_LIST_URL=`echo -n ${CHROMEOSDEVICES_LIST_URL} | sed "s/$(echo ${CHROMEOSDEVICES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -1714,9 +1895,24 @@ chromeosdevices_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -1964,6 +2160,19 @@ chromeosdevices_moveDevicesToOu() {
             else 
                 CHROMEOSDEVICES_MOVEDEVICESTOOU_URL=`echo -n ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} | sed "s/$(echo ${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -1998,9 +2207,24 @@ chromeosdevices_moveDevicesToOu() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -2319,6 +2543,19 @@ chromeosdevices_patch() {
             else 
                 CHROMEOSDEVICES_PATCH_URL=`echo -n ${CHROMEOSDEVICES_PATCH_URL} | sed "s/$(echo ${CHROMEOSDEVICES_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -2353,9 +2590,24 @@ chromeosdevices_patch() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -2674,6 +2926,19 @@ chromeosdevices_update() {
             else 
                 CHROMEOSDEVICES_UPDATE_URL=`echo -n ${CHROMEOSDEVICES_UPDATE_URL} | sed "s/$(echo ${CHROMEOSDEVICES_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -2708,9 +2973,24 @@ chromeosdevices_update() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -2844,6 +3124,19 @@ customers_get() {
             else 
                 CUSTOMERS_GET_URL=`echo -n ${CUSTOMERS_GET_URL} | sed "s/$(echo ${CUSTOMERS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -2878,9 +3171,24 @@ customers_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -3100,6 +3408,19 @@ customers_patch() {
             else 
                 CUSTOMERS_PATCH_URL=`echo -n ${CUSTOMERS_PATCH_URL} | sed "s/$(echo ${CUSTOMERS_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -3134,9 +3455,24 @@ customers_patch() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -3356,6 +3692,19 @@ customers_update() {
             else 
                 CUSTOMERS_UPDATE_URL=`echo -n ${CUSTOMERS_UPDATE_URL} | sed "s/$(echo ${CUSTOMERS_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -3390,9 +3739,24 @@ customers_update() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -3640,6 +4004,19 @@ domainAliases_delete() {
             else 
                 DOMAINALIASES_DELETE_URL=`echo -n ${DOMAINALIASES_DELETE_URL} | sed "s/$(echo ${DOMAINALIASES_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -3674,9 +4051,24 @@ domainAliases_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -3838,6 +4230,19 @@ domainAliases_get() {
             else 
                 DOMAINALIASES_GET_URL=`echo -n ${DOMAINALIASES_GET_URL} | sed "s/$(echo ${DOMAINALIASES_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -3872,9 +4277,24 @@ domainAliases_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -4094,6 +4514,19 @@ domainAliases_insert() {
             else 
                 DOMAINALIASES_INSERT_URL=`echo -n ${DOMAINALIASES_INSERT_URL} | sed "s/$(echo ${DOMAINALIASES_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -4128,9 +4561,24 @@ domainAliases_insert() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -4333,6 +4781,19 @@ domainAliases_list() {
             else 
                 DOMAINALIASES_LIST_URL=`echo -n ${DOMAINALIASES_LIST_URL} | sed "s/$(echo ${DOMAINALIASES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -4367,9 +4828,24 @@ domainAliases_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -4617,6 +5093,19 @@ domains_delete() {
             else 
                 DOMAINS_DELETE_URL=`echo -n ${DOMAINS_DELETE_URL} | sed "s/$(echo ${DOMAINS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -4651,9 +5140,24 @@ domains_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -4815,6 +5319,19 @@ domains_get() {
             else 
                 DOMAINS_GET_URL=`echo -n ${DOMAINS_GET_URL} | sed "s/$(echo ${DOMAINS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -4849,9 +5366,24 @@ domains_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -5071,6 +5603,19 @@ domains_insert() {
             else 
                 DOMAINS_INSERT_URL=`echo -n ${DOMAINS_INSERT_URL} | sed "s/$(echo ${DOMAINS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -5105,9 +5650,24 @@ domains_insert() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -5241,6 +5801,19 @@ domains_list() {
             else 
                 DOMAINS_LIST_URL=`echo -n ${DOMAINS_LIST_URL} | sed "s/$(echo ${DOMAINS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -5275,9 +5848,24 @@ domains_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -5497,6 +6085,19 @@ groups_delete() {
             else 
                 GROUPS_DELETE_URL=`echo -n ${GROUPS_DELETE_URL} | sed "s/$(echo ${GROUPS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -5531,9 +6132,24 @@ groups_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -5667,6 +6283,19 @@ groups_get() {
             else 
                 GROUPS_GET_URL=`echo -n ${GROUPS_GET_URL} | sed "s/$(echo ${GROUPS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -5701,9 +6330,24 @@ groups_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -5895,6 +6539,19 @@ groups_insert() {
             else 
                 GROUPS_INSERT_URL=`echo -n ${GROUPS_INSERT_URL} | sed "s/$(echo ${GROUPS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -5929,9 +6586,24 @@ groups_insert() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -6208,6 +6880,19 @@ groups_list() {
             else 
                 GROUPS_LIST_URL=`echo -n ${GROUPS_LIST_URL} | sed "s/$(echo ${GROUPS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -6242,9 +6927,24 @@ groups_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -6464,6 +7164,19 @@ groups_patch() {
             else 
                 GROUPS_PATCH_URL=`echo -n ${GROUPS_PATCH_URL} | sed "s/$(echo ${GROUPS_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -6498,9 +7211,24 @@ groups_patch() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -6720,6 +7448,19 @@ groups_update() {
             else 
                 GROUPS_UPDATE_URL=`echo -n ${GROUPS_UPDATE_URL} | sed "s/$(echo ${GROUPS_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -6754,9 +7495,24 @@ groups_update() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -7004,6 +7760,19 @@ members_delete() {
             else 
                 MEMBERS_DELETE_URL=`echo -n ${MEMBERS_DELETE_URL} | sed "s/$(echo ${MEMBERS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -7038,9 +7807,24 @@ members_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -7202,6 +7986,19 @@ members_get() {
             else 
                 MEMBERS_GET_URL=`echo -n ${MEMBERS_GET_URL} | sed "s/$(echo ${MEMBERS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -7236,9 +8033,24 @@ members_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -7400,6 +8212,19 @@ members_hasMember() {
             else 
                 MEMBERS_HASMEMBER_URL=`echo -n ${MEMBERS_HASMEMBER_URL} | sed "s/$(echo ${MEMBERS_HASMEMBER_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -7434,9 +8259,24 @@ members_hasMember() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -7656,6 +8496,19 @@ members_insert() {
             else 
                 MEMBERS_INSERT_URL=`echo -n ${MEMBERS_INSERT_URL} | sed "s/$(echo ${MEMBERS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -7690,9 +8543,24 @@ members_insert() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -7910,6 +8778,19 @@ members_list() {
             else 
                 MEMBERS_LIST_URL=`echo -n ${MEMBERS_LIST_URL} | sed "s/$(echo ${MEMBERS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -7944,9 +8825,24 @@ members_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -8194,6 +9090,19 @@ members_patch() {
             else 
                 MEMBERS_PATCH_URL=`echo -n ${MEMBERS_PATCH_URL} | sed "s/$(echo ${MEMBERS_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -8228,9 +9137,24 @@ members_patch() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -8478,6 +9402,19 @@ members_update() {
             else 
                 MEMBERS_UPDATE_URL=`echo -n ${MEMBERS_UPDATE_URL} | sed "s/$(echo ${MEMBERS_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -8512,9 +9449,24 @@ members_update() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -8762,6 +9714,19 @@ mobiledevices_action() {
             else 
                 MOBILEDEVICES_ACTION_URL=`echo -n ${MOBILEDEVICES_ACTION_URL} | sed "s/$(echo ${MOBILEDEVICES_ACTION_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -8796,9 +9761,24 @@ mobiledevices_action() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -9046,6 +10026,19 @@ mobiledevices_delete() {
             else 
                 MOBILEDEVICES_DELETE_URL=`echo -n ${MOBILEDEVICES_DELETE_URL} | sed "s/$(echo ${MOBILEDEVICES_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -9080,9 +10073,24 @@ mobiledevices_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -9315,6 +10323,19 @@ mobiledevices_get() {
             else 
                 MOBILEDEVICES_GET_URL=`echo -n ${MOBILEDEVICES_GET_URL} | sed "s/$(echo ${MOBILEDEVICES_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -9349,9 +10370,24 @@ mobiledevices_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -9647,6 +10683,19 @@ mobiledevices_list() {
             else 
                 MOBILEDEVICES_LIST_URL=`echo -n ${MOBILEDEVICES_LIST_URL} | sed "s/$(echo ${MOBILEDEVICES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -9681,9 +10730,24 @@ mobiledevices_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -9931,6 +10995,19 @@ orgunits_delete() {
             else 
                 ORGUNITS_DELETE_URL=`echo -n ${ORGUNITS_DELETE_URL} | sed "s/$(echo ${ORGUNITS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -9965,9 +11042,24 @@ orgunits_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -10129,6 +11221,19 @@ orgunits_get() {
             else 
                 ORGUNITS_GET_URL=`echo -n ${ORGUNITS_GET_URL} | sed "s/$(echo ${ORGUNITS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -10163,9 +11268,24 @@ orgunits_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -10385,6 +11505,19 @@ orgunits_insert() {
             else 
                 ORGUNITS_INSERT_URL=`echo -n ${ORGUNITS_INSERT_URL} | sed "s/$(echo ${ORGUNITS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -10419,9 +11552,24 @@ orgunits_insert() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -10695,6 +11843,19 @@ orgunits_list() {
             else 
                 ORGUNITS_LIST_URL=`echo -n ${ORGUNITS_LIST_URL} | sed "s/$(echo ${ORGUNITS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -10729,9 +11890,24 @@ orgunits_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -10979,6 +12155,19 @@ orgunits_patch() {
             else 
                 ORGUNITS_PATCH_URL=`echo -n ${ORGUNITS_PATCH_URL} | sed "s/$(echo ${ORGUNITS_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -11013,9 +12202,24 @@ orgunits_patch() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -11263,6 +12467,19 @@ orgunits_update() {
             else 
                 ORGUNITS_UPDATE_URL=`echo -n ${ORGUNITS_UPDATE_URL} | sed "s/$(echo ${ORGUNITS_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -11297,9 +12514,24 @@ orgunits_update() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -11433,6 +12665,19 @@ privileges_list() {
             else 
                 PRIVILEGES_LIST_URL=`echo -n ${PRIVILEGES_LIST_URL} | sed "s/$(echo ${PRIVILEGES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -11467,9 +12712,24 @@ privileges_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -11717,6 +12977,19 @@ roleAssignments_delete() {
             else 
                 ROLEASSIGNMENTS_DELETE_URL=`echo -n ${ROLEASSIGNMENTS_DELETE_URL} | sed "s/$(echo ${ROLEASSIGNMENTS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -11751,9 +13024,24 @@ roleAssignments_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -11915,6 +13203,19 @@ roleAssignments_get() {
             else 
                 ROLEASSIGNMENTS_GET_URL=`echo -n ${ROLEASSIGNMENTS_GET_URL} | sed "s/$(echo ${ROLEASSIGNMENTS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -11949,9 +13250,24 @@ roleAssignments_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -12171,6 +13487,19 @@ roleAssignments_insert() {
             else 
                 ROLEASSIGNMENTS_INSERT_URL=`echo -n ${ROLEASSIGNMENTS_INSERT_URL} | sed "s/$(echo ${ROLEASSIGNMENTS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -12205,9 +13534,24 @@ roleAssignments_insert() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -12425,6 +13769,19 @@ roleAssignments_list() {
             else 
                 ROLEASSIGNMENTS_LIST_URL=`echo -n ${ROLEASSIGNMENTS_LIST_URL} | sed "s/$(echo ${ROLEASSIGNMENTS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -12459,9 +13816,24 @@ roleAssignments_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -12709,6 +14081,19 @@ roles_delete() {
             else 
                 ROLES_DELETE_URL=`echo -n ${ROLES_DELETE_URL} | sed "s/$(echo ${ROLES_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -12743,9 +14128,24 @@ roles_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -12907,6 +14307,19 @@ roles_get() {
             else 
                 ROLES_GET_URL=`echo -n ${ROLES_GET_URL} | sed "s/$(echo ${ROLES_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -12941,9 +14354,24 @@ roles_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -13163,6 +14591,19 @@ roles_insert() {
             else 
                 ROLES_INSERT_URL=`echo -n ${ROLES_INSERT_URL} | sed "s/$(echo ${ROLES_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -13197,9 +14638,24 @@ roles_insert() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -13407,6 +14863,19 @@ roles_list() {
             else 
                 ROLES_LIST_URL=`echo -n ${ROLES_LIST_URL} | sed "s/$(echo ${ROLES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -13441,9 +14910,24 @@ roles_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -13691,6 +15175,19 @@ roles_patch() {
             else 
                 ROLES_PATCH_URL=`echo -n ${ROLES_PATCH_URL} | sed "s/$(echo ${ROLES_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -13725,9 +15222,24 @@ roles_patch() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -13975,6 +15487,19 @@ roles_update() {
             else 
                 ROLES_UPDATE_URL=`echo -n ${ROLES_UPDATE_URL} | sed "s/$(echo ${ROLES_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -14009,9 +15534,24 @@ roles_update() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -14259,6 +15799,19 @@ tokens_delete() {
             else 
                 TOKENS_DELETE_URL=`echo -n ${TOKENS_DELETE_URL} | sed "s/$(echo ${TOKENS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -14293,9 +15846,24 @@ tokens_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -14457,6 +16025,19 @@ tokens_get() {
             else 
                 TOKENS_GET_URL=`echo -n ${TOKENS_GET_URL} | sed "s/$(echo ${TOKENS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -14491,9 +16072,24 @@ tokens_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -14627,6 +16223,19 @@ tokens_list() {
             else 
                 TOKENS_LIST_URL=`echo -n ${TOKENS_LIST_URL} | sed "s/$(echo ${TOKENS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -14661,9 +16270,24 @@ tokens_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -14883,6 +16507,19 @@ twoStepVerification_turnOff() {
             else 
                 TWOSTEPVERIFICATION_TURNOFF_URL=`echo -n ${TWOSTEPVERIFICATION_TURNOFF_URL} | sed "s/$(echo ${TWOSTEPVERIFICATION_TURNOFF_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -14917,9 +16554,24 @@ twoStepVerification_turnOff() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -15139,6 +16791,19 @@ users_delete() {
             else 
                 USERS_DELETE_URL=`echo -n ${USERS_DELETE_URL} | sed "s/$(echo ${USERS_DELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -15173,9 +16838,24 @@ users_delete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -15455,6 +17135,19 @@ users_get() {
             else 
                 USERS_GET_URL=`echo -n ${USERS_GET_URL} | sed "s/$(echo ${USERS_GET_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -15489,9 +17182,24 @@ users_get() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -15683,6 +17391,19 @@ users_insert() {
             else 
                 USERS_INSERT_URL=`echo -n ${USERS_INSERT_URL} | sed "s/$(echo ${USERS_INSERT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -15717,9 +17438,24 @@ users_insert() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -16013,6 +17749,19 @@ users_list() {
             else 
                 USERS_LIST_URL=`echo -n ${USERS_LIST_URL} | sed "s/$(echo ${USERS_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -16047,9 +17796,24 @@ users_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -16269,6 +18033,19 @@ users_makeAdmin() {
             else 
                 USERS_MAKEADMIN_URL=`echo -n ${USERS_MAKEADMIN_URL} | sed "s/$(echo ${USERS_MAKEADMIN_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -16303,9 +18080,24 @@ users_makeAdmin() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -16525,6 +18317,19 @@ users_patch() {
             else 
                 USERS_PATCH_URL=`echo -n ${USERS_PATCH_URL} | sed "s/$(echo ${USERS_PATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -16559,9 +18364,24 @@ users_patch() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -16781,6 +18601,19 @@ users_signOut() {
             else 
                 USERS_SIGNOUT_URL=`echo -n ${USERS_SIGNOUT_URL} | sed "s/$(echo ${USERS_SIGNOUT_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -16815,9 +18648,24 @@ users_signOut() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -17037,6 +18885,19 @@ users_undelete() {
             else 
                 USERS_UNDELETE_URL=`echo -n ${USERS_UNDELETE_URL} | sed "s/$(echo ${USERS_UNDELETE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -17071,9 +18932,24 @@ users_undelete() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -17293,6 +19169,19 @@ users_update() {
             else 
                 USERS_UPDATE_URL=`echo -n ${USERS_UPDATE_URL} | sed "s/$(echo ${USERS_UPDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -17327,9 +19216,24 @@ users_update() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -17715,6 +19619,19 @@ users_watch() {
             else 
                 USERS_WATCH_URL=`echo -n ${USERS_WATCH_URL} | sed "s/$(echo ${USERS_WATCH_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -17749,9 +19666,24 @@ users_watch() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -17971,6 +19903,19 @@ verificationCodes_generate() {
             else 
                 VERIFICATIONCODES_GENERATE_URL=`echo -n ${VERIFICATIONCODES_GENERATE_URL} | sed "s/$(echo ${VERIFICATIONCODES_GENERATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -18005,9 +19950,24 @@ verificationCodes_generate() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -18227,6 +20187,19 @@ verificationCodes_invalidate() {
             else 
                 VERIFICATIONCODES_INVALIDATE_URL=`echo -n ${VERIFICATIONCODES_INVALIDATE_URL} | sed "s/$(echo ${VERIFICATIONCODES_INVALIDATE_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -18261,9 +20234,24 @@ verificationCodes_invalidate() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then
@@ -18397,6 +20385,19 @@ verificationCodes_list() {
             else 
                 VERIFICATIONCODES_LIST_URL=`echo -n ${VERIFICATIONCODES_LIST_URL} | sed "s/$(echo ${VERIFICATIONCODES_LIST_URL} | grep -oP '&pageToken=.*')/\&pageToken=${1}/"`
             fi
+
+            if ! [[ -z ${requestId} ]]
+            then
+                
+                if [[ -z ${originRequestId} ]]
+                then
+                    export originRequestId=${requestId}
+                else
+                    prevRequestId=${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z ${requestId} ]]
@@ -18431,9 +20432,24 @@ verificationCodes_list() {
                     | histUpdatePayload ".request.postData" "${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "${1}" ]]
+            then
+
+                if [[ -z ${prevRequestId} ]]
+                then
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"${1}\"}"
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "${1}" ]]
             then

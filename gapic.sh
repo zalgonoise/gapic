@@ -1610,7 +1610,7 @@ histGenRequest() {
     --arg met \${5} \\
     --arg hmt \${6} \\
     --arg url \${7} \\
-    '{ requestId: \$rid, timestamp: \$ts, auth: { clientId: \$cid, accessToken: \$atk, refreshToken: \$rtk, curl: null, response: null}, request: { resource: \$res, method: \$met, httpMethod: \$hmt, url: \$url, headers: [], curl: null }, response: null}' \\
+    '{ requestId: \$rid, timestamp: \$ts, auth: { clientId: \$cid, accessToken: \$atk, refreshToken: \$rtk, curl: null, response: []}, request: { resource: \$res, method: \$met, httpMethod: \$hmt, url: \$url, headers: [], curl: null }, response: null}' \\
     | read requestPayload
 
     export requestPayload
@@ -1742,6 +1742,22 @@ histReplayRequest() {
                 else 
                     url=\${url//\`echo -n \${url} | grep -oP "&pageToken=.*"\`/\&pageToken=\${1}}
                 fi
+
+                if ! [[ -z \${requestId} ]]
+                then
+
+                    if [[ -z \${originRequestId} ]]
+                    then
+                        export originRequestId=\${requestId}
+                    else
+                        prevRequestId=\${requestId}
+                    fi
+                    
+                    unset requestId
+    
+                fi
+
+
             fi 
 
             if [[ -z \${requestId} ]]
@@ -1768,6 +1784,21 @@ histReplayRequest() {
                 fi
 
                 histNewEntry "\${requestPayload}" "\${gapicLogDir}" "requests.json"
+            
+                if ! [[ -z "\${1}" ]]
+                then
+
+                    if [[ -z \${prevRequestId} ]]
+                    then
+                        histUpdateJson "\"${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"\${origReqId}\",\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"\${1}\"}"
+                    else
+                        histUpdateJson "\"${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"\${origReqId}\",\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"\${prevRequestId}\",\"nextPageToken\":\"\${1}\"}"
+                    fi
+                
+                else
+                    histUpdateJson "\"\${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"\${origReqId}\"}"  
+                fi
+            
             else
 
                 if [[ -z "\${1}" ]]
@@ -1789,7 +1820,6 @@ histReplayRequest() {
             | read -r outputJson
             export outputJson
 
-            histUpdateJson "\"\${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"\${origReqId}\"}"          
             histUpdateJson "\"\${requestId}\"" ".response" "\${outputJson}"          
             histUpdateToken "\"\${requestId}\"" ".request.curl" "curl -s --request \${met} \${(Q)url} --header 'Authorization: Bearer \${ACCESSTOKEN}' --header 'Accept: application/json' --compressed"          
 
@@ -2590,6 +2620,19 @@ EOF
             else 
                 ${curPrefix}URL=\`echo -n \${${curPrefix}URL} | sed "s/\$(echo \${${curPrefix}URL} | grep -oP '&pageToken=.*')/\&pageToken=\${1}/"\`
             fi
+
+            if ! [[ -z \${requestId} ]]
+            then
+                
+                if [[ -z \${originRequestId} ]]
+                then
+                    export originRequestId=\${requestId}
+                else
+                    prevRequestId=\${requestId}
+                fi
+                
+                unset requestId
+            fi
         fi
         
         if [[ -z \${requestId} ]]
@@ -2631,9 +2674,24 @@ EOF
                     | histUpdatePayload ".request.postData" "\${requestPostData}"
 
                 fi
+
             fi
 
             histNewEntry "\${requestPayload}" "\${gapicLogDir}" "requests.json"
+
+            if ! [[ -z "\${1}" ]]
+            then
+
+                if [[ -z \${prevRequestId} ]]
+                then
+                    histUpdateJson "\"\${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"\${originRequestId}\",\"nextPageToken\":\"\${1}\"}"
+                else
+                    histUpdateJson "\"\${requestId}\"" ".tags" "{\"nextPage\":true,\"listOrigin\":\"\${originRequestId}\",\"listPrevious\":\"\${prevRequestId}\",\"nextPageToken\":\"\${1}\"}"
+                fi
+
+
+            fi
+
         else
             if [[ -z "\${1}" ]]
             then

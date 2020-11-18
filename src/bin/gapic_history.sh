@@ -32,7 +32,7 @@ histGenRequest() {
     --arg met ${5} \
     --arg hmt ${6} \
     --arg url ${7} \
-    '{ requestId: $rid, timestamp: $ts, auth: { clientId: $cid, accessToken: $atk, refreshToken: $rtk, curl: null, response: null}, request: { resource: $res, method: $met, httpMethod: $hmt, url: $url, headers: [], curl: null }, response: null}' \
+    '{ requestId: $rid, timestamp: $ts, auth: { clientId: $cid, accessToken: $atk, refreshToken: $rtk, curl: null, response: []}, request: { resource: $res, method: $met, httpMethod: $hmt, url: $url, headers: [], curl: null }, response: null}' \
     | read requestPayload
 
     export requestPayload
@@ -164,6 +164,22 @@ histReplayRequest() {
                 else 
                     url=${url//`echo -n ${url} | grep -oP "&pageToken=.*"`/\&pageToken=${1}}
                 fi
+
+                if ! [[ -z ${requestId} ]]
+                then
+
+                    if [[ -z ${originRequestId} ]]
+                    then
+                        export originRequestId=${requestId}
+                    else
+                        prevRequestId=${requestId}
+                    fi
+                    
+                    unset requestId
+    
+                fi
+
+
             fi 
 
             if [[ -z ${requestId} ]]
@@ -190,6 +206,21 @@ histReplayRequest() {
                 fi
 
                 histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
+            
+                if ! [[ -z "${1}" ]]
+                then
+
+                    if [[ -z ${prevRequestId} ]]
+                    then
+                        histUpdateJson "\"\"" ".tags" "{\"replay\":true,\"origin\":\"${origReqId}\",\"nextPage\":true,\"listOrigin\":\"\",\"nextPageToken\":\"${1}\"}"
+                    else
+                        histUpdateJson "\"\"" ".tags" "{\"replay\":true,\"origin\":\"${origReqId}\",\"nextPage\":true,\"listOrigin\":\"\",\"listPrevious\":\"${prevRequestId}\",\"nextPageToken\":\"${1}\"}"
+                    fi
+                
+                else
+                    histUpdateJson "\"${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"${origReqId}\"}"  
+                fi
+            
             else
 
                 if [[ -z "${1}" ]]
@@ -211,7 +242,6 @@ histReplayRequest() {
             | read -r outputJson
             export outputJson
 
-            histUpdateJson "\"${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"${origReqId}\"}"          
             histUpdateJson "\"${requestId}\"" ".response" "${outputJson}"          
             histUpdateToken "\"${requestId}\"" ".request.curl" "curl -s --request ${met} ${(Q)url} --header 'Authorization: Bearer ${ACCESSTOKEN}' --header 'Accept: application/json' --compressed"          
 
