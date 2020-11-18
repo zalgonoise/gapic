@@ -212,19 +212,16 @@ asps_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ASPS_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -232,17 +229,16 @@ asps_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -438,19 +434,16 @@ asps_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ASPS_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -458,17 +451,16 @@ asps_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -636,19 +628,16 @@ asps_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ASPS_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -656,17 +645,16 @@ asps_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -892,19 +880,16 @@ channels_stop() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${CHANNELS_STOP_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -912,17 +897,16 @@ channels_stop() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -1204,19 +1188,16 @@ chromeosdevices_action() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${CHROMEOSDEVICES_ACTION_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -1224,17 +1205,16 @@ chromeosdevices_action() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -1501,19 +1481,16 @@ chromeosdevices_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${CHROMEOSDEVICES_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -1521,17 +1498,16 @@ chromeosdevices_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -1866,19 +1842,16 @@ chromeosdevices_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${CHROMEOSDEVICES_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -1886,17 +1859,16 @@ chromeosdevices_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -2178,19 +2150,16 @@ chromeosdevices_moveDevicesToOu() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${CHROMEOSDEVICES_MOVEDEVICESTOOU_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -2198,17 +2167,16 @@ chromeosdevices_moveDevicesToOu() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -2561,19 +2529,16 @@ chromeosdevices_patch() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${CHROMEOSDEVICES_PATCH_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -2581,17 +2546,16 @@ chromeosdevices_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -2944,19 +2908,16 @@ chromeosdevices_update() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${CHROMEOSDEVICES_UPDATE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -2964,17 +2925,16 @@ chromeosdevices_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -3142,19 +3102,16 @@ customers_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${CUSTOMERS_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -3162,17 +3119,16 @@ customers_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -3426,19 +3382,16 @@ customers_patch() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${CUSTOMERS_PATCH_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -3446,17 +3399,16 @@ customers_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -3710,19 +3662,16 @@ customers_update() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${CUSTOMERS_UPDATE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -3730,17 +3679,16 @@ customers_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -4022,19 +3970,16 @@ domainAliases_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${DOMAINALIASES_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -4042,17 +3987,16 @@ domainAliases_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -4248,19 +4192,16 @@ domainAliases_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINALIASES_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -4268,17 +4209,16 @@ domainAliases_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -4532,19 +4472,16 @@ domainAliases_insert() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${DOMAINALIASES_INSERT_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -4552,17 +4489,16 @@ domainAliases_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -4799,19 +4735,16 @@ domainAliases_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINALIASES_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -4819,17 +4752,16 @@ domainAliases_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -5111,19 +5043,16 @@ domains_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${DOMAINS_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -5131,17 +5060,16 @@ domains_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -5337,19 +5265,16 @@ domains_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINS_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -5357,17 +5282,16 @@ domains_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -5621,19 +5545,16 @@ domains_insert() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${DOMAINS_INSERT_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -5641,17 +5562,16 @@ domains_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -5819,19 +5739,16 @@ domains_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${DOMAINS_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -5839,17 +5756,16 @@ domains_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -6103,19 +6019,16 @@ groups_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${GROUPS_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -6123,17 +6036,16 @@ groups_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -6301,19 +6213,16 @@ groups_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${GROUPS_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -6321,17 +6230,16 @@ groups_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -6557,19 +6465,16 @@ groups_insert() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${GROUPS_INSERT_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -6577,17 +6482,16 @@ groups_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -6898,19 +6802,16 @@ groups_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${GROUPS_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -6918,17 +6819,16 @@ groups_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -7182,19 +7082,16 @@ groups_patch() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${GROUPS_PATCH_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -7202,17 +7099,16 @@ groups_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -7466,19 +7362,16 @@ groups_update() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${GROUPS_UPDATE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -7486,17 +7379,16 @@ groups_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -7778,19 +7670,16 @@ members_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${MEMBERS_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -7798,17 +7687,16 @@ members_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -8004,19 +7892,16 @@ members_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MEMBERS_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -8024,17 +7909,16 @@ members_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -8230,19 +8114,16 @@ members_hasMember() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MEMBERS_HASMEMBER_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -8250,17 +8131,16 @@ members_hasMember() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -8514,19 +8394,16 @@ members_insert() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${MEMBERS_INSERT_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -8534,17 +8411,16 @@ members_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -8796,19 +8672,16 @@ members_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MEMBERS_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -8816,17 +8689,16 @@ members_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -9108,19 +8980,16 @@ members_patch() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${MEMBERS_PATCH_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -9128,17 +8997,16 @@ members_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -9420,19 +9288,16 @@ members_update() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${MEMBERS_UPDATE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -9440,17 +9305,16 @@ members_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -9732,19 +9596,16 @@ mobiledevices_action() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${MOBILEDEVICES_ACTION_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -9752,17 +9613,16 @@ mobiledevices_action() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -10044,19 +9904,16 @@ mobiledevices_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${MOBILEDEVICES_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -10064,17 +9921,16 @@ mobiledevices_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -10341,19 +10197,16 @@ mobiledevices_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MOBILEDEVICES_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -10361,17 +10214,16 @@ mobiledevices_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -10701,19 +10553,16 @@ mobiledevices_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${MOBILEDEVICES_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -10721,17 +10570,16 @@ mobiledevices_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -11013,19 +10861,16 @@ orgunits_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ORGUNITS_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -11033,17 +10878,16 @@ orgunits_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -11239,19 +11083,16 @@ orgunits_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ORGUNITS_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -11259,17 +11100,16 @@ orgunits_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -11523,19 +11363,16 @@ orgunits_insert() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${ORGUNITS_INSERT_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -11543,17 +11380,16 @@ orgunits_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -11861,19 +11697,16 @@ orgunits_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ORGUNITS_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -11881,17 +11714,16 @@ orgunits_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -12173,19 +12005,16 @@ orgunits_patch() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${ORGUNITS_PATCH_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -12193,17 +12022,16 @@ orgunits_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -12485,19 +12313,16 @@ orgunits_update() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${ORGUNITS_UPDATE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -12505,17 +12330,16 @@ orgunits_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -12683,19 +12507,16 @@ privileges_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${PRIVILEGES_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -12703,17 +12524,16 @@ privileges_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -12995,19 +12815,16 @@ roleAssignments_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ROLEASSIGNMENTS_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -13015,17 +12832,16 @@ roleAssignments_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -13221,19 +13037,16 @@ roleAssignments_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLEASSIGNMENTS_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -13241,17 +13054,16 @@ roleAssignments_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -13505,19 +13317,16 @@ roleAssignments_insert() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${ROLEASSIGNMENTS_INSERT_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -13525,17 +13334,16 @@ roleAssignments_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -13787,19 +13595,16 @@ roleAssignments_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLEASSIGNMENTS_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -13807,17 +13612,16 @@ roleAssignments_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -14099,19 +13903,16 @@ roles_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${ROLES_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -14119,17 +13920,16 @@ roles_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -14325,19 +14125,16 @@ roles_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLES_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -14345,17 +14142,16 @@ roles_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -14609,19 +14405,16 @@ roles_insert() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${ROLES_INSERT_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -14629,17 +14422,16 @@ roles_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -14881,19 +14673,16 @@ roles_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${ROLES_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -14901,17 +14690,16 @@ roles_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -15193,19 +14981,16 @@ roles_patch() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${ROLES_PATCH_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -15213,17 +14998,16 @@ roles_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -15505,19 +15289,16 @@ roles_update() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${ROLES_UPDATE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -15525,17 +15306,16 @@ roles_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -15817,19 +15597,16 @@ tokens_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${TOKENS_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -15837,17 +15614,16 @@ tokens_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -16043,19 +15819,16 @@ tokens_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${TOKENS_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -16063,17 +15836,16 @@ tokens_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -16241,19 +16013,16 @@ tokens_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${TOKENS_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -16261,17 +16030,16 @@ tokens_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -16525,19 +16293,16 @@ twoStepVerification_turnOff() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${TWOSTEPVERIFICATION_TURNOFF_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -16545,17 +16310,16 @@ twoStepVerification_turnOff() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -16809,19 +16573,16 @@ users_delete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "DELETE" "${USERS_DELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -16829,17 +16590,16 @@ users_delete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -17153,19 +16913,16 @@ users_get() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${USERS_GET_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -17173,17 +16930,16 @@ users_get() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -17409,19 +17165,16 @@ users_insert() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_INSERT_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -17429,17 +17182,16 @@ users_insert() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -17767,19 +17519,16 @@ users_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${USERS_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -17787,17 +17536,16 @@ users_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -18051,19 +17799,16 @@ users_makeAdmin() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_MAKEADMIN_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -18071,17 +17816,16 @@ users_makeAdmin() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -18335,19 +18079,16 @@ users_patch() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PATCH" "${USERS_PATCH_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -18355,17 +18096,16 @@ users_patch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -18619,19 +18359,16 @@ users_signOut() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_SIGNOUT_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -18639,17 +18376,16 @@ users_signOut() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -18903,19 +18639,16 @@ users_undelete() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_UNDELETE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -18923,17 +18656,16 @@ users_undelete() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -19187,19 +18919,16 @@ users_update() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "PUT" "${USERS_UPDATE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -19207,17 +18936,16 @@ users_update() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -19637,19 +19365,16 @@ users_watch() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${USERS_WATCH_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -19657,17 +19382,16 @@ users_watch() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -19921,19 +19645,16 @@ verificationCodes_generate() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${VERIFICATIONCODES_GENERATE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -19941,17 +19662,16 @@ verificationCodes_generate() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -20205,19 +19925,16 @@ verificationCodes_invalidate() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "POST" "${VERIFICATIONCODES_INVALIDATE_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -20225,17 +19942,16 @@ verificationCodes_invalidate() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 
@@ -20403,19 +20119,16 @@ verificationCodes_list() {
         if [[ -z ${requestId} ]]
         then 
             histGenRequest "${CLIENTID}" "${ACCESSTOKEN}" "${REFRESHTOKEN}" "${apiQueryRef[1]}" "${apiQueryRef[2]}" "GET" "${VERIFICATIONCODES_LIST_URL}"
- 
-            if [[ -z "${1}" ]]
-            then
                 
-                if ! [[ -z ${sentAuthRequest} ]] \
-                && ! [[ -z ${authPayload} ]]
-                then 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
+            if ! [[ -z ${sentAuthRequest} ]] \
+            && ! [[ -z ${authPayload} ]]
+            then 
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.curl" "\"${sentAuthRequest}\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".auth.response" "${authPayload}"
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".auth.response" "${authPayload}"
+            fi
 
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Authorization: Bearer ${ACCESSTOKEN}\""
@@ -20423,17 +20136,16 @@ verificationCodes_list() {
             echo ${requestPayload} \
             | histListBuild ".request.headers" "\"Accept: application/json\""
 
-                if ! [[ -z ${requestPostData} ]]
-                then
-                    echo ${requestPayload} \
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z ${requestPostData} ]]
+            then
+                echo ${requestPayload} \
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo ${requestPayload} \
-                    | histUpdatePayload ".request.postData" "${requestPostData}"
-
-                fi
+                echo ${requestPayload} \
+                | histUpdatePayload ".request.postData" "${requestPostData}"
 
             fi
+
 
             histNewEntry "${requestPayload}" "${gapicLogDir}" "requests.json"
 

@@ -1610,7 +1610,7 @@ histGenRequest() {
     --arg met \${5} \\
     --arg hmt \${6} \\
     --arg url \${7} \\
-    '{ requestId: \$rid, timestamp: \$ts, auth: { clientId: \$cid, accessToken: \$atk, refreshToken: \$rtk, curl: null, response: []}, request: { resource: \$res, method: \$met, httpMethod: \$hmt, url: \$url, headers: [], curl: null }, response: null}' \\
+    '{ requestId: \$rid, timestamp: \$ts, auth: { clientId: \$cid, accessToken: \$atk, refreshToken: \$rtk, curl: null, response: null}, request: { resource: \$res, method: \$met, httpMethod: \$hmt, url: \$url, headers: [], curl: null }, response: null}' \\
     | read requestPayload
 
     export requestPayload
@@ -1713,13 +1713,15 @@ histReplayRequest() {
     export ACCESSTOKEN=\`echo \${1} | jq -r '.auth.accessToken'\`
     export REFRESHTOKEN=\`echo \${1} | jq -r '.auth.refreshToken'\`
 
-    
-    if [[ \`echo \${1} | jq -r '.auth.response.scope'\` == 'null'  ]]
-    then
-        export requestScope=\`cat \${credPath}/\${fileRef} | jq -r ".authScopes[] | select(.refreshToken == \"\${REFRESHTOKEN}\") | .scopeUrl" \`
-    else
-        export requestScope=\`echo \${1} | jq -r '.auth.response.scope'\`
-    fi
+    #if ! [[ -z \`echo \${1} | jq -r '.auth.response[]'\` ]]
+    #then
+        if [[ \`echo \${1} | jq -r '.auth.response.scope'\` == 'null'  ]]
+        then
+            export requestScope=\`cat \${credPath}/\${fileRef} | jq -r ".authScopes[] | select(.refreshToken == \"\${REFRESHTOKEN}\") | .scopeUrl" \`
+        else
+            export requestScope=\`echo \${1} | jq -r '.auth.response.scope'\`
+        fi
+    #fi
 
     local reqResource=\`echo \${1} | jq -r '.request.resource'\`
     local reqMethod=\`echo \${1} | jq -r '.request.method'\`
@@ -1764,24 +1766,21 @@ histReplayRequest() {
             then 
                 histGenRequest "\${CLIENTID}" "\${ACCESSTOKEN}" "\${REFRESHTOKEN}" "\${reqResource}" "\${reqMethod}" "\${met}" "\${url}"
 
-                if [[ -z "\${1}" ]]
-                then
-                    if ! [[ -z \${sentAuthRequest} ]] \\
-                    && ! [[ -z \${authPayload} ]]
-                    then 
-                        echo \${requestPayload} \\
-                        | histUpdatePayload ".auth.curl" "\"\${sentAuthRequest}\""
+                if ! [[ -z \${sentAuthRequest} ]] \\
+                && ! [[ -z \${authPayload} ]]
+                then 
+                    echo \${requestPayload} \\
+                    | histUpdatePayload ".auth.curl" "\"\${sentAuthRequest}\""
 
-                        echo ${requestPayload} \\
-                        | histUpdatePayload ".auth.response" "\"\${authPayload}\""
-                    fi
-        
-                    echo \${requestPayload} \\
-                    | histListBuild ".request.headers" "\"Authorization: Bearer \${ACCESSTOKEN}\""
-                    
-                    echo \${requestPayload} \\
-                    | histListBuild ".request.headers" "\"Accept: application/json\""
+                    echo ${requestPayload} \\
+                    | histUpdatePayload ".auth.response" "\"\${authPayload}\""
                 fi
+
+                echo \${requestPayload} \\
+                | histListBuild ".request.headers" "\"Authorization: Bearer \${ACCESSTOKEN}\""
+                
+                echo \${requestPayload} \\
+                | histListBuild ".request.headers" "\"Accept: application/json\""
 
                 histNewEntry "\${requestPayload}" "\${gapicLogDir}" "requests.json"
             
@@ -2638,19 +2637,16 @@ EOF
         if [[ -z \${requestId} ]]
         then 
             histGenRequest "\${CLIENTID}" "\${ACCESSTOKEN}" "\${REFRESHTOKEN}" "\${apiQueryRef[1]}" "\${apiQueryRef[2]}" "${curMethod}" "\${${curPrefix}URL}"
- 
-            if [[ -z "\${1}" ]]
-            then
                 
-                if ! [[ -z \${sentAuthRequest} ]] \\
-                && ! [[ -z \${authPayload} ]]
-                then 
-                    echo \${requestPayload} \\
-                    | histUpdatePayload ".auth.curl" "\"\${sentAuthRequest}\""
+            if ! [[ -z \${sentAuthRequest} ]] \\
+            && ! [[ -z \${authPayload} ]]
+            then 
+                echo \${requestPayload} \\
+                | histUpdatePayload ".auth.curl" "\"\${sentAuthRequest}\""
 
-                    echo \${requestPayload} \\
-                    | histUpdatePayload ".auth.response" "\${authPayload}"
-                fi
+                echo \${requestPayload} \\
+                | histUpdatePayload ".auth.response" "\${authPayload}"
+            fi
 
 EOF
         for (( k = 1 ; k <= ${#curHeaderSet[@]} ; k++ ))
@@ -2665,17 +2661,16 @@ EOF
 
 
         cat << EOF >> ${outputLibWiz}
-                if ! [[ -z \${requestPostData} ]]
-                then
-                    echo \${requestPayload} \\
-                    | histListBuild  ".request.headers" "\"Content-Type: application/json\""
+            if ! [[ -z \${requestPostData} ]]
+            then
+                echo \${requestPayload} \\
+                | histListBuild  ".request.headers" "\"Content-Type: application/json\""
 
-                    echo \${requestPayload} \\
-                    | histUpdatePayload ".request.postData" "\${requestPostData}"
-
-                fi
+                echo \${requestPayload} \\
+                | histUpdatePayload ".request.postData" "\${requestPostData}"
 
             fi
+
 
             histNewEntry "\${requestPayload}" "\${gapicLogDir}" "requests.json"
 
