@@ -1790,9 +1790,9 @@ histReplayRequest() {
 
                     if [[ -z \${prevRequestId} ]]
                     then
-                        histUpdateJson "\"${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"\${origReqId}\",\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"nextPageToken\":\"\${1}\"}"
+                        histUpdateJson "\"\${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"\${origReqId}\",\"nextPage\":true,\"listOrigin\":\"\${originRequestId}\",\"nextPageToken\":\"\${1}\"}"
                     else
-                        histUpdateJson "\"${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"\${origReqId}\",\"nextPage\":true,\"listOrigin\":\"${originRequestId}\",\"listPrevious\":\"\${prevRequestId}\",\"nextPageToken\":\"\${1}\"}"
+                        histUpdateJson "\"\${requestId}\"" ".tags" "{\"replay\":true,\"origin\":\"\${origReqId}\",\"nextPage\":true,\"listOrigin\":\"\${originRequestId}\",\"listPrevious\":\"\${prevRequestId}\",\"nextPageToken\":\"\${1}\"}"
                     fi
                 
                 else
