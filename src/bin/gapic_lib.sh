@@ -1018,7 +1018,7 @@ chromeosdevices_action() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -1046,7 +1046,7 @@ chromeosdevices_action() {
     
     resourceIdMeta=( 
         'string'
-        'Immutable ID of Chrome OS Device'
+        'The unique ID of the device. The `resourceId`s are returned in the response from the [chromeosdevices.list](/admin-sdk/directory/v1/reference/chromeosdevices/list) method.'
     )
 
 
@@ -1326,7 +1326,7 @@ chromeosdevices_get() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -1354,7 +1354,7 @@ chromeosdevices_get() {
     
     deviceIdMeta=( 
         'string'
-        'Immutable ID of Chrome OS Device'
+        'The unique ID of the device. The `deviceId`s are returned in the response from the [chromeosdevices.list](/admin-sdk/directory/v1/reference/chromeosdevices/list) method.'
     )
 
 
@@ -1387,7 +1387,7 @@ chromeosdevices_get() {
 
     projectionMeta=(
         'string'
-        'Restrict information returned to a set of selected fields.'
+        'Determines whether the response contains the full list of properties or only a subset.'
         '["PROJECTION_UNDEFINED","BASIC","FULL"]'
     )
 
@@ -1619,7 +1619,7 @@ chromeosdevices_list() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -1652,7 +1652,7 @@ chromeosdevices_list() {
 
     orderByMeta=(
         'string'
-        'Column to use for sorting results'
+        'Device property to use for sorting results.'
         '["orderByUndefined","annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate"]'
     )
 
@@ -1664,7 +1664,7 @@ chromeosdevices_list() {
 
     sortOrderMeta=(
         'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        'Whether to return results in ascending or descending order. Must be used with the `orderBy` parameter.'
         '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
 
@@ -1740,12 +1740,12 @@ chromeosdevices_list() {
 
     orgUnitPathMeta=(
         'string'
-        'Full path of the organizational unit or its ID'
+        'The full path of the organizational unit or its unique ID.'
     )
 
     pageTokenMeta=(
         'string'
-        'Token to specify next page in the list'
+        'The `pageToken` query parameter is used to request the next page of query results. The follow-on request'\''s `pageToken` query parameter is the `nextPageToken` from your previous response.'
     )
 
     queryMeta=(
@@ -2288,7 +2288,7 @@ chromeosdevices_patch() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -2316,7 +2316,7 @@ chromeosdevices_patch() {
     
     deviceIdMeta=( 
         'string'
-        'Immutable ID of Chrome OS Device'
+        'The unique ID of the device. The `deviceId`s are returned in the response from the [chromeosdevices.list](/admin-sdk/v1/reference/chromeosdevices/list) method.'
     )
 
 
@@ -2667,7 +2667,7 @@ chromeosdevices_update() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -2695,7 +2695,7 @@ chromeosdevices_update() {
     
     deviceIdMeta=( 
         'string'
-        'Immutable ID of Chrome OS Device'
+        'The unique ID of the device. The `deviceId`s are returned in the response from the [chromeosdevices.list](/admin-sdk/v1/reference/chromeosdevices/list) method.'
     )
 
 
@@ -5877,7 +5877,7 @@ groups_delete() {
 
     groupKeyMeta=( 
         'string'
-        'Email or immutable ID of the group'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
 
 
@@ -6157,7 +6157,7 @@ groups_get() {
 
     groupKeyMeta=( 
         'string'
-        'Email or immutable ID of the group'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
 
 
@@ -6685,12 +6685,12 @@ groups_list() {
 
     customerMeta=(
         'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all groups for a customer, fill this field instead of domain.'
+        'The unique ID for the customer'\''s G Suite account. In case of a multi-domain account, to fetch all groups for a customer, fill this field instead of domain. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users](/admin-sdk/directory/v1/reference/users)'
     )
 
     domainMeta=(
         'string'
-        'Name of the domain. Fill this field to get groups from only this domain. To return all groups in a multi-domain fill customer field instead.'
+        'The domain name. Use this field to get fields from only one domain. To return all domains for a customer account, use the `customer` query parameter instead.'
     )
 
     maxResultsMeta=(
@@ -6940,7 +6940,7 @@ groups_patch() {
 
     groupKeyMeta=( 
         'string'
-        'Email or immutable ID of the group. If ID, it should match with id of group object'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
 
 
@@ -7220,7 +7220,7 @@ groups_update() {
 
     groupKeyMeta=( 
         'string'
-        'Email or immutable ID of the group. If ID, it should match with id of group object'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
 
 
@@ -7500,7 +7500,7 @@ members_delete() {
 
     groupKeyMeta=( 
         'string'
-        'Email or immutable ID of the group'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
 
 
@@ -7528,7 +7528,7 @@ members_delete() {
     
     memberKeyMeta=( 
         'string'
-        'Email or immutable ID of the member'
+        'Identifies the group member in the API request. A group member can be a user or another group. The value can be the member'\''s (group or user) primary email address, alias, or unique ID.'
     )
 
 
@@ -7808,7 +7808,7 @@ members_get() {
 
     groupKeyMeta=( 
         'string'
-        'Email or immutable ID of the group'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
 
 
@@ -7836,7 +7836,7 @@ members_get() {
     
     memberKeyMeta=( 
         'string'
-        'Email or immutable ID of the member'
+        'Identifies the group member in the API request. A group member can be a user or another group. The value can be the member'\''s (group or user) primary email address, alias, or unique ID.'
     )
 
 
@@ -8252,7 +8252,7 @@ members_insert() {
 
     groupKeyMeta=( 
         'string'
-        'Email or immutable ID of the group'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
 
 
@@ -8532,7 +8532,7 @@ members_list() {
 
     groupKeyMeta=( 
         'string'
-        'Email or immutable ID of the group'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
 
 
@@ -8575,12 +8575,12 @@ members_list() {
 
     pageTokenMeta=(
         'string'
-        'Token to specify next page in the list'
+        'Token to specify next page in the list.'
     )
 
     rolesMeta=(
         'string'
-        'Comma separated role values to filter list results on.'
+        'The `roles` query parameter allows you to retrieve group members by role. Allowed values are `OWNER`, `MANAGER`, and `MEMBER`.'
     )
 
 
@@ -8810,7 +8810,7 @@ members_patch() {
 
     groupKeyMeta=( 
         'string'
-        'Email or immutable ID of the group. If ID, it should match with id of group object'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
 
 
@@ -8838,7 +8838,7 @@ members_patch() {
     
     memberKeyMeta=( 
         'string'
-        'Email or immutable ID of the user. If ID, it should match with id of member object'
+        'Identifies the group member in the API request. A group member can be a user or another group. The value can be the member'\''s (group or user) primary email address, alias, or unique ID.'
     )
 
 
@@ -9118,7 +9118,7 @@ members_update() {
 
     groupKeyMeta=( 
         'string'
-        'Email or immutable ID of the group. If ID, it should match with id of group object'
+        'Identifies the group in the API request. The value can be the group'\''s email address, group alias, or the unique group ID.'
     )
 
 
@@ -9146,7 +9146,7 @@ members_update() {
     
     memberKeyMeta=( 
         'string'
-        'Email or immutable ID of the user. If ID, it should match with id of member object'
+        'Identifies the group member in the API request. A group member can be a user or another group. The value can be the member'\''s (group or user) primary email address, alias, or unique ID.'
     )
 
 
@@ -9426,7 +9426,7 @@ mobiledevices_action() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -9454,7 +9454,7 @@ mobiledevices_action() {
     
     resourceIdMeta=( 
         'string'
-        'Immutable ID of Mobile Device'
+        'The unique ID the API service uses to identify the mobile device.'
     )
 
 
@@ -9734,7 +9734,7 @@ mobiledevices_delete() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -9762,7 +9762,7 @@ mobiledevices_delete() {
     
     resourceIdMeta=( 
         'string'
-        'Immutable ID of Mobile Device'
+        'The unique ID the API service uses to identify the mobile device.'
     )
 
 
@@ -10042,7 +10042,7 @@ mobiledevices_get() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -10070,7 +10070,7 @@ mobiledevices_get() {
     
     resourceIdMeta=( 
         'string'
-        'Immutable ID of Mobile Device'
+        'The unique ID the API service uses to identify the mobile device.'
     )
 
 
@@ -10335,7 +10335,7 @@ mobiledevices_list() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -10368,7 +10368,7 @@ mobiledevices_list() {
 
     orderByMeta=(
         'string'
-        'Column to use for sorting results'
+        'Device property to use for sorting results.'
         '["orderByUndefined","deviceId","email","lastSync","model","name","os","status","type"]'
     )
 
@@ -10380,7 +10380,7 @@ mobiledevices_list() {
 
     sortOrderMeta=(
         'string'
-        'Whether to return results in ascending or descending order. Only of use when orderBy is also used'
+        'Whether to return results in ascending or descending order. Must be used with the `orderBy` parameter.'
         '["SORT_ORDER_UNDEFINED","ASCENDING","DESCENDING"]'
     )
 
@@ -10691,7 +10691,7 @@ orgunits_delete() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -10719,7 +10719,7 @@ orgunits_delete() {
     
     orgUnitPathMeta=( 
         'string'
-        'Full path of the organizational unit or its ID'
+        'The full path of the organizational unit or its unique ID.'
     )
 
 
@@ -10999,7 +10999,7 @@ orgunits_get() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -11027,7 +11027,7 @@ orgunits_get() {
     
     orgUnitPathMeta=( 
         'string'
-        'Full path of the organizational unit or its ID'
+        'The full path of the organizational unit or its unique ID.'
     )
 
 
@@ -11221,7 +11221,7 @@ orgunits_insert() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -11501,7 +11501,7 @@ orgunits_list() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -11534,7 +11534,7 @@ orgunits_list() {
 
     typeMeta=(
         'string'
-        'Whether to return all sub-organizations or just immediate children'
+        'Whether to return all sub-organizations or just immediate children.'
         '["typeUndefined","all","children"]'
     )
 
@@ -11605,7 +11605,7 @@ orgunits_list() {
 
     orgUnitPathMeta=(
         'string'
-        'the URL-encoded organizational unit'\''s path or its ID'
+        'The full path to the organizational unit or its unique ID. Returns the children of the specified organizational unit.'
     )
 
 
@@ -11835,7 +11835,7 @@ orgunits_patch() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -11863,7 +11863,7 @@ orgunits_patch() {
     
     orgUnitPathMeta=( 
         'string'
-        'Full path of the organizational unit or its ID'
+        'The full path of the organizational unit or its unique ID.'
     )
 
 
@@ -12143,7 +12143,7 @@ orgunits_update() {
 
     customerIdMeta=( 
         'string'
-        'Immutable ID of the G Suite account'
+        'The unique ID for the customer'\''s G Suite account. As an account administrator, you can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users).'
     )
 
 
@@ -12171,7 +12171,7 @@ orgunits_update() {
     
     orgUnitPathMeta=( 
         'string'
-        'Full path of the organizational unit or its ID'
+        'The full path of the organizational unit or its unique ID.'
     )
 
 
@@ -16431,7 +16431,7 @@ users_delete() {
 
     userKeyMeta=( 
         'string'
-        'Email or immutable ID of the user'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
 
 
@@ -16711,7 +16711,7 @@ users_get() {
 
     userKeyMeta=( 
         'string'
-        'Email or immutable ID of the user'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
 
 
@@ -16750,7 +16750,7 @@ users_get() {
 
     viewTypeMeta=(
         'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        'Whether to fetch the administrator-only or domain-wide public view of the user. For more information, see [Retrieve a user as a non-administrator](/admin-sdk/directory/v1/guides/manage-users#retrieve_users_non_admin).'
         '["view_type_undefined","admin_view","domain_public"]'
     )
 
@@ -16821,7 +16821,7 @@ users_get() {
 
     customFieldMaskMeta=(
         'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'A comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when `projection=custom`.'
     )
 
 
@@ -17308,7 +17308,7 @@ users_list() {
 
     orderByMeta=(
         'string'
-        'Column to use for sorting results'
+        'Property to use for sorting results.'
         '["orderByUndefined","email","familyName","givenName"]'
     )
 
@@ -17326,7 +17326,7 @@ users_list() {
 
     viewTypeMeta=(
         'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        'Whether to fetch the administrator-only or domain-wide public view of the user. For more information, see [Retrieve a user as a non-administrator](/admin-sdk/directory/v1/guides/manage-users#retrieve_users_non_admin).'
         '["view_type_undefined","admin_view","domain_public"]'
     )
 
@@ -17397,17 +17397,17 @@ users_list() {
 
     customFieldMaskMeta=(
         'string'
-        'Comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when projection=custom.'
+        'A comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when `projection=custom`.'
     )
 
     customerMeta=(
         'string'
-        'Immutable ID of the G Suite account. In case of multi-domain, to fetch all users for a customer, fill this field instead of domain.'
+        'The unique ID for the customer'\''s G Suite account. In case of a multi-domain account, to fetch all groups for a customer, fill this field instead of domain. You can also use the `my_customer` alias to represent your account'\''s `customerId`. The `customerId` is also returned as part of the [Users resource](/admin-sdk/directory/v1/reference/users). Either the `customer` or the `domain` parameter must be provided.'
     )
 
     domainMeta=(
         'string'
-        'Name of the domain. Fill this field to get users from only this domain. To return all users in a multi-domain fill customer field instead.'
+        'The domain name. Use this field to get fields from only one domain. To return all domains for a customer account, use the `customer` query parameter instead. Either the `customer` or the `domain` parameter must be provided.'
     )
 
     maxResultsMeta=(
@@ -17422,12 +17422,12 @@ users_list() {
 
     queryMeta=(
         'string'
-        'Query string search. Should be of the form "". Complete documentation is at https: //developers.google.com/admin-sdk/directory/v1/guides/search-users'
+        'Query string for searching user fields. For more information on constructing user queries, see [Search for Users](/admin-sdk/directory/v1/guides/search-users).'
     )
 
     showDeletedMeta=(
         'string'
-        'If set to true, retrieves the list of deleted users. (Default: false)'
+        'If set to `true`, retrieves the list of deleted users. (Default: `false`)'
     )
 
 
@@ -17657,7 +17657,7 @@ users_makeAdmin() {
 
     userKeyMeta=( 
         'string'
-        'Email or immutable ID of the user as admin'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
 
 
@@ -17937,7 +17937,7 @@ users_patch() {
 
     userKeyMeta=( 
         'string'
-        'Email or immutable ID of the user. If ID, it should match with id of user object'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
 
 
@@ -18777,7 +18777,7 @@ users_update() {
 
     userKeyMeta=( 
         'string'
-        'Email or immutable ID of the user. If ID, it should match with id of user object'
+        'Identifies the user in the API request. The value can be the user'\''s primary email address, alias email address, or unique user ID.'
     )
 
 
@@ -19062,7 +19062,7 @@ users_watch() {
 
     eventMeta=(
         'string'
-        'Event on which subscription is intended'
+        'Events to watch for.'
         '["eventTypeUnspecified","add","delete","makeAdmin","undelete","update"]'
     )
 
@@ -19086,7 +19086,7 @@ users_watch() {
 
     viewTypeMeta=(
         'string'
-        'Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC view of the user.'
+        'Whether to fetch the administrator-only or domain-wide public view of the user. For more information, see [Retrieve a user as a non-administrator](/admin-sdk/directory/v1/guides/manage-users#retrieve_users_non_admin).'
         '["admin_view","domain_public"]'
     )
 

@@ -1063,6 +1063,47 @@ checkScopes() {
     fi
 }
 
+
+authSvAcc() {
+    jwtHeader='{"alg":"RS256","typ":"JWT"}'
+
+    local serviceAccount="\${1}"
+    local subscriber="\${2}"
+    local scopeUrl="\${3}"
+    local audienceUrl='https://oauth2.googleapis.com/token'
+    local issuedTime=\$(date +%s)
+    local expiryTime=\$((\${issuedTime}+3590))
+
+    local jsonKeyFile="\${4}"
+
+    jq -cn \\
+        --arg iss \$serviceAccount \\
+        --arg sub \$subscriber \\
+        --arg scp \$scopeUrl \\
+        --arg aud \$audienceUrl \\
+        --arg exp \$expiryTime \\
+        --arg iat \$issuedTime \\
+        '{iss: \$iss, sub: \$sub, scope: \$scp, aud: \$aud, exp: \$exp, iat: \$iat}' \\
+    | read -r jwtClaim
+
+    jwtHeaderBase64=\$(echo -n \${jwtHeader} | base64 --wrap=0 | sed 's/+/-/g; s/\//_/g')
+    jwtClaimBase64=\$(echo -n \${jwtClaim} | base64 --wrap=0 | sed 's/+/-/g; s/\//_/g')
+
+    tmp=\`mktemp\`
+    echo -n "\${jwtHeaderBase64}.\${jwtClaimBase64}"  > \${tmp}
+
+    jwtSignatureBase64=\$(openssl dgst -sha256 -sign \${jsonKeyFile} \${tmp} | base64 --wrap=0 | sed 's/+/-/g; s/\//_/g')
+
+    curl -s \\
+        --request POST \\
+        'https://oauth2.googleapis.com/token' \\
+        --header 'Content-Type: application/x-www-form-urlencoded' \\
+        -d "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=\${jwtHeaderBase64}.\${jwtClaimBase64}.\${jwtSignatureBase64}" \\
+    | read -r svAccAuthJson
+
+    export svAccAuthJson
+}
+
 EOF
 
 # Create Parameter Store file
