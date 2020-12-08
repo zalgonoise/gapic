@@ -661,6 +661,8 @@ buildAuth() {
     fi
 
     requestScopeCode=\${requestScope//:/%3A}
+    requestScopeCode=\${requestScope//=/%3D}
+    requestScopeCode=\${requestScope//+/%2B}
     requestScopeCode=\${requestScopeCode//\\//%2F}
 
     export CLIENTID=\${requestClientID}
